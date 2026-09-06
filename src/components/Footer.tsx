@@ -7,7 +7,7 @@ export function Footer() {
         <div>
           <p className="font-display text-lg font-semibold text-ink">Little Lab</p>
           <p className="mt-1 max-w-sm text-sm text-ink-muted">
-            Free curated experiment ideas for ages 1–5. Run at home by a dad with a toddler and a preschooler. Kits later — ideas stay free.
+            Free curated experiment ideas for ages 1–5. Run at home by a dad with a toddler and a preschooler. Kits later — ideas stay free. Merch via Engineerdadcoffee.
           </p>
         </div>
         <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
@@ -16,6 +16,9 @@ export function Footer() {
           </Link>
           <Link href="/kits" className="text-ink-muted hover:text-ink">
             Kits
+          </Link>
+          <Link href="/merch" className="text-ink-muted hover:text-ink">
+            Merch
           </Link>
           <Link href="/about" className="text-ink-muted hover:text-ink">
             About
@@ -26,6 +29,14 @@ export function Footer() {
           <Link href="/newsletter" className="text-ink-muted hover:text-ink">
             Newsletter
           </Link>
+          <a
+            href="https://www.etsy.com/shop/Engineerdadcoffee"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-ink-muted hover:text-ink"
+          >
+            Engineerdadcoffee
+          </a>
         </div>
       </div>
       <div className="border-t border-sage-200/60 py-4 text-center text-xs text-ink-muted">

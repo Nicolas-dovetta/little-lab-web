@@ -1,8 +1,9 @@
+import Link from "next/link";
 import { WaitlistForm } from "@/components/WaitlistForm";
 
 export const metadata = {
   title: "Kits",
-  description: "Little Lab kits are coming soon. Join the waitlist.",
+  description: "Little Lab experiment kits are coming soon. Join the waitlist.",
 };
 
 export default function KitsPage() {
@@ -15,8 +16,15 @@ export default function KitsPage() {
             Kits for the winners
           </h1>
           <p className="mt-4 text-ink-muted">
-            We are designing optional kits that ship the materials for our tested favorites —
-            starting with experiments like Density Layers. The store is not open yet.
+            Optional kits that ship materials for our tested favorites — starting with
+            experiments like Density Layers. The kit store is not open yet.
+          </p>
+          <p className="mt-3 text-sm text-ink-muted">
+            Looking for logos and mugs? That is{" "}
+            <Link href="/merch" className="font-semibold text-sage-800 underline-offset-2 hover:underline">
+              Engineerdadcoffee merch
+            </Link>
+            , not experiment kits.
           </p>
           <ul className="mt-6 space-y-2 text-sm text-ink-muted">
             <li>• Ideas on the site stay free forever</li>
@@ -34,7 +42,7 @@ export default function KitsPage() {
         {["Curated materials", "Parent-ready cards", "Mess-aware packing"].map((t) => (
           <div key={t} className="rounded-3xl border border-dashed border-sage-300 bg-sage-50/50 p-5 text-center">
             <p className="font-semibold text-sage-800">{t}</p>
-            <p className="mt-1 text-xs text-ink-muted">Placeholder — store coming soon</p>
+            <p className="mt-1 text-xs text-ink-muted">Placeholder — kit store coming soon</p>
           </div>
         ))}
       </div>
