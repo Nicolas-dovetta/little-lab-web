@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { WaitlistForm } from "@/components/WaitlistForm";
+import Link from "next/link";
 
 export const metadata = {
   title: "Kits",
@@ -8,44 +8,20 @@ export const metadata = {
 
 export default function KitsPage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-      <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-wider text-sage-700">Coming soon</p>
-          <h1 className="mt-2 font-display text-3xl font-semibold text-ink sm:text-4xl">
-            Kits for the winners
-          </h1>
-          <p className="mt-4 text-ink-muted">
-            Optional kits that ship materials for our tested favorites — starting with
-            experiments like Density Layers. The kit store is not open yet.
-          </p>
-          <p className="mt-3 text-sm text-ink-muted">
-            Looking for logos and mugs? That is{" "}
-            <Link href="/merch" className="font-semibold text-sage-800 underline-offset-2 hover:underline">
-              Engineerdadcoffee merch
-            </Link>
-            , not experiment kits.
-          </p>
-          <ul className="mt-6 space-y-2 text-sm text-ink-muted">
-            <li>• Ideas on the site stay free forever</li>
-            <li>• Kits are optional convenience, not a paywall</li>
-            <li>• Waitlist members hear first when preorders open</li>
-          </ul>
-        </div>
-        <div className="rounded-3xl border border-sage-200/80 bg-white p-7 shadow-sm">
-          <h2 className="font-display text-xl font-semibold">Join the waitlist</h2>
-          <p className="mt-2 mb-5 text-sm text-ink-muted">No spam — just a launch note.</p>
-          <WaitlistForm />
-        </div>
+    <div className="mx-auto max-w-xl px-4 py-12 sm:px-6">
+      <p className="text-sm font-semibold uppercase tracking-wider text-sage-700">Coming soon</p>
+      <h1 className="mt-2 font-display text-3xl font-semibold text-ink">Kits waitlist</h1>
+      <p className="mt-4 text-ink-muted">
+        Optional materials boxes for tested favorites. Ideas on the site stay free.
+      </p>
+      <div className="mt-8 rounded-3xl border border-sage-200/80 bg-white p-6 shadow-sm">
+        <WaitlistForm />
       </div>
-      <div className="mt-14 grid gap-4 sm:grid-cols-3">
-        {["Curated materials", "Parent-ready cards", "Mess-aware packing"].map((t) => (
-          <div key={t} className="rounded-3xl border border-dashed border-sage-300 bg-sage-50/50 p-5 text-center">
-            <p className="font-semibold text-sage-800">{t}</p>
-            <p className="mt-1 text-xs text-ink-muted">Placeholder — kit store coming soon</p>
-          </div>
-        ))}
-      </div>
+      <p className="mt-6 text-center text-sm text-ink-muted">
+        <Link href="/experiments" className="font-semibold text-sage-800 underline-offset-2 hover:underline">
+          ← Back to experiments
+        </Link>
+      </p>
     </div>
   );
 }

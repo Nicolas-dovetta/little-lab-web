@@ -7,27 +7,18 @@ export function Footer() {
         <div>
           <p className="font-display text-lg font-semibold text-ink">Weekend Experiments</p>
           <p className="mt-1 max-w-sm text-sm text-ink-muted">
-            Free curated experiment ideas for ages 1–5. Run at home by a dad with a toddler and a preschooler. Kits later — ideas stay free. Merch via Engineerdadcoffee.
+            Free curated experiment ideas for ages 1–5. Kits later — ideas stay free.
           </p>
         </div>
-        <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+        <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
           <Link href="/experiments" className="text-ink-muted hover:text-ink">
             Experiments
-          </Link>
-          <Link href="/kits" className="text-ink-muted hover:text-ink">
-            Kits
-          </Link>
-          <Link href="/merch" className="text-ink-muted hover:text-ink">
-            Merch
           </Link>
           <Link href="/about" className="text-ink-muted hover:text-ink">
             About
           </Link>
-          <Link href="/faq" className="text-ink-muted hover:text-ink">
-            FAQ
-          </Link>
-          <Link href="/newsletter" className="text-ink-muted hover:text-ink">
-            Newsletter
+          <Link href="/kits" className="text-ink-muted hover:text-ink">
+            Kits waitlist
           </Link>
           <a
             href="https://www.etsy.com/shop/Engineerdadcoffee"
@@ -35,12 +26,12 @@ export function Footer() {
             rel="noopener noreferrer"
             className="text-ink-muted hover:text-ink"
           >
-            Engineerdadcoffee
+            Merch
           </a>
         </div>
       </div>
       <div className="border-t border-sage-200/60 py-4 text-center text-xs text-ink-muted">
-        © {new Date().getFullYear()} Weekend Experiments. Made for curious little hands.
+        © {new Date().getFullYear()} Weekend Experiments
       </div>
     </footer>
   );
