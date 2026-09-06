@@ -300,7 +300,7 @@ export const experimentSeeds: ExperimentSeed[] = [
 export const faqSeeds: FaqSeed[] = [
   {
     sortOrder: 1,
-    question: "What ages is Little Lab for?",
+    question: "What ages is Weekend Experiments for?",
     answer:
       "Ideas are curated for ages 1–5, with clear age bands on each card (like 1–2 or 3–5). Many activities flex younger or older with small tweaks — we note that when we know it.",
   },
@@ -314,7 +314,7 @@ export const faqSeeds: FaqSeed[] = [
     sortOrder: 3,
     question: "Will the experiment ideas stay free?",
     answer:
-      "Yes. Curated experiment ideas stay free forever. Kits and physical products come later as an optional paid layer — they are not required to enjoy Little Lab.",
+      "Yes. Curated experiment ideas stay free forever. Kits and physical products come later as an optional paid layer — they are not required to enjoy Weekend Experiments.",
   },
   {
     sortOrder: 4,
