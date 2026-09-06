@@ -13,19 +13,27 @@ export default async function AboutPage() {
       <h1 className="font-display text-3xl font-semibold text-ink">About</h1>
       <div className="mt-6 space-y-5 text-lg leading-relaxed text-ink-muted">
         <p>
-          So I started running tiny experiments for myself — well, for my kids, which is the same
-          thing once you live with a ~1-year-old and a ~3-year-old. Then I realized it would be a
-          shame to keep the winners in a notes app forever.
+          I&apos;m a 40-year-old former engineer with two wonderful kids (1 and 3). Life changes a
+          lot — career, jobs, sleep, country, houses. Two things stay constant: curiosity, and a
+          love for figuring out how stuff works.
         </p>
         <p>
+          Need help with a door? Coming up. Bike broke? I can help. Wonder how a 2-stroke works?
+          Let me tell you. But first — have you got ten minutes and a wipeable table? Haven&apos;t
+          slept in three nights: a nightmare (not mine), a monster (also not mine), but the kid
+          didn&apos;t sleep and neither did I. Anyway… want to pour colored water and watch it climb?
+        </p>
+        <p>
+          So I started running tiny experiments for our weekends. Then I realized it would be a
+          shame to keep the winners in a notes app.{" "}
           <strong className="text-ink">Weekend Experiments</strong> is that collection: honest,
-          mood-matching activities for people like me — tired parents, engineers, fixers, thinkers,
-          and anyone who needs a little wonder (and a wipeable table) to get through the weekend.
+          mood-matching activities for tired parents, engineers, fixers, thinkers, and anyone who
+          needs a little wonder to get through Saturday morning.
         </p>
         <p>
           Most ideas never make the site. We keep <strong className="text-ink">winners</strong> —
-          the ones that held attention, taught something you can point at, and were worth the mess.
-          Ideas stay free. Kits may come later as optional convenience — never required.
+          the ones that held attention and were worth the mess. Ideas stay free. Kits may come later
+          as optional convenience — never required.
         </p>
         <p className="text-base">
           Merch and dad-gear live next door at{" "}
