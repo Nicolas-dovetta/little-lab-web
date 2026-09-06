@@ -2,7 +2,7 @@ import { listFaqs } from "@/lib/experiments";
 
 export const metadata = {
   title: "About",
-  description: "A dad running weekly experiments with kids ~1 and ~3. Winners only. Ideas free.",
+  description: "Engineer dad, two little kids, weekly experiments that actually get kept.",
 };
 
 export default async function AboutPage() {
@@ -11,18 +11,33 @@ export default async function AboutPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
       <h1 className="font-display text-3xl font-semibold text-ink">About</h1>
-      <div className="mt-6 space-y-5 text-ink-muted">
+      <div className="mt-6 space-y-5 text-lg leading-relaxed text-ink-muted">
         <p>
-          Weekend Experiments is a small library of activity ideas for parents of kids ages 1–5.
-          It started in our kitchen: almost every week with a ~1-year-old and a ~3-year-old.
+          So I started running tiny experiments for myself — well, for my kids, which is the same
+          thing once you live with a ~1-year-old and a ~3-year-old. Then I realized it would be a
+          shame to keep the winners in a notes app forever.
+        </p>
+        <p>
+          <strong className="text-ink">Weekend Experiments</strong> is that collection: honest,
+          mood-matching activities for people like me — tired parents, engineers, fixers, thinkers,
+          and anyone who needs a little wonder (and a wipeable table) to get through the weekend.
         </p>
         <p>
           Most ideas never make the site. We keep <strong className="text-ink">winners</strong> —
-          sessions that held attention and were worth the mess.
+          the ones that held attention, taught something you can point at, and were worth the mess.
+          Ideas stay free. Kits may come later as optional convenience — never required.
         </p>
-        <p>
-          <strong className="text-ink">Ideas stay free.</strong> Kits may come later as optional
-          convenience — never required.
+        <p className="text-base">
+          Merch and dad-gear live next door at{" "}
+          <a
+            href="https://www.etsy.com/shop/Engineerdadcoffee"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-sage-800 underline-offset-2 hover:underline"
+          >
+            Engineerdadcoffee
+          </a>
+          .
         </p>
       </div>
 
