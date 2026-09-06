@@ -4,7 +4,7 @@ const ETSY_SHOP = "https://www.etsy.com/shop/Engineerdadcoffee";
 
 export const metadata = {
   title: "Merch",
-  description: "Little Lab merch via Engineerdadcoffee — logos, mugs, and more on Etsy.",
+  description: "Weekend Experiments merch via Engineerdadcoffee — logos, mugs, and more on Etsy.",
 };
 
 export default function MerchPage() {
@@ -24,7 +24,7 @@ export default function MerchPage() {
             shop — same family brand, separate from the free experiment ideas here.
           </p>
           <ul className="mt-6 space-y-2 text-sm text-ink-muted">
-            <li>• Experiment ideas on Little Lab stay free</li>
+            <li>• Experiment ideas on Weekend Experiments stay free</li>
             <li>• Merch is optional support / fun gear</li>
             <li>• Experiment kits (materials boxes) are still on a separate waitlist</li>
           </ul>

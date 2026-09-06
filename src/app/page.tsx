@@ -17,7 +17,7 @@ export default async function HomePage() {
               Ages 1–5 · Free forever ideas
             </p>
             <h1 className="mt-3 font-display text-4xl font-semibold leading-tight text-ink sm:text-5xl">
-              Little Lab
+              Weekend Experiments
             </h1>
             <p className="mt-4 max-w-xl text-lg text-ink-muted">
               Warm, practical experiment ideas for parents — curated from real home runs with a

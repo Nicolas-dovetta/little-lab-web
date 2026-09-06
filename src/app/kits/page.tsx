@@ -3,7 +3,7 @@ import { WaitlistForm } from "@/components/WaitlistForm";
 
 export const metadata = {
   title: "Kits",
-  description: "Little Lab experiment kits are coming soon. Join the waitlist.",
+  description: "Weekend Experiments kits are coming soon. Join the waitlist.",
 };
 
 export default function KitsPage() {

@@ -15,10 +15,10 @@ export function Header() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Link href="/" className="group flex items-center gap-2">
           <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-sage-600 text-sm font-bold text-white shadow-sm transition group-hover:bg-sage-700">
-            LL
+            WE
           </span>
           <span className="font-display text-lg font-semibold tracking-tight text-ink">
-            Little Lab
+            Weekend Experiments
           </span>
         </Link>
         <nav className="hidden items-center gap-1 md:flex">

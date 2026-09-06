@@ -18,8 +18,8 @@ const body = Source_Sans_3({
 
 export const metadata: Metadata = {
   title: {
-    default: "Little Lab — Free kids experiments for ages 1–5",
-    template: "%s · Little Lab",
+    default: "Weekend Experiments — Free kids experiments for ages 1–5",
+    template: "%s · Weekend Experiments",
   },
   description:
     "Curated experiment ideas for parents of toddlers and preschoolers. Tested at home. Ideas stay free; kits come later.",

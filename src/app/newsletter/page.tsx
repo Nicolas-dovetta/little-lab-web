@@ -2,7 +2,7 @@ import { NewsletterForm } from "@/components/NewsletterForm";
 
 export const metadata = {
   title: "Newsletter",
-  description: "Get Little Lab winners by email.",
+  description: "Get Weekend Experiments winners by email.",
 };
 
 export default function NewsletterPage() {

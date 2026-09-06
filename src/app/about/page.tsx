@@ -6,10 +6,10 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-      <h1 className="font-display text-3xl font-semibold text-ink">About Little Lab</h1>
+      <h1 className="font-display text-3xl font-semibold text-ink">About Weekend Experiments</h1>
       <div className="mt-6 space-y-5 text-ink-muted">
         <p>
-          Little Lab is a small, honest library of experiment ideas for parents of kids ages 1–5.
+          Weekend Experiments is a small, honest library of experiment ideas for parents of kids ages 1–5.
           It started in our kitchen: a dad running something almost every week with a ~1-year-old
           and a ~3-year-old.
         </p>
@@ -22,7 +22,7 @@ export default function AboutPage() {
         <p>
           <strong className="text-ink">Experiment ideas stay free.</strong> Always. Kits and
           physical products may come later as an optional paid layer for families who want less
-          hunting for materials. You will never need a kit to use Little Lab.
+          hunting for materials. You will never need a kit to use Weekend Experiments.
         </p>
         <p>
           If you try something and it bombs (or becomes a new favorite), that feedback shapes what
