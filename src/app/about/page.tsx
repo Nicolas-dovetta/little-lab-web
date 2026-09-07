@@ -26,9 +26,8 @@ export default async function AboutPage() {
           they help families gather materials — join the mailing list if you want that news.
         </p>
         <p>
-          A quick note on the photos: they started as real, very messy home shots. I cleaned them up
-          in post so the page looks inviting. They look a little too perfect — that&apos;s the edit,
-          not a studio set. Don&apos;t worry; the experiments themselves are the messy kitchen kind.
+          The photos started as real, very messy home shots — I cleaned them up in post. Your
+          experiment won&apos;t look this clean; mine didn&apos;t either. That&apos;s fine.
         </p>
         <p className="text-base">
           Merch lives next door at{" "}
