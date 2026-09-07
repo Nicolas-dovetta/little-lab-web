@@ -56,5 +56,15 @@ export const faqEntries = pgTable("faq_entries", {
   sortOrder: integer("sort_order").notNull().default(0),
 });
 
+export const contactMessages = pgTable("contact_messages", {
+  id: serial("id").primaryKey(),
+  name: text("name"),
+  email: text("email").notNull(),
+  message: text("message").notNull(),
+  source: text("source").notNull().default("about"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export type Experiment = typeof experiments.$inferSelect;
 export type FaqEntry = typeof faqEntries.$inferSelect;
+export type ContactMessage = typeof contactMessages.$inferSelect;

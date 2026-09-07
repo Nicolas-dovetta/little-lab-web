@@ -18,6 +18,9 @@ export function Footer() {
           <Link href="/about" className="text-ink-muted hover:text-ink">
             About
           </Link>
+          <Link href="/about#contact" className="text-ink-muted hover:text-ink">
+            Ask a question
+          </Link>
           <Link href="/#stay-in-touch" className="text-ink-muted hover:text-ink">
             Mailing list
           </Link>

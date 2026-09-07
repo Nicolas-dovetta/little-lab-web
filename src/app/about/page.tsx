@@ -1,3 +1,4 @@
+import { ContactForm } from "@/components/ContactForm";
 import { listFaqs } from "@/lib/experiments";
 
 export const metadata = {
@@ -42,6 +43,17 @@ export default async function AboutPage() {
           .
         </p>
       </div>
+
+      <section id="contact" className="mt-14 scroll-mt-24">
+        <h2 className="font-display text-2xl font-semibold text-ink">Questions?</h2>
+        <p className="mt-3 text-base leading-relaxed text-ink-muted">
+          Curious about an age range, mess level, materials, or whether something is a good fit?
+          Ask here — I read every message.
+        </p>
+        <div className="mt-6">
+          <ContactForm source="about" />
+        </div>
+      </section>
 
       <h2 id="faq" className="mt-14 font-display text-2xl font-semibold text-ink">
         FAQ
