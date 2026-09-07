@@ -1,4 +1,4 @@
-import { asc, eq } from "drizzle-orm";
+import { asc, desc, eq, sql } from "drizzle-orm";
 import { getDb } from "@/db";
 import { experiments, faqEntries, type Experiment, type FaqEntry } from "@/db/schema";
 import { experimentSeeds, faqSeeds, type ExperimentSeed, type FaqSeed } from "@/data/seed";
@@ -42,15 +42,28 @@ function seedToFaq(f: FaqSeed, idx: number): FaqEntry {
   };
 }
 
+function sortExperiments(rows: Experiment[]): Experiment[] {
+  // Winners first, then featured, then title
+  return [...rows].sort((a, b) => {
+    const aw = a.status === "winner" ? 0 : 1;
+    const bw = b.status === "winner" ? 0 : 1;
+    if (aw !== bw) return aw - bw;
+    const af = a.featured ? 0 : 1;
+    const bf = b.featured ? 0 : 1;
+    if (af !== bf) return af - bf;
+    return a.title.localeCompare(b.title);
+  });
+}
+
 export async function listExperiments(): Promise<Experiment[]> {
   try {
     const db = getDb();
     const rows = await db.select().from(experiments).orderBy(asc(experiments.title));
-    if (rows.length > 0) return rows;
+    if (rows.length > 0) return sortExperiments(rows);
   } catch {
     // fall through to in-code seed
   }
-  return experimentSeeds.map(seedToExperiment);
+  return sortExperiments(experimentSeeds.map(seedToExperiment));
 }
 
 export async function getExperiment(id: string): Promise<Experiment | null> {
@@ -67,7 +80,7 @@ export async function getExperiment(id: string): Promise<Experiment | null> {
 
 export async function getFeaturedExperiment(): Promise<Experiment | null> {
   const all = await listExperiments();
-  return all.find((e) => e.featured) ?? all[0] ?? null;
+  return all.find((e) => e.status === "winner") ?? all.find((e) => e.featured) ?? all[0] ?? null;
 }
 
 export async function listFaqs(): Promise<FaqEntry[]> {
