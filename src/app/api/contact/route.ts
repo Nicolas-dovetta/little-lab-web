@@ -6,18 +6,34 @@ import { isValidEmail, normalizeEmail } from "@/lib/email";
 const MAX_MESSAGE_LEN = 2000;
 const MAX_NAME_LEN = 200;
 
+function resendKey(): string {
+  return (
+    process.env.RESEND_API_KEY?.trim() ||
+    process.env.RESEND_API?.trim() ||
+    process.env.resend_api?.trim() ||
+    ""
+  );
+}
+
+function mailFrom(): string {
+  return (
+    process.env.CONTACT_FROM_EMAIL?.trim() ||
+    process.env.MAIL_FROM?.trim() ||
+    "Weekend Experiments <hello@thequietgod.com>"
+  );
+}
+
 async function sendContactEmail(opts: {
   name: string | null;
   email: string;
   message: string;
   source: string;
 }) {
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = resendKey();
   if (!apiKey) return;
 
   const to = process.env.CONTACT_TO_EMAIL || "nicolas.dovetta@gmail.com";
-  const from = process.env.CONTACT_FROM_EMAIL || "onboarding@resend.dev";
-  const fromLabel = opts.name ? `${opts.name} via Weekend Experiments` : "Weekend Experiments contact";
+  const from = mailFrom();
   const subject = opts.name
     ? `Question from ${opts.name}`
     : "New question from Weekend Experiments";
@@ -37,7 +53,7 @@ async function sendContactEmail(opts: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: `${fromLabel} <${from}>`,
+      from,
       to: [to],
       reply_to: opts.email,
       subject,
