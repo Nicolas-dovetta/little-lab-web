@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getExperiment, listExperiments, messLabel, statusLabel } from "@/lib/experiments";
+import { getExperiment, listExperiments, messLabel } from "@/lib/experiments";
 
 export async function generateStaticParams() {
   const all = await listExperiments();
@@ -39,12 +39,9 @@ export default async function ExperimentDetailPage({
             ← All experiments
           </Link>
           <div className="mt-4 flex flex-wrap gap-2">
-            <span className="rounded-full bg-sage-100 px-2.5 py-0.5 text-xs font-semibold text-sage-800">
-              {statusLabel(e.status)}
-            </span>
-            {e.featured && (
+            {e.status === "winner" && (
               <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-900">
-                Featured
+                Winner
               </span>
             )}
             <span className="rounded-full bg-white px-2.5 py-0.5 text-xs text-ink-muted">

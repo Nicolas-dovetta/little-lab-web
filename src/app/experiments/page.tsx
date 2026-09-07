@@ -2,7 +2,7 @@ import { ExperimentCard } from "@/components/ExperimentCard";
 import { listExperiments } from "@/lib/experiments";
 import Link from "next/link";
 
-type Search = { age?: string; domain?: string; mess?: string; location?: string; status?: string };
+type Search = { age?: string; domain?: string; mess?: string; location?: string };
 
 export const metadata = {
   title: "Experiments",
@@ -23,13 +23,11 @@ export default async function ExperimentsPage({
     if (params.domain && !e.domains.includes(params.domain)) return false;
     if (params.mess && e.messLevel !== params.mess) return false;
     if (params.location && e.location !== params.location) return false;
-    if (params.status && e.status !== params.status) return false;
     return true;
   });
 
   const ages = Array.from(new Set(all.flatMap((e) => e.ageBands))).sort();
   const domains = Array.from(new Set(all.flatMap((e) => e.domains))).sort();
-  const statuses = Array.from(new Set(all.map((e) => e.status)));
 
   function hrefFor(next: Partial<Search>) {
     const merged = { ...params, ...next };
@@ -97,19 +95,7 @@ export default async function ExperimentsPage({
             </Chip>
           ))}
         </FilterRow>
-        <FilterRow label="Status">
-          {statuses.map((s) => (
-            <Chip
-              key={s}
-              href={hrefFor({ status: s })}
-              active={params.status === s}
-              clearHref={clearKey("status")}
-            >
-              {s}
-            </Chip>
-          ))}
-        </FilterRow>
-        {(params.age || params.domain || params.mess || params.location || params.status) && (
+        {(params.age || params.domain || params.mess || params.location) && (
           <Link href="/experiments" className="inline-block text-sm font-semibold text-sage-700">
             Clear filters
           </Link>

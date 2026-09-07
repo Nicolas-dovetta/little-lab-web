@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ExperimentCard } from "@/components/ExperimentCard";
 import { NewsletterForm } from "@/components/NewsletterForm";
-import { getFeaturedExperiment, listExperiments, messLabel, statusLabel } from "@/lib/experiments";
+import { getFeaturedExperiment, listExperiments, messLabel } from "@/lib/experiments";
 
 export default async function HomePage() {
   const [featured, all] = await Promise.all([getFeaturedExperiment(), listExperiments()]);
@@ -52,9 +52,11 @@ export default async function HomePage() {
             )}
             <div className="flex flex-col justify-center p-6 lg:col-span-2">
               <div className="flex flex-wrap gap-2">
-                <span className="rounded-full bg-sage-100 px-2.5 py-0.5 text-xs font-medium text-sage-800">
-                  {statusLabel(featured.status)}
-                </span>
+                {featured.status === "winner" && (
+                  <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-900">
+                    Winner
+                  </span>
+                )}
                 <span className="rounded-full bg-cream px-2.5 py-0.5 text-xs text-ink-muted">
                   {featured.timeMinutes} min · {messLabel(featured.messLevel)}
                 </span>
