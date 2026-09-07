@@ -263,30 +263,24 @@ export const faqSeeds: FaqSeed[] = [
   },
   {
     sortOrder: 4,
-    question: "When are kits coming?",
-    answer:
-      "Soon-ish. We are still proving weekly winners at home first. Join the kit waitlist if you want a heads-up when preorders open.",
-  },
-  {
-    sortOrder: 5,
     question: "How messy are these?",
     answer:
       "Each card lists mess level: low, medium, or high. High-mess ideas (like Density Layers) assume a tray, towel, and a willing kitchen. We flag that up front so you can pick the right day.",
   },
   {
-    sortOrder: 6,
+    sortOrder: 5,
     question: "How do you choose what to publish?",
     answer:
       "I run sessions every Saturday with my kids. I publish most of what we try — and spare you the flops. Status stays honest: idea, draft, tested, or winner.",
   },
   {
-    sortOrder: 7,
+    sortOrder: 6,
     question: "Indoor or outdoor?",
     answer:
       "Both. Filters on the experiments page let you pick indoor, outdoor, or either. Weather and mess tolerance usually decide.",
   },
   {
-    sortOrder: 8,
+    sortOrder: 7,
     question: "Will there be other languages?",
     answer:
       "Later. English first while we nail the content. Multilingual support is on the roadmap once the core library feels solid.",
