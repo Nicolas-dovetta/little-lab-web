@@ -119,9 +119,9 @@ export const experimentSeeds: ExperimentSeed[] = [
       "Try warm vs cold water, sugar instead of salt, or small toys (grape, cork, coin). Draw the layers afterward. Older kids can predict before pouring.",
     notesFromHome:
       "Real home run with a 3-year-old: egg sinks in plain water, floats after heavy salt. Honey sinks, oil floats. Balsamic on oil makes bubbles that sink then climb — that was the hit. Whole session ~1 hour. Worth the mess.",
-    heroImageUrl: "/images/experiments/density-layers-glasses.png",
+    heroImageUrl: "/images/experiments/density-layers-ten.png",
     gallery: [
-      "/images/experiments/density-layers-with-kid.png",
+      "/images/experiments/density-layers-glasses.png",
       "/images/experiments/density-layers-poster.png",
     ],
     featured: true,
@@ -273,7 +273,7 @@ export const experimentSeeds: ExperimentSeed[] = [
     stretch: "Try pepper instead of cinnamon. Pair with a longer follow-up if you need more than ~10 minutes.",
     notesFromHome:
       "Cinnamon on a white plate + a drop of soap — worked well. A little short, but he liked it. Good quick wow; plan a second activity for a longer block.",
-    heroImageUrl: null,
+    heroImageUrl: "/images/experiments/cinnamon-soap-rush-hero.png",
     gallery: [],
     featured: false,
   },
