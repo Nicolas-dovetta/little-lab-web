@@ -120,9 +120,7 @@ export const experimentSeeds: ExperimentSeed[] = [
     notesFromHome:
       "Real home run with a 3-year-old: egg sinks in plain water, floats after heavy salt. Honey sinks, oil floats. Balsamic on oil makes bubbles that sink then climb — that was the hit. Whole session ~1 hour. Worth the mess.",
     heroImageUrl: "/images/experiments/density-layers-glasses.png",
-    gallery: [
-      "/images/experiments/density-layers-poster.png",
-    ],
+    gallery: [],
     featured: true,
   },
   {
