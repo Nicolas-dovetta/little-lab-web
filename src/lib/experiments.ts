@@ -9,6 +9,7 @@ function seedToExperiment(e: ExperimentSeed): Experiment {
     id: e.id,
     title: e.title,
     status: e.status,
+    difficulty: e.difficulty,
     ageBands: e.ageBands,
     domains: e.domains,
     learningGoal: e.learningGoal,
@@ -43,11 +44,12 @@ function seedToFaq(f: FaqSeed, idx: number): FaqEntry {
 }
 
 function sortExperiments(rows: Experiment[]): Experiment[] {
-  // Winners first, then featured, then title
+  // Winner first, then planned, then featured, then title
   return [...rows].sort((a, b) => {
-    const aw = a.status === "winner" ? 0 : 1;
-    const bw = b.status === "winner" ? 0 : 1;
-    if (aw !== bw) return aw - bw;
+    const rank = (s: string) => (s === "winner" ? 0 : s === "planned" ? 1 : 2);
+    const ar = rank(a.status);
+    const br = rank(b.status);
+    if (ar !== br) return ar - br;
     const af = a.featured ? 0 : 1;
     const bf = b.featured ? 0 : 1;
     if (af !== bf) return af - bf;
@@ -105,12 +107,27 @@ export function statusLabel(status: string): string {
       return "Tested at home";
     case "winner":
       return "Winner";
+    case "planned":
+      return "Planned next week";
     case "draft":
       return "Draft";
     case "idea":
       return "Idea";
     default:
       return status;
+  }
+}
+
+export function difficultyLabel(n: number): string {
+  switch (n) {
+    case 1:
+      return "Easy";
+    case 2:
+      return "Medium";
+    case 3:
+      return "Hard";
+    default:
+      return `Level ${n}`;
   }
 }
 

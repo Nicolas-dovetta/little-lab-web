@@ -12,6 +12,7 @@ export const experiments = pgTable("experiments", {
   id: text("id").primaryKey(),
   title: text("title").notNull(),
   status: text("status").notNull(),
+  difficulty: integer("difficulty").notNull().default(1),
   ageBands: text("age_bands").array().notNull().default([]),
   domains: text("domains").array().notNull().default([]),
   learningGoal: text("learning_goal").notNull().default(""),

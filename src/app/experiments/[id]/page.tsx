@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getExperiment, listExperiments, messLabel } from "@/lib/experiments";
+import { difficultyLabel, getExperiment, listExperiments, messLabel } from "@/lib/experiments";
 
 export async function generateStaticParams() {
   const all = await listExperiments();
@@ -44,6 +44,14 @@ export default async function ExperimentDetailPage({
                 Winner
               </span>
             )}
+            {e.status === "planned" && (
+              <span className="rounded-full bg-sage-600 px-2.5 py-0.5 text-xs font-semibold text-white">
+                Planned
+              </span>
+            )}
+            <span className="rounded-full bg-white px-2.5 py-0.5 text-xs text-ink-muted">
+              {difficultyLabel(e.difficulty)}
+            </span>
             <span className="rounded-full bg-white px-2.5 py-0.5 text-xs text-ink-muted">
               Ages {e.ageBands.join(", ")}
             </span>

@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ExperimentCard } from "@/components/ExperimentCard";
 import { NewsletterForm } from "@/components/NewsletterForm";
-import { getFeaturedExperiment, listExperiments, messLabel } from "@/lib/experiments";
+import { difficultyLabel, getFeaturedExperiment, listExperiments, messLabel } from "@/lib/experiments";
 
 export default async function HomePage() {
   const [featured, all] = await Promise.all([getFeaturedExperiment(), listExperiments()]);
@@ -57,6 +57,14 @@ export default async function HomePage() {
                     Winner
                   </span>
                 )}
+                {featured.status === "planned" && (
+                  <span className="rounded-full bg-sage-600 px-2.5 py-0.5 text-xs font-medium text-white">
+                    Planned
+                  </span>
+                )}
+                <span className="rounded-full bg-cream px-2.5 py-0.5 text-xs text-ink-muted">
+                  {difficultyLabel(featured.difficulty)}
+                </span>
                 <span className="rounded-full bg-cream px-2.5 py-0.5 text-xs text-ink-muted">
                   {featured.timeMinutes} min · {messLabel(featured.messLevel)}
                 </span>

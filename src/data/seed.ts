@@ -1,7 +1,8 @@
 export type ExperimentSeed = {
   id: string;
   title: string;
-  status: "tested" | "winner" | "draft" | "idea";
+  status: "tested" | "winner" | "draft" | "idea" | "planned";
+  difficulty: number;
   ageBands: string[];
   domains: string[];
   learningGoal: string;
@@ -34,6 +35,7 @@ export const experimentSeeds: ExperimentSeed[] = [
     id: "density-layers",
     title: "Density Layers",
     status: "winner",
+    difficulty: 1,
     ageBands: ["3-5"],
     domains: ["physics"],
     learningGoal:
@@ -129,6 +131,7 @@ export const experimentSeeds: ExperimentSeed[] = [
     id: "cornstarch-thickening-fluid",
     title: "Cornstarch thickening fluid (Maïzena)",
     status: "tested",
+    difficulty: 1,
     ageBands: ["1-2", "3-5"],
     domains: ["physics", "sensory"],
     learningGoal:
@@ -188,6 +191,7 @@ export const experimentSeeds: ExperimentSeed[] = [
     id: "cinnamon-soap-rush",
     title: "Cinnamon soap rush",
     status: "tested",
+    difficulty: 1,
     ageBands: ["1-2", "3-5"],
     domains: ["physics", "sensory"],
     learningGoal: "Soap can break the “skin” on water so floating powder suddenly rushes away.",
@@ -240,6 +244,106 @@ export const experimentSeeds: ExperimentSeed[] = [
     gallery: [],
     featured: false,
   },
+  {
+    id: "salt-ice-fishing",
+    title: "Salt ice fishing",
+    status: "planned",
+    difficulty: 3,
+    ageBands: [
+      "3-5",
+    ],
+    domains: [
+      "physics",
+      "chemistry",
+    ],
+    learningGoal:
+      "Salt can melt a little ice into water; that water can freeze again around a string. Pressure from a thin wire can also melt ice for a moment, then it freezes again.",
+    timeMinutes: 20,
+    messLevel: "high",
+    location: "indoor",
+    materials: [
+      "Table salt",
+      "Yarn, baker’s twine, or a shoelace (easier than thread)",
+      "Thin metal wire (copper craft wire, guitar high-E string, or thin uninsulated wire — skip fishing line for toddlers)",
+      "Ice cubes or a mini ice block (freeze overnight; big cubes work better)",
+      "2 ice-cube trays or a small plastic container",
+      "2 water bottles with lids (weights)",
+      "Tray or baking sheet with sides",
+      "Towels",
+      "Small bowl for salt + spoon",
+      "Optional: food coloring",
+      "Optional: second string for a no-salt comparison",
+    ],
+    prep: "Adult-only, 5–10 min before they walk in: set the slow wire experiment in the background if you’re doing it. Put a large ice cube or mini-block on a board or two mugs so the sides are free. Lay thin metal wire across the middle. Hang a closed water bottle from each end so they pull down freely. Tray underneath. Have salt, yarn, ice, and a second tray ready for the fishing game. If the wire setup feels fussy, skip it — salt fishing alone is a complete morning.",
+    safety:
+      "No tasting salty ice. Adult handles the wire (can cut fingers). Keep hanging bottles where they cannot fall on toes. Watch for numb fingers — ice play is short. Warm hands and towels at the end.",
+    experience:
+      "A 3-year-old will not sit through a 20-minute wire demo. Treat the salt fishing as the show, and the hanging wire as a slow surprise you set up first and check later. Active time with the child: ~15–20 minutes. Adult setup: ~10 minutes before they walk in. Order of the morning so they get a win fast: adult sets the wire (optional) → warm hands with ice → salt fishing (main event) → quick peek at the wire → optional color tunnels → stop.",
+    kidCanDo: [
+      "Touch and slide an ice cube (short contact)",
+      "Try to “catch” ice with yarn — fail first, then try with salt",
+      "Sprinkle a tiny pinch of salt with a spoon",
+      "Count / sing / roar while waiting ~60 seconds",
+      "Lift both ends of the yarn",
+      "Peek at the wire with you later (snack or book in between)",
+    ],
+    adultRole: [
+      "All sharp / heavy parts (wire, hanging bottles)",
+      "Control salt amount (tiny pinch, not a mountain)",
+      "Spot dripping cubes; keep play short",
+      "Narrate one idea at a time — no melting-point lecture",
+      "Don’t make them wait at the wire; peek later",
+    ],
+    steps: [
+      {
+        title: "Adult-only setup (optional wire)",
+        detail:
+          "Ice on a board/mugs, wire across, bottles hanging from each end, tray under. Say later: “This one is working slowly. We’ll peek when the timer sings.” Skip if fussy.",
+      },
+      {
+        title: "Warm hands (~2 min)",
+        detail:
+          "One ice cube on a tray. Kid touches, slides, watches drips. You say: “Ice is water that got so cold it turned solid.”",
+      },
+      {
+        title: "Ice fishing with salt — main event (8–10 min)",
+        detail:
+          "Tray with ice cubes (bowl of cold water optional). Yarn ~ arm length. Salt + spoon. “Can you catch the ice with the string? No hands.” Let them fail. Lay yarn on a cube; sprinkle a tiny pinch of salt where they meet. Wait ~60 seconds (song, count, ten lion roars). Lift both ends. If it works: whoa — do it again. Optional: no-salt cube for comparison.",
+      },
+      {
+        title: "If it fails",
+        detail:
+          "Too much salt → melts only — wipe, new cube, tinier pinch. Too little wait → one more song. Yarn too slick → cotton string/yarn, not plastic ribbon.",
+      },
+      {
+        title: "Peek at the wire (~2 min)",
+        detail:
+          "Walk over together. “Is the line going into the ice?” A dent counts. Check again after snack/book. When it drops through: “The ice opened a little door and then closed it again.”",
+      },
+      {
+        title: "Optional extra (~5 min)",
+        detail:
+          "Salt + one drop food coloring on a spare cube — tunnels and puddles. Then warm water, towels, done.",
+      },
+    ],
+    notice: [
+      "The string alone doesn’t stick; after salt + wait, it can lift the ice.",
+      "A no-salt string still fails.",
+      "Too much salt makes a puddle instead of a “hug.”",
+      "Later, the wire may have cut deeper into the block (or all the way through) while the block stays one piece.",
+      "Salt + string: Salt melts a little ice into water. The rest of the ice is still cold enough to freeze that water around the string — an “ice hug.”",
+      "Wire + bottles: The bottles push on a thin line. That squeeze melts ice for a moment under the wire; when the squeeze moves on, it freezes again. That’s why the block can stay one piece.",
+      "If that’s still too much for the moment: “Ice can melt. Ice can freeze again. Salt melts it. Squeezing melts it too.”",
+    ],
+    stretch:
+      "Food-coloring tunnels on a salted cube (sensory encore). Check the wire again after a longer break — still don’t wait standing there.",
+    notesFromHome:
+      "Planned for next Saturday; Nicolas will refine after the run.\n\nDifficulty 3 (hard) — adult setup + patience; salt trick carries the day even if the wire never finishes.\n\nSuccess at age 3: saw string fail then work; felt cold/wet; said whoa or wanted a redo; later noticed the wire moved.",
+    heroImageUrl: null,
+    gallery: [],
+    featured: false,
+  },
+
 ];
 
 export const faqSeeds: FaqSeed[] = [

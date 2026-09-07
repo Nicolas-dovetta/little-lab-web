@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Experiment } from "@/db/schema";
-import { messLabel } from "@/lib/experiments";
+import { difficultyLabel, messLabel } from "@/lib/experiments";
 
 export function ExperimentCard({ experiment }: { experiment: Experiment }) {
   return (
@@ -23,14 +23,24 @@ export function ExperimentCard({ experiment }: { experiment: Experiment }) {
             <span className="font-display text-xl font-semibold text-sage-700">{experiment.title}</span>
           </div>
         )}
-        {experiment.status === "winner" && (
-          <span className="absolute left-3 top-3 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-900">
-            Winner
-          </span>
-        )}
+        <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
+          {experiment.status === "winner" && (
+            <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-900">
+              Winner
+            </span>
+          )}
+          {experiment.status === "planned" && (
+            <span className="rounded-full bg-sage-600 px-2.5 py-0.5 text-xs font-semibold text-white">
+              Planned
+            </span>
+          )}
+        </div>
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4">
         <div className="flex flex-wrap gap-1.5">
+          <span className="rounded-full bg-cream px-2 py-0.5 text-[11px] font-medium text-ink-muted">
+            {difficultyLabel(experiment.difficulty)}
+          </span>
           <span className="rounded-full bg-cream px-2 py-0.5 text-[11px] font-medium text-ink-muted">
             {experiment.timeMinutes} min
           </span>
