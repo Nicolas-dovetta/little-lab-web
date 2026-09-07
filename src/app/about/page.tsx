@@ -23,6 +23,12 @@ export default async function AboutPage() {
           physical phenomenon (or another clear bit of how the world behaves).
         </p>
         <p>
+          I love going deep on the physics when I explain things to my 3-year-old. On each card I try
+          to give you that same level of understanding — what&apos;s really happening, in plain
+          words — not just the wow. If you have questions, use the email form below; I&apos;d happily
+          dig in further.
+        </p>
+        <p>
           Most ideas never make the cut. What you see here are the keepers. Kits may come later if
           they help families gather materials — join the mailing list if you want that news.
         </p>
@@ -47,8 +53,8 @@ export default async function AboutPage() {
       <section id="contact" className="mt-14 scroll-mt-24">
         <h2 className="font-display text-2xl font-semibold text-ink">Questions?</h2>
         <p className="mt-3 text-base leading-relaxed text-ink-muted">
-          Curious about an age range, mess level, materials, or whether something is a good fit?
-          Ask here — I read every message.
+          Curious about an age range, mess level, materials, or the physics behind a keeper? Ask
+          here — I read every message and I&apos;m happy to go deeper.
         </p>
         <div className="mt-6">
           <ContactForm source="about" />

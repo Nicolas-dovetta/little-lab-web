@@ -120,7 +120,7 @@ export default async function ExperimentDetailPage({
 
           {e.notesFromHome && (
             <Section title="Notes from home">
-              <blockquote className="rounded-2xl border border-amber-200/80 bg-amber-50/80 p-5 text-sm text-ink">
+              <blockquote className="whitespace-pre-line rounded-2xl border border-amber-200/80 bg-amber-50/80 p-5 text-sm text-ink">
                 {e.notesFromHome}
               </blockquote>
             </Section>
