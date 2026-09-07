@@ -3,7 +3,8 @@ import { listFaqs } from "@/lib/experiments";
 
 export const metadata = {
   title: "About",
-  description: "Experiments we ran with our kids — the ones they loved that show how the world works.",
+  description:
+    "Engineer, former professor, aerospace researcher — and Saturday-morning experiments with curious kids.",
 };
 
 export default async function AboutPage() {
@@ -14,28 +15,33 @@ export default async function AboutPage() {
       <h1 className="font-display text-3xl font-semibold text-ink">About</h1>
       <div className="mt-6 space-y-5 text-lg leading-relaxed text-ink-muted">
         <p>
-          I&apos;m a former engineer with two kids (about 1 and 3). We explore the world together —
-          I want fun things to show them, and ways for them to notice how stuff actually works.
+          I&apos;m an engineer, a former professor, and an aerospace researcher. One of the things I
+          love most these days is my kids asking &ldquo;why&rdquo; about the most random things. It
+          gives me a free pass to get as nerdy as I want on so many topics. &ldquo;Papa, why is the
+          moon round?&rdquo; Let me tell you. &ldquo;Papa, how do you make glass?&rdquo; How much
+          time before school do we have…
         </p>
         <p>
-          <strong className="text-ink">Weekend Experiments</strong> is the list of activities we
-          ran at home that worked: the kids particularly enjoyed them, and each one demonstrates a
-          physical phenomenon (or another clear bit of how the world behaves).
+          I started a Saturday-morning tradition with them: we do experiments. I come up with
+          something random and nerdy — sometimes with both kids, sometimes just my oldest — and then
+          we make a mess and learn stuff.
         </p>
         <p>
-          I love going deep on the physics when I explain things to my 3-year-old. On each card I try
-          to give you that same level of understanding — what&apos;s really happening, in plain
-          words — not just the wow. If you have questions, use the email form below; I&apos;d happily
-          dig in further.
+          <strong className="text-ink">Weekend Experiments</strong> started as a notebook for me,
+          then became an online folder, and now it&apos;s here so any parent with curious kids can
+          run weekend experiments and make their kitchen extra messy while sharing surprising things
+          about the world.
         </p>
         <p>
-          Most ideas never make the cut. What you see here are the keepers. Kits may come later if
-          they help families gather materials — join the mailing list if you want that news.
+          I tried to put as much information as is helpful for you to do, manage, and explain the
+          experiments. Reach out with comments, questions, or feedback — I love hearing from other
+          parents, and I&apos;m happy to help if I can.
         </p>
         <p>
           The photos started as real, very messy home shots — I cleaned them up in post. Your
           experiment won&apos;t look this clean; mine didn&apos;t either. That&apos;s fine.
         </p>
+        <p className="font-medium text-ink">Enjoy. And sorry for the mess.</p>
         <p className="text-base">
           Merch lives next door at{" "}
           <a
