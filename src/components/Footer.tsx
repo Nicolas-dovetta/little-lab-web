@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export function Footer() {
@@ -5,8 +6,14 @@ export function Footer() {
     <footer className="mt-auto border-t border-sage-200/70 bg-sage-50">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-start sm:justify-between sm:px-6">
         <div>
-          <p className="font-display text-lg font-semibold text-ink">Weekend Experiments</p>
-          <p className="mt-1 max-w-sm text-sm text-ink-muted">
+          <Image
+            src="/brand/wordmark-primary.png"
+            alt="Weekend Experiments"
+            width={243}
+            height={24}
+            className="h-6 w-auto"
+          />
+          <p className="mt-3 max-w-sm text-sm text-ink-muted">
             Parent-tested activities for ages 1–5 — keepers our kids loved that show how the world
             works. Kits may come later.
           </p>
