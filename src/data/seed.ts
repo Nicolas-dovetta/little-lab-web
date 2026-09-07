@@ -312,9 +312,9 @@ export const faqSeeds: FaqSeed[] = [
   },
   {
     sortOrder: 3,
-    question: "Will the experiment ideas stay free?",
+    question: "Will there be kits?",
     answer:
-      "Yes. Curated experiment ideas stay free forever. Kits and physical products come later as an optional paid layer — they are not required to enjoy Weekend Experiments.",
+      "Maybe later. Physical kits would be optional materials boxes for favorite experiments — handy if you want less hunting for supplies. The experiment guides themselves stay on the site either way. Join the mailing list for news.",
   },
   {
     sortOrder: 4,
