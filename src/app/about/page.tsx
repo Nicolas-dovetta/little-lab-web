@@ -52,10 +52,6 @@ export default async function AboutPage() {
 
       <section id="contact" className="mt-14 scroll-mt-24">
         <h2 className="font-display text-2xl font-semibold text-ink">Questions?</h2>
-        <p className="mt-3 text-base leading-relaxed text-ink-muted">
-          Curious about an age range, mess level, materials, or the physics behind a keeper? Ask
-          here — I read every message and I&apos;m happy to go deeper.
-        </p>
         <div className="mt-6">
           <ContactForm source="about" />
         </div>
