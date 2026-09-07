@@ -6,7 +6,8 @@ type Search = { age?: string; domain?: string; mess?: string; location?: string;
 
 export const metadata = {
   title: "Experiments",
-  description: "Browse curated kids experiment ideas for ages 1–5.",
+  description:
+    "For parents with curious kids who are looking for a way to make their kitchen extra messy on weekends.",
 };
 
 export default async function ExperimentsPage({
@@ -53,8 +54,8 @@ export default async function ExperimentsPage({
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <h1 className="font-display text-3xl font-semibold text-ink">Experiments</h1>
       <p className="mt-2 max-w-2xl text-ink-muted">
-        Filter by age, domain, mess, or status. Idea and draft cards are shorter; tested and winner
-        guides are ready for a Saturday morning.
+        For parents with curious kids who are looking for a way to make their kitchen extra messy on
+        weekends.
       </p>
 
       <div className="mt-8 space-y-3 rounded-3xl border border-sage-200/80 bg-white p-4 shadow-sm">

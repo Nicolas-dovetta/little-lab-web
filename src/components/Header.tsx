@@ -9,36 +9,23 @@ const links = [
 export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-sage-200/60 bg-cream/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-2.5 sm:gap-4 sm:px-6 sm:py-3">
-        <Link
-          href="/"
-          className="group flex min-w-0 shrink items-center"
-          aria-label="Weekend Experiments home"
-        >
-          {/* Compact W·atom·E on phones; full wordmark from sm up */}
-          <Image
-            src="/brand/compact-horizontal.png"
-            alt="Weekend Experiments"
-            width={95}
-            height={32}
-            className="h-7 w-auto sm:hidden"
-            priority
-          />
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-2 px-4 py-3 sm:gap-2.5 sm:px-6 sm:py-4">
+        <Link href="/" className="flex justify-center" aria-label="Weekend Experiments home">
           <Image
             src="/brand/wordmark-primary.png"
             alt="Weekend Experiments"
-            width={243}
-            height={24}
-            className="hidden h-6 w-auto max-w-[min(100%,14rem)] sm:block md:h-7 md:max-w-none"
+            width={486}
+            height={48}
+            className="h-7 w-auto max-w-[min(100%,20rem)] sm:h-8 sm:max-w-[24rem] md:h-9 md:max-w-none"
             priority
           />
         </Link>
-        <nav className="flex shrink-0 items-center gap-0.5 sm:gap-1">
+        <nav className="flex items-center justify-center gap-1">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className="rounded-full px-2 py-1.5 text-sm font-medium text-ink-muted transition hover:bg-sage-100 hover:text-ink sm:px-3"
+              className="rounded-full px-3 py-1.5 text-sm font-medium text-ink-muted transition hover:bg-sage-100 hover:text-ink"
             >
               {l.label}
             </Link>
