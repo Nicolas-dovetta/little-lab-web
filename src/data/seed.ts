@@ -217,7 +217,7 @@ export const experimentSeeds: ExperimentSeed[] = [
       "Walk fingertips across a tray of the mix (quick steps stay up; slow ones sink). Compare with flour + water.",
     notesFromHome:
       "Ran at home (Nicolas): Maïzena + water thickening fluid — logged as tested.",
-    heroImageUrl: null,
+    heroImageUrl: "/images/experiments/cornstarch-thickening-fluid-hero.png",
     gallery: [],
     featured: false,
   },
