@@ -1,4 +1,4 @@
-import { asc, desc, eq, sql } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { getDb } from "@/db";
 import { experiments, faqEntries, type Experiment, type FaqEntry } from "@/db/schema";
 import { experimentSeeds, faqSeeds, type ExperimentSeed, type FaqSeed } from "@/data/seed";
@@ -55,6 +55,11 @@ function sortExperiments(rows: Experiment[]): Experiment[] {
   });
 }
 
+function filterFaqs(rows: FaqEntry[]): FaqEntry[] {
+  // Kits once: hide the old "When are kits coming?" duplicate
+  return rows.filter((f) => f.question !== "When are kits coming?");
+}
+
 export async function listExperiments(): Promise<Experiment[]> {
   try {
     const db = getDb();
@@ -87,11 +92,11 @@ export async function listFaqs(): Promise<FaqEntry[]> {
   try {
     const db = getDb();
     const rows = await db.select().from(faqEntries).orderBy(asc(faqEntries.sortOrder));
-    if (rows.length > 0) return rows;
+    if (rows.length > 0) return filterFaqs(rows);
   } catch {
     // fall through
   }
-  return faqSeeds.map(seedToFaq);
+  return filterFaqs(faqSeeds.map(seedToFaq));
 }
 
 export function statusLabel(status: string): string {
