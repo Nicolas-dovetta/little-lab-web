@@ -277,7 +277,7 @@ export const faqSeeds: FaqSeed[] = [
     sortOrder: 6,
     question: "How do you choose what to publish?",
     answer:
-      "A dad runs sessions weekly with a ~1-year-old and a ~3-year-old. We keep winners, demote duds, and label status honestly: idea, draft, tested, or winner.",
+      "I run sessions every Saturday with my kids. I publish most of what we try — and spare you the flops. Status stays honest: idea, draft, tested, or winner.",
   },
   {
     sortOrder: 7,
