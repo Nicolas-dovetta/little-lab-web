@@ -33,7 +33,7 @@ export const experimentSeeds: ExperimentSeed[] = [
   {
     id: "density-layers",
     title: "Density Layers",
-    status: "tested",
+    status: "winner",
     ageBands: ["3-5"],
     domains: ["physics"],
     learningGoal:
@@ -187,7 +187,7 @@ export const experimentSeeds: ExperimentSeed[] = [
   {
     id: "cinnamon-soap-rush",
     title: "Cinnamon soap rush",
-    status: "winner",
+    status: "tested",
     ageBands: ["1-2", "3-5"],
     domains: ["physics", "sensory"],
     learningGoal: "Soap can break the “skin” on water so floating powder suddenly rushes away.",
@@ -271,7 +271,7 @@ export const faqSeeds: FaqSeed[] = [
     sortOrder: 5,
     question: "How do you choose what to publish?",
     answer:
-      "I run sessions every Saturday with my kids. I publish most of what we try — and spare you the flops. Status stays honest: idea, draft, tested, or winner.",
+      "I run sessions every Saturday with my kids. I publish most of what we try — and spare you the flops.",
   },
   {
     sortOrder: 6,
