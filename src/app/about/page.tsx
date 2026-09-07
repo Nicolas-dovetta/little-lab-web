@@ -4,7 +4,7 @@ import { listFaqs } from "@/lib/experiments";
 export const metadata = {
   title: "About",
   description:
-    "Engineer, former professor, aerospace researcher — and Saturday-morning experiments with curious kids.",
+    "Engineer, former professor and former aerospace researcher — Saturday-morning experiments with curious kids.",
 };
 
 export default async function AboutPage() {
@@ -15,11 +15,11 @@ export default async function AboutPage() {
       <h1 className="font-display text-3xl font-semibold text-ink">About</h1>
       <div className="mt-6 space-y-5 text-lg leading-relaxed text-ink-muted">
         <p>
-          I&apos;m an engineer, a former professor, and an aerospace researcher. One of the things I
-          love most these days is my kids asking &ldquo;why&rdquo; about the most random things. It
-          gives me a free pass to get as nerdy as I want on so many topics. &ldquo;Papa, why is the
-          moon round?&rdquo; Let me tell you. &ldquo;Papa, how do you make glass?&rdquo; How much
-          time before school do we have…
+          I&apos;m an engineer, a former professor, and a former aerospace researcher. One of the
+          things I love most these days is my kids asking &ldquo;why&rdquo; about the most random
+          things. It gives me a free pass to get as nerdy as I want on so many topics. &ldquo;Papa,
+          why is the moon round?&rdquo; Let me tell you. &ldquo;Papa, how do you make glass?&rdquo;
+          How much time before school do we have…
         </p>
         <p>
           I started a Saturday-morning tradition with them: we do experiments. I come up with
