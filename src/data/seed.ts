@@ -37,7 +37,7 @@ export const experimentSeeds: ExperimentSeed[] = [
     ageBands: ["3-5"],
     domains: ["physics"],
     learningGoal:
-      "Liquids and objects settle based on density — heavier (denser) things sink, lighter ones float. Salt water can change whether an egg sinks or floats.",
+      "Different liquids stack because some are denser (heavier for their size). Salt water can lift an egg; balsamic drops through oil can sink, then rise again when an oily coat breaks.",
     timeMinutes: 60,
     messLevel: "high",
     location: "indoor",
@@ -57,7 +57,7 @@ export const experimentSeeds: ExperimentSeed[] = [
     safety:
       "No tasting — raw egg and kitchen liquids are not snacks. Supervise glassware. Wipe oil spills immediately (slippery floors). Wash hands after handling the egg. Keep vinegar away from eyes.",
     experience:
-      "Pour honey, water, oil, and balsamic into clear glasses and watch them stack or dance. Then try an egg in plain water vs salty water — it sinks, then floats. The balsamic-on-oil bubbles that sink and climb back up are the crowd favorite.",
+      "A slow density show in tall glasses: an egg that sinks in plain water and rises when you add salt; a honey–water–oil stack; then balsamic drops that sink through oil and climb back up — the crowd-pleaser.",
     kidCanDo: [
       "Help pour (with a steady adult hand nearby)",
       "Stir salt into water",
@@ -69,7 +69,8 @@ export const experimentSeeds: ExperimentSeed[] = [
       "Handle raw egg and glassware",
       "Pour sticky or slippery liquids",
       "Wipe spills before anyone slips",
-      "Ask curiosity questions: Why did that sink? What if we add more salt?",
+      "Narrate sink / float / layer; save the denser parent story for after the wow (or a quiet aside)",
+      "Let the balsamic drops be the payoff; don't rush",
       "Decide when to stop — one solid hour is enough for a 3-year-old",
     ],
     steps: [
@@ -96,7 +97,7 @@ export const experimentSeeds: ExperimentSeed[] = [
       {
         title: "Balsamic bubble dance",
         detail:
-          "Drip balsamic vinegar onto the oil layer. Watch blobs form, sink through the oil, then climb back up in little bubbles. This was the hit with our 3-year-old — do it more than once.",
+          "Drip balsamic vinegar onto the oil layer. The vinegar is denser than oil, so blobs sink — often wrapped in a thin oily coat. When that coat breaks, oil rises again (sometimes ferrying a little vinegar back up). Do it more than once; this was the hit with our 3-year-old.",
       },
       {
         title: "Optional full stack",
@@ -112,13 +113,14 @@ export const experimentSeeds: ExperimentSeed[] = [
     notice: [
       "Expect ~1 hour with a curious 3-year-old including set-up and clean-up.",
       "Balsamic-on-oil is the wow moment — save it for when attention dips.",
+      "Watch blobs sink, then climb — sometimes more than once.",
       "Salt amounts matter: keep adding until the egg floats.",
       "Mess level is high — tray + towels make it manageable.",
     ],
     stretch:
       "Try warm vs cold water, sugar instead of salt, or small toys (grape, cork, coin). Draw the layers afterward. Older kids can predict before pouring.",
     notesFromHome:
-      "Real home run with a 3-year-old: egg sinks in plain water, floats after heavy salt. Honey sinks, oil floats. Balsamic on oil makes bubbles that sink then climb — that was the hit. Whole session ~1 hour. Worth the mess.",
+      "Real home run with a 3-year-old (~1 hour). Egg sinks in plain water, floats after heavy salt. Honey sinks; oil floats.\n\nWhat's happening with the balsamic dance: balsamic vinegar is sweet and relatively heavy (denser than the oil). As a drop falls through the oil, it often picks up a thin oily coat and can drag some oil down with it. When that coat breaks farther down, the freed oil wants to float again — and sometimes it carries a tiny bit of vinegar back up. That give-and-take is the cute back-and-forth.\n\nShort line for after a wow: \"The vinegar is heavier, so it sinks; the oil wants to float, so when the coat breaks, it climbs back up.\"",
     heroImageUrl: "/images/experiments/density-layers-glasses.png",
     gallery: [],
     featured: true,
