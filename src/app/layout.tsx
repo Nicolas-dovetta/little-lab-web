@@ -18,11 +18,11 @@ const body = Source_Sans_3({
 
 export const metadata: Metadata = {
   title: {
-    default: "Weekend Experiments — Free kids experiments for ages 1–5",
+    default: "Weekend Experiments — Kids experiments for ages 1–5",
     template: "%s · Weekend Experiments",
   },
   description:
-    "Curated experiment ideas for parents of toddlers and preschoolers. Tested at home. Ideas stay free; kits come later.",
+    "Parent-tested experiment ideas for toddlers and preschoolers. Real home runs that kids enjoyed and that show a physical phenomenon.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

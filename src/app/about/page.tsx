@@ -2,7 +2,7 @@ import { listFaqs } from "@/lib/experiments";
 
 export const metadata = {
   title: "About",
-  description: "Engineer dad, two little kids, weekly experiments that actually get kept.",
+  description: "Experiments we ran with our kids — the ones they loved that show how the world works.",
 };
 
 export default async function AboutPage() {
@@ -13,30 +13,20 @@ export default async function AboutPage() {
       <h1 className="font-display text-3xl font-semibold text-ink">About</h1>
       <div className="mt-6 space-y-5 text-lg leading-relaxed text-ink-muted">
         <p>
-          I&apos;m a 40-year-old former engineer with two wonderful kids (1 and 3). Life changes a
-          lot — career, jobs, sleep, country, houses. Two things stay constant: curiosity, and a
-          love for figuring out how stuff works.
+          I&apos;m a former engineer with two kids (about 1 and 3). We explore the world together —
+          I want fun things to show them, and ways for them to notice how stuff actually works.
         </p>
         <p>
-          Need help with a door? Coming up. Bike broke? I can help. Wonder how a 2-stroke works?
-          Let me tell you. But first — have you got ten minutes and a wipeable table? Haven&apos;t
-          slept in three nights: a nightmare (not mine), a monster (also not mine), but the kid
-          didn&apos;t sleep and neither did I. Anyway… want to pour colored water and watch it climb?
+          <strong className="text-ink">Weekend Experiments</strong> is the list of activities we
+          ran at home that worked: the kids particularly enjoyed them, and each one demonstrates a
+          physical phenomenon (or another clear bit of how the world behaves).
         </p>
         <p>
-          So I started running tiny experiments for our weekends. Then I realized it would be a
-          shame to keep the winners in a notes app.{" "}
-          <strong className="text-ink">Weekend Experiments</strong> is that collection: honest,
-          mood-matching activities for tired parents, engineers, fixers, thinkers, and anyone who
-          needs a little wonder to get through Saturday morning.
-        </p>
-        <p>
-          Most ideas never make the site. We keep <strong className="text-ink">winners</strong> —
-          the ones that held attention and were worth the mess. Ideas stay free. Kits may come later
-          as optional convenience — never required.
+          Most ideas never make the cut. What you see here are the keepers. Kits may come later if
+          they help families gather materials — join the mailing list if you want that news.
         </p>
         <p className="text-base">
-          Merch and dad-gear live next door at{" "}
+          Merch lives next door at{" "}
           <a
             href="https://www.etsy.com/shop/Engineerdadcoffee"
             target="_blank"

@@ -13,13 +13,14 @@ export default async function HomePage() {
       <section className="border-b border-sage-200/60 bg-gradient-to-b from-sage-50 to-cream">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:py-16">
           <p className="text-sm font-semibold uppercase tracking-wider text-sage-700">
-            Ages 1–5 · Free ideas
+            Ages 1–5 · Parent-tested
           </p>
           <h1 className="mt-3 max-w-2xl font-display text-4xl font-semibold leading-tight text-ink sm:text-5xl">
             Weekend Experiments
           </h1>
           <p className="mt-4 max-w-xl text-lg text-ink-muted">
-            Parent-tested activities for a toddler and a preschooler. Winners only.
+            Activities we ran at home with a toddler and a preschooler — the ones they loved that
+            also show something real about how the world works.
           </p>
           <Link
             href="/experiments"
@@ -83,20 +84,13 @@ export default async function HomePage() {
       </section>
 
       <section id="stay-in-touch" className="mx-auto max-w-xl px-4 py-14 sm:px-6">
-        <h2 className="font-display text-2xl font-semibold text-ink">Stay in the loop</h2>
+        <h2 className="font-display text-2xl font-semibold text-ink">Mailing list</h2>
         <p className="mt-2 text-sm text-ink-muted">
-          Occasional notes when we add a winner or open kit preorders. One list — no spam.
+          Occasional notes when we add experiments or when kits become available. No spam.
         </p>
         <div className="mt-6 rounded-3xl border border-sage-200/80 bg-white p-6 shadow-sm">
           <NewsletterForm source="home" />
         </div>
-        <p className="mt-4 text-center text-xs text-ink-muted">
-          Prefer kits only?{" "}
-          <Link href="/kits" className="font-medium text-sage-800 underline-offset-2 hover:underline">
-            Waitlist here
-          </Link>
-          .
-        </p>
       </section>
     </div>
   );
