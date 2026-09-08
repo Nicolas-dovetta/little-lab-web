@@ -19,12 +19,22 @@ const body = Source_Sans_3({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.weekend-experiments.app"),
   title: {
     default: "Weekend Experiments — Kids experiments for ages 1–5",
     template: "%s · Weekend Experiments",
   },
   description:
     "Parent-tested experiment ideas for toddlers and preschoolers. Real home runs that kids enjoyed and that show a physical phenomenon.",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://www.weekend-experiments.app",
+    siteName: "Weekend Experiments",
+    title: "Weekend Experiments — Kids experiments for ages 1–5",
+    description:
+      "Parent-tested experiment ideas for toddlers and preschoolers. Real home runs that kids enjoyed and that show a physical phenomenon.",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
