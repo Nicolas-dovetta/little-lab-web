@@ -4,7 +4,7 @@ import { listFaqs } from "@/lib/experiments";
 export const metadata = {
   title: "About",
   description:
-    "Engineer, former professor and former aerospace researcher — Saturday-morning experiments with curious kids.",
+    "Engineer, former professor and former aerospace researcher — Saturday experiments so curious kids stay excited about how the world works.",
 };
 
 export default async function AboutPage() {
@@ -25,6 +25,13 @@ export default async function AboutPage() {
           I started a Saturday-morning tradition with them: we do experiments. I come up with
           something random and nerdy — sometimes with both kids, sometimes just my oldest — and then
           we make a mess and learn stuff.
+        </p>
+
+        <p>
+          At this age their brains are like sponges — full of questions and hungry to see how
+          things work. That&apos;s what I want to give my kids: curiosity and excitement, weird
+          stuff with real explanations, and the idea that understanding is built through
+          experiments. Play, mess around, get excited — and keep it fun, because it is.
         </p>
         <p>
           Some of the inspiration also came from a science book I read as a kid —{" "}
