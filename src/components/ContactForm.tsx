@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { track } from "@vercel/analytics";
 
 export function ContactForm({ source = "about" }: { source?: string }) {
   const [name, setName] = useState("");
@@ -35,6 +36,7 @@ export function ContactForm({ source = "about" }: { source?: string }) {
       setName("");
       setEmail("");
       setMessage("");
+      track("contact_submit", { source });
     } catch {
       setStatus("error");
       setFeedback("Network error — try again in a moment.");

@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { track } from "@vercel/analytics";
 
 export function WaitlistForm() {
   const [email, setEmail] = useState("");
@@ -28,6 +29,7 @@ export function WaitlistForm() {
       setMessage(data.message || "You are on the waitlist.");
       setEmail("");
       setName("");
+      track("kits_waitlist_signup");
     } catch {
       setStatus("error");
       setMessage("Network error — try again in a moment.");

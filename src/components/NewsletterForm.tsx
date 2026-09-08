@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { track } from "@vercel/analytics";
 
 export function NewsletterForm({ source = "newsletter" }: { source?: string }) {
   const [email, setEmail] = useState("");
@@ -26,6 +27,7 @@ export function NewsletterForm({ source = "newsletter" }: { source?: string }) {
       setStatus("ok");
       setMessage(data.message || "You are on the list.");
       setEmail("");
+      track("newsletter_signup", { source });
     } catch {
       setStatus("error");
       setMessage("Network error — try again in a moment.");

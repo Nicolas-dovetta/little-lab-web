@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ExperimentViewTracker } from "@/components/ExperimentViewTracker";
 import { difficultyLabel, getExperiment, listExperiments, messLabel } from "@/lib/experiments";
 
 export async function generateStaticParams() {
@@ -33,6 +34,7 @@ export default async function ExperimentDetailPage({
 
   return (
     <article className="pb-16">
+      <ExperimentViewTracker slug={e.id} />
       <div className="border-b border-sage-200/60 bg-gradient-to-b from-sage-50 to-cream">
         <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
           <Link href="/experiments" className="text-sm font-medium text-sage-700 hover:text-sage-800">
