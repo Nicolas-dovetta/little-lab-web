@@ -27,6 +27,19 @@ export default async function AboutPage() {
           we make a mess and learn stuff.
         </p>
         <p>
+          Some of the inspiration also came from a science book I read as a kid —{" "}
+          <a
+            href="https://www.amazon.fr/M%C3%A9ga-exp%C3%A9riences-Collectif/dp/2092770640"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-sage-800 underline-offset-2 hover:underline"
+          >
+            Méga expériences
+          </a>{" "}
+          — the kind that made messy kitchen science and endless &ldquo;why&rdquo; questions feel
+          completely normal.
+        </p>
+        <p>
           <strong className="text-ink">Weekend Experiments</strong> started as a notebook for me,
           then became an online folder, and now it&apos;s here so any parent with curious kids can
           run weekend experiments and make their kitchen extra messy while sharing surprising things
