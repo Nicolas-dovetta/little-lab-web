@@ -52,6 +52,18 @@ export default async function AboutPage() {
           run weekend experiments and make their kitchen extra messy while sharing surprising things
           about the world.
         </p>
+
+        <p>
+          There&apos;s also a{" "}
+          <a href="/plan" className="font-semibold text-sage-800 underline-offset-2 hover:underline">
+            Plan
+          </a>{" "}
+          — about thirty Saturday sessions mapped to concepts I care about. It&apos;s{" "}
+          <strong className="text-ink">my</strong> plan with <strong className="text-ink">my</strong>{" "}
+          kids when I started, following my taste. Sessions on this site hang on it when that&apos;s
+          helpful. Build and follow what you want. The most important thing is having fun with your
+          kid — not following a curriculum thought up by a random stranger (me).
+        </p>
         <p>
           I tried to put as much information as is helpful for you to do, manage, and explain the
           experiments. Reach out with comments, questions, or feedback — I love hearing from other
