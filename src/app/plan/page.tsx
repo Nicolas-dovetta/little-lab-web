@@ -99,9 +99,12 @@ export default async function PlanPage() {
       <h1 className="font-display text-3xl font-semibold text-ink">The plan</h1>
 
       <p className="mt-4 rounded-3xl border border-sage-200/80 bg-white p-4 text-base leading-relaxed text-ink shadow-sm sm:p-5">
-        This is <strong>my</strong> plan with <strong>my</strong> kids — my taste, my starting
-        point. Steal what helps, ignore what doesn&apos;t. The most important thing is having fun
-        with your kid, not following a curriculum from a random stranger (me).
+        This is the plan I use for my kids. Steal what helps, ignore what doesn&apos;t. The most
+        important thing is having fun with your kid, not following a curriculum from a random
+        stranger (me).
+      </p>
+      <p className="mt-3 text-base leading-relaxed text-ink-muted">
+        Also very WIP — I&apos;ll add a new one every week!
       </p>
 
       <div className="mt-8 space-y-5 text-lg leading-relaxed text-ink-muted">
