@@ -170,7 +170,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
         "The dark drop is heavier for its size, so it falls. The oil wants to stay up. When the thin coat breaks, the oil climbs.",
       ],
       lines: [
-        "What you say out loud. Stop if they are pouring.",
         "Do not say “density” unless they ask for the word. Point at what moved.",
         "What they said: “Look the egg !! Woaaah” — 2 seconds of magic when the egg started climbing, then he wanted to add more salt.",
       ],
