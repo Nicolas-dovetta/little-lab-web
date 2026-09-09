@@ -73,136 +73,160 @@ export const experimentSeeds: ExperimentSeed[] = [
     ageBands: ["3-5"],
     domains: ["physics"],
     learningGoal:
-      "Different liquids stack because some are denser (heavier for their size). Salt water can lift an egg; balsamic drops through oil can sink, then rise again when an oily coat breaks.",
+      "Different liquids stack because some are denser — more mass in the same amount of space. Salt water can hold up an egg. Balsamic can fall through oil and then climb.",
     timeMinutes: 60,
     messLevel: "high",
     location: "indoor",
     materials: [
-      "Clear tall glasses or jars (2–4)",
-      "Water",
+      "2–4 clear glasses or jars",
+      "A tray",
+      "A towel",
+      "One raw egg",
       "Table salt",
-      "Honey or corn syrup",
-      "Vegetable or olive oil",
-      "Balsamic vinegar (the star!)",
-      "1 raw egg",
-      "Spoons for stirring",
-      "Tray or towel for spills",
-      "Optional: food coloring, small objects to test",
+      "Water",
+      "Honey",
+      "Vegetable oil",
+      "Balsamic vinegar",
+      "A spoon",
+      "A jar for oily waste (not the sink)",
     ],
-    prep: "Clear a kitchen counter or table. Set glasses on a tray. Pre-measure salt in a small bowl. Have paper towels ready — oil and vinegar will splash. Warm the honey slightly if it is very thick so it pours more easily.",
+    prep: "Everything on a tray. Towel on the floor if they stand on a chair. You pour first. They can drip balsamic after they have watched once.",
     safety:
-      "No tasting — raw egg and kitchen liquids are not snacks. Supervise glassware. Wipe oil spills immediately (slippery floors). Wash hands after handling the egg. Keep vinegar away from eyes.",
+      "Raw egg. Oil on tile is slick. Balsamic stains. Nobody drinks the glasses.",
     experience:
-      "A slow density show in tall glasses: an egg that sinks in plain water and rises when you add salt; a honey–water–oil stack; then balsamic drops that sink through oil and climb back up — the crowd-pleaser.",
+      "A slow show in tall glasses: an egg that sinks in tap water and floats when the water is salty; honey under water under oil; then balsamic drops that fall through the oil and come back up. That last part was the hit.",
     kidCanDo: [
-      "Help pour (with a steady adult hand nearby)",
-      "Stir salt into water",
-      "Watch and narrate what sinks or floats",
-      "Point to layers and name colors",
-      "Gently drop the egg into water (adult spots the glass)",
+      "Watch the egg and the balsamic (1–2: do not hand them the salt glass)",
+      "Drip balsamic after watching once (3–5)",
+      "Say which layer is up or down (3–5)",
     ],
     adultRole: [
-      "Handle raw egg and glassware",
-      "Pour sticky or slippery liquids",
-      "Wipe spills before anyone slips",
-      "Narrate sink / float / layer; save the denser parent story for after the wow (or a quiet aside)",
-      "Let the balsamic drops be the payoff; don't rush",
-      "Decide when to stop — one solid hour is enough for a 3-year-old",
+      "Pour first — sticky and oily liquids",
+      "Handle the raw egg and glassware",
+      "Keep the salt glass away from the 1–2 year old",
+      "Wipe oil before anyone walks through it",
+      "Stop when they taste the oil, knock a glass, or walk off",
     ],
     steps: [
       {
         title: "Set the stage",
         detail:
-          "Place 2–4 clear glasses on a tray. Talk about what you will try: some liquids stack, some mix, and an egg might change its mind when water gets salty.",
+          "Two to four glasses on the tray. Say what you will try: some liquids stack, some mix, and the egg might change its mind when the water gets salty.",
       },
       {
-        title: "Egg sink, then float",
+        title: "Egg sinks",
         detail:
-          "Fill one glass with plain water and gently lower in a raw egg — it sinks. In a second glass, stir in plenty of salt until dissolved. Move the egg over — it floats. Talk about denser salty water holding the egg up.",
+          "Fill one glass with plain water. Lower the raw egg in. It sinks. Do not skip this glass. The later float means nothing without it.",
       },
       {
-        title: "Honey sinks",
+        title: "Egg floats",
         detail:
-          "Pour a slow ribbon of honey into a glass of water (or start with honey at the bottom of an empty glass). Honey is dense — it settles at the bottom.",
+          "Second glass: a lot of salt. Stir until most of it disappears. Move the egg over. It should float. If it still sits on the bottom, more salt, more stirring. You did not change the egg. You changed the water.",
       },
       {
-        title: "Oil floats",
+        title: "Honey goes low",
         detail:
-          "Add vegetable oil on top of water. Oil sits on top in a shiny layer. Notice they do not mix.",
+          "Pour a slow ribbon of honey into water, or start with honey in an empty glass and add water after. Honey settles at the bottom.",
       },
       {
-        title: "Balsamic bubble dance",
+        title: "Oil stays up",
         detail:
-          "Drip balsamic vinegar onto the oil layer. The vinegar is denser than oil, so blobs sink — often wrapped in a thin oily coat. When that coat breaks, oil rises again (sometimes ferrying a little vinegar back up). Do it more than once; this was the hit with our 3-year-old.",
+          "Pour vegetable oil on water. It sits on top in a shiny layer. They do not mix. That can be the whole observation. You do not have to fix it.",
+      },
+      {
+        title: "Balsamic dance",
+        detail:
+          "Drip balsamic onto the oil. Blobs sink. Then pieces climb. Do it more than once. This was the hit with our 3-year-old.",
       },
       {
         title: "Optional full stack",
         detail:
-          "In a tall glass, carefully layer honey → salty water → oil (and dab balsamic for the show). Go slow. Celebrate whatever layers you get — imperfect stacks still teach density.",
+          "In a tall glass, slowly: honey, then salty water, then oil. Dab balsamic on top for the show. Crooked layers still count.",
       },
       {
-        title: "Clean-up ritual",
+        title: "Clean up",
         detail:
-          "Pour liquids into a discard jar (not down the drain if oily). Wipe the counter. Wash hands. High-five.",
+          "Oily liquid into the discard jar, not down the drain. Wipe the counter. Wash hands.",
       },
     ],
     notice: [
-      "Expect ~1 hour with a curious 3-year-old including set-up and clean-up.",
-      "Balsamic-on-oil is the wow moment — save it for when attention dips.",
-      "Watch blobs sink, then climb — sometimes more than once.",
-      "Salt amounts matter: keep adding until the egg floats.",
-      "Mess level is high — tray + towels make it manageable.",
+      "Do not skip the plain-water egg sink — the float means nothing without it.",
+      "Balsamic dance was the hit — do it more than once.",
+      "Forty good minutes beats a forced rainbow.",
+      "Oil on tile is slick; balsamic stains.",
     ],
     stretch:
-      "Try warm vs cold water, sugar instead of salt, or small toys (grape, cork, coin). Draw the layers afterward. Older kids can predict before pouring.",
+      "Sugar instead of salt in the egg glasses. A grape, a cork, a coin — predict before you drop. Draw the stack when you are done. Warm water vs cold water: density changes a little — easy to overclaim; say “maybe,” then look. Older kid: guess which way each pour will go before it happens.",
     notesFromHome:
-      "Real home run with a 3-year-old (~1 hour). Egg sinks in plain water, floats after heavy salt. Honey sinks; oil floats.\n\nWhat's happening with the balsamic dance: balsamic vinegar is sweet and relatively heavy (denser than the oil). As a drop falls through the oil, it often picks up a thin oily coat and can drag some oil down with it. When that coat breaks farther down, the freed oil wants to float again — and sometimes it carries a tiny bit of vinegar back up. That give-and-take is the cute back-and-forth.\n\nShort line for after a wow: \"The vinegar is heavier, so it sinks; the oil wants to float, so when the coat breaks, it climbs back up.\"",
+      "Real home run with a 3-year-old (~1 hour). Egg sinks in plain water, floats after heavy salt. Honey sinks; oil floats.\n\nWhat’s happening with the balsamic dance: balsamic vinegar is sweet and relatively heavy (denser than the oil). As a drop falls through the oil, it often picks up a thin oily coat and can drag some oil down with it. When that coat breaks farther down, the freed oil wants to float again — and sometimes it carries a tiny bit of vinegar back up. That give-and-take is the back-and-forth.\n\nShort line for after a wow: “The vinegar is heavier, so it sinks; the oil wants to float, so when the coat breaks, it climbs back up.”\n\n[Add more Saturday notes and quotes here.]",
     heroImageUrl: "/images/experiments/density-layers-glasses.png",
     gallery: [],
     featured: true,
     planUnit: "Matter & mess",
     sayThis: {
+      age12: [
+        "This one sits on top.",
+        "This one goes down.",
+        "Look — the dark drop fell. Now something comes back.",
+      ],
       age35: [
-        "The vinegar is heavier, so it sinks; the oil wants to float, so when the coat breaks, it climbs back up.",
+        "The egg sank. The water was not strong enough to hold it.",
+        "Now the water has a lot of salt packed into the same space. It can hold the egg.",
+        "The dark drop is heavier for its size, so it falls. The oil wants to stay up. When the thin coat breaks, the oil climbs.",
+      ],
+      lines: [
+        "What you say out loud. Stop if they are pouring.",
+        "Do not say “density” unless they ask for the word. Point at what moved.",
+        "What they said: [paste kid quotes here later]",
       ],
     },
     runThis: {
       overview:
-        "Salt-egg first (sink → float), then honey/water/oil layers, then balsamic drops through oil for the bubble dance. Save balsamic for when attention dips.",
+        "Egg sink in tap water, then float in salty water; honey under water under oil; balsamic drops through oil that fall and climb. That last part was the hit.",
       setup:
-        "Glasses on a tray with towels. Salt pre-measured. Egg in a cup until needed. Warm thick honey slightly so it pours. Paper towels within reach.",
+        "Everything on a tray. Towel on the floor if they stand on a chair. You pour first. They can drip balsamic after they have watched once.",
       stopWhen:
-        "When attention fades or you’ve hit ~1 hour including set-up and clean-up. One solid balsamic run is enough — don’t force a full stack.",
+        "They taste the oil, knock a glass, or walk off. Forty good minutes beats a forced rainbow.",
       cleanup:
-        "Pour oily liquids into a discard jar (not down the drain). Wipe oil spills immediately. Wash hands after the egg. High-five.",
+        "Oily liquid into the discard jar, not down the drain. Wipe the counter. Wash hands.",
+      goodEnough18mo:
+        "Watch the egg and the balsamic. Do not hand them the salt glass.",
       goodEnough4yo:
-        "Saw the egg switch from sink to float, spotted honey under / oil on top, and chased at least one balsamic blob that sank then climbed.",
+        "They can drip balsamic and say which layer is up or down.",
     },
     knowThis: {
       mechanism:
-        "Some liquids are denser — more stuff packed into the same space — so they sink under lighter ones. Honey is denser than water; oil is less dense than water, so it floats. Dissolved salt makes water denser, which is why the egg can switch from sink to float.\n\nBalsamic vinegar is sweet and relatively heavy (denser than the oil). As a drop falls through the oil, it often picks up a thin oily coat and can drag some oil down with it. When that coat breaks farther down, the freed oil wants to float again — and sometimes it carries a tiny bit of vinegar back up. That give-and-take is the bubble dance.",
+        "Density is mass per volume: how much stuff is packed into the same amount of space. A spoon of honey has more mass than a spoon of oil, so honey sits lower if the two do not mix.\n\n“Heavy” without “for its size” is the mistake this Saturday exists to kill. A cork is light for its size and floats. A small coin can sink. The same egg does both, depending on the liquid around it.\n\nA typical hen’s egg is a little denser than tap water, so it sinks. Dissolve enough salt and the water’s density rises. The egg is now less dense than the liquid around it, so it floats. You changed the water, not the egg.\n\nHoney, water, and oil also differ in whether they mix. Oil and water stay as separate layers because their molecules prefer their own company — they are immiscible. That sharp line is not oil being “afraid.” Honey and water will mix if you stir. Poured slowly, honey can sit underneath for a while because it is denser and it is viscous (it flows slowly). Viscosity is not density. Honey sinks because it is packed tighter than water. It pours slowly because it is thick. Those are different jobs.\n\nBalsamic through oil is the honest party trick. Balsamic is mostly water, sugar, and acid. It is denser than oil, so a drop falls. On the way down it often picks up a thin oily skin. That blob is two materials stuck together, not one liquid that changed its mind. When the skin ruptures lower down, freed oil rises. Sometimes it drags a speck of vinegar with it. That is the down-and-back-up. Not magic. Unsticking.",
       doesNotProve:
-        "It does not prove that “heavy things sink and light things float” as a rule about objects in general — a big ship can float. Here you’re comparing how packed each liquid is, not which glass feels heavier in your hand.",
-      goDeeper:
-        "Oil and water don’t mix because their molecules don’t stick together well (oil is nonpolar; water is polar). The oily coat on a balsamic blob is temporary: once it ruptures in the denser water below, buoyancy sends the oil back up. If a drop mixes into the water layer, that part stays down.",
+        "That “heavy things sink.” That the ocean stacks for the same single reason — in the sea, temperature and salt both change density. That every internet “rainbow bottle” is a clean density tower — many of those liquids will mix if you wait or stir. This Saturday is part density, part “these two refuse to mix.”",
       numbersNote:
-        "You don’t need exact densities at the table. Rough order of magnitude is enough: honey/syrup denser than water; salt water denser than fresh; oil less dense than water; balsamic denser than oil.",
-      nameForThis: "Density (and a bit of buoyancy + immiscibility).",
+        "Keep these off the kid table. Tap water is about 1.00 g/mL. Vegetable oil is about 0.91–0.93. A hen’s egg is often about 1.03–1.09. Balsamic is often around 1.2. Honey is around 1.4. Well-salted water can pass the egg; if you really pack it, it can approach ~1.2. You do not need the numbers to run the Saturday. They are here so you can check a claim.",
+      nameForThis:
+        "Buoyancy: the liquid pushes up with a force equal to the weight of the liquid displaced. If that push is bigger than the object’s weight, it floats.",
     },
     traps: [
       {
-        wrong: "The balsamic floats back up because vinegar is lighter than oil.",
-        why: "Balsamic is denser than oil — that’s why it sinks in the first place. The climb is usually the oily coat breaking and oil (sometimes with a little vinegar) rising.",
+        wrong: "Oil is lighter than water.",
+        why: "Lighter is total mass. A bottle of oil is not lighter than a cup of water. Oil is less dense than water.",
         replace:
-          "The vinegar is heavier, so it sinks; when the oily coat breaks, the oil climbs back up.",
+          "The same amount of oil has less stuff in it than the same amount of water, so it sits on top.",
       },
       {
-        wrong: "Salt makes the egg lighter.",
-        why: "The egg’s weight barely changes. The water gets denser, so it can hold the egg up.",
-        replace: "Salty water is heavier for its size — so it can lift the egg.",
+        wrong: "Honey sinks because it is thicker.",
+        why: "Thicker is how runny it is. Oil can look thick and still float.",
+        replace:
+          "Honey is packed tighter than water. Thick and packed-tight are different jobs.",
+      },
+      {
+        wrong:
+          "The vinegar and oil don’t like each other, so the vinegar bounces.",
+        why: "They do not mix. That is real. The climb is not a bounce. It is the oily coat breaking and oil going back up.",
+        replace:
+          "The drop fell because it is denser. The climb is oil going home after the skin breaks.",
       },
     ],
   },
+
   {
     id: "cornstarch-thickening-fluid",
     title: "Cornstarch thickening fluid (Maïzena)",
