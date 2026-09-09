@@ -155,8 +155,7 @@ export const experimentSeeds: ExperimentSeed[] = [
       "Forty good minutes beats a forced rainbow.",
       "Oil on tile is slick; balsamic stains.",
     ],
-    stretch:
-      "Sugar instead of salt in the egg glasses. A grape, a cork, a coin — predict before you drop. Draw the stack when you are done. Warm water vs cold water: density changes a little — easy to overclaim; say “maybe,” then look. Older kid: guess which way each pour will go before it happens.",
+    stretch: ``,
     notesFromHome: `My kid just wanted to steer the salt and add more — which he did, and we added way too much. The trick was to watch for the egg to start climbing and then call it.
 
 “Look the egg !! Woaaah” — that was my two seconds of magic. Then he wanted to add more salt.
