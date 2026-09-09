@@ -41,12 +41,6 @@ async function main() {
     created_at timestamptz NOT NULL DEFAULT now()
   )`;
 
-  await sql`CREATE TABLE IF NOT EXISTS kit_waitlist (
-    id serial PRIMARY KEY,
-    email text NOT NULL UNIQUE,
-    name text,
-    created_at timestamptz NOT NULL DEFAULT now()
-  )`;
 
   await sql`CREATE TABLE IF NOT EXISTS faq_entries (
     id serial PRIMARY KEY,
