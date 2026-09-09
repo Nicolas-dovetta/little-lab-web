@@ -31,9 +31,6 @@ export function Footer() {
           <Link href="/#stay-in-touch" className="text-ink-muted hover:text-ink">
             Mailing list
           </Link>
-          <Link href="/kits" className="text-ink-muted hover:text-ink">
-            Kits
-          </Link>
           <a
             href="https://www.etsy.com/shop/Engineerdadcoffee"
             target="_blank"
