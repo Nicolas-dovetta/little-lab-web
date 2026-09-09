@@ -96,7 +96,7 @@ export default async function HomePage() {
       <section id="stay-in-touch" className="mx-auto max-w-xl px-4 py-14 sm:px-6">
         <h2 className="font-display text-2xl font-semibold text-ink">Mailing list</h2>
         <p className="mt-2 text-sm text-ink-muted">
-          Occasional notes when we add experiments or when kits become available. No spam.
+          Occasional notes when we add experiments. No spam.
         </p>
         <div className="mt-6 rounded-3xl border border-sage-200/80 bg-white p-6 shadow-sm">
           <NewsletterForm source="home" />
