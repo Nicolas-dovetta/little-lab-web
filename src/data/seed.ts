@@ -94,7 +94,6 @@ export const experimentSeeds: ExperimentSeed[] = [
     experience:
       "A slow show in tall glasses: an egg that sinks in tap water and floats when the water is salty; honey under water under oil; then balsamic drops that fall through the oil and come back up. That last part was the hit.",
     kidCanDo: [
-      "Watch the egg and the balsamic (1–2: do not hand them the salt glass)",
       "Drip balsamic after watching once (3–5)",
       "Say which layer is up or down (3–5)",
     ],
@@ -103,7 +102,6 @@ export const experimentSeeds: ExperimentSeed[] = [
       "Handle the raw egg and glassware",
       "Keep the salt glass away from the 1–2 year old",
       "Wipe oil before anyone walks through it",
-      "Stop when they taste the oil, knock a glass, or walk off",
     ],
     steps: [
       {
