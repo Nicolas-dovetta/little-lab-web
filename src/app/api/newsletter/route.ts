@@ -14,7 +14,7 @@ async function sendWelcomeEmail(email: string) {
       "",
       "No spam. Just new experiments when they go live.",
       "",
-      "— Nicolas",
+      "— Nico",
       "https://www.weekend-experiments.app",
     ].join("\n"),
   });
