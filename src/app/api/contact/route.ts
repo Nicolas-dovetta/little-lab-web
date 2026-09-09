@@ -1,27 +1,10 @@
 import { NextResponse } from "next/server";
 import { getDb } from "@/db";
 import { contactMessages } from "@/db/schema";
-import { isValidEmail, normalizeEmail } from "@/lib/email";
+import { isValidEmail, normalizeEmail, sendResendEmail } from "@/lib/email";
 
 const MAX_MESSAGE_LEN = 2000;
 const MAX_NAME_LEN = 200;
-
-function resendKey(): string {
-  return (
-    process.env.RESEND_API_KEY?.trim() ||
-    process.env.RESEND_API?.trim() ||
-    process.env.resend_api?.trim() ||
-    ""
-  );
-}
-
-function mailFrom(): string {
-  return (
-    process.env.CONTACT_FROM_EMAIL?.trim() ||
-    process.env.MAIL_FROM?.trim() ||
-    "Weekend Experiments <hello@thequietgod.com>"
-  );
-}
 
 async function sendContactEmail(opts: {
   name: string | null;
@@ -29,11 +12,7 @@ async function sendContactEmail(opts: {
   message: string;
   source: string;
 }) {
-  const apiKey = resendKey();
-  if (!apiKey) return;
-
   const to = process.env.CONTACT_TO_EMAIL || "nicolas.dovetta@gmail.com";
-  const from = mailFrom();
   const subject = opts.name
     ? `Question from ${opts.name}`
     : "New question from Weekend Experiments";
@@ -46,25 +25,12 @@ async function sendContactEmail(opts: {
     opts.message,
   ].join("\n");
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from,
-      to: [to],
-      reply_to: opts.email,
-      subject,
-      text,
-    }),
+  await sendResendEmail({
+    to,
+    subject,
+    text,
+    replyTo: opts.email,
   });
-
-  if (!res.ok) {
-    const body = await res.text().catch(() => "");
-    console.error("contact email failed:", res.status, body.slice(0, 300));
-  }
 }
 
 export async function POST(request: Request) {
