@@ -112,7 +112,7 @@ export const experimentSeeds: ExperimentSeed[] = [
       {
         title: "Egg sinks",
         detail:
-          "Fill one glass with plain water. Lower the raw egg in. It sinks. Do not skip this glass. The later float means nothing without it.",
+          "Fill one glass with plain water. Lower the raw egg in. It sinks.",
       },
       {
         title: "Egg floats",
@@ -127,19 +127,13 @@ export const experimentSeeds: ExperimentSeed[] = [
       {
         title: "Oil stays up",
         detail:
-          "Pour vegetable oil on water. It sits on top in a shiny layer. They do not mix. That can be the whole observation. You do not have to fix it.",
+          "Pour vegetable oil on water. It sits on top in a shiny layer. They do not mix. That can be the whole observation.",
       },
       {
         title: "Balsamic dance",
         detail:
-          "Drip balsamic onto the oil. Blobs sink. Then pieces climb. Do it more than once. This was the hit with our 3-year-old.",
-      },
-      {
-        title: "Optional full stack",
-        detail:
-          "In a tall glass, slowly: honey, then salty water, then oil. Dab balsamic on top for the show. Crooked layers still count.",
-      }
-    ],
+          "Drip balsamic onto the oil. Blobs sink. Then pieces climb. Do it more than once.",
+      }],
     notice: [
       "Do not skip the plain-water egg sink — the float means nothing without it.",
       "Watch for the egg to start climbing, then call it — easy to overshoot with salt when the kid is steering.",
