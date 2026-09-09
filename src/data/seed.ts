@@ -89,7 +89,7 @@ export const experimentSeeds: ExperimentSeed[] = [
       "Balsamic vinegar",
       "A spoon",
     ],
-    prep: "Everything on a tray.",
+    prep: "",
     safety: "Raw egg. Oil on tile is slick. Balsamic stains. I mean, it is a kitchen..",
     experience:
       "A slow show in tall glasses: an egg that sinks in tap water and floats when the water is salty; honey under water under oil; then balsamic drops that fall through the oil and come back up. That last part was the hit.",
