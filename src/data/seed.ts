@@ -542,26 +542,24 @@ export const faqSeeds: FaqSeed[] = [
   },
   {
     sortOrder: 3,
-  {
-    sortOrder: 4,
     question: "How messy are these?",
     answer:
       "Each card lists mess level: low, medium, or high. High-mess ideas (like Density Layers) assume a tray, towel, and a willing kitchen. We flag that up front so you can pick the right day.",
   },
   {
-    sortOrder: 5,
+    sortOrder: 4,
     question: "How do you choose what to publish?",
     answer:
       "I run sessions every Saturday with my kids. I publish most of what we try — and spare you the flops.",
   },
   {
-    sortOrder: 6,
+    sortOrder: 5,
     question: "Indoor or outdoor?",
     answer:
       "Both. Filters on the experiments page let you pick indoor, outdoor, or either. Weather and mess tolerance usually decide.",
   },
   {
-    sortOrder: 7,
+    sortOrder: 6,
     question: "Will there be other languages?",
     answer:
       "Later. English first while we nail the content. Multilingual support is on the roadmap once the core library feels solid.",
