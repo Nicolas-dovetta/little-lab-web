@@ -89,9 +89,8 @@ export const experimentSeeds: ExperimentSeed[] = [
       "Balsamic vinegar",
       "A spoon",
     ],
-    prep: "Everything on a tray. Towel on the floor if they stand on a chair. You pour first. They can drip balsamic after they have watched once.",
-    safety:
-      "Raw egg. Oil on tile is slick. Balsamic stains. Nobody drinks the glasses.",
+    prep: "Everything on a tray.",
+    safety: "",
     experience:
       "A slow show in tall glasses: an egg that sinks in tap water and floats when the water is salty; honey under water under oil; then balsamic drops that fall through the oil and come back up. That last part was the hit.",
     kidCanDo: [
@@ -152,8 +151,6 @@ export const experimentSeeds: ExperimentSeed[] = [
       "Do not skip the plain-water egg sink — the float means nothing without it.",
       "Watch for the egg to start climbing, then call it — easy to overshoot with salt when the kid is steering.",
       "Balsamic dance was the hit — do it more than once.",
-      "Forty good minutes beats a forced rainbow.",
-      "Oil on tile is slick; balsamic stains.",
     ],
     stretch: `Sugar instead of salt in the egg glasses.
 A grape, a cork, a coin — predict before you drop.`,
@@ -188,16 +185,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     runThis: {
       overview:
         "Egg sink in tap water, then float in salty water; honey under water under oil; balsamic drops through oil that fall and climb. That last part was the hit.",
-      setup:
-        "Everything on a tray. Towel on the floor if they stand on a chair. You pour first. They can drip balsamic after they have watched once.",
-      stopWhen:
-        "They taste the oil, knock a glass, or walk off. Forty good minutes beats a forced rainbow. Watch for the egg to start climbing, then call it — easy to overshoot with salt when the kid is steering.",
-      cleanup:
-        "Wipe the counter. Wash hands.",
-      goodEnough18mo:
-        "Watch the egg and the balsamic. Do not hand them the salt glass.",
-      goodEnough4yo:
-        "They can drip balsamic and say which layer is up or down.",
+      setup: "Everything on a tray.",
     },
     knowThis: {
       mechanism:
@@ -254,9 +242,8 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "Towels / wipeable surface",
       "Optional: food coloring (drop or two)",
     ],
-    prep: "Cover the table; put a shallow pool of water in the bowl. Set out cups for pouring and a few washable toys ready to smash the mix. Keep the Maïzena box nearby to spoon in.",
-    safety:
-      "Taste ban — not a snack (dry powder + paste). Watch mouthing for the 1yo. Wipe floor so it doesn’t get slippery when wet. Hands wash after. Choose smash toys without sharp edges or tiny detachable bits. No heat, no other chemicals.",
+    prep: "Everything on a tray.",
+    safety: "",
     experience:
       "Start with water, then spoon in Maïzena until the mix feels fun: pours like a liquid, but goes firm when you slap, smash, or squeeze it. Pour with cups, pound with toys, poke and drip — then rinse everything and wipe down.",
     kidCanDo: [
