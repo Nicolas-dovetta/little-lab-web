@@ -157,8 +157,13 @@ export const experimentSeeds: ExperimentSeed[] = [
     ],
     stretch:
       "Sugar instead of salt in the egg glasses. A grape, a cork, a coin — predict before you drop. Draw the stack when you are done. Warm water vs cold water: density changes a little — easy to overclaim; say “maybe,” then look. Older kid: guess which way each pour will go before it happens.",
-    notesFromHome:
-      "Real home run with a 3-year-old (~1 hour). Egg sinks in plain water, floats after heavy salt. Honey sinks; oil floats.\n\nWhat’s happening with the balsamic dance: balsamic vinegar is sweet and relatively heavy (denser than the oil). As a drop falls through the oil, it often picks up a thin oily coat and can drag some oil down with it. When that coat breaks farther down, the freed oil wants to float again — and sometimes it carries a tiny bit of vinegar back up. That give-and-take is the back-and-forth.\n\nShort line for after a wow: “The vinegar is heavier, so it sinks; the oil wants to float, so when the coat breaks, it climbs back up.”\n\nKid wanted to steer the salt and add more salt — we added way too much. Trick: watch for the egg to start climbing, then call it. Then moved to the oil. Balsamic drops in the oil + water + honey stack were the real blast. Especially some drops half vinegar / half oil stuck in the middle and didn’t move (or only really slowly) — we encouraged those. He kept adding more balsamic until: if he wanted dressing for his salad, stop. Made salad dressing. End of session.",
+    notesFromHome: `My kid just wanted to steer the salt and add more — which he did, and we added way too much. The trick was to watch for the egg to start climbing and then call it.
+
+“Look the egg !! Woaaah” — that was my two seconds of magic. Then he wanted to add more salt.
+
+We moved to the oil after. The balsamic drops in the oil + water + honey were the real blast. Especially some drops that were half vinegar, half oil, stuck in the middle, not moving or only really slowly — so we encouraged them.
+
+Then he added more and more balsamic until I decided: if I wanted dressing for my salad, I should stop. So we made dressing, and that was the end.`,
     heroImageUrl: "/images/experiments/density-layers-glasses.png",
     gallery: [],
     featured: true,
