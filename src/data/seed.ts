@@ -1,3 +1,32 @@
+export type SayThis = {
+  age12?: string[];
+  age35?: string[];
+  lines?: string[];
+};
+
+export type RunThis = {
+  overview?: string;
+  setup?: string;
+  stopWhen?: string;
+  cleanup?: string;
+  goodEnough18mo?: string;
+  goodEnough4yo?: string;
+};
+
+export type KnowThis = {
+  mechanism: string;
+  doesNotProve: string;
+  goDeeper?: string;
+  numbersNote?: string;
+  nameForThis?: string;
+};
+
+export type Trap = {
+  wrong: string;
+  why: string;
+  replace: string;
+};
+
 export type ExperimentSeed = {
   id: string;
   title: string;
@@ -22,6 +51,11 @@ export type ExperimentSeed = {
   heroImageUrl: string | null;
   gallery: string[];
   featured: boolean;
+  sayThis?: SayThis;
+  runThis?: RunThis;
+  knowThis?: KnowThis;
+  traps?: Trap[];
+  planUnit?: string | null;
 };
 
 export type FaqSeed = {
@@ -126,6 +160,48 @@ export const experimentSeeds: ExperimentSeed[] = [
     heroImageUrl: "/images/experiments/density-layers-glasses.png",
     gallery: [],
     featured: true,
+    planUnit: "Matter & mess",
+    sayThis: {
+      age35: [
+        "The vinegar is heavier, so it sinks; the oil wants to float, so when the coat breaks, it climbs back up.",
+      ],
+    },
+    runThis: {
+      overview:
+        "Salt-egg first (sink → float), then honey/water/oil layers, then balsamic drops through oil for the bubble dance. Save balsamic for when attention dips.",
+      setup:
+        "Glasses on a tray with towels. Salt pre-measured. Egg in a cup until needed. Warm thick honey slightly so it pours. Paper towels within reach.",
+      stopWhen:
+        "When attention fades or you’ve hit ~1 hour including set-up and clean-up. One solid balsamic run is enough — don’t force a full stack.",
+      cleanup:
+        "Pour oily liquids into a discard jar (not down the drain). Wipe oil spills immediately. Wash hands after the egg. High-five.",
+      goodEnough4yo:
+        "Saw the egg switch from sink to float, spotted honey under / oil on top, and chased at least one balsamic blob that sank then climbed.",
+    },
+    knowThis: {
+      mechanism:
+        "Some liquids are denser — more stuff packed into the same space — so they sink under lighter ones. Honey is denser than water; oil is less dense than water, so it floats. Dissolved salt makes water denser, which is why the egg can switch from sink to float.\n\nBalsamic vinegar is sweet and relatively heavy (denser than the oil). As a drop falls through the oil, it often picks up a thin oily coat and can drag some oil down with it. When that coat breaks farther down, the freed oil wants to float again — and sometimes it carries a tiny bit of vinegar back up. That give-and-take is the bubble dance.",
+      doesNotProve:
+        "It does not prove that “heavy things sink and light things float” as a rule about objects in general — a big ship can float. Here you’re comparing how packed each liquid is, not which glass feels heavier in your hand.",
+      goDeeper:
+        "Oil and water don’t mix because their molecules don’t stick together well (oil is nonpolar; water is polar). The oily coat on a balsamic blob is temporary: once it ruptures in the denser water below, buoyancy sends the oil back up. If a drop mixes into the water layer, that part stays down.",
+      numbersNote:
+        "You don’t need exact densities at the table. Rough order of magnitude is enough: honey/syrup denser than water; salt water denser than fresh; oil less dense than water; balsamic denser than oil.",
+      nameForThis: "Density (and a bit of buoyancy + immiscibility).",
+    },
+    traps: [
+      {
+        wrong: "The balsamic floats back up because vinegar is lighter than oil.",
+        why: "Balsamic is denser than oil — that’s why it sinks in the first place. The climb is usually the oily coat breaking and oil (sometimes with a little vinegar) rising.",
+        replace:
+          "The vinegar is heavier, so it sinks; when the oily coat breaks, the oil climbs back up.",
+      },
+      {
+        wrong: "Salt makes the egg lighter.",
+        why: "The egg’s weight barely changes. The water gets denser, so it can hold the egg up.",
+        replace: "Salty water is heavier for its size — so it can lift the egg.",
+      },
+    ],
   },
   {
     id: "cornstarch-thickening-fluid",
@@ -186,6 +262,46 @@ export const experimentSeeds: ExperimentSeed[] = [
     heroImageUrl: "/images/experiments/cornstarch-thickening-fluid-hero.png",
     gallery: [],
     featured: false,
+    planUnit: "Matter & mess",
+    sayThis: {
+      age12: ["[I will fill this after Saturday]"],
+      age35: ["[I will fill this after Saturday]"],
+    },
+    runThis: {
+      overview:
+        "Water first, then spoon Maïzena until the mix feels fun: flows on a slow pour, firms up on a smash or squeeze.",
+      setup:
+        "Cover the table; shallow water in a wide bowl; cups and washable smash toys ready; Maïzena box nearby.",
+      stopWhen:
+        "When curiosity dips, mouths go toward the paste, or the tray is losing the fight — about 15 minutes of active play is plenty.",
+      cleanup:
+        "Rinse toys and cups; scrape leftovers into trash (big amounts can clog a drain); rinse bowl and hands; wipe the floor if wet powder got slick.",
+      goodEnough18mo:
+        "Touched, poked, poured or smashed at least once, and noticed soft vs firm with you narrating.",
+      goodEnough4yo:
+        "Compared a slow pour with a hard smash, and saw a squeezed “ball” melt when they opened their hand.",
+    },
+    knowThis: {
+      mechanism:
+        "The mix is packed with tiny starch grains in water. When you move it slowly, the grains can slide past each other — it pours like a liquid. When you hit or squeeze hard and fast, the grains jam together for a moment — it feels solid — then they unjam and it melts again.",
+      doesNotProve:
+        "It does not prove the mix is “magic slime” or a different chemical each time you touch it. Same ingredients; the feel changes with how hard and how fast you push.",
+      goDeeper:
+        "This is a classic cornstarch–water suspension. Under sudden stress the particles lock; under gentle shear they flow. Flour + water usually won’t give the same sharp solid/liquid switch.",
+      nameForThis: "A non-Newtonian (shear-thickening) fluid — optional label after the plain story.",
+    },
+    traps: [
+      {
+        wrong: "It’s a solid that turns into a liquid when you’re gentle.",
+        why: "That flips the cause. Hard/fast makes it jam (solid-like); slow lets it flow (liquid-like).",
+        replace: "Slow = runny. Hard smash = stiff — then it melts when you stop.",
+      },
+      {
+        wrong: "You need an exact recipe or it won’t work.",
+        why: "Feel matters more than a ratio. Too watery or too powdery just needs a splash of water or more Maïzena.",
+        replace: "Add Maïzena until it feels fun — firm when you poke, still drips when you pour.",
+      },
+    ],
   },
   {
     id: "cinnamon-soap-rush",
@@ -238,24 +354,53 @@ export const experimentSeeds: ExperimentSeed[] = [
       "A second drop does less if water is already soapy.",
     ],
     stretch: "Try pepper instead of cinnamon. Pair with a longer follow-up if you need more than ~10 minutes.",
-    notesFromHome:
-      "Cinnamon on a white plate + a drop of soap — worked well. A little short, but he liked it. Good quick wow; plan a second activity for a longer block.",
+    notesFromHome: "[I will fill this after Saturday]",
     heroImageUrl: "/images/experiments/cinnamon-soap-rush-hero.png",
     gallery: [],
     featured: false,
+    planUnit: "Matter & mess",
+    sayThis: {
+      age12: ["[I will fill this after Saturday]"],
+      age35: ["[I will fill this after Saturday]"],
+    },
+    runThis: {
+      overview:
+        "[I will fill this after Saturday] — thin water, cinnamon dust, one soap touch at the center, optional redo.",
+      setup: "Plate on a towel; thin water layer; cinnamon and soap ready.",
+      stopWhen: "After one or two whooshes — about 10 minutes. Pair with something longer if you need a bigger block.",
+      cleanup: "Dump soapy cinnamon water; rinse plate; wipe cinnamon dust before it stains.",
+      goodEnough18mo: "[I will fill this after Saturday]",
+      goodEnough4yo: "[I will fill this after Saturday]",
+    },
+    knowThis: {
+      mechanism:
+        "Quiet water has a stretchy “skin” on top (molecules pulling on each other). Floating cinnamon just sits on that skin. Soap weakens the pull where you touch — the stronger skin around the drop yanks the surface outward, and the cinnamon rides that rush to the edges.",
+      doesNotProve:
+        "It does not prove the soap “blows” the cinnamon away like wind, or that cinnamon is afraid of soap. The powder is a passenger on the water’s surface.",
+      goDeeper:
+        "Soap is a surfactant: it lowers surface tension. A second drop does less once the whole plate is already soapy — the tension difference is gone.",
+      nameForThis: "Surface tension (and how soap lowers it).",
+    },
+    traps: [
+      {
+        wrong: "The soap pushes the cinnamon like a tiny fan.",
+        why: "You’re not seeing air push powder. You’re seeing the water’s surface rearrange when tension drops at one spot.",
+        replace: "Soap breaks the skin on the water — the rest of the skin pulls the cinnamon away.",
+      },
+      {
+        wrong: "More soap always makes a bigger whoosh.",
+        why: "Once the water is soapy, extra drops barely move anything.",
+        replace: "One clean first touch is the show; rinse and redo for a second whoosh.",
+      },
+    ],
   },
   {
     id: "salt-ice-fishing",
     title: "Salt ice fishing",
     status: "planned",
     difficulty: 3,
-    ageBands: [
-      "3-5",
-    ],
-    domains: [
-      "physics",
-      "chemistry",
-    ],
+    ageBands: ["3-5"],
+    domains: ["physics", "chemistry"],
     learningGoal:
       "Salt can melt a little ice into water; that water can freeze again around a string. Pressure from a thin wire can also melt ice for a moment, then it freezes again.",
     timeMinutes: 20,
@@ -298,17 +443,17 @@ export const experimentSeeds: ExperimentSeed[] = [
       {
         title: "Adult-only setup (optional wire)",
         detail:
-          "Ice on a board/mugs, wire across, bottles hanging from each end, tray under. Say later: “This one is working slowly. We’ll peek when the timer sings.” Skip if fussy.",
+          "Ice on a board/mugs, wire across, bottles hanging from each end, tray under. Plan to say later: “This one is working slowly. We’ll peek when the timer sings.” Skip if fussy.",
       },
       {
         title: "Warm hands (~2 min)",
         detail:
-          "One ice cube on a tray. Kid touches, slides, watches drips. You say: “Ice is water that got so cold it turned solid.”",
+          "One ice cube on a tray. Kid touches, slides, watches drips. Planned line: “Ice is water that got so cold it turned solid.”",
       },
       {
         title: "Ice fishing with salt — main event (8–10 min)",
         detail:
-          "Tray with ice cubes (bowl of cold water optional). Yarn ~ arm length. Salt + spoon. “Can you catch the ice with the string? No hands.” Let them fail. Lay yarn on a cube; sprinkle a tiny pinch of salt where they meet. Wait ~60 seconds (song, count, ten lion roars). Lift both ends. If it works: whoa — do it again. Optional: no-salt cube for comparison.",
+          "Tray with ice cubes (bowl of cold water optional). Yarn ~ arm length. Salt + spoon. Let them try to catch ice with string alone first (expect a miss). Lay yarn on a cube; sprinkle a tiny pinch of salt where they meet. Wait ~60 seconds (song, count, ten lion roars). Lift both ends. Optional: no-salt cube for comparison.",
       },
       {
         title: "If it fails",
@@ -318,7 +463,7 @@ export const experimentSeeds: ExperimentSeed[] = [
       {
         title: "Peek at the wire (~2 min)",
         detail:
-          "Walk over together. “Is the line going into the ice?” A dent counts. Check again after snack/book. When it drops through: “The ice opened a little door and then closed it again.”",
+          "Walk over together later. Look for a dent or deeper cut. Planned line if it drops through: “The ice opened a little door and then closed it again.”",
       },
       {
         title: "Optional extra (~5 min)",
@@ -342,8 +487,43 @@ export const experimentSeeds: ExperimentSeed[] = [
     heroImageUrl: null,
     gallery: [],
     featured: false,
+    planUnit: "Water & weather",
+    sayThis: {
+      age35: ["[I will fill this after Saturday]"],
+    },
+    runThis: {
+      overview:
+        "Planned session: optional wire set before they walk in; warm hands with ice; salt fishing as the main event; peek at the wire later. Not written as already-run.",
+      setup:
+        "Adult-only 5–10 min beforehand if doing the wire: ice on a board/mugs, wire across, bottles hanging, tray under. Salt, yarn, ice, second tray ready for fishing. Skip wire if fussy — fishing alone is enough.",
+      stopWhen:
+        "When fingers are numb, attention fades, or you’ve done one good catch + a quick wire peek — about 15–20 minutes active.",
+      cleanup: "Warm water for hands; towels; dump meltwater; put wire and bottles away out of reach.",
+      goodEnough4yo:
+        "Planned success check: saw string fail then work with salt; felt cold/wet; wanted a redo or a whoa; later noticed the wire moved.",
+    },
+    knowThis: {
+      mechanism:
+        "Salt melts a little ice into water. The rest of the cube is still cold enough to freeze that water again around the string — an ice hug, so you can lift the cube.\n\nFor the optional wire: hanging bottles squeeze a thin line into the ice. That pressure melts ice for a moment under the wire; as the wire sinks, the water above can freeze again. The block can stay one piece even if the wire cuts through.",
+      doesNotProve:
+        "It does not prove salt “glues” string to ice, or that the wire burns through like a hot knife. Melting and refreezing do the work.",
+      goDeeper:
+        "Salt lowers the freezing point of water (freezing-point depression). The wire demo is related to pressure melting / regelation — optional vocabulary after the plain story.",
+      nameForThis: "Melting, refreezing, and (optional) freezing-point depression / regelation.",
+    },
+    traps: [
+      {
+        wrong: "The salt makes the string sticky.",
+        why: "Salt isn’t glue. It melts a thin film; cold ice refreezes that water around the fibers.",
+        replace: "Salt melts a little ice; the cold cube freezes that water around the string — an ice hug.",
+      },
+      {
+        wrong: "The wire is hot, so it melts the ice.",
+        why: "Room-temperature wire isn’t a heated knife. The squeeze from the hanging bottles does the momentary melting.",
+        replace: "The bottles push on a thin line — that squeeze melts ice for a moment, then it can freeze again.",
+      },
+    ],
   },
-
 ];
 
 export const faqSeeds: FaqSeed[] = [

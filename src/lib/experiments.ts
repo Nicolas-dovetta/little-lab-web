@@ -29,6 +29,11 @@ function seedToExperiment(e: ExperimentSeed): Experiment {
     heroImageUrl: e.heroImageUrl,
     gallery: e.gallery,
     featured: e.featured,
+    sayThis: e.sayThis ?? {},
+    runThis: e.runThis ?? {},
+    knowThis: e.knowThis ?? { mechanism: "", doesNotProve: "" },
+    traps: e.traps ?? [],
+    planUnit: e.planUnit ?? null,
     createdAt: now,
     updatedAt: now,
   };

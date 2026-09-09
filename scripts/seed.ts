@@ -15,6 +15,7 @@ async function main() {
         id: e.id,
         title: e.title,
         status: e.status,
+        difficulty: e.difficulty,
         ageBands: e.ageBands,
         domains: e.domains,
         learningGoal: e.learningGoal,
@@ -34,6 +35,11 @@ async function main() {
         heroImageUrl: e.heroImageUrl,
         gallery: e.gallery,
         featured: e.featured,
+        sayThis: e.sayThis ?? {},
+        runThis: e.runThis ?? {},
+        knowThis: e.knowThis ?? { mechanism: "", doesNotProve: "" },
+        traps: e.traps ?? [],
+        planUnit: e.planUnit ?? null,
         updatedAt: new Date(),
       })
       .onConflictDoUpdate({
@@ -41,6 +47,7 @@ async function main() {
         set: {
           title: e.title,
           status: e.status,
+          difficulty: e.difficulty,
           ageBands: e.ageBands,
           domains: e.domains,
           learningGoal: e.learningGoal,
@@ -60,6 +67,11 @@ async function main() {
           heroImageUrl: e.heroImageUrl,
           gallery: e.gallery,
           featured: e.featured,
+          sayThis: e.sayThis ?? {},
+          runThis: e.runThis ?? {},
+          knowThis: e.knowThis ?? { mechanism: "", doesNotProve: "" },
+          traps: e.traps ?? [],
+          planUnit: e.planUnit ?? null,
           updatedAt: new Date(),
         },
       });

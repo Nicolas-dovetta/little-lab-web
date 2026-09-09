@@ -8,6 +8,35 @@ import {
   timestamp,
 } from "drizzle-orm/pg-core";
 
+export type SayThis = {
+  age12?: string[];
+  age35?: string[];
+  lines?: string[];
+};
+
+export type RunThis = {
+  overview?: string;
+  setup?: string;
+  stopWhen?: string;
+  cleanup?: string;
+  goodEnough18mo?: string;
+  goodEnough4yo?: string;
+};
+
+export type KnowThis = {
+  mechanism: string;
+  doesNotProve: string;
+  goDeeper?: string;
+  numbersNote?: string;
+  nameForThis?: string;
+};
+
+export type Trap = {
+  wrong: string;
+  why: string;
+  replace: string;
+};
+
 export const experiments = pgTable("experiments", {
   id: text("id").primaryKey(),
   title: text("title").notNull(),
@@ -32,6 +61,14 @@ export const experiments = pgTable("experiments", {
   heroImageUrl: text("hero_image_url"),
   gallery: jsonb("gallery").$type<string[]>().notNull().default([]),
   featured: boolean("featured").notNull().default(false),
+  sayThis: jsonb("say_this").$type<SayThis>().notNull().default({}),
+  runThis: jsonb("run_this").$type<RunThis>().notNull().default({}),
+  knowThis: jsonb("know_this").$type<KnowThis>().notNull().default({
+    mechanism: "",
+    doesNotProve: "",
+  }),
+  traps: jsonb("traps").$type<Trap[]>().notNull().default([]),
+  planUnit: text("plan_unit"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
