@@ -63,8 +63,7 @@ function sortExperiments(rows: Experiment[]): Experiment[] {
 }
 
 function filterFaqs(rows: FaqEntry[]): FaqEntry[] {
-  // Kits once: hide the old "When are kits coming?" duplicate
-  return rows.filter((f) => f.question !== "When are kits coming?");
+  return rows;
 }
 
 export async function listExperiments(): Promise<Experiment[]> {
