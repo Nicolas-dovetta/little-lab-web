@@ -121,7 +121,7 @@ export const experimentSeeds: ExperimentSeed[] = [
       {
         title: "Egg floats",
         detail:
-          "Second glass: a lot of salt. Stir until most of it disappears. Move the egg over. It should float. If it still sits on the bottom, more salt, more stirring. You did not change the egg. You changed the water.",
+          "Second glass: a lot of salt. Stir until most of it disappears. Move the egg over. It should float. If it still sits on the bottom, more salt, more stirring. You did not change the egg. You changed the water. Tip: watch for the egg to start climbing, then call it — easy to overshoot with salt when the kid is steering.",
       },
       {
         title: "Honey goes low",
@@ -151,6 +151,7 @@ export const experimentSeeds: ExperimentSeed[] = [
     ],
     notice: [
       "Do not skip the plain-water egg sink — the float means nothing without it.",
+      "Watch for the egg to start climbing, then call it — easy to overshoot with salt when the kid is steering.",
       "Balsamic dance was the hit — do it more than once.",
       "Forty good minutes beats a forced rainbow.",
       "Oil on tile is slick; balsamic stains.",
@@ -158,7 +159,7 @@ export const experimentSeeds: ExperimentSeed[] = [
     stretch:
       "Sugar instead of salt in the egg glasses. A grape, a cork, a coin — predict before you drop. Draw the stack when you are done. Warm water vs cold water: density changes a little — easy to overclaim; say “maybe,” then look. Older kid: guess which way each pour will go before it happens.",
     notesFromHome:
-      "Real home run with a 3-year-old (~1 hour). Egg sinks in plain water, floats after heavy salt. Honey sinks; oil floats.\n\nWhat’s happening with the balsamic dance: balsamic vinegar is sweet and relatively heavy (denser than the oil). As a drop falls through the oil, it often picks up a thin oily coat and can drag some oil down with it. When that coat breaks farther down, the freed oil wants to float again — and sometimes it carries a tiny bit of vinegar back up. That give-and-take is the back-and-forth.\n\nShort line for after a wow: “The vinegar is heavier, so it sinks; the oil wants to float, so when the coat breaks, it climbs back up.”\n\n[Add more Saturday notes and quotes here.]",
+      "Real home run with a 3-year-old (~1 hour). Egg sinks in plain water, floats after heavy salt. Honey sinks; oil floats.\n\nWhat’s happening with the balsamic dance: balsamic vinegar is sweet and relatively heavy (denser than the oil). As a drop falls through the oil, it often picks up a thin oily coat and can drag some oil down with it. When that coat breaks farther down, the freed oil wants to float again — and sometimes it carries a tiny bit of vinegar back up. That give-and-take is the back-and-forth.\n\nShort line for after a wow: “The vinegar is heavier, so it sinks; the oil wants to float, so when the coat breaks, it climbs back up.”\n\nKid wanted to steer the salt and add more salt — we added way too much. Trick: watch for the egg to start climbing, then call it. Then moved to the oil. Balsamic drops in the oil + water + honey stack were the real blast. Especially some drops half vinegar / half oil stuck in the middle and didn’t move (or only really slowly) — we encouraged those. He kept adding more balsamic until: if he wanted dressing for his salad, stop. Made salad dressing. End of session.",
     heroImageUrl: "/images/experiments/density-layers-glasses.png",
     gallery: [],
     featured: true,
@@ -177,7 +178,7 @@ export const experimentSeeds: ExperimentSeed[] = [
       lines: [
         "What you say out loud. Stop if they are pouring.",
         "Do not say “density” unless they ask for the word. Point at what moved.",
-        "What they said: [paste kid quotes here later]",
+        "What they said: “Look the egg !! Woaaah” — 2 seconds of magic when the egg started climbing, then he wanted to add more salt.",
       ],
     },
     runThis: {
@@ -186,7 +187,7 @@ export const experimentSeeds: ExperimentSeed[] = [
       setup:
         "Everything on a tray. Towel on the floor if they stand on a chair. You pour first. They can drip balsamic after they have watched once.",
       stopWhen:
-        "They taste the oil, knock a glass, or walk off. Forty good minutes beats a forced rainbow.",
+        "They taste the oil, knock a glass, or walk off. Forty good minutes beats a forced rainbow. Watch for the egg to start climbing, then call it — easy to overshoot with salt when the kid is steering.",
       cleanup:
         "Oily liquid into the discard jar, not down the drain. Wipe the counter. Wash hands.",
       goodEnough18mo:
