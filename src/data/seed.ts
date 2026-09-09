@@ -140,12 +140,7 @@ export const experimentSeeds: ExperimentSeed[] = [
         title: "Optional full stack",
         detail:
           "In a tall glass, slowly: honey, then salty water, then oil. Dab balsamic on top for the show. Crooked layers still count.",
-      },
-      {
-        title: "Clean up",
-        detail:
-          "Wipe the counter. Wash hands.",
-      },
+      }
     ],
     notice: [
       "Do not skip the plain-water egg sink — the float means nothing without it.",
@@ -288,14 +283,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
         "Water first, then spoon Maïzena until the mix feels fun: flows on a slow pour, firms up on a smash or squeeze.",
       setup:
         "Cover the table; shallow water in a wide bowl; cups and washable smash toys ready; Maïzena box nearby.",
-      stopWhen:
-        "When curiosity dips, mouths go toward the paste, or the tray is losing the fight — about 15 minutes of active play is plenty.",
-      cleanup:
-        "Rinse toys and cups; scrape leftovers into trash (big amounts can clog a drain); rinse bowl and hands; wipe the floor if wet powder got slick.",
-      goodEnough18mo:
-        "Touched, poked, poured or smashed at least once, and noticed soft vs firm with you narrating.",
-      goodEnough4yo:
-        "Compared a slow pour with a hard smash, and saw a squeezed “ball” melt when they opened their hand.",
     },
     knowThis: {
       mechanism:
