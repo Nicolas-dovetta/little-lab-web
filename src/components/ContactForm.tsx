@@ -77,7 +77,7 @@ export function ContactForm({ source = "about" }: { source?: string }) {
         required
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        placeholder="Ask anything about the experiments, ages, mess, kits…"
+        placeholder="Ask anything about the experiments, ages, mess…"
         maxLength={2000}
         rows={5}
         className="rounded-2xl border border-sage-200 bg-white px-4 py-2.5 text-sm outline-none ring-sage-400 focus:ring-2"
