@@ -542,10 +542,6 @@ export const faqSeeds: FaqSeed[] = [
   },
   {
     sortOrder: 3,
-    question: "Will there be kits?",
-    answer:
-      "Maybe later. Physical kits would be optional materials boxes for favorite experiments — handy if you want less hunting for supplies. The experiment guides themselves stay on the site either way. Join the mailing list for news.",
-  },
   {
     sortOrder: 4,
     question: "How messy are these?",
