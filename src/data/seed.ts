@@ -88,7 +88,6 @@ export const experimentSeeds: ExperimentSeed[] = [
       "Vegetable oil",
       "Balsamic vinegar",
       "A spoon",
-      "A jar for oily waste (not the sink)",
     ],
     prep: "Everything on a tray. Towel on the floor if they stand on a chair. You pour first. They can drip balsamic after they have watched once.",
     safety:
@@ -146,7 +145,7 @@ export const experimentSeeds: ExperimentSeed[] = [
       {
         title: "Clean up",
         detail:
-          "Oily liquid into the discard jar, not down the drain. Wipe the counter. Wash hands.",
+          "Wipe the counter. Wash hands.",
       },
     ],
     notice: [
@@ -189,7 +188,7 @@ export const experimentSeeds: ExperimentSeed[] = [
       stopWhen:
         "They taste the oil, knock a glass, or walk off. Forty good minutes beats a forced rainbow. Watch for the egg to start climbing, then call it — easy to overshoot with salt when the kid is steering.",
       cleanup:
-        "Oily liquid into the discard jar, not down the drain. Wipe the counter. Wash hands.",
+        "Wipe the counter. Wash hands.",
       goodEnough18mo:
         "Watch the egg and the balsamic. Do not hand them the salt glass.",
       goodEnough4yo:
