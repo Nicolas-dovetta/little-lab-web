@@ -64,8 +64,10 @@ export default async function AboutPage() {
         </p>
         <p>
           I tried to put as much information as is helpful for you to do, manage, and explain the
-          experiments. Reach out with comments, questions, or feedback — I love hearing from other
-          parents, and I&apos;m happy to help if I can.
+          experiments. I hate seeing videos of kids experiments and the physics is messed up, or too
+          simplistic and becomes misleading, or just straight wrong. So bear with me as I over
+          explain; if you want to know, you&apos;ll know. Reach out with comments, questions, or
+          feedback — I love hearing from other parents, and I&apos;m happy to help if I can.
         </p>
         <p>
           The photos started as real, very messy home shots — I cleaned them up in post. Your
