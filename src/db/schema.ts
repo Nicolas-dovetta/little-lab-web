@@ -17,10 +17,6 @@ export type SayThis = {
 export type RunThis = {
   overview?: string;
   setup?: string;
-  stopWhen?: string;
-  cleanup?: string;
-  goodEnough18mo?: string;
-  goodEnough4yo?: string;
 };
 
 export type KnowThis = {

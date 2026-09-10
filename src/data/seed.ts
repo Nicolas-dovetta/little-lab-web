@@ -7,10 +7,6 @@ export type SayThis = {
 export type RunThis = {
   overview?: string;
   setup?: string;
-  stopWhen?: string;
-  cleanup?: string;
-  goodEnough18mo?: string;
-  goodEnough4yo?: string;
 };
 
 export type KnowThis = {
@@ -228,8 +224,8 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "Towels / wipeable surface",
       "Optional: food coloring (drop or two)",
     ],
-    prep: "Everything on a tray.",
-    safety: "",
+    prep: "Cover the table; shallow water in a wide bowl; cups and washable smash toys ready; Maïzena box nearby.",
+    safety: "Taste ban — not a snack. Wet mix makes floors slick. No heat, no other chemicals.",
     experience:
       "Start with water, then spoon in Maïzena until the mix feels fun: pours like a liquid, but goes firm when you slap, smash, or squeeze it. Pour with cups, pound with toys, poke and drip — then rinse everything and wipe down.",
     kidCanDo: [
@@ -249,8 +245,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       { title: "Water + tools", detail: "Pour a shallow pool of water into a wide bowl on a wipeable tray. Set cups and smash toys nearby." },
       { title: "Maïzena until fun", detail: "Spoon in Maïzena a little at a time until it feels fun — firm when you poke or smash, still drips when you pour. No exact ratio." },
       { title: "Pour vs smash", detail: "Slow pour with cups flows; fast smash with a toy feels firm." },
-      { title: "Play", detail: "Pour, smash, scoop, slap; try a ball that melts when you stop squeezing." },
-      { title: "Clean-up", detail: "Rinse toys and cups; scrape leftovers into trash (avoid pouring lots down the drain); rinse bowl and hands." },
+      { title: "Play", detail: "Pour, smash, scoop, slap; try a ball that melts when you stop squeezing. Too watery or too powdery — steer with water or Maïzena." },
     ],
     notice: [
       "Slow pour = runny; hard smash = stiff.",
@@ -277,12 +272,12 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     },
     knowThis: {
       mechanism:
-        "The mix is packed with tiny starch grains in water. When you move it slowly, the grains can slide past each other — it pours like a liquid. When you hit or squeeze hard and fast, the grains jam together for a moment — it feels solid — then they unjam and it melts again.",
+        "The bowl is packed with tiny starch grains suspended in water — not dissolved, just floating and jostling. When you pour slowly, the grains have time to slide past each other, so the mix flows like a thick liquid. When you hit, slap, or squeeze hard and fast, the grains suddenly jam into each other. For a moment the pile locks — it feels solid — then when you ease up, the jam breaks and it melts back into a puddle.\n\nThat firm feel is not a new material. Same water, same starch. What changed is how hard and how fast you pushed. A slow pour and a hard smash are two different stories about the same grain pile.\n\nFlour + water usually will not give you the same sharp switch. Cornstarch grains are the right size and shape to jam under sudden stress. That is why this kitchen mix is famous and flour goo is not the same show.",
       doesNotProve:
-        "It does not prove the mix is “magic slime” or a different chemical each time you touch it. Same ingredients; the feel changes with how hard and how fast you push.",
+        "It does not prove the mix is “magic slime” or a different chemical each time you touch it. Same ingredients; the feel changes with how hard and how fast you push. It does not prove it turns into a rock forever, or that all kitchen powders do this.",
       goDeeper:
-        "This is a classic cornstarch–water suspension. Under sudden stress the particles lock; under gentle shear they flow. Flour + water usually won’t give the same sharp solid/liquid switch.",
-      nameForThis: "A non-Newtonian (shear-thickening) fluid — optional label after the plain story.",
+        "Under sudden stress the particles lock (jamming); under gentle shear they flow. Flour + water usually won’t give the same sharp solid/liquid switch.",
+      nameForThis: "Shear-thickening / particle jamming — optional labels after the plain story. Also called a non-Newtonian fluid or oobleck.",
     },
     traps: [
       {
@@ -316,9 +311,9 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "cotton swab or tip of a finger",
       "towel",
     ],
-    prep: "Fill the plate with a thin layer of water on a towel; have cinnamon and soap ready.",
+    prep: "Plate on a towel; thin water layer; cinnamon and soap ready.",
     safety:
-      "No tasting cinnamon water or soap. Keep soap away from eyes. Wipe spills — cinnamon stains light surfaces.",
+      "No tasting cinnamon water or soap. Keep soap out of eyes. Cinnamon stains light surfaces.",
     experience:
       "Sprinkle cinnamon on a plate of water so it floats like a dusty film. Touch a tiny drop of dish soap to the center — the cinnamon races to the edges. Fast payoff, easy redo.",
     kidCanDo: [
@@ -359,21 +354,17 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     },
     runThis: {
       overview:
-        "[I will fill this after Saturday] — thin water, cinnamon dust, one soap touch at the center, optional redo.",
+        "Thin water, cinnamon dust, one soap touch at the center, optional redo.",
       setup: "Plate on a towel; thin water layer; cinnamon and soap ready.",
-      stopWhen: "After one or two whooshes — about 10 minutes. Pair with something longer if you need a bigger block.",
-      cleanup: "Dump soapy cinnamon water; rinse plate; wipe cinnamon dust before it stains.",
-      goodEnough18mo: "[I will fill this after Saturday]",
-      goodEnough4yo: "[I will fill this after Saturday]",
     },
     knowThis: {
       mechanism:
-        "Quiet water has a stretchy “skin” on top (molecules pulling on each other). Floating cinnamon just sits on that skin. Soap weakens the pull where you touch — the stronger skin around the drop yanks the surface outward, and the cinnamon rides that rush to the edges.",
+        "Quiet water has a stretchy skin on top — water molecules at the surface pull harder on their neighbors than molecules deeper down. Floating cinnamon just sits on that skin. Soap weakens the pull where you touch. The unbroken skin farther out still pulls hard, so the surface races away from the soap spot and the cinnamon rides that rush to the edges.\n\nA second soap drop on the same plate does less because the whole surface is already soapy — there is no big tension difference left to drive a whoosh. Rinse and start fresh if you want the show again.",
       doesNotProve:
-        "It does not prove the soap “blows” the cinnamon away like wind, or that cinnamon is afraid of soap. The powder is a passenger on the water’s surface.",
+        "It does not prove the soap “blows” the cinnamon away like wind, or that cinnamon is afraid of soap. The powder is a passenger on the water’s surface. It does not prove the powder is dissolving — it mostly rides and gets shoved aside.",
       goDeeper:
         "Soap is a surfactant: it lowers surface tension. A second drop does less once the whole plate is already soapy — the tension difference is gone.",
-      nameForThis: "Surface tension (and how soap lowers it).",
+      nameForThis: "Surface tension (and how soap — a surfactant — lowers it).",
     },
     traps: [
       {
@@ -413,71 +404,64 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "Optional: food coloring",
       "Optional: second string for a no-salt comparison",
     ],
-    prep: "Adult-only, 5–10 min before they walk in: set the slow wire experiment in the background if you’re doing it. Put a large ice cube or mini-block on a board or two mugs so the sides are free. Lay thin metal wire across the middle. Hang a closed water bottle from each end so they pull down freely. Tray underneath. Have salt, yarn, ice, and a second tray ready for the fishing game. If the wire setup feels fussy, skip it — salt fishing alone is a complete morning.",
+    prep: "Optional wire (5–10 min before): ice on a board or mugs, wire across middle, closed water bottles hanging from each end, tray under. Kid station: tray, ice cubes, yarn, salt + spoon, towels. Skip wire if fussy — salt fishing alone is enough.",
     safety:
-      "No tasting salty ice. Adult handles the wire (can cut fingers). Keep hanging bottles where they cannot fall on toes. Watch for numb fingers — ice play is short. Warm hands and towels at the end.",
+      "No tasting salty ice. Wire can cut. Hanging bottles can fall. Ice is cold.",
     experience:
-      "A 3-year-old will not sit through a 20-minute wire demo. Treat the salt fishing as the show, and the hanging wire as a slow surprise you set up first and check later. Active time with the child: ~15–20 minutes. Adult setup: ~10 minutes before they walk in. Order of the morning so they get a win fast: adult sets the wire (optional) → warm hands with ice → salt fishing (main event) → quick peek at the wire → optional color tunnels → stop.",
+      "Planned — not run yet. Salt fishing is the show; optional hanging wire is a slow background check. Order: set wire (optional) → touch ice / watch melt → salt fishing → wire peek → optional color tunnels.",
     kidCanDo: [
-      "Touch and slide an ice cube (short contact)",
-      "Try to “catch” ice with yarn — fail first, then try with salt",
+      "Touch and slide an ice cube",
+      "Try yarn alone, then with salt",
       "Sprinkle a tiny pinch of salt with a spoon",
-      "Count / sing / roar while waiting ~60 seconds",
-      "Lift both ends of the yarn",
-      "Peek at the wire with you later (snack or book in between)",
+      "Wait ~60 seconds; lift both ends of the yarn",
+      "Peek at the wire later",
     ],
     adultRole: [
-      "All sharp / heavy parts (wire, hanging bottles)",
-      "Control salt amount (tiny pinch, not a mountain)",
-      "Spot dripping cubes; keep play short",
-      "Narrate one idea at a time — no melting-point lecture",
-      "Don’t make them wait at the wire; peek later",
+      "Wire and hanging bottles",
+      "Keep salt to a tiny pinch",
     ],
     steps: [
       {
         title: "Adult-only setup (optional wire)",
         detail:
-          "Ice on a board/mugs, wire across, bottles hanging from each end, tray under. Plan to say later: “This one is working slowly. We’ll peek when the timer sings.” Skip if fussy.",
+          "Ice on a board/mugs, wire across, bottles hanging from each end, tray under. Skip if fussy.",
       },
       {
-        title: "Warm hands (~2 min)",
+        title: "Touch ice / watch melt",
         detail:
-          "One ice cube on a tray. Kid touches, slides, watches drips. Planned line: “Ice is water that got so cold it turned solid.”",
+          "One ice cube on a tray. Touch, slide, watch drips.",
       },
       {
-        title: "Ice fishing with salt — main event (8–10 min)",
+        title: "Ice fishing with salt",
         detail:
-          "Tray with ice cubes (bowl of cold water optional). Yarn ~ arm length. Salt + spoon. Let them try to catch ice with string alone first (expect a miss). Lay yarn on a cube; sprinkle a tiny pinch of salt where they meet. Wait ~60 seconds (song, count, ten lion roars). Lift both ends. Optional: no-salt cube for comparison.",
+          "Tray with ice cubes (bowl of cold water optional). Yarn ~ arm length. Salt + spoon. Try yarn alone first (expect a miss). Lay yarn on a cube; sprinkle a tiny pinch of salt where they meet. Wait ~60 seconds. Lift both ends. Optional: no-salt cube for comparison.",
       },
       {
         title: "If it fails",
         detail:
-          "Too much salt → melts only — wipe, new cube, tinier pinch. Too little wait → one more song. Yarn too slick → cotton string/yarn, not plastic ribbon.",
+          "Too much salt → puddle only — wipe, new cube, tinier pinch. Too little wait → wait longer. Yarn too slick → cotton string/yarn, not plastic ribbon.",
       },
       {
-        title: "Peek at the wire (~2 min)",
+        title: "Peek at the wire",
         detail:
-          "Walk over together later. Look for a dent or deeper cut. Planned line if it drops through: “The ice opened a little door and then closed it again.”",
+          "Check later for a dent or deeper cut.",
       },
       {
-        title: "Optional extra (~5 min)",
+        title: "Optional color tunnels",
         detail:
-          "Salt + one drop food coloring on a spare cube — tunnels and puddles. Then warm water, towels, done.",
+          "Salt + one drop food coloring on a spare cube — tunnels and puddles.",
       },
     ],
     notice: [
       "The string alone doesn’t stick; after salt + wait, it can lift the ice.",
       "A no-salt string still fails.",
-      "Too much salt makes a puddle instead of a “hug.”",
+      "Too much salt makes a puddle instead of a hug.",
       "Later, the wire may have cut deeper into the block (or all the way through) while the block stays one piece.",
-      "Salt + string: Salt melts a little ice into water. The rest of the ice is still cold enough to freeze that water around the string — an “ice hug.”",
-      "Wire + bottles: The bottles push on a thin line. That squeeze melts ice for a moment under the wire; when the squeeze moves on, it freezes again. That’s why the block can stay one piece.",
-      "If that’s still too much for the moment: “Ice can melt. Ice can freeze again. Salt melts it. Squeezing melts it too.”",
     ],
     stretch:
-      "Food-coloring tunnels on a salted cube (sensory encore). Check the wire again after a longer break — still don’t wait standing there.",
+      "Food-coloring tunnels on a salted cube. Check the wire again after a longer break.",
     notesFromHome:
-      "Planned for next Saturday; Nicolas will refine after the run.\n\nDifficulty 3 (hard) — adult setup + patience; salt trick carries the day even if the wire never finishes.\n\nSuccess at age 3: saw string fail then work; felt cold/wet; said whoa or wanted a redo; later noticed the wire moved.",
+      "Planned for next Saturday; Nicolas will refine after the run.\n\nDifficulty 3 (hard) — adult setup + patience; salt trick carries the day even if the wire never finishes.",
     heroImageUrl: null,
     gallery: [],
     featured: false,
@@ -487,20 +471,15 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     },
     runThis: {
       overview:
-        "Planned session: optional wire set before they walk in; warm hands with ice; salt fishing as the main event; peek at the wire later. Not written as already-run.",
+        "Planned: optional wire first; touch ice / watch melt; salt fishing; peek at the wire later. Not written as already-run.",
       setup:
-        "Adult-only 5–10 min beforehand if doing the wire: ice on a board/mugs, wire across, bottles hanging, tray under. Salt, yarn, ice, second tray ready for fishing. Skip wire if fussy — fishing alone is enough.",
-      stopWhen:
-        "When fingers are numb, attention fades, or you’ve done one good catch + a quick wire peek — about 15–20 minutes active.",
-      cleanup: "Warm water for hands; towels; dump meltwater; put wire and bottles away out of reach.",
-      goodEnough4yo:
-        "Planned success check: saw string fail then work with salt; felt cold/wet; wanted a redo or a whoa; later noticed the wire moved.",
+        "Optional wire (5–10 min before): ice on board/mugs, wire across, bottles hanging, tray under. Kid station: salt, yarn, ice, second tray. Skip wire if fussy — fishing alone is enough.",
     },
     knowThis: {
       mechanism:
-        "Salt melts a little ice into water. The rest of the cube is still cold enough to freeze that water again around the string — an ice hug, so you can lift the cube.\n\nFor the optional wire: hanging bottles squeeze a thin line into the ice. That pressure melts ice for a moment under the wire; as the wire sinks, the water above can freeze again. The block can stay one piece even if the wire cuts through.",
+        "Salt melts a little ice into water. The rest of the cube is still cold enough to freeze that water again around the yarn fibers — an ice hug — so you can lift the cube by the string.\n\nSalt does that by lowering the temperature at which water stays frozen. A tiny pinch is enough. A mountain of salt usually just digs a puddle and never hugs the string.\n\nFor the optional wire: hanging bottles squeeze a thin line into the ice. That pressure melts ice for a moment under the wire. As the wire sinks, the water above can freeze again. The block can stay one piece even if the wire cuts all the way through. Room-temperature wire is not a hot knife — the squeeze does the melting.",
       doesNotProve:
-        "It does not prove salt “glues” string to ice, or that the wire burns through like a hot knife. Melting and refreezing do the work.",
+        "It does not prove salt “glues” string to ice, or that the wire burns through like a hot knife. Melting and refreezing do the work. More salt is not better — a mountain often just makes a puddle.",
       goDeeper:
         "Salt lowers the freezing point of water (freezing-point depression). The wire demo is related to pressure melting / regelation — optional vocabulary after the plain story.",
       nameForThis: "Melting, refreezing, and (optional) freezing-point depression / regelation.",

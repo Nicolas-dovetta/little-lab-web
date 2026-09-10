@@ -28,14 +28,7 @@ function hasSayContent(say: SayThis | null | undefined): boolean {
 
 function hasRunContent(run: RunThis | null | undefined): boolean {
   if (!run) return false;
-  return Boolean(
-    run.overview ||
-      run.setup ||
-      run.stopWhen ||
-      run.cleanup ||
-      run.goodEnough18mo ||
-      run.goodEnough4yo,
-  );
+  return Boolean(run.overview || run.setup);
 }
 
 function hasKnowContent(know: KnowThis | null | undefined): boolean {
@@ -186,29 +179,6 @@ export default async function ExperimentDetailPage({
                           </li>
                         ))}
                       </ol>
-                    </div>
-                  )}
-                  {runThis.stopWhen && (
-                    <RunBlock label="Stop when">{runThis.stopWhen}</RunBlock>
-                  )}
-                  {runThis.cleanup && (
-                    <RunBlock label="Cleanup">{runThis.cleanup}</RunBlock>
-                  )}
-                  {(runThis.goodEnough18mo || runThis.goodEnough4yo) && (
-                    <div className="space-y-2">
-                      <h3 className="text-sm font-semibold text-ink">Good enough</h3>
-                      {runThis.goodEnough18mo && (
-                        <p className="text-sm text-ink-muted">
-                          <span className="font-medium text-ink">~18 months: </span>
-                          {runThis.goodEnough18mo}
-                        </p>
-                      )}
-                      {runThis.goodEnough4yo && (
-                        <p className="text-sm text-ink-muted">
-                          <span className="font-medium text-ink">~4 years: </span>
-                          {runThis.goodEnough4yo}
-                        </p>
-                      )}
                     </div>
                   )}
                 </MessageCard>
