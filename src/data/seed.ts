@@ -516,7 +516,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
         replace: "The bottles squeeze a thin line. That squeeze melts a little path. When the squeeze moves on, it can freeze again.",
       },
     ],
-  }
   },
 ];
 
