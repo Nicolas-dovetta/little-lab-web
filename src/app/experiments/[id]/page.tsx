@@ -28,7 +28,7 @@ function hasSayContent(say: SayThis | null | undefined): boolean {
 
 function hasRunContent(run: RunThis | null | undefined): boolean {
   if (!run) return false;
-  return Boolean(run.overview || run.setup);
+  return Boolean(run.overview || run.setup || (run.tracks && run.tracks.length > 0));
 }
 
 function hasKnowContent(know: KnowThis | null | undefined): boolean {
@@ -156,6 +156,33 @@ export default async function ExperimentDetailPage({
                 <MessageCard eyebrow="RUN THIS" title="How to run it" tone="run">
                   {runThis.overview && (
                     <p className="text-sm text-ink-muted">{runThis.overview}</p>
+                  )}
+                  {runThis.tracks && runThis.tracks.length > 0 && (
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      {runThis.tracks.map((track) => (
+                        <div
+                          key={track.label}
+                          className="overflow-hidden rounded-2xl border border-sky-100/80 bg-white/80 shadow-sm"
+                        >
+                          <div className="relative aspect-[4/3] w-full">
+                            <Image
+                              src={track.imageUrl}
+                              alt={track.title}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 640px) 100vw, 30vw"
+                            />
+                          </div>
+                          <div className="space-y-1.5 p-3">
+                            <span className="inline-flex rounded-full bg-sky-700 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+                              {track.label}
+                            </span>
+                            <h3 className="text-sm font-semibold text-ink">{track.title}</h3>
+                            <p className="text-xs leading-relaxed text-ink-muted">{track.blurb}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   )}
                   {runThis.setup && (
                     <RunBlock label="Setup">{runThis.setup}</RunBlock>

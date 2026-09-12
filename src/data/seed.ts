@@ -4,9 +4,17 @@ export type SayThis = {
   lines?: string[];
 };
 
+export type RunTrack = {
+  label: string;
+  title: string;
+  imageUrl: string;
+  blurb: string;
+};
+
 export type RunThis = {
   overview?: string;
   setup?: string;
+  tracks?: RunTrack[];
 };
 
 export type KnowThis = {
@@ -405,49 +413,44 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "Optional: food coloring",
       "Optional: second string for a no-salt comparison",
     ],
-    prep: "Optional wire first (long game ~1–2 hours): ice block on a board or inverted container, wire across the middle, closed water bottles hanging from each end, tray under. Kid fishing station: bowl with water + lots of ice, twine, salt + spoon, towels.",
+    prep: "Start the LONG wire first if you want both (~1–2 hours). Wire: ice block on inverted container in a tray, bare copper wire across the top, closed water bottle hanging from each end. FAST fishing station: bowl with water + lots of ice, twine, salt + spoon, towels on the floor.",
     safety:
       "No tasting salty ice. Wire can cut. Hanging bottles can fall. Ice is cold. Floor gets wet.",
     experience:
-      "Salt fishing is the show — trial and error, salt everywhere, about one in four pulls worked until we got the recipe: ton of fresh ice in a ton of water, string over many cubes, pull slowly, catch a cluster. The copper wire is the long game (~2 hours). Fun, not as entertaining as balsamic.",
+      "Two experiments on one morning. FAST is salt ice fishing with string (~minutes) — trial and error until the watery-bowl recipe clicks: lots of fresh ice in water, string over many cubes, tiny salt, wait ~60s, pull slow, catch a cluster. LONG is pressure melting with copper wire (~1–2 hours) — start it first so it runs while the kid fishes. Fun; not as entertaining as balsamic.",
     kidCanDo: [
-      "Try fishing without salt (expect a miss)",
-      "Drape the string over many cubes",
-      "Sprinkle salt where string meets ice",
-      "Wait about a minute; pull both ends slowly",
+      "Drape twine over several ice cubes in the watery bowl",
+      "Sprinkle a tiny pinch of salt where string meets ice",
+      "Wait ~60 seconds; pull both ends slowly",
       "Help reset after a salt dump and try again",
+      "Watch the wire sink later; help remove bottles for the lift",
     ],
     adultRole: [
-      "Optional wire setup with hanging bottles (long game)",
+      "Start LONG wire with hanging bottles if running both",
       "Steer toward tiny pinch + watery bowl + slow pull",
       "Manage wet floor and towels",
       "Remove bottle weights for the wire payoff",
     ],
     steps: [
       {
-        title: "Optional adult wire (long game)",
+        title: "LONG — Pressure melting setup",
         detail:
-          "Put the ice block on a board or inverted container inside a tray. Lay bare copper wire across the middle. Hang a closed water bottle from each end so the wire squeezes the ice. Leave it alone — this can take ~1–2 hours. Give the kid a fishing mission while it runs.",
+          "Ice block on an inverted container inside a tray. Bare copper wire across the TOP of the ice. Hang a closed water bottle from EACH end. Leave 1–2 hours. Kid fishes while waiting.",
       },
       {
-        title: "Try fishing without salt",
+        title: "FAST — Salt ice fishing",
         detail:
-          "Lay twine on ice in the watery bowl. Pull. Expect a miss.",
+          "Bowl with water + lots of fresh ice. Drape twine over several cubes. Tiny pinch of salt where string touches ice. Wait ~60 seconds. Pull both ends slowly — cluster catch is the win.",
       },
       {
-        title: "Salt fishing (best recipe)",
+        title: "FAST — If fishing fails",
         detail:
-          "Pack the bowl with lots of fresh ice and water. Drape the string over many cubes. Sprinkle salt where string meets ice. Wait about a minute. Pull both ends slowly. Best run: catch a cluster (~5 cubes) frozen together.",
+          "Too much salt = puddle (wipe, new ice, tinier pinch). No water = harder. Pull too fast = snaps. About one in four pulls worked until we used water + lots of ice + slow pull. Kid dumping salt is fine; reset and try again.",
       },
       {
-        title: "If it fails",
+        title: "LONG — Wire payoff",
         detail:
-          "About one in four attempts worked for us until we used water + lots of ice + slow pull. Too much salt → puddle — wipe, new ice, tinier pinch. Too little wait → wait longer. Yarn too slick → cotton string, not plastic ribbon. Kid dumping salt everywhere is fine; reset and try again.",
-      },
-      {
-        title: "Wire payoff",
-        detail:
-          "When the wire has cut deep (or through), remove the bottles. Pick up the ice holding both ends of the wire. Fun beat.",
+          "Wire sinks; ice can refreeze above. Remove bottles. Lift the ice by both wire ends.",
       },
       {
         title: "Optional color tunnels",
@@ -456,68 +459,85 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       },
     ],
     notice: [
-      "The string alone doesn’t catch; after salt and a wait, the ice hugs the string.",
-      "Too much salt just makes a puddle — tiny pinch, then wait, then pull slow.",
-      "Water + lots of fresh ice + string over many cubes raised the catch rate (~1/4 until then).",
-      "Wire can take ~1–2 hours; when weights come off, you can pick up the ice holding both ends of the wire.",
+      "Two tracks: FAST salt fishing (~minutes) and LONG pressure melting (~1–2 hours).",
+      "String alone doesn’t catch; after tiny salt + wait, the ice hugs the string.",
+      "Too much salt = puddle; water + lots of ice + slow pull raises the catch rate.",
+      "Wire can take ~1–2 hours; when weights come off, lift the ice holding both wire ends.",
     ],
     stretch:
-      "Food-coloring tunnels on a salted cube. Check the wire again after a longer break. Side-by-side: dry tray fishing vs watery bowl fishing.",
+      "Food-coloring tunnels on a salted cube. Leave the wire longer and compare groove depth. Side-by-side: dry tray fishing vs watery bowl fishing.",
     notesFromHome:
-      "Needs water. Trial and error. The kid can dump salt everywhere — that was fine.\n\nAbout 1/4 of the attempts worked until we got it. Best recipe: a ton of fresh ice in a ton of water, string over many cubes, catch ~5 pulling slowly. Got smoked. Kid was excited.\n\nCopper wire is the long game (~2 hours). Give the kid a mission while you settle the setup (tricky). Fun beat: remove the weights, pick up the ice holding both ends of the wire. Kid was excited explaining the wire to mom.\n\nFun. Not as entertaining as balsamic.",
+      "Needs water. Trial and error. The kid can dump salt everywhere — that was fine.\n\nAbout 1/4 of the attempts worked until we got it. Best recipe: a ton of fresh ice in a ton of water, string over many cubes, catch ~5 pulling slowly. Got smoked. Kid was excited.\n\nCopper wire is the long game (~2 hours). Give the kid a fishing mission while it runs. Fun beat: remove the weights, pick up the ice holding both ends of the wire. Kid was excited explaining the wire to mom.\n\nFun. Not as entertaining as balsamic.",
     heroImageUrl: "/images/experiments/salt-ice-fishing-catch.png",
     gallery: [
-      "/images/experiments/salt-ice-fishing-bowl.png",
+      "/images/experiments/salt-ice-two-tracks-diagram.png",
+      "/images/experiments/salt-ice-howto-fishing.png",
+      "/images/experiments/salt-ice-howto-wire.png",
       "/images/experiments/salt-ice-wire-groove.png",
-      "/images/experiments/salt-ice-wire-cut.png",
     ],
     featured: false,
     planUnit: "Water & weather",
     sayThis: {
-      age12: [
-        "Cold. Wet.",
-        "Pull… stuck!",
-        "Look — the wire went in.",
-      ],
+      age12: ["Cold. Wet.", "Pull… stuck!", "Look — the wire went in."],
       age35: [
-        "The string alone doesn’t catch. After salt and a wait, the ice hugs the string.",
-        "Too much salt just makes a puddle. A little salt, then wait, then pull slow.",
-        "The wire is not a hot knife. The squeeze melts a thin path. Ice can freeze again behind it.",
-        "When the weights come off, you can pick up the ice holding both ends of the wire.",
+        "FAST track: the string alone doesn’t catch. After a tiny pinch of salt and a wait, the ice hugs the string.",
+        "FAST track: too much salt just makes a puddle. A little salt, then wait, then pull slow.",
+        "LONG track: the wire is not a hot knife. The squeeze melts a thin path. Ice can freeze again behind it.",
+        "LONG track: when the weights come off, you can pick up the ice holding both ends of the wire.",
       ],
     },
     runThis: {
       overview:
-        "Salt fishing is the show — trial and error until the watery-bowl recipe clicks. Optional copper wire is the long game (~1–2 hours) while the kid fishes.",
+        "Two experiments on one morning. FAST is salt ice fishing (~minutes). LONG is pressure melting with copper wire (~1–2 hours). Start the wire first if you want both.",
       setup:
-        "Optional: start the wire first so it has time while you fish. Fishing station: bowl with water packed with lots of ice cubes, twine, salt + spoon, towels on the floor.",
+        "Towels on floor. Fishing: bowl, water, lots of ice, twine, salt. Wire: ice block, copper wire, two closed water bottles, tray.",
+      tracks: [
+        {
+          label: "FAST",
+          title: "Salt ice fishing",
+          imageUrl: "/images/experiments/salt-ice-howto-fishing.png",
+          blurb:
+            "String + tiny salt + wait ~60s + pull slow. Needs water and lots of ice.",
+        },
+        {
+          label: "LONG",
+          title: "Pressure melting",
+          imageUrl: "/images/experiments/salt-ice-howto-wire.png",
+          blurb:
+            "Copper wire + bottle weights. Squeeze melts a path; ice can freeze again behind. ~1–2 hours.",
+        },
+      ],
     },
     knowThis: {
       mechanism:
-        "Salt melts a thin bit of ice into water. The rest of the cube is still cold enough to freeze that water again around the yarn fibers — an ice hug — so you can lift the cube by the string.\n\nSalt does that by lowering the temperature at which water stays solid (freezing-point depression). A tiny pinch is enough. A mountain of salt usually digs a puddle and never hugs the string.\n\nWater in the bowl helps: cubes stay colder and wetter at the contact line, so melt-then-refreeze has somewhere to work. Draping over many cubes raises the odds that at least a few lock on. Pulling slowly keeps the fresh ice bridges from snapping.\n\nHanging bottles squeeze a thin line into the ice. That pressure lowers the melting point under the wire for a moment (pressure melting / regelation). Meltwater forms under the wire; as the wire sinks, the water above can freeze again. The block can stay one piece even if the wire cuts all the way through. Room-temperature copper is not a hot knife — the squeeze does the melting. Copper also conducts heat a bit, which can speed the cut, but the classic story is still pressure melting plus refreeze.",
+        "Two different mechanisms on one morning.\n\nFAST fishing = salt / freezing-point depression. Salt melts a thin bit of ice into water. The rest of the cube is still cold enough to freeze that water again around the yarn fibers — an ice hug — so you can lift by the string. A tiny pinch is enough; a mountain of salt usually digs a puddle. Water in the bowl helps: cubes stay wetter at the contact line. Draping over many cubes raises the odds. Pulling slowly keeps fresh ice bridges from snapping.\n\nLONG wire = pressure melting. Hanging bottles squeeze a thin line into the ice. That pressure melts ice for a moment under the wire. As the wire sinks, water above can freeze again. The block can stay one piece even if the wire cuts through. Room-temperature copper is not a hot knife — the squeeze does the melting.",
       doesNotProve:
-        "It does not prove salt “glues” the string (it’s melt-then-refreeze, not glue). It does not prove more salt is better — a mountain often just makes a puddle. It does not prove the wire “saws” like a knife without melting — pressure melts a thin path; refreeze can leave the block whole. It does not prove the wire is hot — room-temperature wire works because of the squeeze (and some heat flow), not because it was heated on a stove.",
+        "It does not prove salt “glues” the string (it’s melt-then-refreeze, not glue). It does not prove more salt is better — a mountain often just makes a puddle. It does not prove the wire “saws” like a knife without melting — pressure melts a thin path; refreeze can leave the block whole. It does not prove the wire is hot — room-temperature wire works because of the squeeze.",
       goDeeper:
         "No-salt vs salt string side by side in the same watery bowl. Food-coloring tunnels on a salted cube. Leave the wire longer and compare groove depth. Try nylon fishing line vs cotton twine (nylon often fails the hug).",
       numbersNote:
         "Wait ~60 seconds after a tiny pinch of salt. Exact grams don’t matter; “tiny pinch” does. Wire can take on the order of 1–2 hours with bottle weights at kitchen temperature.",
       nameForThis:
-        "Optional: freezing-point depression (salt) and pressure melting / regelation (wire). Plain “ice hug” and “squeeze melts a path” language first.",
+        "FAST: freezing-point depression (plain “ice hug” first). LONG: pressure melting / regelation (plain “squeeze melts a path” first).",
     },
     traps: [
       {
         wrong: "Salt makes the string sticky so it grabs the ice.",
         why: "Salt isn’t glue. It melts a thin bit of ice; cold ice refreezes that water around the string.",
-        replace: "Salt melts a little ice into water. The cold ice freezes that water around the string — an ice hug.",
+        replace:
+          "Salt melts a little ice into water. The cold ice freezes that water around the string — an ice hug.",
       },
       {
-        wrong: "The wire is hot, so it melts through like a knife, and of course the ice falls apart.",
+        wrong:
+          "The wire is hot, so it melts through like a knife, and of course the ice falls apart.",
         why: "Room-temperature wire isn’t a heated knife. Thin pressure melts a path; ice can refreeze behind the wire, so the block may stay one piece.",
-        replace: "The bottles squeeze a thin line. That squeeze melts a little path. When the squeeze moves on, it can freeze again.",
+        replace:
+          "The bottles squeeze a thin line. That squeeze melts a little path. When the squeeze moves on, it can freeze again.",
       },
     ],
-  },
+  }
 ];
+
 
 export const faqSeeds: FaqSeed[] = [
   {

@@ -14,9 +14,17 @@ export type SayThis = {
   lines?: string[];
 };
 
+export type RunTrack = {
+  label: string;
+  title: string;
+  imageUrl: string;
+  blurb: string;
+};
+
 export type RunThis = {
   overview?: string;
   setup?: string;
+  tracks?: RunTrack[];
 };
 
 export type KnowThis = {
