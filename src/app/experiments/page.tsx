@@ -2,7 +2,7 @@ import { ExperimentCard } from "@/components/ExperimentCard";
 import { listExperiments } from "@/lib/experiments";
 import Link from "next/link";
 
-type Search = { age?: string; domain?: string; mess?: string; location?: string };
+type Search = { age?: string; domain?: string; mess?: string; location?: string; sort?: string };
 
 export const metadata = {
   title: "Experiments",
@@ -16,7 +16,7 @@ export default async function ExperimentsPage({
   searchParams: Promise<Search>;
 }) {
   const params = await searchParams;
-  const all = await listExperiments();
+  const all = await listExperiments({ sort: params.sort });
 
   const filtered = all.filter((e) => {
     if (params.age && !e.ageBands.includes(params.age)) return false;
@@ -48,6 +48,10 @@ export default async function ExperimentsPage({
     return s ? `/experiments?${s}` : "/experiments";
   }
 
+  function clearFiltersHref() {
+    return params.sort ? `/experiments?sort=${encodeURIComponent(params.sort)}` : "/experiments";
+  }
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <h1 className="font-display text-3xl font-semibold text-ink">Experiments</h1>
@@ -57,6 +61,15 @@ export default async function ExperimentsPage({
       </p>
 
       <div className="mt-8 space-y-3 rounded-3xl border border-sage-200/80 bg-white p-4 shadow-sm">
+        <FilterRow label="Sort">
+          <Chip
+            href={hrefFor({ sort: "newest" })}
+            active={params.sort === "newest"}
+            clearHref={clearKey("sort")}
+          >
+            Newest
+          </Chip>
+        </FilterRow>
         <FilterRow label="Age">
           {ages.map((a) => (
             <Chip key={a} href={hrefFor({ age: a })} active={params.age === a} clearHref={clearKey("age")}>
@@ -96,7 +109,7 @@ export default async function ExperimentsPage({
           ))}
         </FilterRow>
         {(params.age || params.domain || params.mess || params.location) && (
-          <Link href="/experiments" className="inline-block text-sm font-semibold text-sage-700">
+          <Link href={clearFiltersHref()} className="inline-block text-sm font-semibold text-sage-700">
             Clear filters
           </Link>
         )}

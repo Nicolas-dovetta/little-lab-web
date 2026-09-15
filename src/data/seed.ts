@@ -68,6 +68,8 @@ export type ExperimentSeed = {
   knowThis?: KnowThis;
   traps?: Trap[];
   planUnit?: string | null;
+  /** Saturday session date YYYY-MM-DD (America/Los_Angeles). Omit or null if unknown. */
+  ranOn?: string | null;
 };
 
 export type FaqSeed = {
@@ -164,6 +166,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     gallery: [],
     featured: true,
     planUnit: "Matter & mess",
+    ranOn: "2026-09-05",
     sayThis: {
       age12: [
         "This one sits on top.",
@@ -489,6 +492,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "Food-coloring tunnels on a salted cube. Leave the wire longer and compare groove depth. Side-by-side: dry tray fishing vs watery bowl fishing.",
     notesFromHome:
       "Needs water. Trial and error. The kid can dump salt everywhere — that was fine.\n\nAbout 1/4 of the attempts worked until we got it. Best recipe: a ton of fresh ice in a ton of water, string over many cubes, catch ~5 pulling slowly. Got smoked. Kid was excited.\n\nCopper wire is the long game (~2 hours). Give the kid a fishing mission while it runs. Fun beat: remove the weights, pick up the ice holding both ends of the wire. Kid was excited explaining the wire to mom.\n\nFun. Not as entertaining as balsamic.",
+    ranOn: "2026-09-12",
     heroImageUrl: "/images/experiments/salt-ice-fishing-catch.png",
     gallery: [
       "/images/experiments/salt-ice-howto-fishing.png",

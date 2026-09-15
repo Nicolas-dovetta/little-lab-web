@@ -31,6 +31,7 @@ async function main() {
     hero_image_url text,
     gallery jsonb NOT NULL DEFAULT '[]'::jsonb,
     featured boolean NOT NULL DEFAULT false,
+    ran_on date,
     created_at timestamptz NOT NULL DEFAULT now(),
     updated_at timestamptz NOT NULL DEFAULT now()
   )`;
@@ -51,6 +52,7 @@ async function main() {
   )`;
 
   await sql`ALTER TABLE experiments ADD COLUMN IF NOT EXISTS products jsonb NOT NULL DEFAULT '[]'::jsonb`;
+  await sql`ALTER TABLE experiments ADD COLUMN IF NOT EXISTS ran_on date`;
 
   console.log("Schema push OK (CREATE TABLE IF NOT EXISTS).");
 }

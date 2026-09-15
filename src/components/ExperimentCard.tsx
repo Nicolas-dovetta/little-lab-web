@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Experiment } from "@/db/schema";
-import { difficultyLabel, messLabel } from "@/lib/experiments";
+import { difficultyLabel, formatRanOn, messLabel } from "@/lib/experiments";
 
 export function ExperimentCard({ experiment }: { experiment: Experiment }) {
+  const ranOnLabel = formatRanOn(experiment.ranOn);
   return (
     <Link
       href={`/experiments/${experiment.id}`}
@@ -52,6 +53,7 @@ export function ExperimentCard({ experiment }: { experiment: Experiment }) {
         <p className="line-clamp-2 text-sm text-ink-muted">{experiment.learningGoal}</p>
         <p className="mt-auto pt-2 text-xs text-sage-700">
           Ages {experiment.ageBands.join(", ")} · {experiment.domains.join(", ")}
+          {ranOnLabel ? ` · ${ranOnLabel}` : ""}
         </p>
       </div>
     </Link>
