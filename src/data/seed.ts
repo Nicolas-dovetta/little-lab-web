@@ -430,12 +430,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
         asin: "B000H5OL30",
         note: "Thin bare copper for the pressure-melt track.",
       },
-      {
-        name: 'TINANA 2.5" silicone sphere tray',
-        asin: "B09Q527N21",
-        amazonUrl: "https://www.amazon.com/dp/B09Q527N21",
-        note: "Makes round ice balls — fun for the wire demo.",
-      },
     ],
     prep: "Start the LONG wire first if you want both (~1–2 hours). Wire: ice block on inverted container in a tray, bare copper wire across the top, closed water bottle hanging from each end. FAST fishing station: bowl with water + lots of ice, twine, salt + spoon, towels on the floor.",
     safety:
