@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ExperimentViewTracker } from "@/components/ExperimentViewTracker";
 import type { ExperimentProduct, KnowThis, RunThis, SayThis, Trap } from "@/db/schema";
-import { AMAZON_ASSOCIATES_DISCLOSURE, amazonProductHref } from "@/lib/amazon";
+import { amazonProductHref } from "@/lib/amazon";
 import { difficultyLabel, getExperiment, listExperiments, messLabel } from "@/lib/experiments";
 
 export async function generateStaticParams() {
@@ -168,12 +168,12 @@ export default async function ExperimentDetailPage({
                           key={track.label}
                           className="overflow-hidden rounded-2xl border border-sky-100/80 bg-white/80 shadow-sm"
                         >
-                          <div className="relative aspect-[4/3] w-full">
+                          <div className="relative aspect-[4/3] w-full bg-sage-50">
                             <Image
                               src={track.imageUrl}
                               alt={track.title}
                               fill
-                              className="object-cover"
+                              className="object-contain"
                               sizes="(max-width: 640px) 100vw, 30vw"
                             />
                           </div>
@@ -307,9 +307,9 @@ export default async function ExperimentDetailPage({
                 {gallery.map((src) => (
                   <div
                     key={src}
-                    className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-sage-200/80"
+                    className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-sage-200/80 bg-sage-50"
                   >
-                    <Image src={src} alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 30vw" />
+                    <Image src={src} alt="" fill className="object-contain" sizes="(max-width: 768px) 100vw, 30vw" />
                   </div>
                 ))}
               </div>
@@ -424,7 +424,6 @@ function GetTheBits({ products }: { products: ExperimentProduct[] }) {
           );
         })}
       </ul>
-      <p className="mt-4 text-xs text-ink-muted">{AMAZON_ASSOCIATES_DISCLOSURE}</p>
     </Section>
   );
 }

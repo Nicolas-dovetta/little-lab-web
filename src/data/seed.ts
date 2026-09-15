@@ -492,7 +492,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     heroImageUrl: "/images/experiments/salt-ice-fishing-catch.png",
     gallery: [
       "/images/experiments/salt-ice-howto-fishing.png",
-      "/images/experiments/salt-ice-howto-wire.png",
       "/images/experiments/salt-ice-wire-groove.png",
     ],
     featured: false,
@@ -522,7 +521,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
         {
           label: "LONG",
           title: "Pressure melting",
-          imageUrl: "/images/experiments/salt-ice-howto-wire.png",
+          imageUrl: "/images/experiments/salt-ice-wire-groove.png",
           blurb:
             "Copper wire + bottle weights. Squeeze melts a path; ice can freeze again behind. ~1–2 hours.",
         },
