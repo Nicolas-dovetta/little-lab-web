@@ -18,6 +18,7 @@ async function main() {
     mess_level text NOT NULL DEFAULT 'medium',
     location text NOT NULL DEFAULT 'indoor',
     materials jsonb NOT NULL DEFAULT '[]'::jsonb,
+    products jsonb NOT NULL DEFAULT '[]'::jsonb,
     prep text NOT NULL DEFAULT '',
     safety text NOT NULL DEFAULT '',
     experience text NOT NULL DEFAULT '',
@@ -48,6 +49,8 @@ async function main() {
     answer text NOT NULL,
     sort_order integer NOT NULL DEFAULT 0
   )`;
+
+  await sql`ALTER TABLE experiments ADD COLUMN IF NOT EXISTS products jsonb NOT NULL DEFAULT '[]'::jsonb`;
 
   console.log("Schema push OK (CREATE TABLE IF NOT EXISTS).");
 }

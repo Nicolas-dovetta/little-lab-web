@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ExperimentViewTracker } from "@/components/ExperimentViewTracker";
-import type { KnowThis, RunThis, SayThis, Trap } from "@/db/schema";
+import type { ExperimentProduct, KnowThis, RunThis, SayThis, Trap } from "@/db/schema";
+import { AMAZON_ASSOCIATES_DISCLOSURE, amazonProductHref } from "@/lib/amazon";
 import { difficultyLabel, getExperiment, listExperiments, messLabel } from "@/lib/experiments";
 
 export async function generateStaticParams() {
@@ -46,6 +47,7 @@ export default async function ExperimentDetailPage({
   if (!e) notFound();
 
   const materials = (e.materials as string[]) || [];
+  const products = (e.products as ExperimentProduct[]) || [];
   const kidCanDo = (e.kidCanDo as string[]) || [];
   const adultRole = (e.adultRole as string[]) || [];
   const steps = (e.steps as { title: string; detail: string }[]) || [];
@@ -131,6 +133,8 @@ export default async function ExperimentDetailPage({
               <p className="text-ink-muted">{e.experience}</p>
             </Section>
           )}
+
+          {products.length > 0 && <GetTheBits products={products} />}
 
           {showThreeMessage && (
             <div className="space-y-6">
@@ -388,6 +392,40 @@ export default async function ExperimentDetailPage({
         </aside>
       </div>
     </article>
+  );
+}
+
+function GetTheBits({ products }: { products: ExperimentProduct[] }) {
+  return (
+    <Section title="Get the bits">
+      <p className="text-sm text-ink-muted">
+        Kitchen first. If you&apos;re missing something, these are the pieces that worked at our
+        table.
+      </p>
+      <ul className="mt-3 space-y-3">
+        {products.map((product) => {
+          const href = amazonProductHref(product);
+          return (
+            <li key={`${product.name}-${product.asin ?? product.amazonUrl ?? ""}`}>
+              {href ? (
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="nofollow sponsored noopener noreferrer"
+                  className="font-semibold text-sage-800 underline-offset-2 hover:underline"
+                >
+                  {product.name}
+                </a>
+              ) : (
+                <span className="font-semibold text-ink">{product.name}</span>
+              )}
+              {product.note && <p className="mt-0.5 text-sm text-ink-muted">{product.note}</p>}
+            </li>
+          );
+        })}
+      </ul>
+      <p className="mt-4 text-xs text-ink-muted">{AMAZON_ASSOCIATES_DISCLOSURE}</p>
+    </Section>
   );
 }
 

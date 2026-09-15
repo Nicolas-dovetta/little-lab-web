@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AMAZON_ASSOCIATES_DISCLOSURE } from "@/lib/amazon";
 
 export function Footer() {
   return (
@@ -41,8 +42,9 @@ export function Footer() {
           </a>
         </div>
       </div>
-      <div className="border-t border-sage-200/60 py-4 text-center text-xs text-ink-muted">
-        © {new Date().getFullYear()} Weekend Experiments
+      <div className="border-t border-sage-200/60 px-4 py-4 text-center text-xs text-ink-muted sm:px-6">
+        <p>© {new Date().getFullYear()} Weekend Experiments</p>
+        <p className="mt-1">{AMAZON_ASSOCIATES_DISCLOSURE}</p>
       </div>
     </footer>
   );

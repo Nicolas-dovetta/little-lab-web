@@ -31,6 +31,13 @@ export type Trap = {
   replace: string;
 };
 
+export type ExperimentProduct = {
+  name: string;
+  asin?: string;
+  amazonUrl?: string;
+  note?: string;
+};
+
 export type ExperimentSeed = {
   id: string;
   title: string;
@@ -43,6 +50,7 @@ export type ExperimentSeed = {
   messLevel: "low" | "medium" | "high";
   location: "indoor" | "outdoor" | "either";
   materials: string[];
+  products?: ExperimentProduct[];
   prep: string;
   safety: string;
   experience: string;
@@ -412,6 +420,18 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "Small bowl for salt + spoon",
       "Optional: food coloring",
       "Optional: second string for a no-salt comparison",
+    ],
+    products: [
+      {
+        name: "The Hillman Group Copper Wire (18 gauge)",
+        asin: "B000H5OL30",
+        note: "Bare copper craft/jewelry wire for the pressure-melt track.",
+      },
+      {
+        name: 'TINANA 2.5" ice sphere tray',
+        asin: "B09Q527N21",
+        note: "Round ice balls — fun for the wire demo.",
+      },
     ],
     prep: "Start the LONG wire first if you want both (~1–2 hours). Wire: ice block on inverted container in a tray, bare copper wire across the top, closed water bottle hanging from each end. FAST fishing station: bowl with water + lots of ice, twine, salt + spoon, towels on the floor.",
     safety:
