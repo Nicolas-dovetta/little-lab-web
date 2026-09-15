@@ -1,5 +1,6 @@
 import {
   boolean,
+  date,
   integer,
   jsonb,
   pgTable,
@@ -81,6 +82,8 @@ export const experiments = pgTable("experiments", {
   }),
   traps: jsonb("traps").$type<Trap[]>().notNull().default([]),
   planUnit: text("plan_unit"),
+  /** Saturday session date (America/Los_Angeles), not created_at. */
+  ranOn: date("ran_on", { mode: "string" }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });

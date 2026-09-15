@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ExperimentViewTracker } from "@/components/ExperimentViewTracker";
 import type { ExperimentProduct, KnowThis, RunThis, SayThis, Trap } from "@/db/schema";
 import { amazonProductHref } from "@/lib/amazon";
-import { difficultyLabel, getExperiment, listExperiments, messLabel } from "@/lib/experiments";
+import { difficultyLabel, formatRanOn, getExperiment, listExperiments, messLabel } from "@/lib/experiments";
 
 export async function generateStaticParams() {
   const all = await listExperiments();
@@ -65,6 +65,7 @@ export default async function ExperimentDetailPage({
   const showLegacySteps = !showRun && steps.length > 0;
   const showLegacyRoles = !showSay && (kidCanDo.length > 0 || adultRole.length > 0);
   const showLegacyNotice = !showKnow && notice.length > 0;
+  const ranOnLabel = formatRanOn(e.ranOn);
 
   return (
     <article className="pb-16">
@@ -106,6 +107,11 @@ export default async function ExperimentDetailPage({
               >
                 Plan: {e.planUnit}
               </Link>
+            )}
+            {ranOnLabel && (
+              <span className="rounded-full bg-white px-2.5 py-0.5 text-xs text-ink-muted">
+                {ranOnLabel}
+              </span>
             )}
           </div>
           <h1 className="mt-4 font-display text-4xl font-semibold text-ink">{e.title}</h1>

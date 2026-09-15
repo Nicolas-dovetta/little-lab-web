@@ -35,6 +35,7 @@ function seedToExperiment(e: ExperimentSeed): Experiment {
     knowThis: e.knowThis ?? { mechanism: "", doesNotProve: "" },
     traps: e.traps ?? [],
     planUnit: e.planUnit ?? null,
+    ranOn: e.ranOn ?? null,
     createdAt: now,
     updatedAt: now,
   };
@@ -49,7 +50,48 @@ function seedToFaq(f: FaqSeed, idx: number): FaqEntry {
   };
 }
 
-function sortExperiments(rows: Experiment[]): Experiment[] {
+/** Normalize a Postgres date / ISO string to YYYY-MM-DD, or null. */
+export function dateOnly(value: string | Date | null | undefined): string | null {
+  if (value == null || value === "") return null;
+  if (typeof value === "string") {
+    const match = value.match(/^(\d{4}-\d{2}-\d{2})/);
+    return match ? match[1] : null;
+  }
+  if (value instanceof Date && !Number.isNaN(value.getTime())) {
+    return value.toISOString().slice(0, 10);
+  }
+  return null;
+}
+
+/** Short parent-facing date, e.g. "Sep 12, 2026". */
+export function formatRanOn(value: string | Date | null | undefined): string | null {
+  const iso = dateOnly(value);
+  if (!iso) return null;
+  const [year, month, day] = iso.split("-").map(Number);
+  if (!year || !month || !day) return iso;
+  return new Date(Date.UTC(year, month - 1, day)).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+function sortExperiments(rows: Experiment[], sort?: string | null): Experiment[] {
+  if (sort === "newest") {
+    // Newest overrides winner/planned ranking: ranOn desc, nulls last, then title
+    return [...rows].sort((a, b) => {
+      const aDate = dateOnly(a.ranOn);
+      const bDate = dateOnly(b.ranOn);
+      if (aDate && bDate) {
+        const byDate = bDate.localeCompare(aDate);
+        if (byDate !== 0) return byDate;
+      } else if (aDate) return -1;
+      else if (bDate) return 1;
+      return a.title.localeCompare(b.title);
+    });
+  }
+
   // Winner first, then planned, then featured, then title
   return [...rows].sort((a, b) => {
     const rank = (s: string) => (s === "winner" ? 0 : s === "planned" ? 1 : 2);
@@ -67,15 +109,16 @@ function filterFaqs(rows: FaqEntry[]): FaqEntry[] {
   return rows;
 }
 
-export async function listExperiments(): Promise<Experiment[]> {
+export async function listExperiments(options?: { sort?: string | null }): Promise<Experiment[]> {
+  const sort = options?.sort;
   try {
     const db = getDb();
     const rows = await db.select().from(experiments).orderBy(asc(experiments.title));
-    if (rows.length > 0) return sortExperiments(rows);
+    if (rows.length > 0) return sortExperiments(rows, sort);
   } catch {
     // fall through to in-code seed
   }
-  return sortExperiments(experimentSeeds.map(seedToExperiment));
+  return sortExperiments(experimentSeeds.map(seedToExperiment), sort);
 }
 
 export async function getExperiment(id: string): Promise<Experiment | null> {

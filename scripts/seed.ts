@@ -41,6 +41,7 @@ async function main() {
         knowThis: e.knowThis ?? { mechanism: "", doesNotProve: "" },
         traps: e.traps ?? [],
         planUnit: e.planUnit ?? null,
+        ranOn: e.ranOn ?? null,
         updatedAt: new Date(),
       })
       .onConflictDoUpdate({
@@ -74,6 +75,7 @@ async function main() {
           knowThis: e.knowThis ?? { mechanism: "", doesNotProve: "" },
           traps: e.traps ?? [],
           planUnit: e.planUnit ?? null,
+          ranOn: e.ranOn ?? null,
           updatedAt: new Date(),
         },
       });
