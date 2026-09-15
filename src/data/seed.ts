@@ -425,7 +425,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       {
         name: "The Hillman Group Copper Wire (18 gauge)",
         asin: "B000H5OL30",
-        note: "Bare copper craft/jewelry wire for the pressure-melt track.",
+        note: "Bare copper craft wire for the pressure-melt track.",
       },
       {
         name: 'TINANA 2.5" ice sphere tray',
