@@ -17,6 +17,7 @@ function seedToExperiment(e: ExperimentSeed): Experiment {
     messLevel: e.messLevel,
     location: e.location,
     materials: e.materials,
+    products: e.products ?? [],
     prep: e.prep,
     safety: e.safety,
     experience: e.experience,

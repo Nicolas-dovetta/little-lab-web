@@ -41,6 +41,13 @@ export type Trap = {
   replace: string;
 };
 
+export type ExperimentProduct = {
+  name: string;
+  asin?: string;
+  amazonUrl?: string;
+  note?: string;
+};
+
 export const experiments = pgTable("experiments", {
   id: text("id").primaryKey(),
   title: text("title").notNull(),
@@ -53,6 +60,7 @@ export const experiments = pgTable("experiments", {
   messLevel: text("mess_level").notNull().default("medium"),
   location: text("location").notNull().default("indoor"),
   materials: jsonb("materials").$type<string[]>().notNull().default([]),
+  products: jsonb("products").$type<ExperimentProduct[]>().notNull().default([]),
   prep: text("prep").notNull().default(""),
   safety: text("safety").notNull().default(""),
   experience: text("experience").notNull().default(""),

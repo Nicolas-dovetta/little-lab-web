@@ -31,6 +31,13 @@ export type Trap = {
   replace: string;
 };
 
+export type ExperimentProduct = {
+  name: string;
+  asin?: string;
+  amazonUrl?: string;
+  note?: string;
+};
+
 export type ExperimentSeed = {
   id: string;
   title: string;
@@ -43,6 +50,7 @@ export type ExperimentSeed = {
   messLevel: "low" | "medium" | "high";
   location: "indoor" | "outdoor" | "either";
   materials: string[];
+  products?: ExperimentProduct[];
   prep: string;
   safety: string;
   experience: string;
