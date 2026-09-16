@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { canonicalMetadata } from "@/lib/site";
 
-export const metadata = {
+export const metadata = canonicalMetadata("/merch", {
   title: "Merch",
   description: "Weekend Experiments mug and shirt on Engineerdadcoffee.",
-};
+});
 
 const items = [
   {

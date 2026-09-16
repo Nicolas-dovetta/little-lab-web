@@ -1,14 +1,16 @@
 import { ExperimentCard } from "@/components/ExperimentCard";
 import { listExperiments } from "@/lib/experiments";
+import { canonicalMetadata } from "@/lib/site";
 import Link from "next/link";
 
 type Search = { age?: string; domain?: string; mess?: string; location?: string; sort?: string };
 
-export const metadata = {
+// Canonical stays the clean path so ?sort / filters are not alternate indexable URLs.
+export const metadata = canonicalMetadata("/experiments", {
   title: "Experiments",
   description:
     "For parents with curious kids who are looking for a way to make their kitchen extra messy on weekends.",
-};
+});
 
 export default async function ExperimentsPage({
   searchParams,

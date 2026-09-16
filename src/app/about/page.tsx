@@ -1,10 +1,11 @@
 import { ContactForm } from "@/components/ContactForm";
+import { canonicalMetadata } from "@/lib/site";
 
-export const metadata = {
+export const metadata = canonicalMetadata("/about", {
   title: "About",
   description:
     "Engineer, former professor and former aerospace researcher — Saturday experiments so curious kids stay excited about how the world works.",
-};
+});
 
 export default function AboutPage() {
   return (
