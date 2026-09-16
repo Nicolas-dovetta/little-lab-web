@@ -3,6 +3,7 @@ import { Fraunces, Source_Sans_3 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { SITE_ORIGIN } from "@/lib/site";
 import "./globals.css";
 
 const display = Fraunces({
@@ -18,7 +19,7 @@ const body = Source_Sans_3({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.weekend-experiments.app"),
+  metadataBase: new URL(SITE_ORIGIN),
   title: {
     default: "Weekend Experiments — Kids experiments for ages 1–5",
     template: "%s · Weekend Experiments",
@@ -28,7 +29,6 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://www.weekend-experiments.app",
     siteName: "Weekend Experiments",
     title: "Weekend Experiments — Kids experiments for ages 1–5",
     description:

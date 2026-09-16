@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { listExperiments } from "@/lib/experiments";
+import { canonicalMetadata } from "@/lib/site";
 
-export const metadata = {
+export const metadata = canonicalMetadata("/plan", {
   title: "The plan",
   description:
     "Nicolas’s personal ~30-week Saturday science path with his kids — take what’s useful, ignore the rest.",
-};
+});
 
 type Unit = {
   name: string;

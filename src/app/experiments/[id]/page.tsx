@@ -5,6 +5,7 @@ import { ExperimentViewTracker } from "@/components/ExperimentViewTracker";
 import type { ExperimentProduct, KnowThis, RunThis, SayThis, Trap } from "@/db/schema";
 import { amazonProductHref } from "@/lib/amazon";
 import { difficultyLabel, formatRanOn, getExperiment, listExperiments, messLabel } from "@/lib/experiments";
+import { canonicalMetadata } from "@/lib/site";
 
 export async function generateStaticParams() {
   const all = await listExperiments();
@@ -15,7 +16,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const e = await getExperiment(id);
   if (!e) return { title: "Experiment" };
-  return { title: e.title, description: e.learningGoal };
+  return canonicalMetadata(`/experiments/${id}`, {
+    title: e.title,
+    description: e.learningGoal,
+  });
 }
 
 function hasSayContent(say: SayThis | null | undefined): boolean {
