@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ExperimentViewTracker } from "@/components/ExperimentViewTracker";
 import type { ExperimentProduct, KnowThis, RunThis, SayThis, Trap } from "@/db/schema";
-import { amazonProductHref } from "@/lib/amazon";
+import { amazonPackCartHref, amazonProductHref } from "@/lib/amazon";
 import { difficultyLabel, formatRanOn, getExperiment, listExperiments, messLabel } from "@/lib/experiments";
 import { canonicalMetadata } from "@/lib/site";
 
@@ -406,12 +406,28 @@ export default async function ExperimentDetailPage({
 }
 
 function GetTheBits({ products }: { products: ExperimentProduct[] }) {
+  const packHref = amazonPackCartHref(products);
   return (
     <Section title="Get the bits">
       <p className="text-sm text-ink-muted">
         Kitchen first. If you&apos;re missing something, these are the pieces that worked at our
         table.
       </p>
+      {packHref && (
+        <div className="mt-4 rounded-2xl border border-sage-200/80 bg-sage-50/80 p-4">
+          <a
+            href={packHref}
+            target="_blank"
+            rel="nofollow sponsored noopener noreferrer"
+            className="inline-flex rounded-full bg-sage-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-sage-700"
+          >
+            Add the full pack to Amazon cart
+          </a>
+          <p className="mt-2 text-sm text-ink-muted">
+            Opens Amazon with these items ready to add — you confirm the cart.
+          </p>
+        </div>
+      )}
       <ul className="mt-3 space-y-3">
         {products.map((product) => {
           const href = amazonProductHref(product);
