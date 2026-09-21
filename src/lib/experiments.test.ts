@@ -6,7 +6,9 @@ import {
   uniqueKitchenGallery,
   uniqueMoveSteps,
   usesPilotSpine,
+  withoutDuplicateGalleryPhotos,
 } from "./experiments";
+import type { Experiment } from "../db/schema";
 
 const VOLCANO_TRACKS = [
   "/images/experiments/baking-soda-volcano-soda.png",
@@ -90,4 +92,21 @@ test("baking-soda-volcano seed: empty gallery, unique step pics, notes prose", (
   assert.doesNotMatch(volcano.notesFromHome, /!\[[^\]]*]\([^)]+\)|<img\b|\.png|\.jpg|\.webp/i);
   const trackUrls = volcano.runThis?.tracks?.map((track) => track.imageUrl) ?? [];
   assert.deepEqual(trackUrls, VOLCANO_TRACKS);
+});
+
+test("main-shaped volcano gallery (same three paths as tracks) sanitizes to empty", () => {
+  const cleaned = withoutDuplicateGalleryPhotos({
+    id: "baking-soda-volcano",
+    heroImageUrl: "/images/experiments/baking-soda-volcano-overflow.png",
+    gallery: [...VOLCANO_TRACKS],
+    runThis: {
+      tracks: VOLCANO_TRACKS.map((imageUrl, i) => ({
+        label: ["SODA", "SOAP", "VINEGAR"][i],
+        title: "step",
+        imageUrl,
+        blurb: "x",
+      })),
+    },
+  } as Experiment);
+  assert.deepEqual(cleaned.gallery, []);
 });

@@ -1,11 +1,11 @@
 import { asc, eq } from "drizzle-orm";
 import { getDb } from "@/db";
-import { experiments, faqEntries, type Experiment, type FaqEntry } from "@/db/schema";
+import { experiments, faqEntries, type Experiment, type FaqEntry, type RunThis } from "@/db/schema";
 import { experimentSeeds, faqSeeds, type ExperimentSeed, type FaqSeed } from "@/data/seed";
 
 function seedToExperiment(e: ExperimentSeed): Experiment {
   const now = new Date();
-  return {
+  return withoutDuplicateGalleryPhotos({
     id: e.id,
     title: e.title,
     status: e.status,
@@ -38,7 +38,7 @@ function seedToExperiment(e: ExperimentSeed): Experiment {
     ranOn: e.ranOn ?? null,
     createdAt: now,
     updatedAt: now,
-  };
+  });
 }
 
 function seedToFaq(f: FaqSeed, idx: number): FaqEntry {
@@ -144,6 +144,22 @@ export function kidVerdictProse(
 }
 
 /**
+ * Drop kitchen-gallery paths that already appear as the hero or a RUN THIS
+ * track image. On main, baking-soda-volcano listed the same three step photos
+ * in `gallery` and `runThis.tracks`, which rendered twice.
+ */
+export function withoutDuplicateGalleryPhotos(e: Experiment): Experiment {
+  const runThis = (e.runThis ?? {}) as RunThis;
+  return {
+    ...e,
+    gallery: uniqueKitchenGallery(e.gallery, {
+      heroImageUrl: e.heroImageUrl,
+      trackImageUrls: runThis.tracks?.map((track) => track.imageUrl),
+    }),
+  };
+}
+
+/**
  * Kitchen photos that are not already the hero or a RUN THIS track image.
  * Each remaining path appears once. Pilot spine does not render this gallery.
  */
@@ -210,7 +226,9 @@ export async function listExperiments(options?: { sort?: string | null }): Promi
   try {
     const db = getDb();
     const rows = await db.select().from(experiments).orderBy(asc(experiments.title));
-    if (rows.length > 0) return sortExperiments(rows, sort);
+    if (rows.length > 0) {
+      return sortExperiments(rows.map(withoutDuplicateGalleryPhotos), sort);
+    }
   } catch {
     // fall through to in-code seed
   }
@@ -221,7 +239,7 @@ export async function getExperiment(id: string): Promise<Experiment | null> {
   try {
     const db = getDb();
     const rows = await db.select().from(experiments).where(eq(experiments.id, id)).limit(1);
-    if (rows[0]) return rows[0];
+    if (rows[0]) return withoutDuplicateGalleryPhotos(rows[0]);
   } catch {
     // fall through
   }

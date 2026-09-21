@@ -587,6 +587,8 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     notesFromHome:
       "Tonight the 3yo asked to do more volcanos — we did; he liked it. The 1yo was screaming (happily) at every eruption.\n\nBest was a tall transparent glass on a glass tray. He pours dish soap and coloring after the baking soda. He loved it — especially the last run with everything: all the color, all the vinegar, all the baking soda. Trying the funnel as the volcano didn’t work well; funnel is helpful to pour. Recipe each time: ~3 tablespoons baking soda, a small squeeze of dish soap, ~1 cup vinegar (a little eyeball). Let the kid do it at the end. Went through a bottle of white vinegar and baking soda. Any vinegar would probably work, but pure white vinegar doesn’t have sugar or color — easier to clean. Tried a baby bottle — works well with the opening a little smaller than the base.",
     heroImageUrl: "/images/experiments/baking-soda-volcano-overflow.png",
+    // Step photos live only on runThis.tracks. Main listed the same three
+    // paths in gallery too, which doubled them under Notes / Experience.
     gallery: [],
     featured: false,
     planUnit: "Matter & mess",
