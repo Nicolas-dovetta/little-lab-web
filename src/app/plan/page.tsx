@@ -25,6 +25,7 @@ const units: Unit[] = [
       "density-layers",
       "cornstarch-thickening-fluid",
       "cinnamon-soap-rush",
+      "baking-soda-volcano",
     ],
   },
   {

@@ -552,7 +552,154 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
           "The bottles squeeze a thin line. That squeeze melts a little path. When the squeeze moves on, it can freeze again.",
       },
     ],
-  }
+  },
+  {
+    id: "baking-soda-volcano",
+    title: "Baking-soda volcano",
+    status: "winner",
+    difficulty: 1,
+    ageBands: ["1-2", "3-5"],
+    domains: ["chemistry"],
+    learningGoal:
+      "Vinegar and baking soda make a gas (bubbles) that can push liquid up and out of a glass.",
+    timeMinutes: 30,
+    messLevel: "high",
+    location: "indoor",
+    materials: [
+      "Tall transparent glass (or clear cup)",
+      "Baby bottle (worked well — opening a little smaller than the base)",
+      "Glass tray or baking sheet with sides",
+      "White vinegar (any vinegar probably works; plain white is easiest to clean — no sugar/color)",
+      "Baking soda",
+      "Food coloring (optional — kid liked “all the color”)",
+      "Spoon",
+      "Funnel (helpful to pour into the glass/bottle)",
+      "Towels",
+    ],
+    products: [
+      {
+        name: "Arm & Hammer Baking Soda, 1 lb",
+        asin: "B000PYF8VM",
+        note: "~3 Tbsp per round (eyeball). From our cart.",
+      },
+      {
+        name: "Heinz Distilled White Vinegar, 1 gallon",
+        asin: "B000RO08L0",
+        note: "Plain white is easiest to clean (no sugar/dye). Reference pick — any white vinegar works.",
+      },
+      {
+        name: "365 Plant-Based Food Coloring (4 bottles)",
+        asin: "B07G2Z6CLG",
+        note: "Optional color for the foam. From our cart.",
+      },
+      {
+        name: "Stainless steel kitchen funnel set",
+        asin: "B0DDKL857F",
+        note: "To pour into a bottle opening — not as the volcano itself. From our cart.",
+      },
+      {
+        name: "Libbey City Tumbler glasses (14.3 oz, set of 8)",
+        asin: "B07BMFJ4KB",
+        note: "Reference pick for a tall clear vessel. You only need one; a baby bottle also worked.",
+      },
+      {
+        name: "Nordic Ware Baker's Half Sheet",
+        asin: "B00SRSP9VM",
+        note: "Rimmed sheet under the volcano. Reference pick — any tray with sides works.",
+      },
+    ],
+    prep: "Tray under the glass. Baking soda, vinegar, color, spoon within reach. Towels on the floor.",
+    safety:
+      "Taste ban. Vinegar sting in eyes — wipe spills. Food coloring stains. Floor gets wet and slippery.",
+    experience:
+      "Tall clear glass on a tray (a baby bottle also worked well — opening a little smaller than the base). Baking soda + vinegar make a fast fizz that climbs and overflows. The hit run was the last one: all the color, all the vinegar, all the baking soda — big messy eruption. Funnel as the volcano itself didn’t work well; funnel to pour into the glass/bottle is helpful. Working amounts: about 3 tablespoons baking soda and 1 cup vinegar per round (eyeball); kid does the last one. He loved it.",
+    kidCanDo: [
+      "Drop in food coloring (optional)",
+      "Do the last pour/scoop",
+      "Watch the fizz climb and overflow",
+    ],
+    adultRole: [
+      "Set the tray and tall glass (or baby bottle)",
+      "Keep amounts in range (~3 Tbsp soda, ~1 cup vinegar)",
+      "Manage towels and wet floor",
+      "Save the last round for the kid",
+    ],
+    steps: [
+      {
+        title: "Set the glass",
+        detail: "Set the tall glass (or baby bottle) on the glass tray.",
+      },
+      {
+        title: "Baking soda",
+        detail:
+          "Add about 3 tablespoons baking soda to the glass (eyeball is fine). Optional: drop in food coloring.",
+      },
+      {
+        title: "Vinegar pour",
+        detail:
+          "Pour about 1 cup vinegar (eyeball is fine). Watch the fizz climb and spill onto the tray.",
+      },
+      {
+        title: "Reset and save the last for the kid",
+        detail:
+          "Reset and repeat roughly the same amounts (~3 Tbsp soda + ~1 cup vinegar) each time — measurements are a little eyeball. Save the last round for the kid — let them do the pour/scoop at the end. The “everything” run (all color + all vinegar + all baking soda) was the kid favorite.",
+      },
+    ],
+    notice: [
+      "Funnel as the volcano itself didn’t work well; funnel to pour is helpful.",
+      "Working amounts: about 3 tablespoons baking soda and 1 cup vinegar per round (eyeball).",
+      "The hit run was the last one: all the color, all the vinegar, all the baking soda.",
+      "A baby bottle also worked — opening a little smaller than the base.",
+    ],
+    stretch:
+      "Catch overflow on the tray and ask whether the foam is “new stuff” or the same vinegar/soda mix with gas holes in it.",
+    notesFromHome:
+      "Best was a tall transparent glass on a glass tray. He loved it — especially the last run with everything: all the color, all the vinegar, all the baking soda. Trying the funnel as the volcano didn’t work well; funnel is helpful to pour. Recipe each time: ~3 tablespoons baking soda, ~1 cup vinegar (a little eyeball). Let the kid do it at the end. Went through a bottle of white vinegar and baking soda. Any vinegar would probably work, but pure white vinegar doesn’t have sugar or color — easier to clean. Tried a baby bottle — works well with the opening a little smaller than the base.",
+    heroImageUrl: null,
+    gallery: [],
+    featured: false,
+    planUnit: "Matter & mess",
+    ranOn: "2026-09-19",
+    sayThis: {
+      age12: ["[I will fill this after Saturday]"],
+      age35: ["[I will fill this after Saturday]"],
+    },
+    runThis: {
+      overview:
+        "Tall glass (or baby bottle) on a tray. About 3 tablespoons baking soda and 1 cup vinegar per round (eyeball). Optional color. Repeat; save the last “everything” pour for the kid.",
+      setup:
+        "Glass tray (or rimmed sheet) on a wipeable table. One tall transparent glass centered on the tray (or a baby bottle — smaller opening than the base worked well). Baking soda, vinegar, food coloring, spoon, towels ready.",
+    },
+    knowThis: {
+      mechanism:
+        "Baking soda is a base (sodium bicarbonate). Vinegar is a weak acid (acetic acid in water). When they meet, they react and make carbon dioxide gas — the same gas in soda bubbles. Tiny gas bubbles form fast in the liquid. The foam gets taller than the liquid alone, so it can climb the glass and spill over the rim onto the tray.\n\nPlain white vinegar is handy because it has no sugar or dye of its own, so cleanup is simpler — but the acid–base fizz is the same idea with other vinegars. Color is just dye riding along in the foam. It does not make more gas. More baking soda and more vinegar make more reaction (until one of them runs out), so a big “all in” pour makes a bigger spill.",
+      doesNotProve:
+        "That this is lava or a real volcano — it’s a kitchen acid–base fizz, not molten rock. That food coloring is a reactant — it’s just color in the foam. That “more always forever” — once one ingredient is used up, extra of the other does nothing new.",
+      goDeeper:
+        "Hold a hand near (not in) the foam: the gas is CO₂; the spill is mostly leftover liquid + bubbles. Try a small spoon of soda + a splash of vinegar in a clear cup next to the tall glass — same chemistry, smaller stage.",
+      nameForThis: "Acid–base reaction that releases carbon dioxide (CO₂).",
+    },
+    traps: [
+      {
+        wrong: "The vinegar turns into lava.",
+        why: "Nothing melts. You’re making gas bubbles in liquid; the “eruption” is foam overflowing.",
+        replace:
+          "You’re making gas bubbles in liquid. The overflow is foam, not lava.",
+      },
+      {
+        wrong: "Food coloring makes it explode harder.",
+        why: "Color rides in the foam. Bigger fizz comes from more baking soda and vinegar reacting, not from dye.",
+        replace:
+          "Color is just dye in the foam. More baking soda and vinegar make a bigger fizz.",
+      },
+      {
+        wrong: "A funnel is the volcano.",
+        why: "Using the funnel as the vessel didn’t work well — tall glass or baby bottle on a tray was better. A funnel is handy to pour soda/vinegar into a narrow opening.",
+        replace:
+          "Use a tall glass or baby bottle on a tray. The funnel is for pouring, not the volcano.",
+      },
+    ],
+  },
 ];
 
 

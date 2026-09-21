@@ -21,4 +21,4 @@ Domain: weekend-experiments.app
    - `npm run db:push` (same `ALTER` is in `scripts/push-schema.ts`).
 3. Reseed: `npm run db:seed`
 
-Known seed dates: Density Layers `2026-09-05`, Salt ice fishing `2026-09-12`. Cinnamon soap rush and cornstarch thickening fluid are left null.
+Known seed dates: Density Layers `2026-09-05`, Salt ice fishing `2026-09-12`, Baking-soda volcano `2026-09-19`. Cinnamon soap rush and cornstarch thickening fluid are left null.
