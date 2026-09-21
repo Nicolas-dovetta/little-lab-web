@@ -1,0 +1,34 @@
+# Weekend Experiments
+
+> Parent-tested kitchen science for ages 1–5. Real Saturday runs with a toddler and a preschooler — keepers the kids loved that also show a real physical phenomenon. Free at weekend-experiments.app. (Product/content system nicknamed Little Lab; public brand is Weekend Experiments.)
+
+Important notes:
+- Only list experiments that were actually run and approved for the public site.
+- Physics is explained accurately and in depth (“Bear with me”); do not simplify into wrong demos.
+- Affiliate Amazon links use tracking ID `weekendexperi-20` when present.
+- Merch is separate (Etsy Engineerdadcoffee); ideas stay free.
+
+## Core pages
+
+- [Home](https://www.weekend-experiments.app/): What Weekend Experiments is
+- [Experiments index](https://www.weekend-experiments.app/experiments): All public experiments
+- [About](https://www.weekend-experiments.app/about): Who runs this and why
+- [Plan](https://www.weekend-experiments.app/plan): Learning-path / curriculum sketch
+
+## Experiments
+
+- [Density layers](https://www.weekend-experiments.app/experiments/density-layers): Liquids stack by density
+- [Baking-soda volcano](https://www.weekend-experiments.app/experiments/baking-soda-volcano): Acid–base → CO₂ foam
+- [Cornstarch thickening fluid](https://www.weekend-experiments.app/experiments/cornstarch-thickening-fluid): Non-Newtonian (oobleck-style) mix
+- [Cinnamon soap rush](https://www.weekend-experiments.app/experiments/cinnamon-soap-rush): Surface tension / soap rush
+- [Salt ice fishing](https://www.weekend-experiments.app/experiments/salt-ice-fishing): Freezing-point depression + pressure-melt wire track
+
+## Machine-friendly sources
+
+- [Content repo (GitHub)](https://github.com/Nicolas-dovetta/little-lab): Experiment markdown source of truth (`experiments/*.md`, `SCHEMA.md`, `CAPTURE.md`, `AI_CONTEXT.md`)
+- [Sitemap](https://www.weekend-experiments.app/sitemap.xml): Full URL list for crawlers
+
+## Optional
+
+- [Merch](https://www.weekend-experiments.app/merch): Points to Etsy shop (not the experiment content)
+- [AI_CONTEXT.md](https://github.com/Nicolas-dovetta/little-lab/blob/main/AI_CONTEXT.md): Handoff brief for other AIs working on the product
