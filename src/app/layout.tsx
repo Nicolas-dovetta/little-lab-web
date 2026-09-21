@@ -43,15 +43,13 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     images: [defaultSocialImage],
   },
-  icons: {
-    other: [{ rel: "describedby", url: "/llms.txt" }],
-  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable} h-full antialiased`}>
       <head>
+        <link rel="describedby" href="/llms.txt" />
         <JsonLd data={websiteJsonLd} />
       </head>
       <body className="flex min-h-full flex-col bg-cream text-ink">
