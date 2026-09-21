@@ -3,9 +3,9 @@ import Link from "next/link";
 import { ExperimentCard } from "@/components/ExperimentCard";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import { difficultyLabel, getFeaturedExperiment, listExperiments, messLabel } from "@/lib/experiments";
-import { canonicalMetadata } from "@/lib/site";
+import { DEFAULT_SOCIAL_IMAGE, canonicalMetadata } from "@/lib/site";
 
-export const metadata = canonicalMetadata("/");
+export const metadata = canonicalMetadata("/", { image: DEFAULT_SOCIAL_IMAGE });
 
 export default async function HomePage() {
   const [featured, all] = await Promise.all([getFeaturedExperiment(), listExperiments()]);

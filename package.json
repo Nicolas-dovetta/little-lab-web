@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "tsx --test src/lib/amazon.test.ts",
+    "test": "tsx --test src/lib/amazon.test.ts src/lib/site.test.ts",
     "db:push": "tsx scripts/push-schema.ts",
     "db:seed": "tsx scripts/seed.ts",
     "db:push:kit": "drizzle-kit push"
