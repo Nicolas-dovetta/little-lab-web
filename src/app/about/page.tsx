@@ -73,7 +73,16 @@ export default function AboutPage() {
         </p>
         <p className="font-medium text-ink">Enjoy. And sorry for the mess.</p>
         <p className="text-base">
-          Merch lives next door at{" "}
+          Find me on X as{" "}
+          <a
+            href="https://x.com/Ndovetta"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-sage-800 underline-offset-2 hover:underline"
+          >
+            Ndovetta
+          </a>
+          . Merch lives next door at{" "}
           <a
             href="https://www.etsy.com/shop/Engineerdadcoffee"
             target="_blank"
