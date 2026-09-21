@@ -236,22 +236,24 @@ export default async function ExperimentDetailPage({
                       </p>
                     </div>
                   )}
+                  {knowThis.numbersNote && (
+                    <div>
+                      <h3 className="text-sm font-semibold text-ink">Numbers</h3>
+                      <p className="mt-1 text-sm text-ink-muted">{knowThis.numbersNote}</p>
+                    </div>
+                  )}
                   {knowThis.doesNotProve && (
                     <div>
                       <h3 className="text-sm font-semibold text-ink">Does not prove</h3>
-                      <p className="mt-1 text-sm text-ink-muted">{knowThis.doesNotProve}</p>
+                      <p className="mt-1 whitespace-pre-line text-sm text-ink-muted">
+                        {knowThis.doesNotProve}
+                      </p>
                     </div>
                   )}
                   {knowThis.goDeeper && (
                     <div>
                       <h3 className="text-sm font-semibold text-ink">Go deeper</h3>
                       <p className="mt-1 text-sm text-ink-muted">{knowThis.goDeeper}</p>
-                    </div>
-                  )}
-                  {knowThis.numbersNote && (
-                    <div>
-                      <h3 className="text-sm font-semibold text-ink">Numbers</h3>
-                      <p className="mt-1 text-sm text-ink-muted">{knowThis.numbersNote}</p>
                     </div>
                   )}
                   {knowThis.nameForThis && (
@@ -312,26 +314,27 @@ export default async function ExperimentDetailPage({
             </Section>
           )}
 
-          {gallery.length > 0 && (
-            <Section title="From our kitchen">
-              <div className="grid gap-4 sm:grid-cols-2">
-                {gallery.map((src) => (
-                  <div
-                    key={src}
-                    className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-sage-200/80 bg-sage-50"
-                  >
-                    <Image src={src} alt="" fill className="object-contain" sizes="(max-width: 768px) 100vw, 30vw" />
-                  </div>
-                ))}
-              </div>
-            </Section>
-          )}
-
-          {e.notesFromHome && (
+          {(gallery.length > 0 || e.notesFromHome) && (
             <Section title="Notes from home">
-              <blockquote className="whitespace-pre-line rounded-2xl border border-amber-200/80 bg-amber-50/80 p-5 text-sm text-ink">
-                {e.notesFromHome}
-              </blockquote>
+              <div className="space-y-4">
+                {gallery.length > 0 && (
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {gallery.map((src) => (
+                      <div
+                        key={src}
+                        className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-sage-200/80 bg-sage-50"
+                      >
+                        <Image src={src} alt="" fill className="object-contain" sizes="(max-width: 768px) 100vw, 30vw" />
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {e.notesFromHome && (
+                  <blockquote className="whitespace-pre-line rounded-2xl border border-amber-200/80 bg-amber-50/80 p-5 text-sm text-ink">
+                    {e.notesFromHome}
+                  </blockquote>
+                )}
+              </div>
             </Section>
           )}
 
