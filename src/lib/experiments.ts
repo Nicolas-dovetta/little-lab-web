@@ -1,11 +1,11 @@
 import { asc, eq } from "drizzle-orm";
 import { getDb } from "@/db";
-import { experiments, faqEntries, type Experiment, type FaqEntry } from "@/db/schema";
+import { experiments, faqEntries, type Experiment, type FaqEntry, type RunThis } from "@/db/schema";
 import { experimentSeeds, faqSeeds, type ExperimentSeed, type FaqSeed } from "@/data/seed";
 
 function seedToExperiment(e: ExperimentSeed): Experiment {
   const now = new Date();
-  return {
+  return withoutDuplicateGalleryPhotos({
     id: e.id,
     title: e.title,
     status: e.status,
@@ -38,7 +38,7 @@ function seedToExperiment(e: ExperimentSeed): Experiment {
     ranOn: e.ranOn ?? null,
     createdAt: now,
     updatedAt: now,
-  };
+  });
 }
 
 function seedToFaq(f: FaqSeed, idx: number): FaqEntry {
@@ -75,6 +75,118 @@ export function formatRanOn(value: string | Date | null | undefined): string | n
     year: "numeric",
     timeZone: "UTC",
   });
+}
+
+/** Pilot five-section spine (Grab bag → The moves → Kid verdict → Bear with me → Heads-up). */
+export const PILOT_SPINE_SLUG = "baking-soda-volcano";
+
+export function usesPilotSpine(id: string): boolean {
+  return id === PILOT_SPINE_SLUG;
+}
+
+export type MoveStep = {
+  title: string;
+  detail: string;
+  imageUrl: string | null;
+};
+
+/**
+ * Ordered moves: seed steps first, each paired with at most one unused track image.
+ * Extra steps stay text-only. Never repeats an image path.
+ */
+export function uniqueMoveSteps(
+  steps: Iterable<{ title: string; detail: string }> | null | undefined,
+  tracks?: Iterable<{ title: string; imageUrl?: string | null; blurb?: string }> | null,
+): MoveStep[] {
+  const trackList = [...(tracks ?? [])];
+  const trackImages = trackList
+    .map((track) => track.imageUrl?.trim() ?? "")
+    .filter(Boolean);
+  const used = new Set<string>();
+  const stepList = [...(steps ?? [])];
+
+  if (stepList.length > 0) {
+    return stepList.map((step, index) => {
+      const candidate = trackImages[index];
+      let imageUrl: string | null = null;
+      if (candidate && !used.has(candidate)) {
+        used.add(candidate);
+        imageUrl = candidate;
+      }
+      return { title: step.title, detail: step.detail, imageUrl };
+    });
+  }
+
+  return trackList.map((track) => {
+    const candidate = track.imageUrl?.trim() || null;
+    let imageUrl: string | null = null;
+    if (candidate && !used.has(candidate)) {
+      used.add(candidate);
+      imageUrl = candidate;
+    }
+    return {
+      title: track.title,
+      detail: track.blurb?.trim() || "",
+      imageUrl,
+    };
+  });
+}
+
+/** Kid verdict body: lived notes, else the short experience line. Never invents quotes. */
+export function kidVerdictProse(
+  notesFromHome?: string | null,
+  experience?: string | null,
+): string | null {
+  const notes = notesFromHome?.trim();
+  if (notes) return notes;
+  const line = experience?.trim();
+  return line || null;
+}
+
+/**
+ * Drop kitchen-gallery paths that already appear as the hero or a RUN THIS
+ * track image. On main, baking-soda-volcano listed the same three step photos
+ * in `gallery` and `runThis.tracks`, which rendered twice.
+ */
+export function withoutDuplicateGalleryPhotos(e: Experiment): Experiment {
+  const runThis = (e.runThis ?? {}) as RunThis;
+  return {
+    ...e,
+    gallery: uniqueKitchenGallery(e.gallery, {
+      heroImageUrl: e.heroImageUrl,
+      trackImageUrls: runThis.tracks?.map((track) => track.imageUrl),
+    }),
+  };
+}
+
+/**
+ * Kitchen photos that are not already the hero or a RUN THIS track image.
+ * Each remaining path appears once. Pilot spine does not render this gallery.
+ */
+export function uniqueKitchenGallery(
+  gallery: Iterable<string | null | undefined> | null | undefined,
+  options?: {
+    heroImageUrl?: string | null;
+    trackImageUrls?: Iterable<string | null | undefined> | null;
+  },
+): string[] {
+  const excluded = new Set<string>();
+  const hero = options?.heroImageUrl?.trim();
+  if (hero) excluded.add(hero);
+  for (const url of options?.trackImageUrls ?? []) {
+    const trimmed = url?.trim();
+    if (trimmed) excluded.add(trimmed);
+  }
+
+  const seen = new Set<string>();
+  const unique: string[] = [];
+  for (const raw of gallery ?? []) {
+    const src = raw?.trim();
+    if (!src || excluded.has(src) || seen.has(src)) continue;
+    seen.add(src);
+    unique.push(src);
+  }
+  return unique;
 }
 
 function sortExperiments(rows: Experiment[], sort?: string | null): Experiment[] {
@@ -114,7 +226,9 @@ export async function listExperiments(options?: { sort?: string | null }): Promi
   try {
     const db = getDb();
     const rows = await db.select().from(experiments).orderBy(asc(experiments.title));
-    if (rows.length > 0) return sortExperiments(rows, sort);
+    if (rows.length > 0) {
+      return sortExperiments(rows.map(withoutDuplicateGalleryPhotos), sort);
+    }
   } catch {
     // fall through to in-code seed
   }
@@ -125,7 +239,7 @@ export async function getExperiment(id: string): Promise<Experiment | null> {
   try {
     const db = getDb();
     const rows = await db.select().from(experiments).where(eq(experiments.id, id)).limit(1);
-    if (rows[0]) return rows[0];
+    if (rows[0]) return withoutDuplicateGalleryPhotos(rows[0]);
   } catch {
     // fall through
   }
