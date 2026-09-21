@@ -4,7 +4,14 @@ import { notFound } from "next/navigation";
 import { ExperimentViewTracker } from "@/components/ExperimentViewTracker";
 import type { ExperimentProduct, KnowThis, RunThis, SayThis, Trap } from "@/db/schema";
 import { amazonPackCartHref, amazonProductHref } from "@/lib/amazon";
-import { difficultyLabel, formatRanOn, getExperiment, listExperiments, messLabel } from "@/lib/experiments";
+import {
+  difficultyLabel,
+  formatRanOn,
+  getExperiment,
+  listExperiments,
+  messLabel,
+  uniqueKitchenGallery,
+} from "@/lib/experiments";
 import { DEFAULT_SOCIAL_IMAGE, canonicalMetadata } from "@/lib/site";
 
 export async function generateStaticParams() {
@@ -57,11 +64,14 @@ export default async function ExperimentDetailPage({
   const adultRole = (e.adultRole as string[]) || [];
   const steps = (e.steps as { title: string; detail: string }[]) || [];
   const notice = (e.notice as string[]) || [];
-  const gallery = (e.gallery as string[]) || [];
   const sayThis = (e.sayThis as SayThis) || {};
   const runThis = (e.runThis as RunThis) || {};
   const knowThis = (e.knowThis as KnowThis) || { mechanism: "", doesNotProve: "" };
   const traps = (e.traps as Trap[]) || [];
+  const gallery = uniqueKitchenGallery((e.gallery as string[]) || [], {
+    heroImageUrl: e.heroImageUrl,
+    trackImageUrls: runThis.tracks?.map((track) => track.imageUrl),
+  });
 
   const showSay = hasSayContent(sayThis);
   const showRun = hasRunContent(runThis);
@@ -139,9 +149,21 @@ export default async function ExperimentDetailPage({
             </div>
           )}
 
-          {e.experience && (
+          {(e.experience || gallery.length > 0) && (
             <Section title="The experience">
-              <p className="text-ink-muted">{e.experience}</p>
+              {e.experience && <p className="text-ink-muted">{e.experience}</p>}
+              {gallery.length > 0 && (
+                <div className={`grid gap-4 sm:grid-cols-2${e.experience ? " mt-4" : ""}`}>
+                  {gallery.map((src) => (
+                    <div
+                      key={src}
+                      className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-sage-200/80 bg-sage-50"
+                    >
+                      <Image src={src} alt="" fill className="object-contain" sizes="(max-width: 768px) 100vw, 30vw" />
+                    </div>
+                  ))}
+                </div>
+              )}
             </Section>
           )}
 
@@ -314,27 +336,11 @@ export default async function ExperimentDetailPage({
             </Section>
           )}
 
-          {(gallery.length > 0 || e.notesFromHome) && (
+          {e.notesFromHome && (
             <Section title="Notes from home">
-              <div className="space-y-4">
-                {gallery.length > 0 && (
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {gallery.map((src) => (
-                      <div
-                        key={src}
-                        className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-sage-200/80 bg-sage-50"
-                      >
-                        <Image src={src} alt="" fill className="object-contain" sizes="(max-width: 768px) 100vw, 30vw" />
-                      </div>
-                    ))}
-                  </div>
-                )}
-                {e.notesFromHome && (
-                  <blockquote className="whitespace-pre-line rounded-2xl border border-amber-200/80 bg-amber-50/80 p-5 text-sm text-ink">
-                    {e.notesFromHome}
-                  </blockquote>
-                )}
-              </div>
+              <blockquote className="whitespace-pre-line rounded-2xl border border-amber-200/80 bg-amber-50/80 p-5 text-sm text-ink">
+                {e.notesFromHome}
+              </blockquote>
             </Section>
           )}
 

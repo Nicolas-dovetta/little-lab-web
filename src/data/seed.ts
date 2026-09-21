@@ -440,10 +440,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "Needs water. Trial and error. The kid can dump salt everywhere — that was fine.\n\nAbout 1/4 of the attempts worked until we got it. Best recipe: a ton of fresh ice in a ton of water, string over many cubes, catch ~5 pulling slowly. Got smoked. Kid was excited.\n\nCopper wire is the long game (~2 hours). Give the kid a fishing mission while it runs. Fun beat: remove the weights, pick up the ice holding both ends of the wire. Kid was excited explaining the wire to mom.\n\nFun. Not as entertaining as balsamic.",
     ranOn: "2026-09-12",
     heroImageUrl: "/images/experiments/salt-ice-fishing-catch.png",
-    gallery: [
-      "/images/experiments/salt-ice-howto-fishing.png",
-      "/images/experiments/salt-ice-wire-groove.png",
-    ],
+    gallery: [],
     featured: false,
     planUnit: "Water & weather",
     sayThis: {
@@ -590,11 +587,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     notesFromHome:
       "Tonight the 3yo asked to do more volcanos — we did; he liked it. The 1yo was screaming (happily) at every eruption.\n\nBest was a tall transparent glass on a glass tray. He pours dish soap and coloring after the baking soda. He loved it — especially the last run with everything: all the color, all the vinegar, all the baking soda. Trying the funnel as the volcano didn’t work well; funnel is helpful to pour. Recipe each time: ~3 tablespoons baking soda, a small squeeze of dish soap, ~1 cup vinegar (a little eyeball). Let the kid do it at the end. Went through a bottle of white vinegar and baking soda. Any vinegar would probably work, but pure white vinegar doesn’t have sugar or color — easier to clean. Tried a baby bottle — works well with the opening a little smaller than the base.",
     heroImageUrl: "/images/experiments/baking-soda-volcano-overflow.png",
-    gallery: [
-      "/images/experiments/baking-soda-volcano-soda.png",
-      "/images/experiments/baking-soda-volcano-soap-color.png",
-      "/images/experiments/baking-soda-volcano-vinegar.png",
-    ],
+    gallery: [],
     featured: false,
     planUnit: "Matter & mess",
     ranOn: "2026-09-19",

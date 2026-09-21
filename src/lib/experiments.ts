@@ -77,6 +77,37 @@ export function formatRanOn(value: string | Date | null | undefined): string | n
   });
 }
 
+/**
+ * Kitchen photos that are not already the hero or a RUN THIS track image.
+ * Notes from home is prose-only; this is the only extra gallery to render,
+ * and each remaining path appears once.
+ */
+export function uniqueKitchenGallery(
+  gallery: Iterable<string | null | undefined> | null | undefined,
+  options?: {
+    heroImageUrl?: string | null;
+    trackImageUrls?: Iterable<string | null | undefined> | null;
+  },
+): string[] {
+  const excluded = new Set<string>();
+  const hero = options?.heroImageUrl?.trim();
+  if (hero) excluded.add(hero);
+  for (const url of options?.trackImageUrls ?? []) {
+    const trimmed = url?.trim();
+    if (trimmed) excluded.add(trimmed);
+  }
+
+  const seen = new Set<string>();
+  const unique: string[] = [];
+  for (const raw of gallery ?? []) {
+    const src = raw?.trim();
+    if (!src || excluded.has(src) || seen.has(src)) continue;
+    seen.add(src);
+    unique.push(src);
+  }
+  return unique;
+}
+
 function sortExperiments(rows: Experiment[], sort?: string | null): Experiment[] {
   if (sort === "newest") {
     // Newest overrides winner/planned ranking: ranOn desc, nulls last, then title
