@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ExperimentViewTracker } from "@/components/ExperimentViewTracker";
+import { JsonLd } from "@/components/JsonLd";
 import { VolcanoExperimentView } from "@/components/VolcanoExperimentView";
 import type { Experiment, ExperimentProduct, KnowThis, RunThis, SayThis, Trap } from "@/db/schema";
 import { amazonPackCartHref, amazonProductHref } from "@/lib/amazon";
@@ -13,6 +14,7 @@ import {
   messLabel,
   usesPilotSpine,
 } from "@/lib/experiments";
+import { howToJsonLd } from "@/lib/jsonld";
 import { DEFAULT_SOCIAL_IMAGE, canonicalMetadata } from "@/lib/site";
 
 export async function generateStaticParams() {
@@ -61,6 +63,7 @@ export default async function ExperimentDetailPage({
 
   return (
     <article className="pb-16">
+      <JsonLd data={howToJsonLd(e)} />
       <ExperimentViewTracker slug={e.id} />
       <ExperimentTitleBand experiment={e} ranOnLabel={formatRanOn(e.ranOn)} />
       {usesPilotSpine(e.id) ? (
