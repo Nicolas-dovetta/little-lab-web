@@ -566,54 +566,47 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     messLevel: "high",
     location: "indoor",
     materials: [
-      "Tall transparent glass (or clear cup)",
-      "Baby bottle (worked well — opening a little smaller than the base)",
-      "Glass tray or baking sheet with sides",
-      "White vinegar (any vinegar probably works; plain white is easiest to clean — no sugar/color)",
-      "Baking soda",
-      "Dish soap (small squeeze — thicker foam)",
-      "Food coloring (optional — kid liked “all the color”)",
+      "Dish soap (small squeeze)",
       "Spoon",
-      "Funnel (helpful to pour into the glass/bottle)",
       "Towels",
     ],
     products: [
       {
         name: "Arm & Hammer Baking Soda, 1 lb",
         asin: "B000PYF8VM",
-        note: "~3 Tbsp per round (eyeball). From our cart.",
+        note: "~3 Tbsp per round (eyeball).",
       },
       {
         name: "Heinz Distilled White Vinegar, 1 gallon",
         asin: "B000RO08L0",
-        note: "Plain white is easiest to clean (no sugar/dye). Reference pick — any white vinegar works.",
+        note: "Plain white is easiest to clean (no sugar/dye). Any white vinegar works.",
       },
       {
         name: "365 Plant-Based Food Coloring (4 bottles)",
         asin: "B07G2Z6CLG",
-        note: "Optional color for the foam. From our cart.",
+        note: "Optional color for the foam.",
       },
       {
         name: "Stainless steel kitchen funnel set",
         asin: "B0DDKL857F",
-        note: "To pour into a bottle opening — not as the volcano itself. From our cart.",
+        note: "To pour into a bottle opening — not as the volcano itself.",
       },
       {
         name: "Libbey City Tumbler glasses (14.3 oz, set of 8)",
         asin: "B07BMFJ4KB",
-        note: "Reference pick for a tall clear vessel. You only need one; a baby bottle also worked.",
+        note: "Tall clear vessel. You only need one.",
       },
       {
         name: "Nordic Ware Baker's Half Sheet",
         asin: "B00SRSP9VM",
-        note: "Rimmed sheet under the volcano. Reference pick — any tray with sides works.",
+        note: "Rimmed sheet under the volcano. Any tray with sides works.",
       },
     ],
-    prep: "Tray under the glass. Baking soda, dish soap, vinegar, color, spoon within reach. Towels on the floor.",
+    prep: "",
     safety:
       "Taste ban. Vinegar sting in eyes — wipe spills. Keep soap out of eyes. Food coloring stains. Floor gets wet and slippery.",
     experience:
-      "Tall clear glass on a tray (a baby bottle also worked well — opening a little smaller than the base). Baking soda in first, then he pours dish soap and coloring, then vinegar — a fast fizz that climbs and overflows. The hit run was the last one: all the color, all the vinegar, all the baking soda — big messy eruption. Funnel as the volcano itself didn’t work well; funnel to pour into the glass/bottle is helpful. Working amounts: about 3 tablespoons baking soda, a small squeeze of dish soap, and 1 cup vinegar per round (eyeball); kid does the last one. He loved it.",
+      "Tonight the 3yo asked to do more volcanos — we did. The 1yo happy-screamed every eruption.",
     kidCanDo: [
       "Pour a small squeeze of dish soap and food coloring",
       "Do the last pour/scoop",
@@ -628,32 +621,22 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     steps: [
       {
         title: "Glass + baking soda",
-        detail:
-          "Set the tall glass (or baby bottle) on the glass tray. Add about 3 tablespoons baking soda (eyeball is fine).",
+        detail: "Glass on tray; ~3 Tbsp baking soda (eyeball).",
       },
       {
         title: "Dish soap + color",
-        detail:
-          "Small squeeze of dish soap into the glass, then food coloring. He pours the soap and coloring.",
+        detail: "Small squeeze of dish soap, then food coloring. He pours both.",
       },
       {
         title: "Vinegar pour",
-        detail:
-          "Pour about 1 cup vinegar (eyeball is fine). Watch the fizz climb and spill onto the tray.",
+        detail: "~1 cup vinegar (eyeball). Watch the fizz climb and overflow.",
       },
       {
         title: "Reset and save the last for the kid",
-        detail:
-          "Reset and repeat roughly the same amounts (~3 Tbsp soda + a small squeeze of dish soap + ~1 cup vinegar) each time — measurements are a little eyeball. Save the last round for the kid — let them do the pour/scoop at the end. The “everything” run (all color + all vinegar + all baking soda) was the kid favorite.",
+        detail: "Reset and repeat. Save the last “everything” pour for the kid.",
       },
     ],
-    notice: [
-      "Funnel as the volcano itself didn’t work well; funnel to pour is helpful.",
-      "Working amounts: about 3 tablespoons baking soda, a small squeeze of dish soap, and 1 cup vinegar per round (eyeball).",
-      "Dish soap makes thicker foam that lasts — it does not make more gas.",
-      "The hit run was the last one: all the color, all the vinegar, all the baking soda.",
-      "A baby bottle also worked — opening a little smaller than the base.",
-    ],
+    notice: [],
     stretch:
       "Catch overflow on the tray and ask whether the foam is “new stuff” or the same vinegar/soda mix with gas holes in it.",
     notesFromHome:
@@ -674,10 +657,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       ],
     },
     runThis: {
-      overview:
-        "Tall glass (or baby bottle) on a tray. About 3 tablespoons baking soda, a small squeeze of dish soap, food coloring, and 1 cup vinegar per round (eyeball). Repeat; save the last “everything” pour for the kid.",
-      setup:
-        "Glass tray (or rimmed sheet) on a wipeable table. One tall transparent glass centered on the tray (or a baby bottle — smaller opening than the base worked well). Baking soda, dish soap, vinegar, food coloring, spoon, towels ready.",
+      overview: "Repeat on a tray; save the last “everything” pour for the kid.",
       tracks: [
         {
           label: "SODA",
@@ -700,11 +680,14 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       ],
     },
     knowThis: {
-      mechanism: "Baking soda is a powder of sodium bicarbonate. Vinegar is mostly water with a weak acid dissolved in it: acetic acid. When they meet, the acid hands a hydrogen ion to the bicarbonate. That piece is unstable — it falls apart into water and carbon dioxide gas. The gas is the same molecule as the bubbles in soda pop and what we breathe out.\n\nMillions of tiny CO₂ bubbles form in the liquid all at once. Foam is just leftover liquid stretched around those gas holes, so the volume jumps, climbs the glass, and spills onto the tray. Nothing “turns into lava.” You’re making gas inside a liquid.\n\nPlain white vinegar is handy because it has no sugar or dye of its own, so cleanup is simpler — but the fizz is the same idea with other vinegars (they still carry acetic acid). Food coloring is just dye riding along in the foam. It does not make more gas. Dish soap does not make more CO₂ — it is a surfactant that helps bubbles last longer so the foam looks thicker. More baking soda and more vinegar make more reaction until one of them runs out (the limiting reactant). Extra of the leftover one just sits there.\n\nMolecules: baking soda is sodium bicarbonate, NaHCO₃ (solid). Vinegar’s active acid is acetic acid, CH₃COOH (in water). What you make: sodium acetate, CH₃COONa (dissolved), water H₂O, and carbon dioxide CO₂ (gas).",
-      doesNotProve: "That this is lava or a real volcano — it’s a kitchen acid–base fizz, not molten rock. That food coloring is a reactant — it’s just color in the foam. That dish soap makes more gas — soap helps bubbles last (surfactant); it does not make more CO₂. That “more always forever” — once one ingredient is used up, extra of the other does nothing new. That the foam is a new solid — it’s liquid + gas holes; when the bubbles pop, you’re mostly left with leftover liquid (sodium acetate in water).",
-      goDeeper: "Hold a hand near (not in) the foam: the gas is CO₂; the spill is mostly leftover liquid + bubbles. Dish soap does not make more CO₂ — it helps bubbles last longer so the foam looks thicker (surfactant). Try a small spoon of soda + a splash of vinegar in a clear cup next to the tall glass — same chemistry, smaller stage. Grocery white vinegar is usually about 5% acetic acid by volume; the rest is water. That is plenty for this demo.",
-      numbersNote: "Reaction: NaHCO₃(s) + CH₃COOH(aq) → CH₃COONa(aq) + H₂O(l) + CO₂(g). In words: bicarbonate + acetic acid → acetate salt + water + carbon dioxide gas. The gas is what you see as fizz and foam. Keep formulas off the kid table unless they ask — the plain story is enough for ages 1–5.",
-      nameForThis: "Acid–base reaction (bicarbonate + acetic acid) that releases carbon dioxide (CO₂). Sometimes called an acid–carbonate reaction.",
+      mechanism:
+        "Baking soda is a powder of sodium bicarbonate. Vinegar is mostly water with a weak acid dissolved in it: acetic acid. When they meet, the acid hands a hydrogen ion to the bicarbonate. That piece is unstable — it falls apart into water and carbon dioxide gas. The gas is the same molecule as the bubbles in soda pop and what we breathe out.\n\nMillions of tiny CO₂ bubbles form in the liquid all at once. Foam is leftover liquid stretched around those gas holes, so the volume jumps, climbs the glass, and spills onto the tray. Nothing “turns into lava.” You’re making gas inside a liquid — an acid–base reaction (bicarbonate + acetic acid) that releases carbon dioxide.",
+      doesNotProve:
+        "• Once one ingredient is used up (the limiting reactant), extra of the other does nothing new.\n• The foam is not a new solid — it’s liquid + gas holes; leftover is mostly sodium acetate in water.",
+      goDeeper:
+        "Hold a hand near (not in) the foam: the gas is CO₂; the spill is leftover liquid + bubbles. Dish soap does not make more CO₂ — it helps bubbles last longer so the foam looks thicker (surfactant). Grocery white vinegar is usually about 5% acetic acid by volume; the rest is water. That is plenty for this demo.",
+      numbersNote:
+        "Reaction: NaHCO₃(s) + CH₃COOH(aq) → CH₃COONa(aq) + H₂O(l) + CO₂(g). In words: bicarbonate + acetic acid → acetate salt + water + carbon dioxide gas. The gas is what you see as fizz and foam. Keep formulas off the kid table unless they ask — the plain story is enough for ages 1–5.",
     },
     traps: [
       {
