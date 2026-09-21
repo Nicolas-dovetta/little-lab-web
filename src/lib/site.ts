@@ -73,7 +73,11 @@ export function canonicalMetadata(
 ): Metadata {
   const canonical = absoluteUrl(path);
   const imageUrls = resolveSocialImageUrls(extras);
-  const social = imageUrls.length > 0 ? socialImagesMetadata(imageUrls) : null;
+  // Child openGraph replaces parent images, so always emit an image here.
+  // Never invent a path — only DEFAULT_SOCIAL_IMAGE or caller-supplied URLs.
+  const social = socialImagesMetadata(
+    imageUrls.length > 0 ? imageUrls : [absoluteAssetUrl(DEFAULT_SOCIAL_IMAGE)],
+  );
   return {
     ...(extras?.title !== undefined ? { title: extras.title } : {}),
     ...(extras?.description !== undefined ? { description: extras.description } : {}),
@@ -82,8 +86,8 @@ export function canonicalMetadata(
       url: canonical,
       ...(extras?.title !== undefined ? { title: extras.title } : {}),
       ...(extras?.description !== undefined ? { description: extras.description } : {}),
-      ...(social?.openGraph ?? {}),
+      ...social.openGraph,
     },
-    ...(social?.twitter ? { twitter: social.twitter } : {}),
+    twitter: social.twitter,
   };
 }
