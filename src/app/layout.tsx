@@ -3,8 +3,10 @@ import { Fraunces, Source_Sans_3 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { SITE_ORIGIN } from "@/lib/site";
+import { DEFAULT_SOCIAL_IMAGE, SITE_ORIGIN, absoluteAssetUrl } from "@/lib/site";
 import "./globals.css";
+
+const defaultSocialImage = absoluteAssetUrl(DEFAULT_SOCIAL_IMAGE);
 
 const display = Fraunces({
   variable: "--font-display",
@@ -33,6 +35,11 @@ export const metadata: Metadata = {
     title: "Weekend Experiments — Kids experiments for ages 1–5",
     description:
       "Parent-tested experiment ideas for toddlers and preschoolers. Real home runs that kids enjoyed and that show a physical phenomenon.",
+    images: [{ url: defaultSocialImage }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [defaultSocialImage],
   },
 };
 

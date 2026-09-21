@@ -1,6 +1,6 @@
 import { ExperimentCard } from "@/components/ExperimentCard";
 import { listExperiments } from "@/lib/experiments";
-import { canonicalMetadata } from "@/lib/site";
+import { DEFAULT_SOCIAL_IMAGE, canonicalMetadata } from "@/lib/site";
 import Link from "next/link";
 
 type Search = { age?: string; domain?: string; mess?: string; location?: string; sort?: string };
@@ -10,6 +10,7 @@ export const metadata = canonicalMetadata("/experiments", {
   title: "Experiments",
   description:
     "For parents with curious kids who are looking for a way to make their kitchen extra messy on weekends.",
+  image: DEFAULT_SOCIAL_IMAGE,
 });
 
 export default async function ExperimentsPage({

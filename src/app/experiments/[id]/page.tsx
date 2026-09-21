@@ -5,7 +5,7 @@ import { ExperimentViewTracker } from "@/components/ExperimentViewTracker";
 import type { ExperimentProduct, KnowThis, RunThis, SayThis, Trap } from "@/db/schema";
 import { amazonPackCartHref, amazonProductHref } from "@/lib/amazon";
 import { difficultyLabel, formatRanOn, getExperiment, listExperiments, messLabel } from "@/lib/experiments";
-import { canonicalMetadata } from "@/lib/site";
+import { DEFAULT_SOCIAL_IMAGE, canonicalMetadata } from "@/lib/site";
 
 export async function generateStaticParams() {
   const all = await listExperiments();
@@ -19,6 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return canonicalMetadata(`/experiments/${id}`, {
     title: e.title,
     description: e.learningGoal,
+    image: e.heroImageUrl ?? DEFAULT_SOCIAL_IMAGE,
   });
 }
 
