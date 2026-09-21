@@ -77,10 +77,75 @@ export function formatRanOn(value: string | Date | null | undefined): string | n
   });
 }
 
+/** Pilot five-section spine (Grab bag → The moves → Kid verdict → Bear with me → Heads-up). */
+export const PILOT_SPINE_SLUG = "baking-soda-volcano";
+
+export function usesPilotSpine(id: string): boolean {
+  return id === PILOT_SPINE_SLUG;
+}
+
+export type MoveStep = {
+  title: string;
+  detail: string;
+  imageUrl: string | null;
+};
+
+/**
+ * Ordered moves: seed steps first, each paired with at most one unused track image.
+ * Extra steps stay text-only. Never repeats an image path.
+ */
+export function uniqueMoveSteps(
+  steps: Iterable<{ title: string; detail: string }> | null | undefined,
+  tracks?: Iterable<{ title: string; imageUrl?: string | null; blurb?: string }> | null,
+): MoveStep[] {
+  const trackList = [...(tracks ?? [])];
+  const trackImages = trackList
+    .map((track) => track.imageUrl?.trim() ?? "")
+    .filter(Boolean);
+  const used = new Set<string>();
+  const stepList = [...(steps ?? [])];
+
+  if (stepList.length > 0) {
+    return stepList.map((step, index) => {
+      const candidate = trackImages[index];
+      let imageUrl: string | null = null;
+      if (candidate && !used.has(candidate)) {
+        used.add(candidate);
+        imageUrl = candidate;
+      }
+      return { title: step.title, detail: step.detail, imageUrl };
+    });
+  }
+
+  return trackList.map((track) => {
+    const candidate = track.imageUrl?.trim() || null;
+    let imageUrl: string | null = null;
+    if (candidate && !used.has(candidate)) {
+      used.add(candidate);
+      imageUrl = candidate;
+    }
+    return {
+      title: track.title,
+      detail: track.blurb?.trim() || "",
+      imageUrl,
+    };
+  });
+}
+
+/** Kid verdict body: lived notes, else the short experience line. Never invents quotes. */
+export function kidVerdictProse(
+  notesFromHome?: string | null,
+  experience?: string | null,
+): string | null {
+  const notes = notesFromHome?.trim();
+  if (notes) return notes;
+  const line = experience?.trim();
+  return line || null;
+}
+
 /**
  * Kitchen photos that are not already the hero or a RUN THIS track image.
- * Notes from home is prose-only; this is the only extra gallery to render,
- * and each remaining path appears once.
+ * Each remaining path appears once. Pilot spine does not render this gallery.
  */
 export function uniqueKitchenGallery(
   gallery: Iterable<string | null | undefined> | null | undefined,

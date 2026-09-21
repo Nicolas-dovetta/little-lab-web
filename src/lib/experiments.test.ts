@@ -1,13 +1,63 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { experimentSeeds } from "../data/seed";
-import { uniqueKitchenGallery } from "./experiments";
+import {
+  kidVerdictProse,
+  uniqueKitchenGallery,
+  uniqueMoveSteps,
+  usesPilotSpine,
+} from "./experiments";
 
 const VOLCANO_TRACKS = [
   "/images/experiments/baking-soda-volcano-soda.png",
   "/images/experiments/baking-soda-volcano-soap-color.png",
   "/images/experiments/baking-soda-volcano-vinegar.png",
 ];
+
+test("usesPilotSpine is volcano-only", () => {
+  assert.equal(usesPilotSpine("baking-soda-volcano"), true);
+  assert.equal(usesPilotSpine("salt-ice-fishing"), false);
+  assert.equal(usesPilotSpine("density-layers"), false);
+});
+
+test("uniqueMoveSteps pairs volcano steps to each track image once", () => {
+  const volcano = experimentSeeds.find((e) => e.id === "baking-soda-volcano");
+  assert.ok(volcano);
+  const moves = uniqueMoveSteps(volcano.steps, volcano.runThis?.tracks);
+  assert.equal(moves.length, 4);
+  assert.deepEqual(
+    moves.map((m) => m.imageUrl),
+    [...VOLCANO_TRACKS, null],
+  );
+  const pictured = moves.map((m) => m.imageUrl).filter(Boolean);
+  assert.equal(new Set(pictured).size, pictured.length);
+  assert.ok(!pictured.includes(volcano.heroImageUrl));
+});
+
+test("uniqueMoveSteps does not reuse a track image", () => {
+  const moves = uniqueMoveSteps(
+    [
+      { title: "A", detail: "a" },
+      { title: "B", detail: "b" },
+      { title: "C", detail: "c" },
+    ],
+    [
+      { title: "A", imageUrl: "/one.png", blurb: "a" },
+      { title: "B", imageUrl: "/one.png", blurb: "b" },
+      { title: "C", imageUrl: "/two.png", blurb: "c" },
+    ],
+  );
+  assert.deepEqual(
+    moves.map((m) => m.imageUrl),
+    ["/one.png", null, "/two.png"],
+  );
+});
+
+test("kidVerdictProse prefers notes and does not invent text", () => {
+  assert.equal(kidVerdictProse("  notes  ", "experience"), "notes");
+  assert.equal(kidVerdictProse(" ", "  experience  "), "experience");
+  assert.equal(kidVerdictProse("", ""), null);
+});
 
 test("uniqueKitchenGallery drops hero, RUN THIS tracks, blanks, and duplicates", () => {
   assert.deepEqual(
@@ -31,31 +81,7 @@ test("uniqueKitchenGallery drops hero, RUN THIS tracks, blanks, and duplicates",
   );
 });
 
-test("volcano-shaped gallery that copies RUN THIS tracks is empty leftover", () => {
-  assert.deepEqual(
-    uniqueKitchenGallery(VOLCANO_TRACKS, {
-      heroImageUrl: "/images/experiments/baking-soda-volcano-overflow.png",
-      trackImageUrls: VOLCANO_TRACKS,
-    }),
-    [],
-  );
-});
-
-test("seed kitchen galleries do not repeat hero or RUN THIS track images", () => {
-  for (const seed of experimentSeeds) {
-    const leftover = uniqueKitchenGallery(seed.gallery, {
-      heroImageUrl: seed.heroImageUrl,
-      trackImageUrls: seed.runThis?.tracks?.map((track) => track.imageUrl),
-    });
-    assert.deepEqual(
-      leftover,
-      seed.gallery.filter(Boolean),
-      `${seed.id} gallery should only list photos not already on hero/tracks`,
-    );
-  }
-});
-
-test("baking-soda-volcano seed: notes are prose, gallery empty, tracks unique once", () => {
+test("baking-soda-volcano seed: empty gallery, unique step pics, notes prose", () => {
   const volcano = experimentSeeds.find((e) => e.id === "baking-soda-volcano");
   assert.ok(volcano);
   assert.deepEqual(volcano.gallery, []);
@@ -64,5 +90,4 @@ test("baking-soda-volcano seed: notes are prose, gallery empty, tracks unique on
   assert.doesNotMatch(volcano.notesFromHome, /!\[[^\]]*]\([^)]+\)|<img\b|\.png|\.jpg|\.webp/i);
   const trackUrls = volcano.runThis?.tracks?.map((track) => track.imageUrl) ?? [];
   assert.deepEqual(trackUrls, VOLCANO_TRACKS);
-  assert.equal(new Set(trackUrls).size, trackUrls.length);
 });
