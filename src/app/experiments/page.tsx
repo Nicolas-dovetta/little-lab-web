@@ -1,9 +1,16 @@
 import { ExperimentCard } from "@/components/ExperimentCard";
-import { listExperiments } from "@/lib/experiments";
+import { listExperiments, matchesStatusFilter } from "@/lib/experiments";
 import { DEFAULT_SOCIAL_IMAGE, canonicalMetadata } from "@/lib/site";
 import Link from "next/link";
 
-type Search = { age?: string; domain?: string; mess?: string; location?: string; sort?: string };
+type Search = {
+  age?: string;
+  domain?: string;
+  mess?: string;
+  location?: string;
+  sort?: string;
+  status?: string;
+};
 
 // Canonical stays the clean path so ?sort / filters are not alternate indexable URLs.
 export const metadata = canonicalMetadata("/experiments", {
@@ -26,6 +33,7 @@ export default async function ExperimentsPage({
     if (params.domain && !e.domains.includes(params.domain)) return false;
     if (params.mess && e.messLevel !== params.mess) return false;
     if (params.location && e.location !== params.location) return false;
+    if (!matchesStatusFilter(e.status, params.status)) return false;
     return true;
   });
 
@@ -73,6 +81,22 @@ export default async function ExperimentsPage({
             Newest
           </Chip>
         </FilterRow>
+        <FilterRow label="Status">
+          <Chip
+            href={hrefFor({ status: "done" })}
+            active={params.status === "done"}
+            clearHref={clearKey("status")}
+          >
+            Done
+          </Chip>
+          <Chip
+            href={hrefFor({ status: "planned" })}
+            active={params.status === "planned"}
+            clearHref={clearKey("status")}
+          >
+            Planned
+          </Chip>
+        </FilterRow>
         <FilterRow label="Age">
           {ages.map((a) => (
             <Chip key={a} href={hrefFor({ age: a })} active={params.age === a} clearHref={clearKey("age")}>
@@ -111,7 +135,7 @@ export default async function ExperimentsPage({
             </Chip>
           ))}
         </FilterRow>
-        {(params.age || params.domain || params.mess || params.location) && (
+        {(params.age || params.domain || params.mess || params.location || params.status) && (
           <Link href={clearFiltersHref()} className="inline-block text-sm font-semibold text-sage-700">
             Clear filters
           </Link>

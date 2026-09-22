@@ -68,8 +68,10 @@ export type ExperimentSeed = {
   knowThis?: KnowThis;
   traps?: Trap[];
   planUnit?: string | null;
-  /** Saturday session date YYYY-MM-DD (America/Los_Angeles). Omit or null if unknown. */
+  /** Saturday the experiment was actually run, YYYY-MM-DD (America/Los_Angeles). Omit or null if unknown. */
   ranOn?: string | null;
+  /** Upcoming Saturday YYYY-MM-DD (America/Los_Angeles). Omit or null if not scheduled. */
+  plannedFor?: string | null;
 };
 
 export type FaqSeed = {
@@ -213,7 +215,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
   {
     id: "cornstarch-thickening-fluid",
     title: "Cornstarch thickening fluid (Maïzena)",
-    status: "tested",
+    status: "planned",
     difficulty: 1,
     ageBands: ["1-2", "3-5"],
     domains: ["physics", "sensory"],
@@ -258,11 +260,12 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     stretch:
       "Walk fingertips across a tray of the mix (quick steps stay up; slow ones sink). Compare with flour + water.",
     notesFromHome:
-      "Ran at home (Nicolas): water first, then Maïzena until it feels fun; prep cups to pour and toys to smash the mixture — logged as tested.",
+      "Ran at home (Nicolas): water first, then Maïzena until it feels fun; prep cups to pour and toys to smash the mixture — logged as tested. Re-planned for Saturday 2026-09-26.",
     heroImageUrl: "/images/experiments/cornstarch-thickening-fluid-hero.png",
     gallery: [],
     featured: false,
     planUnit: "Matter & mess",
+    plannedFor: "2026-09-26",
     sayThis: {
       age12: ["[I will fill this after Saturday]"],
       age35: ["[I will fill this after Saturday]"],
@@ -650,6 +653,114 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
         why: "Using the funnel as the vessel didn’t work well — tall glass or baby bottle on a tray was better. A funnel is handy to pour soda/vinegar into a narrow opening.",
         replace:
           "Use a tall glass or baby bottle on a tray. The funnel is for pouring, not the volcano.",
+      },
+    ],
+  },
+  {
+    id: "water-bottle-rocket",
+    title: "Water-bottle rocket",
+    status: "planned",
+    difficulty: 2,
+    ageBands: ["1-2", "3-5"],
+    domains: ["physics"],
+    learningGoal:
+      "Pressurized air pushes water out the nozzle; the bottle goes the other way (reaction force).",
+    timeMinutes: 25,
+    messLevel: "medium",
+    location: "outdoor",
+    materials: [
+      "Empty 1–2 L plastic soda bottle",
+      "Bike pump (or dedicated bottle-rocket pump)",
+      "Cork / launcher that seals the bottle neck under pressure",
+      "Water (~⅓ bottle)",
+      "Optional cardboard fins + simple launch stand",
+      "Eye protection for the person pumping",
+    ],
+    prep: "Open outdoor space clear of cars, windows, and overhead people. Fill bottle to about one-third with water. Fit seal/launcher before kids gather.",
+    safety:
+      "Adult pumps and releases. Do not hand kids a pressurized bottle. Point launch away from faces and windows. Stop if the seal leaks hard or the bottle creaks oddly. Wet ground gets slippery.",
+    experience:
+      "Kid-requested outdoor rocket: bottle, water, pump — count down, launch, chase the splash, refill and go again.",
+    kidCanDo: [
+      "Count aloud while the adult pumps (3–5)",
+      "Watch from the side, then chase the splash after it launches",
+      "Help pick less water or more water for the next run",
+    ],
+    adultRole: [
+      "Fill, seal, pump, and release — kids do not hold a pressurized bottle",
+      "Point the launch away from faces, windows, and cars",
+      "Wear eye protection while pumping",
+      "Refill between runs",
+    ],
+    steps: [
+      {
+        title: "Fill",
+        detail: "Fill the bottle about one-third with water; leave the rest as air.",
+      },
+      {
+        title: "Seal",
+        detail:
+          "Seat the cork or launcher seal in the neck; set the bottle on the pad upright (or slightly tipped away from people).",
+      },
+      {
+        title: "Pump",
+        detail: "Adult pumps air into the headspace. Kids count aloud.",
+      },
+      {
+        title: "Launch",
+        detail:
+          "When pressure wins the seal (or you release the latch), water shoots down and out; the bottle goes up.",
+      },
+      {
+        title: "Compare",
+        detail:
+          "Fetch, rinse if needed, refill, repeat. Try one run with less water and one with more — compare height.",
+      },
+    ],
+    notice: [],
+    stretch:
+      "Same pressure, different water fractions — which goes highest? Add cardboard fins — does it fly straighter?",
+    notesFromHome: "[I will fill this after Saturday]",
+    heroImageUrl: null,
+    gallery: [],
+    featured: false,
+    planUnit: "Forces & motion",
+    plannedFor: "2026-10-03",
+    sayThis: {
+      age12: ["[I will fill this after Saturday]"],
+      age35: ["[I will fill this after Saturday]"],
+    },
+    runThis: {
+      overview:
+        "Fill, seal, pump until the bottle pops free, watch the water jet and the bottle climb, then reset.",
+      setup:
+        "Outside on open ground. Bottle on launcher / cork seated firmly. Audience off to the side, not under the path.",
+    },
+    knowThis: {
+      mechanism:
+        "You trap air above the water and squeeze more air in with the pump. Pressure in that air space rises. The only open path is the neck. When the cork lets go, high-pressure air pushes the water out as a fast downward jet.\n\nForces come in pairs (Newton’s third law): if the bottle pushes water one way, the water pushes the bottle the other way. The “exhaust” is liquid water with real mass — much better reaction mass than air alone — so a water-filled rocket climbs higher than an air-only blast from the same bottle.\n\nWhile it is in the air, gravity pulls down and air drag slows it; when the water is gone, thrust stops and it coasts, then falls.",
+      doesNotProve:
+        "• That rockets need fire or “explosion.” This one is cold: compressed air + water.\n• That more water is always better — too much water means less air to pressurize and more mass to lift; too little means weak exhaust mass. There is a sweet spot.",
+      goDeeper:
+        "Momentum: thrust lasts only while mass is leaving the nozzle. Nozzle size and seal quality change how fast pressure dumps. Real water rockets often use a launch tube so the bottle stays aimed until it clears the pad.",
+      nameForThis:
+        "Reaction force / Newton’s third law; momentum conservation; pressurized gas doing work on a fluid.",
+    },
+    traps: [
+      {
+        wrong: "The air blows the bottle up like a balloon floating.",
+        why: "The bottle is not buoyant flight. Thrust comes from shoving water (mass) downward.",
+        replace: "",
+      },
+      {
+        wrong: "Air-only launches are the same.",
+        why: "Air has much less mass leaving the nozzle, so the kick is weaker for the same pressure.",
+        replace: "",
+      },
+      {
+        wrong: "Kids can hold it while you pump.",
+        why: "When the seal pops, the bottle and cork move fast. Adult owns the pressurized hardware.",
+        replace: "",
       },
     ],
   },

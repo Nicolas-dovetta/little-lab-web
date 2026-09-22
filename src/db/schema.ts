@@ -82,8 +82,10 @@ export const experiments = pgTable("experiments", {
   }),
   traps: jsonb("traps").$type<Trap[]>().notNull().default([]),
   planUnit: text("plan_unit"),
-  /** Saturday session date (America/Los_Angeles), not created_at. */
+  /** Saturday session date (America/Los_Angeles), not created_at. Actually run. */
   ranOn: date("ran_on", { mode: "string" }),
+  /** Upcoming Saturday (America/Los_Angeles). Not the same as ranOn. */
+  plannedFor: date("planned_for", { mode: "string" }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
