@@ -42,6 +42,7 @@ async function main() {
         traps: e.traps ?? [],
         planUnit: e.planUnit ?? null,
         ranOn: e.ranOn ?? null,
+        plannedFor: e.plannedFor ?? null,
         updatedAt: new Date(),
       })
       .onConflictDoUpdate({
@@ -76,6 +77,7 @@ async function main() {
           traps: e.traps ?? [],
           planUnit: e.planUnit ?? null,
           ranOn: e.ranOn ?? null,
+          plannedFor: e.plannedFor ?? null,
           updatedAt: new Date(),
         },
       });

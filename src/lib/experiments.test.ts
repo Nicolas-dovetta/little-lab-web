@@ -2,7 +2,10 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { experimentSeeds } from "../data/seed";
 import {
+  isDoneStatus,
   kidVerdictProse,
+  matchesStatusFilter,
+  plannedChipLabel,
   uniqueKitchenGallery,
   uniqueMoveSteps,
   usesPilotSpine,
@@ -92,6 +95,49 @@ test("baking-soda-volcano seed: empty gallery, unique step pics, notes prose", (
   assert.doesNotMatch(volcano.notesFromHome, /!\[[^\]]*]\([^)]+\)|<img\b|\.png|\.jpg|\.webp/i);
   const trackUrls = volcano.runThis?.tracks?.map((track) => track.imageUrl) ?? [];
   assert.deepEqual(trackUrls, VOLCANO_TRACKS);
+});
+
+test("planned chip uses the Saturday date when plannedFor is set", () => {
+  assert.equal(plannedChipLabel("2026-09-26"), "Planned · Sat Sep 26");
+  assert.equal(plannedChipLabel("2026-10-03"), "Planned · Sat Oct 3");
+  assert.equal(plannedChipLabel(null), "Planned");
+  assert.equal(plannedChipLabel(""), "Planned");
+});
+
+test("Done filter groups winner and tested; Planned is status planned only", () => {
+  assert.equal(isDoneStatus("winner"), true);
+  assert.equal(isDoneStatus("tested"), true);
+  assert.equal(isDoneStatus("planned"), false);
+  assert.equal(matchesStatusFilter("winner", "done"), true);
+  assert.equal(matchesStatusFilter("tested", "done"), true);
+  assert.equal(matchesStatusFilter("planned", "done"), false);
+  assert.equal(matchesStatusFilter("draft", "done"), false);
+  assert.equal(matchesStatusFilter("planned", "planned"), true);
+  assert.equal(matchesStatusFilter("winner", "planned"), false);
+  assert.equal(matchesStatusFilter("tested", undefined), true);
+});
+
+test("cornstarch is re-planned for 2026-09-26 and keeps the tested home note", () => {
+  const cornstarch = experimentSeeds.find((e) => e.id === "cornstarch-thickening-fluid");
+  assert.ok(cornstarch);
+  assert.equal(cornstarch.status, "planned");
+  assert.equal(cornstarch.plannedFor, "2026-09-26");
+  assert.equal(cornstarch.ranOn ?? null, null);
+  assert.match(cornstarch.notesFromHome, /logged as tested/);
+  assert.match(cornstarch.notesFromHome, /2026-09-26/);
+});
+
+test("water-bottle-rocket is planned for 2026-10-03 with little-lab materials", () => {
+  const rocket = experimentSeeds.find((e) => e.id === "water-bottle-rocket");
+  assert.ok(rocket);
+  assert.equal(rocket.status, "planned");
+  assert.equal(rocket.plannedFor, "2026-10-03");
+  assert.equal(rocket.ranOn ?? null, null);
+  assert.equal(rocket.location, "outdoor");
+  assert.ok(rocket.materials.some((m) => /soda bottle/i.test(m)));
+  assert.ok(rocket.materials.some((m) => /Bike pump/i.test(m)));
+  assert.match(rocket.notesFromHome, /I will fill this after Saturday/);
+  assert.equal(rocket.products, undefined);
 });
 
 test("main-shaped volcano gallery (same three paths as tracks) sanitizes to empty", () => {

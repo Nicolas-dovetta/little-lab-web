@@ -36,6 +36,7 @@ function seedToExperiment(e: ExperimentSeed): Experiment {
     traps: e.traps ?? [],
     planUnit: e.planUnit ?? null,
     ranOn: e.ranOn ?? null,
+    plannedFor: e.plannedFor ?? null,
     createdAt: now,
     updatedAt: now,
   });
@@ -61,6 +62,33 @@ export function dateOnly(value: string | Date | null | undefined): string | null
     return value.toISOString().slice(0, 10);
   }
   return null;
+}
+
+/**
+ * Planned status chip. Concrete Saturday when `plannedFor` is set
+ * ("Planned · Sat Sep 26"); otherwise the undated "Planned" label.
+ */
+export function plannedChipLabel(value: string | Date | null | undefined): string {
+  const iso = dateOnly(value);
+  if (!iso) return "Planned";
+  const [year, month, day] = iso.split("-").map(Number);
+  if (!year || !month || !day) return "Planned";
+  const when = new Date(Date.UTC(year, month - 1, day));
+  const weekday = when.toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" });
+  const monthDay = when.toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+  return `Planned · ${weekday} ${monthDay}`;
+}
+
+/** Done filter: already run and published as keepers (winner + tested). */
+export function isDoneStatus(status: string): boolean {
+  return status === "winner" || status === "tested";
+}
+
+/** Status query on /experiments. Unknown values do not hide rows. */
+export function matchesStatusFilter(status: string, filter?: string | null): boolean {
+  if (filter === "done") return isDoneStatus(status);
+  if (filter === "planned") return status === "planned";
+  return true;
 }
 
 /** Short parent-facing date, e.g. "Sep 12, 2026". */
@@ -270,7 +298,7 @@ export function statusLabel(status: string): string {
     case "winner":
       return "Winner";
     case "planned":
-      return "Planned next week";
+      return "Planned";
     case "draft":
       return "Draft";
     case "idea":

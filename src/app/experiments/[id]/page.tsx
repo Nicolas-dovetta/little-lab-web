@@ -12,6 +12,7 @@ import {
   getExperiment,
   listExperiments,
   messLabel,
+  plannedChipLabel,
   usesPilotSpine,
 } from "@/lib/experiments";
 import { howToJsonLd } from "@/lib/jsonld";
@@ -96,7 +97,7 @@ function ExperimentTitleBand({
           )}
           {e.status === "planned" && (
             <span className="rounded-full bg-sage-600 px-2.5 py-0.5 text-xs font-semibold text-white">
-              Planned
+              {plannedChipLabel(e.plannedFor)}
             </span>
           )}
           <span className="rounded-full bg-white px-2.5 py-0.5 text-xs text-ink-muted">
@@ -309,10 +310,12 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
                         <dt className="font-semibold text-rose-950">Why</dt>
                         <dd className="mt-0.5 text-ink-muted">{t.why}</dd>
                       </div>
-                      <div>
-                        <dt className="font-semibold text-rose-950">Replace</dt>
-                        <dd className="mt-0.5 text-ink-muted">{t.replace}</dd>
-                      </div>
+                      {t.replace?.trim() && (
+                        <div>
+                          <dt className="font-semibold text-rose-950">Replace</dt>
+                          <dd className="mt-0.5 text-ink-muted">{t.replace}</dd>
+                        </div>
+                      )}
                     </dl>
                   </div>
                 ))}

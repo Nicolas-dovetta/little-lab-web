@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { listExperiments } from "@/lib/experiments";
+import { listExperiments, plannedChipLabel } from "@/lib/experiments";
 import { canonicalMetadata } from "@/lib/site";
 
 export const metadata = canonicalMetadata("/plan", {
@@ -29,10 +29,10 @@ const units: Unit[] = [
     ],
   },
   {
-    name: "Force & motion",
+    name: "Forces & motion",
     focus: "Push/pull, ramps, roll, bounce",
     weeks: "Weeks 6–10",
-    experimentIds: [],
+    experimentIds: ["water-bottle-rocket"],
   },
   {
     name: "Water & weather",
@@ -60,7 +60,7 @@ const units: Unit[] = [
   },
 ];
 
-function statusTag(status: string) {
+function statusTag(status: string, plannedFor?: string | null) {
   if (status === "winner") {
     return (
       <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-900">
@@ -71,7 +71,7 @@ function statusTag(status: string) {
   if (status === "planned") {
     return (
       <span className="rounded-full bg-sage-600 px-2.5 py-0.5 text-xs font-semibold text-white">
-        Planned
+        {plannedChipLabel(plannedFor)}
       </span>
     );
   }
@@ -157,7 +157,7 @@ export default async function PlanPage() {
                         className="flex flex-wrap items-center gap-2 rounded-2xl bg-cream/80 px-3 py-2 text-sm font-medium text-ink transition hover:bg-sage-100"
                       >
                         <span>{e.title}</span>
-                        {statusTag(e.status)}
+                        {statusTag(e.status, e.plannedFor)}
                       </Link>
                     </li>
                   ))}

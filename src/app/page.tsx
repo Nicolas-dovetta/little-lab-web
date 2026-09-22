@@ -2,7 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { ExperimentCard } from "@/components/ExperimentCard";
 import { NewsletterForm } from "@/components/NewsletterForm";
-import { difficultyLabel, getFeaturedExperiment, listExperiments, messLabel } from "@/lib/experiments";
+import {
+  difficultyLabel,
+  getFeaturedExperiment,
+  listExperiments,
+  messLabel,
+  plannedChipLabel,
+} from "@/lib/experiments";
 import { DEFAULT_SOCIAL_IMAGE, canonicalMetadata } from "@/lib/site";
 
 export const metadata = canonicalMetadata("/", { image: DEFAULT_SOCIAL_IMAGE });
@@ -62,7 +68,7 @@ export default async function HomePage() {
                 )}
                 {featured.status === "planned" && (
                   <span className="rounded-full bg-sage-600 px-2.5 py-0.5 text-xs font-medium text-white">
-                    Planned
+                    {plannedChipLabel(featured.plannedFor)}
                   </span>
                 )}
                 <span className="rounded-full bg-cream px-2.5 py-0.5 text-xs text-ink-muted">

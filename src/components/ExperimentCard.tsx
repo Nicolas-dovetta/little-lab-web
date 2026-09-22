@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Experiment } from "@/db/schema";
-import { difficultyLabel, formatRanOn, messLabel } from "@/lib/experiments";
+import { difficultyLabel, formatRanOn, messLabel, plannedChipLabel } from "@/lib/experiments";
 
 export function ExperimentCard({ experiment }: { experiment: Experiment }) {
   const ranOnLabel = formatRanOn(experiment.ranOn);
@@ -32,7 +32,7 @@ export function ExperimentCard({ experiment }: { experiment: Experiment }) {
           )}
           {experiment.status === "planned" && (
             <span className="rounded-full bg-sage-600 px-2.5 py-0.5 text-xs font-semibold text-white">
-              Planned
+              {plannedChipLabel(experiment.plannedFor)}
             </span>
           )}
         </div>
