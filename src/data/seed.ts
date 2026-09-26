@@ -215,7 +215,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
   {
     id: "cornstarch-thickening-fluid",
     title: "Cornstarch thickening fluid (Maïzena)",
-    status: "planned",
+    status: "winner",
     difficulty: 1,
     ageBands: ["1-2", "3-5"],
     domains: ["physics", "sensory"],
@@ -236,7 +236,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     prep: "",
     safety: "Taste ban — not a snack. Wet mix makes floors slick. No heat, no other chemicals.",
     experience:
-      "Pours like a liquid, then goes firm when you slap, smash, or squeeze it.",
+      "Pours like a liquid, then goes firm when you slap, smash, or squeeze it. Very messy; very easy to clean. Fun to play with the kids.",
     kidCanDo: [
       "Touch, poke, scoop",
       "Spoon Maïzena into the water",
@@ -252,7 +252,11 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     ],
     steps: [
       { title: "Water + tools", detail: "Shallow water in a wide bowl. Cups and smash toys nearby." },
-      { title: "Maïzena until fun", detail: "Spoon in until it feels fun — firm when you poke, still drips when you pour. No exact ratio." },
+      {
+        title: "Maïzena until fun",
+        detail:
+          "Spoon in until it feels fun — firm when you poke, still drips when you pour. No exact ratio. Err toward more cornstarch if you want that solid-ish feel.",
+      },
       { title: "Pour vs smash", detail: "Slow pour flows; fast smash feels firm." },
       { title: "Play", detail: "Pour, smash, scoop, slap; squeeze a ball and watch it melt. Steer with water or Maïzena." },
     ],
@@ -260,25 +264,31 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     stretch:
       "Walk fingertips across a tray of the mix (quick steps stay up; slow ones sink). Compare with flour + water.",
     notesFromHome:
-      "Ran at home (Nicolas): water first, then Maïzena until it feels fun; prep cups to pour and toys to smash the mixture — logged as tested. Re-planned for Saturday 2026-09-26.",
+      "The maïzena was great; very messy very easy to clean. Proportions can be approx — don’t be scared to put too much corn so it becomes a real solid-ish liquid. Play with your kids it is fun.",
     heroImageUrl: "/images/experiments/cornstarch-thickening-fluid-hero.png",
     gallery: [],
     featured: false,
     planUnit: "Matter & mess",
-    plannedFor: "2026-09-26",
+    ranOn: "2026-09-26",
     sayThis: {
       age12: ["[I will fill this after Saturday]"],
       age35: ["[I will fill this after Saturday]"],
     },
     runThis: {
-      overview: "Water first, then spoon Maïzena until it feels fun.",
+      overview:
+        "Water first, then spoon Maïzena until it feels fun. Proportions can be approximate — don’t be scared to put too much cornstarch so it becomes a real solid-ish liquid.",
     },
     knowThis: {
       mechanism:
-        "The bowl is packed with tiny starch grains suspended in water — not dissolved, just floating and jostling. When you pour slowly, the grains have time to slide past each other, so the mix flows like a thick liquid. When you hit, slap, or squeeze hard and fast, the grains suddenly jam into each other. For a moment the pile locks — it feels solid — then when you ease up, the jam breaks and it melts back into a puddle.\n\nThat firm feel is not a new material. Same water, same starch. What changed is how hard and how fast you pushed. A slow pour and a hard smash are two different stories about the same grain pile.\n\nFlour + water usually will not give you the same sharp switch. Cornstarch grains are the right size and shape to jam under sudden stress. That is why this kitchen mix is famous and flour goo is not the same show. If you want a name later: shear-thickening / particle jamming — also called a non-Newtonian fluid or oobleck.",
+        "This is not a gel, not melted plastic, and not a chemical reaction. You mixed two things that barely want each other: water, and billions of tiny hard cornstarch grains. The grains do not dissolve. They sit in the water as a crowded suspension — a particle slurry.\n\nEach grain is roughly a few to tens of micrometers across (about the size of a fine dust speck under a microscope), irregular, and stiff. Between grains sits a thin film of water. At rest or under a gentle, slow push, those water films act like tiny lubricated bearings. Grains can slide, roll, and rearrange. Macroscopically the mix pours and drips — a thick liquid.\n\nHit it hard and fast and the story flips. The sudden stress forces grains into each other before the water films can rearrange. Grains form brief force chains and hydroclusters: jammed networks that span across the bowl. For that moment the pile locks. It feels solid. Ease up, and the network falls apart; water films return; it melts back into a puddle.\n\nSame water. Same starch. No new material appeared. What changed is the rate and strength of the push — how hard and how fast you sheared the suspension. Slow shear → flow. Fast, high shear → jam.\n\nFluids whose resistance rises when you shear them harder are called dilatant or shear-thickening. Cornstarch + water is a classic kitchen case. (Ketchup and paint do the opposite: they get runnier when you shear them — shear-thinning. Different particle and polymer physics.) At high enough grain loading and sudden stress, the thickening can jump almost discontinuously: a soft pour becomes a crack when you punch it. That discontinuous jump is why smash toys and slap games feel so dramatic.\n\nHow crowded the bowl is matters. If the volume fraction of grains is too low, there is always space to rearrange and you only get a thin sludge. If it is dense enough (roughly the crowded regime parents hit by feel — firm when poked, still drips when poured), a hard hit can jam the whole pile. That is why “don’t be scared to put too much cornstarch” works: more grains → easier jamming → a real solid-ish liquid under stress. Too dry and crumbly just needs a splash of water; the target is dense but still wet.\n\nFlour + water usually will not give the same sharp switch. Wheat flour particles hydrate and stick differently; cornstarch granules have the size, stiffness, and surface behavior that jam cleanly under sudden stress. That is why this kitchen mix is famous and flour goo is not the same show.\n\nWalking quickly across a deep tray of the mix (or the backyard-pool demos online) uses the same physics: each footfall is a fast, high-stress punch that briefly jams a pad under the foot. Stand still and you sink, because slow loading lets grains rearrange again.",
       doesNotProve:
-        "• Not “magic slime” or a new chemical each time you touch it — same water and starch; the feel changes with how hard and how fast you push.\n• Not that all kitchen powders do this — flour + water usually will not.",
-      numbersNote: "No exact ratio. Add Maïzena until it feels fun.",
+        "• Not “magic slime” or a new chemical each time you touch it — same water and starch; the feel changes with how hard and how fast you push.\n• Not a permanent solid — ease up and it puddles again (no phase change, no curing).\n• Not that all kitchen powders do this — flour + water usually will not.\n• Not that an exact recipe is required — proportions can be approximate; dense-and-wet by feel is the target.",
+      numbersNote:
+        "No exact kitchen ratio. Start with shallow water; add Maïzena until it feels fun — firm on a poke, still drips on a slow pour. Dense suspensions that shear-thicken hard are typically packed with a large volume fraction of grains (crowded, not watery). Feel beats measuring cups.",
+      nameForThis:
+        "Optional names (after the plain story): shear-thickening suspension, dilatant fluid, particle jamming / hydroclusters, non-Newtonian fluid, oobleck. The useful idea for a parent is the jam: hard/fast locks the grain pile; slow lets it flow.",
+      goDeeper:
+        "• Squeeze a ball in your fist (firm), then open your hand and watch it melt — jam on, jam off.\n• Fingertips walking across a tray: quick steps stay up; slow ones sink.\n• Compare with flour + water (different feel) or plain water (no jam).\n• Ask: did we make a new substance, or did we change how the same pile of grains rearranges?",
     },
     traps: [
       {
@@ -288,8 +298,13 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       },
       {
         wrong: "You need an exact recipe or it won’t work.",
-        why: "Feel matters more than a ratio. Too watery or too powdery just needs a splash of water or more Maïzena.",
+        why: "Feel matters more than a ratio. Proportions can be approximate. Don’t be scared to put too much cornstarch so it becomes a real solid-ish liquid; too watery just needs more Maïzena.",
         replace: "Add Maïzena until it feels fun — firm when you poke, still drips when you pour.",
+      },
+      {
+        wrong: "We made glue / slime you can keep.",
+        why: "This is a water + cornstarch suspension for play, not a craft to store. It dries out; a big blob can clog a drain.",
+        replace: "Play now — scrape bulk to trash; don’t pour a big blob down the sink.",
       },
     ],
   },
