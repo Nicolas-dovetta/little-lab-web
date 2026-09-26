@@ -32,7 +32,7 @@ function seedToExperiment(e: ExperimentSeed): Experiment {
     featured: e.featured,
     sayThis: e.sayThis ?? {},
     runThis: e.runThis ?? {},
-    knowThis: e.knowThis ?? { mechanism: "", doesNotProve: "" },
+    knowThis: e.knowThis ?? { mechanism: "" },
     traps: e.traps ?? [],
     planUnit: e.planUnit ?? null,
     ranOn: e.ranOn ?? null,

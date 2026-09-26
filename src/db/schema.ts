@@ -30,7 +30,6 @@ export type RunThis = {
 
 export type KnowThis = {
   mechanism: string;
-  doesNotProve: string;
   goDeeper?: string;
   numbersNote?: string;
   nameForThis?: string;
@@ -78,7 +77,6 @@ export const experiments = pgTable("experiments", {
   runThis: jsonb("run_this").$type<RunThis>().notNull().default({}),
   knowThis: jsonb("know_this").$type<KnowThis>().notNull().default({
     mechanism: "",
-    doesNotProve: "",
   }),
   traps: jsonb("traps").$type<Trap[]>().notNull().default([]),
   planUnit: text("plan_unit"),

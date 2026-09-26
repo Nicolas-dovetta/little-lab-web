@@ -19,7 +19,6 @@ export type RunThis = {
 
 export type KnowThis = {
   mechanism: string;
-  doesNotProve: string;
   goDeeper?: string;
   numbersNote?: string;
   nameForThis?: string;
@@ -184,8 +183,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     knowThis: {
       mechanism:
         "Density is mass per volume: how much stuff is packed into the same amount of space. A spoon of honey has more mass than a spoon of oil, so honey sits lower if the two do not mix.\n\n“Heavy” without “for its size” is the mistake this Saturday exists to kill. A cork is light for its size and floats. A small coin can sink. The same egg does both, depending on the liquid around it.\n\nA typical hen’s egg is a little denser than tap water, so it sinks. Dissolve enough salt and the water’s density rises. The egg is now less dense than the liquid around it, so it floats. You changed the water, not the egg.\n\nHoney, water, and oil also differ in whether they mix. Oil and water stay as separate layers because their molecules prefer their own company — they are immiscible. That sharp line is not oil being “afraid.” Honey and water will mix if you stir. Poured slowly, honey can sit underneath for a while because it is denser and it is viscous (it flows slowly). Viscosity is not density. Honey sinks because it is packed tighter than water. It pours slowly because it is thick. Those are different jobs.\n\nBalsamic through oil is the honest party trick. Balsamic is mostly water, sugar, and acid. It is denser than oil, so a drop falls. On the way down it often picks up a thin oily skin. That blob is two materials stuck together, not one liquid that changed its mind. When the skin ruptures lower down, freed oil rises. Sometimes it drags a speck of vinegar with it. That is the down-and-back-up. Not magic. Unsticking. The upward push has a name if you want it: buoyancy — the liquid pushes up with a force equal to the weight of the liquid displaced.",
-      doesNotProve:
-        "• That “heavy things sink.”\n• That the ocean stacks for the same single reason — in the sea, temperature and salt both change density.\n• That every internet “rainbow bottle” is a clean density tower — many of those liquids will mix if you wait or stir. This Saturday is part density, part “these two refuse to mix.”",
       numbersNote:
         "Keep these off the kid table. Tap water is about 1.00 g/mL. Vegetable oil is about 0.91–0.93. A hen’s egg is often about 1.03–1.09. Balsamic is often around 1.2. Honey is around 1.4. Well-salted water can pass the egg; if you really pack it, it can approach ~1.2. You do not need the numbers to run the Saturday. They are here so you can check a claim.",
     },
@@ -294,8 +291,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     knowThis: {
       mechanism:
         "This is not a gel, not melted plastic, and not a chemical reaction. You mixed two things that barely want each other: water, and billions of tiny hard cornstarch grains. The grains do not dissolve. They sit in the water as a crowded suspension — a particle slurry.\n\nEach grain is roughly a few to tens of micrometers across (about the size of a fine dust speck under a microscope), irregular, and stiff. Between grains sits a thin film of water. At rest or under a gentle, slow push, those water films act like tiny lubricated bearings. Grains can slide, roll, and rearrange. Macroscopically the mix pours and drips — a thick liquid.\n\nHit it hard and fast and the story flips. The sudden stress forces grains into each other before the water films can rearrange. Grains form brief force chains and hydroclusters: jammed networks that span across the bowl. For that moment the pile locks. It feels solid. Ease up, and the network falls apart; water films return; it melts back into a puddle.\n\nSame water. Same starch. No new material appeared. What changed is the rate and strength of the push — how hard and how fast you sheared the suspension. Slow shear → flow. Fast, high shear → jam.\n\nFluids whose resistance rises when you shear them harder are called dilatant or shear-thickening. Cornstarch + water is a classic kitchen case. (Ketchup and paint do the opposite: they get runnier when you shear them — shear-thinning. Different particle and polymer physics.) At high enough grain loading and sudden stress, the thickening can jump almost discontinuously: a soft pour becomes a crack when you punch it. That discontinuous jump is why smash toys and slap games feel so dramatic.\n\nHow crowded the bowl is matters. If the volume fraction of grains is too low, there is always space to rearrange and you only get a thin sludge. If it is dense enough (roughly the crowded regime parents hit by feel — firm when poked, still drips when poured), a hard hit can jam the whole pile. That is why “don’t be scared to put too much cornstarch” works: more grains → easier jamming → a real solid-ish liquid under stress. Too dry and crumbly just needs a splash of water; the target is dense but still wet.\n\nFlour + water usually will not give the same sharp switch. Wheat flour particles hydrate and stick differently; cornstarch granules have the size, stiffness, and surface behavior that jam cleanly under sudden stress. That is why this kitchen mix is famous and flour goo is not the same show.\n\nWalking quickly across a deep tray of the mix (or the backyard-pool demos online) uses the same physics: each footfall is a fast, high-stress punch that briefly jams a pad under the foot. Stand still and you sink, because slow loading lets grains rearrange again.",
-      doesNotProve:
-        "• Not “magic slime” or a new chemical each time you touch it — same water and starch; the feel changes with how hard and how fast you push.\n• Not a permanent solid — ease up and it puddles again (no phase change, no curing).\n• Not that all kitchen powders do this — flour + water usually will not.\n• Not that an exact recipe is required — proportions can be approximate; dense-and-wet by feel is the target.",
       numbersNote:
         "No exact kitchen ratio. Start with shallow water; add Maïzena until it feels fun — firm on a poke, still drips on a slow pour. Dense suspensions that shear-thicken hard are typically packed with a large volume fraction of grains (crowded, not watery). Feel beats measuring cups.",
       nameForThis:
@@ -382,8 +377,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     knowThis: {
       mechanism:
         "Quiet water has a stretchy skin on top — water molecules at the surface pull harder on their neighbors than molecules deeper down. Floating cinnamon just sits on that skin. Soap weakens the pull where you touch. The unbroken skin farther out still pulls hard, so the surface races away from the soap spot and the cinnamon rides that rush to the edges. That’s surface tension. Soap, a surfactant, lowers it.",
-      doesNotProve:
-        "• That the powder is dissolving — it mostly rides the surface and gets shoved aside.",
       numbersNote: "One tiny drop is enough. More soap is just dirty water.",
     },
     traps: [
@@ -506,8 +499,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     knowThis: {
       mechanism:
         "Two different mechanisms on one morning.\n\nFAST fishing = an ice hug (freezing-point depression if you want the name). Salt melts a thin bit of ice into water. The rest of the cube is still cold enough to freeze that water again around the yarn fibers, so you can lift by the string. A tiny pinch is enough; a mountain of salt usually digs a puddle. Water in the bowl helps: cubes stay wetter at the contact line. Draping over many cubes raises the odds. Pulling slowly keeps fresh ice bridges from snapping.\n\nLONG wire = squeeze melts a path (pressure melting / regelation if you want the name). Hanging bottles squeeze a thin line into the ice. That pressure melts ice for a moment under the wire. As the wire sinks, water above can freeze again. The block can stay one piece even if the wire cuts through. Room-temperature copper is not a hot knife — the squeeze does the melting.",
-      doesNotProve:
-        "• That more salt is better — a mountain often just makes a puddle.",
       goDeeper:
         "No-salt vs salt string side by side in the same watery bowl. Try nylon fishing line vs cotton twine (nylon often fails the hug).",
       numbersNote:
@@ -656,8 +647,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     knowThis: {
       mechanism:
         "Baking soda is a powder of sodium bicarbonate. Vinegar is mostly water with a weak acid dissolved in it: acetic acid. When they meet, the acid hands a hydrogen ion to the bicarbonate. That piece is unstable — it falls apart into water and carbon dioxide gas. The gas is the same molecule as the bubbles in soda pop and what we breathe out.\n\nMillions of tiny CO₂ bubbles form in the liquid all at once. Foam is leftover liquid stretched around those gas holes, so the volume jumps, climbs the glass, and spills onto the tray. Nothing “turns into lava.” You’re making gas inside a liquid — an acid–base reaction (bicarbonate + acetic acid) that releases carbon dioxide.",
-      doesNotProve:
-        "• Once one ingredient is used up (the limiting reactant), extra of the other does nothing new.\n• The foam is not a new solid — it’s liquid + gas holes; leftover is mostly sodium acetate in water.",
       goDeeper:
         "Hold a hand near (not in) the foam: the gas is CO₂; the spill is leftover liquid + bubbles. Dish soap does not make more CO₂ — it helps bubbles last longer so the foam looks thicker (surfactant). Grocery white vinegar is usually about 5% acetic acid by volume; the rest is water. That is plenty for this demo.",
       numbersNote:
@@ -767,8 +756,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     knowThis: {
       mechanism:
         "You trap air above the water and squeeze more air in with the pump. Pressure in that air space rises. The only open path is the neck. When the cork lets go, high-pressure air pushes the water out as a fast downward jet.\n\nForces come in pairs (Newton’s third law): if the bottle pushes water one way, the water pushes the bottle the other way. The “exhaust” is liquid water with real mass — much better reaction mass than air alone — so a water-filled rocket climbs higher than an air-only blast from the same bottle.\n\nWhile it is in the air, gravity pulls down and air drag slows it; when the water is gone, thrust stops and it coasts, then falls.",
-      doesNotProve:
-        "• That rockets need fire or “explosion.” This one is cold: compressed air + water.\n• That more water is always better — too much water means less air to pressurize and more mass to lift; too little means weak exhaust mass. There is a sweet spot.",
       goDeeper:
         "Momentum: thrust lasts only while mass is leaving the nozzle. Nozzle size and seal quality change how fast pressure dumps. Real water rockets often use a launch tube so the bottle stays aimed until it clears the pad.",
       nameForThis:
