@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ExperimentViewTracker } from "@/components/ExperimentViewTracker";
 import { JsonLd } from "@/components/JsonLd";
 import { VolcanoExperimentView } from "@/components/VolcanoExperimentView";
-import type { Experiment, ExperimentProduct, KnowThis, RunThis, SayThis, Trap } from "@/db/schema";
+import type { Experiment, ExperimentProduct, KnowThis, RunThis, Trap } from "@/db/schema";
 import { amazonPackCartHref, amazonProductHref } from "@/lib/amazon";
 import {
   difficultyLabel,
@@ -34,15 +34,6 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   });
 }
 
-function hasSayContent(say: SayThis | null | undefined): boolean {
-  if (!say) return false;
-  return Boolean(
-    (say.age12 && say.age12.length > 0) ||
-      (say.age35 && say.age35.length > 0) ||
-      (say.lines && say.lines.length > 0),
-  );
-}
-
 function hasRunContent(run: RunThis | null | undefined): boolean {
   if (!run) return false;
   return Boolean(run.overview || run.setup || (run.tracks && run.tracks.length > 0));
@@ -50,7 +41,7 @@ function hasRunContent(run: RunThis | null | undefined): boolean {
 
 function hasKnowContent(know: KnowThis | null | undefined): boolean {
   if (!know) return false;
-  return Boolean(know.mechanism || know.doesNotProve);
+  return Boolean(know.mechanism || know.numbersNote || know.goDeeper || know.nameForThis);
 }
 
 export default async function ExperimentDetailPage({
@@ -142,17 +133,23 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
   const adultRole = (e.adultRole as string[]) || [];
   const steps = (e.steps as { title: string; detail: string }[]) || [];
   const notice = (e.notice as string[]) || [];
-  const sayThis = (e.sayThis as SayThis) || {};
   const runThis = (e.runThis as RunThis) || {};
-  const knowThis = (e.knowThis as KnowThis) || { mechanism: "", doesNotProve: "" };
+  const knowThis = (e.knowThis as KnowThis) || { mechanism: "" };
+  const tracks = runThis.tracks ?? [];
+  const stepTitles = new Set(steps.map((step) => step.title.trim()));
+  // Title-matched tracks are the step photo. They render on that step only,
+  // not again as RUN THIS cards (salt-ice cards do not share step titles).
+  const stepPhotoTracks = tracks.filter(
+    (track) => Boolean(track.imageUrl?.trim()) && stepTitles.has(track.title.trim()),
+  );
+  const cardTracks = tracks.filter((track) => !stepPhotoTracks.includes(track));
   const traps = (e.traps as Trap[]) || [];
 
-  const showSay = hasSayContent(sayThis);
   const showRun = hasRunContent(runThis);
   const showKnow = hasKnowContent(knowThis);
-  const showThreeMessage = showSay || showRun || showKnow || traps.length > 0;
+  const showThreeMessage = showRun || showKnow || traps.length > 0;
   const showLegacySteps = !showRun && steps.length > 0;
-  const showLegacyRoles = !showSay && (kidCanDo.length > 0 || adultRole.length > 0);
+  const showLegacyRoles = !showThreeMessage && (kidCanDo.length > 0 || adultRole.length > 0);
   const showLegacyNotice = !showKnow && notice.length > 0;
 
   return (
@@ -181,28 +178,14 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
 
         {showThreeMessage && (
           <div className="space-y-6">
-            {showSay && (
-              <MessageCard eyebrow="SAY THIS" title="Words at the table" tone="say">
-                {sayThis.age12 && sayThis.age12.length > 0 && (
-                  <LineGroup label="Ages 1–2" lines={sayThis.age12} />
-                )}
-                {sayThis.age35 && sayThis.age35.length > 0 && (
-                  <LineGroup label="Ages 3–5" lines={sayThis.age35} />
-                )}
-                {sayThis.lines && sayThis.lines.length > 0 && (
-                  <LineGroup label="Lines" lines={sayThis.lines} />
-                )}
-              </MessageCard>
-            )}
-
             {showRun && (
               <MessageCard eyebrow="RUN THIS" title="How to run it" tone="run">
                 {runThis.overview && (
                   <p className="text-sm text-ink-muted">{runThis.overview}</p>
                 )}
-                {runThis.tracks && runThis.tracks.length > 0 && (
+                {cardTracks.length > 0 && (
                   <div className="grid gap-4 sm:grid-cols-2">
-                    {runThis.tracks.map((track) => (
+                    {cardTracks.map((track) => (
                       <div
                         key={track.label}
                         className="overflow-hidden rounded-2xl border border-sky-100/80 bg-white/80 shadow-sm"
@@ -232,20 +215,36 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
                   <div>
                     <h3 className="text-sm font-semibold text-ink">Steps</h3>
                     <ol className="mt-2 space-y-3">
-                      {steps.map((s, i) => (
-                        <li
-                          key={i}
-                          className="flex gap-3 rounded-2xl border border-sky-100/80 bg-white/70 p-3"
-                        >
-                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sky-700 text-xs font-bold text-white">
-                            {i + 1}
-                          </span>
-                          <div>
-                            <h4 className="text-sm font-semibold text-ink">{s.title}</h4>
-                            <p className="mt-0.5 text-sm text-ink-muted">{s.detail}</p>
-                          </div>
-                        </li>
-                      ))}
+                      {steps.map((s, i) => {
+                        const shot = stepPhotoTracks.find((track) => track.title.trim() === s.title.trim());
+                        return (
+                          <li
+                            key={i}
+                            className="rounded-2xl border border-sky-100/80 bg-white/70 p-3"
+                          >
+                            {shot && (
+                              <div className="relative mb-3 aspect-[4/3] overflow-hidden rounded-xl border border-sky-100/80 bg-sage-50">
+                                <Image
+                                  src={shot.imageUrl}
+                                  alt={shot.imageAlt?.trim() || s.title}
+                                  fill
+                                  className="object-contain"
+                                  sizes="(max-width: 1024px) 100vw, 40rem"
+                                />
+                              </div>
+                            )}
+                            <div className="flex gap-3">
+                              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sky-700 text-xs font-bold text-white">
+                                {i + 1}
+                              </span>
+                              <div>
+                                <h4 className="text-sm font-semibold text-ink">{s.title}</h4>
+                                <p className="mt-0.5 text-sm text-ink-muted">{s.detail}</p>
+                              </div>
+                            </div>
+                          </li>
+                        );
+                      })}
                     </ol>
                   </div>
                 )}
@@ -267,14 +266,6 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
                     <h3 className="text-sm font-semibold text-ink">Numbers</h3>
                     <p className="mt-1 whitespace-pre-line text-sm text-ink-muted">
                       {knowThis.numbersNote}
-                    </p>
-                  </div>
-                )}
-                {knowThis.doesNotProve && (
-                  <div>
-                    <h3 className="text-sm font-semibold text-ink">Does not prove</h3>
-                    <p className="mt-1 whitespace-pre-line text-sm text-ink-muted">
-                      {knowThis.doesNotProve}
                     </p>
                   </div>
                 )}
@@ -376,7 +367,7 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
             <p className="text-sm text-ink-muted">{e.prep}</p>
           </Card>
         )}
-        {e.safety && (
+        {(e.safety ?? "").trim() && (
           <Card title="Safety">
             <p className="text-sm text-ink-muted">{e.safety}</p>
           </Card>
@@ -499,16 +490,14 @@ function MessageCard({
 }: {
   eyebrow: string;
   title: string;
-  tone: "say" | "run" | "know";
+  tone: "run" | "know";
   children: React.ReactNode;
 }) {
   const tones = {
-    say: "border-amber-200 bg-amber-50/70",
     run: "border-sky-200 bg-sky-50/70",
     know: "border-sage-300 bg-sage-50/80",
   };
   const eyebrowTone = {
-    say: "text-amber-900",
     run: "text-sky-900",
     know: "text-sage-900",
   };
@@ -518,19 +507,6 @@ function MessageCard({
       <h2 className="mt-1 font-display text-xl font-semibold text-ink">{title}</h2>
       <div className="mt-4 space-y-4">{children}</div>
     </section>
-  );
-}
-
-function LineGroup({ label, lines }: { label: string; lines: string[] }) {
-  return (
-    <div>
-      <h3 className="text-sm font-semibold text-ink">{label}</h3>
-      <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-ink-muted">
-        {lines.map((line) => (
-          <li key={line}>{line}</li>
-        ))}
-      </ul>
-    </div>
   );
 }
 

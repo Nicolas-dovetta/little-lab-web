@@ -125,7 +125,7 @@ test("cornstarch is a winner from 2026-09-26 with Nicolas's home note", () => {
   assert.equal(cornstarch.plannedFor ?? null, null);
   assert.equal(
     cornstarch.notesFromHome,
-    "The maïzena was great; very messy very easy to clean. Proportions can be approx — don’t be scared to put too much corn so it becomes a real solid-ish liquid. Play with your kids it is fun.\n\nFrom the clip: 3yo on the learning tower at the counter with a wooden stick; 1yo in the high chair with a small cup and stick — both shirtless. Stainless bowls; white mix pools flat in the bowl, splatters hold as thick blobs on the granite. Counter and the 3yo’s arms and tummy thoroughly coated.",
+    "The maïzena was great; very messy very easy to clean. Proportions can be approx — don’t be scared to put too much corn so it becomes a real solid-ish liquid. Play with your kids it is fun.\n\nFrom the clip: 3yo on the learning tower at the counter with a wooden stick; 1yo in the high chair with a small cup and stick — both shirtless. Stainless bowls; white mix pools flat in the bowl, splatters hold as thick blobs on the granite. Counter and the 3yo’s arms and tummy thoroughly coated.\n\n1yo loved playing with it with a spoon in a cup. Would scream a lot.\n\n3yo did the mix, had a small bowl, made balls with the mix, made a giant mess and was happy.",
   );
   assert.match(cornstarch.runThis?.overview ?? "", /don’t be scared to put too much cornstarch/);
   assert.match(cornstarch.steps[0]?.detail ?? "", /Learning tower/);
@@ -139,11 +139,33 @@ test("cornstarch is a winner from 2026-09-26 with Nicolas's home note", () => {
   assert.match(cornstarch.knowThis?.mechanism ?? "", /shear-thickening/);
   assert.match(cornstarch.knowThis?.mechanism ?? "", /shear-thinning/);
   assert.match(cornstarch.knowThis?.mechanism ?? "", /volume fraction/);
+  assert.equal(cornstarch.safety, "");
+  assert.equal(
+    cornstarch.traps?.find((trap) => trap.wrong === "We made glue / slime you can keep.")?.replace,
+    "Play now — scrape the bulk into the trash; a big blob can clog a sink drain.",
+  );
+  assert.equal(JSON.stringify(cornstarch).includes("Taste ban"), false);
+  assert.equal(JSON.stringify(cornstarch).includes("not a snack"), false);
   assert.equal(cornstarch.heroImageUrl, "/images/experiments/cornstarch-thickening-fluid-hero.png");
-  assert.deepEqual(cornstarch.sayThis, {
-    age12: ["[I will fill this after Saturday]"],
-    age35: ["[I will fill this after Saturday]"],
-  });
+  assert.deepEqual(cornstarch.gallery, []);
+  assert.doesNotMatch(cornstarch.notesFromHome, /!\[[^\]]*]\([^)]+\)|<img\b|\.png|\.jpg|\.webp/i);
+  const pour = cornstarch.runThis?.tracks?.find((track) => track.title === "Pour vs smash");
+  const play = cornstarch.runThis?.tracks?.find((track) => track.title === "Play");
+  assert.equal(pour?.imageUrl, "/images/experiments/cornstarch-hand-runny.webp");
+  assert.equal(
+    pour?.imageAlt,
+    "A hand with runny cornstarch mix dripping back into a stainless bowl",
+  );
+  assert.equal(play?.imageUrl, "/images/experiments/cornstarch-mess-counter.webp");
+  assert.equal(
+    play?.imageAlt,
+    "Cornstarch mess on a granite counter: stainless bowls, wooden sticks, thick blobs dripping off the edge",
+  );
+  assert.deepEqual(
+    uniqueMoveSteps(cornstarch.steps, cornstarch.runThis?.tracks).map((move) => move.imageUrl),
+    [null, null, pour?.imageUrl, play?.imageUrl],
+  );
+  assert.deepEqual(cornstarch.sayThis, {});
   assert.equal(cornstarch.products, undefined);
 });
 
