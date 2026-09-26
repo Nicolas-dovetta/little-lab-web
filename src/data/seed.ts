@@ -227,16 +227,17 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     materials: [
       "Water (shallow pool)",
       "Maïzena (cornstarch)",
-      "Wide bowl or tray",
-      "Cups; washable smash toys",
+      "Wide bowl or tray (stainless works)",
+      "Cups; wooden sticks or washable smash toys",
       "Spoon or hands",
       "Towels",
       "Optional: food coloring",
+      "Optional: learning tower / high chair so both kids can reach",
     ],
     prep: "",
     safety: "Taste ban — not a snack. Wet mix makes floors slick. No heat, no other chemicals.",
     experience:
-      "Pours like a liquid, then goes firm when you slap, smash, or squeeze it. Very messy; very easy to clean. Fun to play with the kids.",
+      "Pours like a liquid, then goes firm when you slap, smash, or squeeze it. Very messy; very easy to clean. Fun to play with the kids — both at the counter (learning tower + high chair), shirtless, sticks in stainless bowls.",
     kidCanDo: [
       "Touch, poke, scoop",
       "Spoon Maïzena into the water",
@@ -251,20 +252,32 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "Manage mess boundaries",
     ],
     steps: [
-      { title: "Water + tools", detail: "Shallow water in a wide bowl. Cups and smash toys nearby." },
+      {
+        title: "Water + tools",
+        detail:
+          "Shallow water in a wide bowl (stainless is fine). Cups and wooden sticks or smash toys nearby. Learning tower for the bigger kid; high chair keeps the little one in on it.",
+      },
       {
         title: "Maïzena until fun",
         detail:
           "Spoon in until it feels fun — firm when you poke, still drips when you pour. No exact ratio. Err toward more cornstarch if you want that solid-ish feel.",
       },
-      { title: "Pour vs smash", detail: "Slow pour flows; fast smash feels firm." },
-      { title: "Play", detail: "Pour, smash, scoop, slap; squeeze a ball and watch it melt. Steer with water or Maïzena." },
+      {
+        title: "Pour vs smash",
+        detail:
+          "Slow pour flows; fast smash feels firm. Mix pools flat in the bowl; splatters on the counter hold as thick blobs.",
+      },
+      {
+        title: "Play",
+        detail:
+          "Pour, smash, scoop, slap; squeeze a ball and watch it melt. Steer with water or Maïzena. Shirtless helps — it gets everywhere.",
+      },
     ],
     notice: [],
     stretch:
       "Walk fingertips across a tray of the mix (quick steps stay up; slow ones sink). Compare with flour + water.",
     notesFromHome:
-      "The maïzena was great; very messy very easy to clean. Proportions can be approx — don’t be scared to put too much corn so it becomes a real solid-ish liquid. Play with your kids it is fun.",
+      "The maïzena was great; very messy very easy to clean. Proportions can be approx — don’t be scared to put too much corn so it becomes a real solid-ish liquid. Play with your kids it is fun.\n\nFrom the clip: 3yo on the learning tower at the counter with a wooden stick; 1yo in the high chair with a small cup and stick — both shirtless. Stainless bowls; white mix pools flat in the bowl, splatters hold as thick blobs on the granite. Counter and the 3yo’s arms and tummy thoroughly coated.",
     heroImageUrl: "/images/experiments/cornstarch-thickening-fluid-hero.png",
     gallery: [],
     featured: false,
