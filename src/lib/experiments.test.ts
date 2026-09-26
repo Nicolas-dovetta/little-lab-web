@@ -125,7 +125,7 @@ test("cornstarch is a winner from 2026-09-26 with Nicolas's home note", () => {
   assert.equal(cornstarch.plannedFor ?? null, null);
   assert.equal(
     cornstarch.notesFromHome,
-    "The maïzena was great; very messy very easy to clean. Proportions can be approx — don’t be scared to put too much corn so it becomes a real solid-ish liquid. Play with your kids it is fun.\n\nFrom the clip: 3yo on the learning tower at the counter with a wooden stick; 1yo in the high chair with a small cup and stick — both shirtless. Stainless bowls; white mix pools flat in the bowl, splatters hold as thick blobs on the granite. Counter and the 3yo’s arms and tummy thoroughly coated.",
+    "The maïzena was great; very messy very easy to clean. Proportions can be approx — don’t be scared to put too much corn so it becomes a real solid-ish liquid. Play with your kids it is fun.\n\nFrom the clip: 3yo on the learning tower at the counter with a wooden stick; 1yo in the high chair with a small cup and stick — both shirtless. Stainless bowls; white mix pools flat in the bowl, splatters hold as thick blobs on the granite. Counter and the 3yo’s arms and tummy thoroughly coated.\n\n1yo loved playing with it with a spoon in a cup. Would scream a lot.\n\n3yo did the mix, had a small bowl, made balls with the mix, made a giant mess and was happy.",
   );
   assert.match(cornstarch.runThis?.overview ?? "", /don’t be scared to put too much cornstarch/);
   assert.match(cornstarch.steps[0]?.detail ?? "", /Learning tower/);
@@ -165,12 +165,7 @@ test("cornstarch is a winner from 2026-09-26 with Nicolas's home note", () => {
     uniqueMoveSteps(cornstarch.steps, cornstarch.runThis?.tracks).map((move) => move.imageUrl),
     [null, null, pour?.imageUrl, play?.imageUrl],
   );
-  assert.deepEqual(cornstarch.sayThis, {
-    age12: ["Loved playing with it with a spoon in a cup. Would scream a lot."],
-    age35: [
-      "Did the mix, had a small bowl, made balls with the mix, made a giant mess and was happy.",
-    ],
-  });
+  assert.deepEqual(cornstarch.sayThis, {});
   assert.equal(cornstarch.products, undefined);
 });
 

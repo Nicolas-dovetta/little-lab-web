@@ -162,22 +162,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     featured: true,
     planUnit: "Matter & mess",
     ranOn: "2026-09-05",
-    sayThis: {
-      age12: [
-        "This one sits on top.",
-        "This one goes down.",
-        "Look — the dark drop fell. Now something comes back.",
-      ],
-      age35: [
-        "The egg sank. The water was not strong enough to hold it.",
-        "Now the water has a lot of salt packed into the same space. It can hold the egg.",
-        "The dark drop is heavier for its size, so it falls. The oil wants to stay up. When the thin coat breaks, the oil climbs.",
-      ],
-      lines: [
-        "Do not say “density” unless they ask for the word. Point at what moved.",
-        "What they said: “Look the egg !! Woaaah” — 2 seconds of magic when the egg started climbing, then he wanted to add more salt.",
-      ],
-    },
+    sayThis: {},
     runThis: {
       overview:
         "Egg sink then float; honey under water under oil; balsamic drops that fall and climb.",
@@ -276,18 +261,13 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     stretch:
       "Walk fingertips across a tray of the mix (quick steps stay up; slow ones sink). Compare with flour + water.",
     notesFromHome:
-      "The maïzena was great; very messy very easy to clean. Proportions can be approx — don’t be scared to put too much corn so it becomes a real solid-ish liquid. Play with your kids it is fun.\n\nFrom the clip: 3yo on the learning tower at the counter with a wooden stick; 1yo in the high chair with a small cup and stick — both shirtless. Stainless bowls; white mix pools flat in the bowl, splatters hold as thick blobs on the granite. Counter and the 3yo’s arms and tummy thoroughly coated.",
+      "The maïzena was great; very messy very easy to clean. Proportions can be approx — don’t be scared to put too much corn so it becomes a real solid-ish liquid. Play with your kids it is fun.\n\nFrom the clip: 3yo on the learning tower at the counter with a wooden stick; 1yo in the high chair with a small cup and stick — both shirtless. Stainless bowls; white mix pools flat in the bowl, splatters hold as thick blobs on the granite. Counter and the 3yo’s arms and tummy thoroughly coated.\n\n1yo loved playing with it with a spoon in a cup. Would scream a lot.\n\n3yo did the mix, had a small bowl, made balls with the mix, made a giant mess and was happy.",
     heroImageUrl: "/images/experiments/cornstarch-thickening-fluid-hero.png",
     gallery: [],
     featured: false,
     planUnit: "Matter & mess",
     ranOn: "2026-09-26",
-    sayThis: {
-      age12: ["Loved playing with it with a spoon in a cup. Would scream a lot."],
-      age35: [
-        "Did the mix, had a small bowl, made balls with the mix, made a giant mess and was happy.",
-      ],
-    },
+    sayThis: {},
     runThis: {
       overview:
         "Water first, then spoon Maïzena until it feels fun. Proportions can be approximate — don’t be scared to put too much cornstarch so it becomes a real solid-ish liquid.",
@@ -390,10 +370,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     gallery: [],
     featured: false,
     planUnit: "Matter & mess",
-    sayThis: {
-      age12: ["[I will fill this after Saturday]"],
-      age35: ["[I will fill this after Saturday]"],
-    },
+    sayThis: {},
     runThis: {
       overview: "Thin water, cinnamon dust, one soap touch at the center, optional redo.",
     },
@@ -490,15 +467,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     gallery: [],
     featured: false,
     planUnit: "Water & weather",
-    sayThis: {
-      age12: ["Cold. Wet.", "Pull… stuck!", "Look — the wire went in."],
-      age35: [
-        "FAST track: the string alone doesn’t catch. After a tiny pinch of salt and a wait, the ice hugs the string.",
-        "FAST track: too much salt just makes a puddle. A little salt, then wait, then pull slow.",
-        "LONG track: the wire is not a hot knife. The squeeze melts a thin path. Ice can freeze again behind it.",
-        "LONG track: when the weights come off, you can pick up the ice holding both ends of the wire.",
-      ],
-    },
+    sayThis: {},
     runThis: {
       overview:
         "Two tracks on one morning. Start the LONG wire first if you want both.",
@@ -638,12 +607,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     featured: false,
     planUnit: "Matter & mess",
     ranOn: "2026-09-19",
-    sayThis: {
-      age12: ["Happy scream at every eruption (the 1yo)."],
-      age35: [
-        "He asked tonight to do more volcanos — we did. He liked it.",
-      ],
-    },
+    sayThis: {},
     runThis: {
       overview: "Repeat on a tray; save the last “everything” pour for the kid.",
       tracks: [
@@ -766,10 +730,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     featured: false,
     planUnit: "Forces & motion",
     plannedFor: "2026-10-03",
-    sayThis: {
-      age12: ["[I will fill this after Saturday]"],
-      age35: ["[I will fill this after Saturday]"],
-    },
+    sayThis: {},
     runThis: {
       overview:
         "Fill, seal, pump until the bottle pops free, watch the water jet and the bottle climb, then reset.",
