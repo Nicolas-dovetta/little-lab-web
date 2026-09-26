@@ -117,14 +117,34 @@ test("Done filter groups winner and tested; Planned is status planned only", () 
   assert.equal(matchesStatusFilter("tested", undefined), true);
 });
 
-test("cornstarch is re-planned for 2026-09-26 and keeps the tested home note", () => {
+test("cornstarch is a winner from 2026-09-26 with Nicolas's home note", () => {
   const cornstarch = experimentSeeds.find((e) => e.id === "cornstarch-thickening-fluid");
   assert.ok(cornstarch);
-  assert.equal(cornstarch.status, "planned");
-  assert.equal(cornstarch.plannedFor, "2026-09-26");
-  assert.equal(cornstarch.ranOn ?? null, null);
-  assert.match(cornstarch.notesFromHome, /logged as tested/);
-  assert.match(cornstarch.notesFromHome, /2026-09-26/);
+  assert.equal(cornstarch.status, "winner");
+  assert.equal(cornstarch.ranOn, "2026-09-26");
+  assert.equal(cornstarch.plannedFor ?? null, null);
+  assert.equal(
+    cornstarch.notesFromHome,
+    "The maïzena was great; very messy very easy to clean. Proportions can be approx — don’t be scared to put too much corn so it becomes a real solid-ish liquid. Play with your kids it is fun.\n\nFrom the clip: 3yo on the learning tower at the counter with a wooden stick; 1yo in the high chair with a small cup and stick — both shirtless. Stainless bowls; white mix pools flat in the bowl, splatters hold as thick blobs on the granite. Counter and the 3yo’s arms and tummy thoroughly coated.",
+  );
+  assert.match(cornstarch.runThis?.overview ?? "", /don’t be scared to put too much cornstarch/);
+  assert.match(cornstarch.steps[0]?.detail ?? "", /Learning tower/);
+  assert.match(cornstarch.steps[0]?.detail ?? "", /high chair/);
+  assert.match(cornstarch.steps[1]?.detail ?? "", /Err toward more cornstarch/);
+  assert.match(cornstarch.steps[2]?.detail ?? "", /splatters on the counter hold as thick blobs/);
+  assert.match(cornstarch.steps[3]?.detail ?? "", /Shirtless helps/);
+  assert.ok(cornstarch.materials.some((m) => /wooden sticks/i.test(m)));
+  assert.ok(cornstarch.materials.some((m) => /learning tower/i.test(m)));
+  assert.match(cornstarch.knowThis?.mechanism ?? "", /force chains and hydroclusters/);
+  assert.match(cornstarch.knowThis?.mechanism ?? "", /shear-thickening/);
+  assert.match(cornstarch.knowThis?.mechanism ?? "", /shear-thinning/);
+  assert.match(cornstarch.knowThis?.mechanism ?? "", /volume fraction/);
+  assert.equal(cornstarch.heroImageUrl, "/images/experiments/cornstarch-thickening-fluid-hero.png");
+  assert.deepEqual(cornstarch.sayThis, {
+    age12: ["[I will fill this after Saturday]"],
+    age35: ["[I will fill this after Saturday]"],
+  });
+  assert.equal(cornstarch.products, undefined);
 });
 
 test("water-bottle-rocket is planned for 2026-10-03 with little-lab materials", () => {

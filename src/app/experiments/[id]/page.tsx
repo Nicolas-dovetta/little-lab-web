@@ -265,7 +265,9 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
                 {knowThis.numbersNote && (
                   <div>
                     <h3 className="text-sm font-semibold text-ink">Numbers</h3>
-                    <p className="mt-1 text-sm text-ink-muted">{knowThis.numbersNote}</p>
+                    <p className="mt-1 whitespace-pre-line text-sm text-ink-muted">
+                      {knowThis.numbersNote}
+                    </p>
                   </div>
                 )}
                 {knowThis.doesNotProve && (
@@ -279,7 +281,9 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
                 {knowThis.goDeeper && (
                   <div>
                     <h3 className="text-sm font-semibold text-ink">Go deeper</h3>
-                    <p className="mt-1 text-sm text-ink-muted">{knowThis.goDeeper}</p>
+                    <p className="mt-1 whitespace-pre-line text-sm text-ink-muted">
+                      {knowThis.goDeeper}
+                    </p>
                   </div>
                 )}
                 {knowThis.nameForThis && (

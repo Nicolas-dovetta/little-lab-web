@@ -24,8 +24,8 @@ Both are America/Los_Angeles calendar dates, **not** `created_at`.
    - `npm run db:push` (both `ALTER`s are in `scripts/push-schema.ts`).
 3. Reseed: `npm run db:seed`
 
-Known `ranOn` dates: Density Layers `2026-09-05`, Salt ice fishing `2026-09-12`, Baking-soda volcano `2026-09-19`. Cinnamon soap rush is left null.
+Known `ranOn` dates: Density Layers `2026-09-05`, Salt ice fishing `2026-09-12`, Baking-soda volcano `2026-09-19`, Cornstarch thickening fluid `2026-09-26`. Cinnamon soap rush is left null.
 
-Known `plannedFor` dates: Cornstarch thickening fluid `2026-09-26`, Water-bottle rocket `2026-10-03`.
+Known `plannedFor` dates: Water-bottle rocket `2026-10-03`.
 
 The experiments index **Done** filter groups `winner` and `tested`. **Planned** filters `status === "planned"`. A planned chip includes the Saturday when `plannedFor` is set (`Planned · Sat Sep 26`). Winner chips stay Winner.
