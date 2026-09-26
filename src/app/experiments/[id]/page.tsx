@@ -392,7 +392,7 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
             <p className="text-sm text-ink-muted">{e.prep}</p>
           </Card>
         )}
-        {e.safety && (
+        {(e.safety ?? "").trim() && (
           <Card title="Safety">
             <p className="text-sm text-ink-muted">{e.safety}</p>
           </Card>

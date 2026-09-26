@@ -156,7 +156,7 @@ export function VolcanoExperimentView({ experiment: e }: { experiment: Experimen
         </div>
       </section>
 
-      {e.safety && (
+      {(e.safety ?? "").trim() && (
         <section>
           <h2 className="font-display text-2xl font-semibold text-ink">Heads-up</h2>
           <p className="mt-3 text-sm text-ink-muted">{e.safety}</p>

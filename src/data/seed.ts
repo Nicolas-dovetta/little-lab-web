@@ -234,7 +234,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "Optional: learning tower / high chair so both kids can reach",
     ],
     prep: "",
-    safety: "Taste ban — not a snack. Wet mix makes floors slick. No heat, no other chemicals.",
+    safety: "",
     experience:
       "Pours like a liquid, then goes firm when you slap, smash, or squeeze it. Very messy; very easy to clean. Fun to play with the kids — both at the counter (learning tower + high chair), shirtless, sticks in stainless bowls.",
     kidCanDo: [
@@ -333,7 +333,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       {
         wrong: "We made glue / slime you can keep.",
         why: "This is a water + cornstarch suspension for play, not a craft to store. It dries out; a big blob can clog a drain.",
-        replace: "Play now — scrape bulk to trash; don’t pour a big blob down the sink.",
+        replace: "Play now — scrape the bulk into the trash; a big blob can clog a sink drain.",
       },
     ],
   },

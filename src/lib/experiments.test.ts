@@ -139,6 +139,13 @@ test("cornstarch is a winner from 2026-09-26 with Nicolas's home note", () => {
   assert.match(cornstarch.knowThis?.mechanism ?? "", /shear-thickening/);
   assert.match(cornstarch.knowThis?.mechanism ?? "", /shear-thinning/);
   assert.match(cornstarch.knowThis?.mechanism ?? "", /volume fraction/);
+  assert.equal(cornstarch.safety, "");
+  assert.equal(
+    cornstarch.traps?.find((trap) => trap.wrong === "We made glue / slime you can keep.")?.replace,
+    "Play now — scrape the bulk into the trash; a big blob can clog a sink drain.",
+  );
+  assert.equal(JSON.stringify(cornstarch).includes("Taste ban"), false);
+  assert.equal(JSON.stringify(cornstarch).includes("not a snack"), false);
   assert.equal(cornstarch.heroImageUrl, "/images/experiments/cornstarch-thickening-fluid-hero.png");
   assert.deepEqual(cornstarch.gallery, []);
   assert.doesNotMatch(cornstarch.notesFromHome, /!\[[^\]]*]\([^)]+\)|<img\b|\.png|\.jpg|\.webp/i);
