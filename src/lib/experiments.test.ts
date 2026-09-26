@@ -166,8 +166,10 @@ test("cornstarch is a winner from 2026-09-26 with Nicolas's home note", () => {
     [null, null, pour?.imageUrl, play?.imageUrl],
   );
   assert.deepEqual(cornstarch.sayThis, {
-    age12: ["[I will fill this after Saturday]"],
-    age35: ["[I will fill this after Saturday]"],
+    age12: ["Loved playing with it with a spoon in a cup. Would scream a lot."],
+    age35: [
+      "Did the mix, had a small bowl, made balls with the mix, made a giant mess and was happy.",
+    ],
   });
   assert.equal(cornstarch.products, undefined);
 });
