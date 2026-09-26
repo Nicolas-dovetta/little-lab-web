@@ -20,6 +20,8 @@ export type RunTrack = {
   title: string;
   imageUrl: string;
   blurb: string;
+  /** Shown on the step when this track is that step's photo. */
+  imageAlt?: string;
 };
 
 export type RunThis = {

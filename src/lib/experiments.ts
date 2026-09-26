@@ -133,16 +133,32 @@ export function uniqueMoveSteps(
   const used = new Set<string>();
   const stepList = [...(steps ?? [])];
 
+  const claim = (candidate: string | null | undefined): string | null => {
+    const url = candidate?.trim() ?? "";
+    if (!url || used.has(url)) return null;
+    used.add(url);
+    return url;
+  };
+
   if (stepList.length > 0) {
-    return stepList.map((step, index) => {
-      const candidate = trackImages[index];
-      let imageUrl: string | null = null;
-      if (candidate && !used.has(candidate)) {
-        used.add(candidate);
-        imageUrl = candidate;
-      }
-      return { title: step.title, detail: step.detail, imageUrl };
+    // A track titled the same as a step is that step's photo (steps 3–4 on
+    // cornstarch). Other tracks stay index-paired, as on the volcano.
+    const titled = new Map<number, string>();
+    stepList.forEach((step, index) => {
+      const match = trackList.find((track) => {
+        const url = track.imageUrl?.trim() ?? "";
+        return Boolean(url) && !used.has(url) && track.title.trim() === step.title.trim();
+      });
+      if (!match) return;
+      const url = claim(match.imageUrl);
+      if (url) titled.set(index, url);
     });
+
+    return stepList.map((step, index) => ({
+      title: step.title,
+      detail: step.detail,
+      imageUrl: titled.get(index) ?? claim(trackImages[index]),
+    }));
   }
 
   return trackList.map((track) => {

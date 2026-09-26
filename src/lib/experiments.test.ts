@@ -140,6 +140,24 @@ test("cornstarch is a winner from 2026-09-26 with Nicolas's home note", () => {
   assert.match(cornstarch.knowThis?.mechanism ?? "", /shear-thinning/);
   assert.match(cornstarch.knowThis?.mechanism ?? "", /volume fraction/);
   assert.equal(cornstarch.heroImageUrl, "/images/experiments/cornstarch-thickening-fluid-hero.png");
+  assert.deepEqual(cornstarch.gallery, []);
+  assert.doesNotMatch(cornstarch.notesFromHome, /!\[[^\]]*]\([^)]+\)|<img\b|\.png|\.jpg|\.webp/i);
+  const pour = cornstarch.runThis?.tracks?.find((track) => track.title === "Pour vs smash");
+  const play = cornstarch.runThis?.tracks?.find((track) => track.title === "Play");
+  assert.equal(pour?.imageUrl, "/images/experiments/cornstarch-hand-runny.webp");
+  assert.equal(
+    pour?.imageAlt,
+    "A hand with runny cornstarch mix dripping back into a stainless bowl",
+  );
+  assert.equal(play?.imageUrl, "/images/experiments/cornstarch-mess-counter.webp");
+  assert.equal(
+    play?.imageAlt,
+    "Cornstarch mess on a granite counter: stainless bowls, wooden sticks, thick blobs dripping off the edge",
+  );
+  assert.deepEqual(
+    uniqueMoveSteps(cornstarch.steps, cornstarch.runThis?.tracks).map((move) => move.imageUrl),
+    [null, null, pour?.imageUrl, play?.imageUrl],
+  );
   assert.deepEqual(cornstarch.sayThis, {
     age12: ["[I will fill this after Saturday]"],
     age35: ["[I will fill this after Saturday]"],

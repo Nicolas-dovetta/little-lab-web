@@ -9,6 +9,8 @@ export type RunTrack = {
   title: string;
   imageUrl: string;
   blurb: string;
+  /** Shown on the step when this track is that step's photo. */
+  imageAlt?: string;
 };
 
 export type RunThis = {
@@ -287,6 +289,25 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     runThis: {
       overview:
         "Water first, then spoon Maïzena until it feels fun. Proportions can be approximate — don’t be scared to put too much cornstarch so it becomes a real solid-ish liquid.",
+      tracks: [
+        {
+          label: "POUR",
+          title: "Pour vs smash",
+          imageUrl: "/images/experiments/cornstarch-hand-runny.webp",
+          imageAlt: "A hand with runny cornstarch mix dripping back into a stainless bowl",
+          blurb:
+            "Slow pour flows; fast smash feels firm. Mix pools flat in the bowl; splatters on the counter hold as thick blobs.",
+        },
+        {
+          label: "PLAY",
+          title: "Play",
+          imageUrl: "/images/experiments/cornstarch-mess-counter.webp",
+          imageAlt:
+            "Cornstarch mess on a granite counter: stainless bowls, wooden sticks, thick blobs dripping off the edge",
+          blurb:
+            "Pour, smash, scoop, slap; squeeze a ball and watch it melt. Steer with water or Maïzena. Shirtless helps — it gets everywhere.",
+        },
+      ],
     },
     knowThis: {
       mechanism:

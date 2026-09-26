@@ -145,6 +145,14 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
   const sayThis = (e.sayThis as SayThis) || {};
   const runThis = (e.runThis as RunThis) || {};
   const knowThis = (e.knowThis as KnowThis) || { mechanism: "" };
+  const tracks = runThis.tracks ?? [];
+  const stepTitles = new Set(steps.map((step) => step.title.trim()));
+  // Title-matched tracks are the step photo. They render on that step only,
+  // not again as RUN THIS cards (salt-ice cards do not share step titles).
+  const stepPhotoTracks = tracks.filter(
+    (track) => Boolean(track.imageUrl?.trim()) && stepTitles.has(track.title.trim()),
+  );
+  const cardTracks = tracks.filter((track) => !stepPhotoTracks.includes(track));
   const traps = (e.traps as Trap[]) || [];
 
   const showSay = hasSayContent(sayThis);
@@ -200,9 +208,9 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
                 {runThis.overview && (
                   <p className="text-sm text-ink-muted">{runThis.overview}</p>
                 )}
-                {runThis.tracks && runThis.tracks.length > 0 && (
+                {cardTracks.length > 0 && (
                   <div className="grid gap-4 sm:grid-cols-2">
-                    {runThis.tracks.map((track) => (
+                    {cardTracks.map((track) => (
                       <div
                         key={track.label}
                         className="overflow-hidden rounded-2xl border border-sky-100/80 bg-white/80 shadow-sm"
@@ -232,20 +240,36 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
                   <div>
                     <h3 className="text-sm font-semibold text-ink">Steps</h3>
                     <ol className="mt-2 space-y-3">
-                      {steps.map((s, i) => (
-                        <li
-                          key={i}
-                          className="flex gap-3 rounded-2xl border border-sky-100/80 bg-white/70 p-3"
-                        >
-                          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sky-700 text-xs font-bold text-white">
-                            {i + 1}
-                          </span>
-                          <div>
-                            <h4 className="text-sm font-semibold text-ink">{s.title}</h4>
-                            <p className="mt-0.5 text-sm text-ink-muted">{s.detail}</p>
-                          </div>
-                        </li>
-                      ))}
+                      {steps.map((s, i) => {
+                        const shot = stepPhotoTracks.find((track) => track.title.trim() === s.title.trim());
+                        return (
+                          <li
+                            key={i}
+                            className="rounded-2xl border border-sky-100/80 bg-white/70 p-3"
+                          >
+                            {shot && (
+                              <div className="relative mb-3 aspect-[4/3] overflow-hidden rounded-xl border border-sky-100/80 bg-sage-50">
+                                <Image
+                                  src={shot.imageUrl}
+                                  alt={shot.imageAlt?.trim() || s.title}
+                                  fill
+                                  className="object-contain"
+                                  sizes="(max-width: 1024px) 100vw, 40rem"
+                                />
+                              </div>
+                            )}
+                            <div className="flex gap-3">
+                              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sky-700 text-xs font-bold text-white">
+                                {i + 1}
+                              </span>
+                              <div>
+                                <h4 className="text-sm font-semibold text-ink">{s.title}</h4>
+                                <p className="mt-0.5 text-sm text-ink-muted">{s.detail}</p>
+                              </div>
+                            </div>
+                          </li>
+                        );
+                      })}
                     </ol>
                   </div>
                 )}
