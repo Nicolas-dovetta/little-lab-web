@@ -50,7 +50,7 @@ function hasRunContent(run: RunThis | null | undefined): boolean {
 
 function hasKnowContent(know: KnowThis | null | undefined): boolean {
   if (!know) return false;
-  return Boolean(know.mechanism || know.doesNotProve);
+  return Boolean(know.mechanism || know.numbersNote || know.goDeeper || know.nameForThis);
 }
 
 export default async function ExperimentDetailPage({
@@ -144,7 +144,7 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
   const notice = (e.notice as string[]) || [];
   const sayThis = (e.sayThis as SayThis) || {};
   const runThis = (e.runThis as RunThis) || {};
-  const knowThis = (e.knowThis as KnowThis) || { mechanism: "", doesNotProve: "" };
+  const knowThis = (e.knowThis as KnowThis) || { mechanism: "" };
   const traps = (e.traps as Trap[]) || [];
 
   const showSay = hasSayContent(sayThis);
@@ -267,14 +267,6 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
                     <h3 className="text-sm font-semibold text-ink">Numbers</h3>
                     <p className="mt-1 whitespace-pre-line text-sm text-ink-muted">
                       {knowThis.numbersNote}
-                    </p>
-                  </div>
-                )}
-                {knowThis.doesNotProve && (
-                  <div>
-                    <h3 className="text-sm font-semibold text-ink">Does not prove</h3>
-                    <p className="mt-1 whitespace-pre-line text-sm text-ink-muted">
-                      {knowThis.doesNotProve}
                     </p>
                   </div>
                 )}
