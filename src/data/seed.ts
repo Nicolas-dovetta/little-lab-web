@@ -19,11 +19,24 @@ export type RunThis = {
   tracks?: RunTrack[];
 };
 
+export type KnowThisImage = {
+  imageUrl: string;
+  alt: string;
+  width: number;
+  height: number;
+};
+
+/** Mechanism diagram; `smallScreen` images stack in its place below `sm`. */
+export type KnowThisDiagram = KnowThisImage & {
+  smallScreen?: KnowThisImage[];
+};
+
 export type KnowThis = {
   mechanism: string;
   goDeeper?: string;
   numbersNote?: string;
   nameForThis?: string;
+  diagram?: KnowThisDiagram;
 };
 
 export type Trap = {
@@ -293,11 +306,31 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     },
     knowThis: {
       mechanism:
-        "This is not a gel, not melted plastic, and not a chemical reaction. You mixed two things that barely want each other: water, and billions of tiny hard cornstarch grains. The grains do not dissolve. They sit in the water as a crowded suspension — a particle slurry.\n\nEach grain is roughly a few to tens of micrometers across (about the size of a fine dust speck under a microscope), irregular, and stiff. Between grains sits a thin film of water. At rest or under a gentle, slow push, those water films act like tiny lubricated bearings. Grains can slide, roll, and rearrange. Macroscopically the mix pours and drips — a thick liquid.\n\nHit it hard and fast and the story flips. The sudden stress forces grains into each other before the water films can rearrange. Grains form brief force chains and hydroclusters: jammed networks that span across the bowl. For that moment the pile locks. It feels solid. Ease up, and the network falls apart; water films return; it melts back into a puddle.\n\nSame water. Same starch. No new material appeared. What changed is the rate and strength of the push — how hard and how fast you sheared the suspension. Slow shear → flow. Fast, high shear → jam.\n\nFluids whose resistance rises when you shear them harder are called dilatant or shear-thickening. Cornstarch + water is a classic kitchen case. (Ketchup and paint do the opposite: they get runnier when you shear them — shear-thinning. Different particle and polymer physics.) At high enough grain loading and sudden stress, the thickening can jump almost discontinuously: a soft pour becomes a crack when you punch it. That discontinuous jump is why smash toys and slap games feel so dramatic.\n\nHow crowded the bowl is matters. If the volume fraction of grains is too low, there is always space to rearrange and you only get a thin sludge. If it is dense enough (roughly the crowded regime parents hit by feel — firm when poked, still drips when poured), a hard hit can jam the whole pile. That is why “don’t be scared to put too much cornstarch” works: more grains → easier jamming → a real solid-ish liquid under stress. Too dry and crumbly just needs a splash of water; the target is dense but still wet.\n\nFlour + water usually will not give the same sharp switch. Wheat flour particles hydrate and stick differently; cornstarch granules have the size, stiffness, and surface behavior that jam cleanly under sudden stress. That is why this kitchen mix is famous and flour goo is not the same show.\n\nWalking quickly across a deep tray of the mix (or the backyard-pool demos online) uses the same physics: each footfall is a fast, high-stress punch that briefly jams a pad under the foot. Stand still and you sink, because slow loading lets grains rearrange again.",
+        "This is not a gel, not melted plastic, and not a chemical reaction. You mixed water and billions of tiny hard cornstarch grains. Starch actually likes water: water wets each grain and it swells a little, but each grain stays a tiny hard particle. The grains do not dissolve. They sit in the water as a crowded suspension — a particle slurry.\n\nEach grain is roughly a few to tens of micrometers across (about the size of a fine dust speck under a microscope), irregular, and stiff. Between grains sits a thin film of water. At rest or under a gentle, slow push, those water films act like tiny lubricated bearings. Grains can slide, roll, and rearrange. Macroscopically the mix pours and drips — a thick liquid.\n\nHit it hard and fast and the story flips. The sudden stress forces grains into each other before the water films can rearrange. Grains get pressed into direct contact, rubbing with friction, and form brief force chains: jammed networks that reach from where you hit down to something firm, like the bottom of the bowl. (Hydroclusters, grains the flowing water drags into clumps, only explain mild thickening, not this sudden jam.) For that moment the pile locks. It feels solid. Ease up, and the network falls apart; water films return; it melts back into a puddle.\n\nSame water. Same starch. No new material appeared. What changed is the rate and strength of the push — how hard and how fast you sheared the suspension. Slow shear → flow. Fast, high shear → jam.\n\nFluids whose resistance rises when you shear them harder are called dilatant or shear-thickening. Cornstarch + water is a classic kitchen case. (Ketchup and paint do the opposite: they get runnier when you shear them — shear-thinning. Different particle and polymer physics.) At high enough grain loading and sudden stress, the thickening can jump almost discontinuously: a soft pour becomes a crack when you punch it. That discontinuous jump is why smash toys and slap games feel so dramatic.\n\nHow crowded the bowl is matters. If the volume fraction of grains is too low, there is always space to rearrange and you only get a thin sludge. If it is dense enough (roughly the crowded regime parents hit by feel — firm when poked, still drips when poured), a hard hit can jam the whole pile. That is why “don’t be scared to put too much cornstarch” works: more grains → easier jamming → a real solid-ish liquid under stress. Too dry and crumbly just needs a splash of water; the target is dense but still wet.\n\nFlour + water usually will not give the same sharp switch. Wheat flour particles hydrate and stick differently; cornstarch granules have the size, stiffness, and surface behavior that jam cleanly under sudden stress. That is why this kitchen mix is famous and flour goo is not the same show.\n\nWalking quickly across a deep tray of the mix (or the backyard-pool demos online) uses the same physics: each footfall is a fast, high-stress punch that briefly jams a pad under the foot. Stand still and you sink, because slow loading lets grains rearrange again.",
       numbersNote:
         "No exact kitchen ratio. Start with shallow water; add Maïzena until it feels fun — firm on a poke, still drips on a slow pour. Dense suspensions that shear-thicken hard are typically packed with a large volume fraction of grains (crowded, not watery). Feel beats measuring cups.",
       nameForThis:
         "Optional names (after the plain story): shear-thickening suspension, dilatant fluid, particle jamming / hydroclusters, non-Newtonian fluid, oobleck. The useful idea for a parent is the jam: hard/fast locks the grain pile; slow lets it flow.",
+      diagram: {
+        imageUrl: "/images/experiments/cornstarch-physics-sketch.webp",
+        alt: "Two-panel sketch. Slow spoon: water films keep starch grains apart so they slide and the mix pours. Fast smash: grains are pushed into contact faster than water can escape, forming force chains down to the bowl bottom, so it briefly acts like a solid.",
+        width: 2440,
+        height: 800,
+        smallScreen: [
+          {
+            imageUrl: "/images/experiments/cornstarch-physics-sketch-slow.webp",
+            alt: "Sketch panel 1. Slow spoon: water films keep starch grains apart so they slide and the mix pours.",
+            width: 1200,
+            height: 800,
+          },
+          {
+            imageUrl: "/images/experiments/cornstarch-physics-sketch-smash.webp",
+            alt: "Sketch panel 2. Fast smash: grains are pushed into contact faster than water can escape, forming force chains down to the bowl bottom, so it briefly acts like a solid.",
+            width: 1200,
+            height: 800,
+          },
+        ],
+      },
       goDeeper:
         "• Squeeze a ball in your fist (firm), then open your hand and watch it melt — jam on, jam off.\n• Fingertips walking across a tray: quick steps stay up; slow ones sink.\n• Compare with flour + water (different feel) or plain water (no jam).\n• Ask: did we make a new substance, or did we change how the same pile of grains rearranges?",
     },

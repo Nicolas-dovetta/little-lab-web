@@ -30,11 +30,28 @@ export type RunThis = {
   tracks?: RunTrack[];
 };
 
+export type KnowThisImage = {
+  imageUrl: string;
+  alt: string;
+  width: number;
+  height: number;
+};
+
+/**
+ * Mechanism diagram shown full width at the top of Mechanism. When
+ * `smallScreen` is set, those images stack in its place below the `sm`
+ * breakpoint (a wide multi-panel sketch is unreadable at phone width).
+ */
+export type KnowThisDiagram = KnowThisImage & {
+  smallScreen?: KnowThisImage[];
+};
+
 export type KnowThis = {
   mechanism: string;
   goDeeper?: string;
   numbersNote?: string;
   nameForThis?: string;
+  diagram?: KnowThisDiagram;
 };
 
 export type Trap = {

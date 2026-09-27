@@ -135,7 +135,23 @@ test("cornstarch is a winner from 2026-09-26 with Nicolas's home note", () => {
   assert.match(cornstarch.steps[3]?.detail ?? "", /Shirtless helps/);
   assert.ok(cornstarch.materials.some((m) => /wooden sticks/i.test(m)));
   assert.ok(cornstarch.materials.some((m) => /learning tower/i.test(m)));
-  assert.match(cornstarch.knowThis?.mechanism ?? "", /force chains and hydroclusters/);
+  assert.match(cornstarch.knowThis?.mechanism ?? "", /pressed into direct contact, rubbing with friction/);
+  assert.match(cornstarch.knowThis?.mechanism ?? "", /only explain mild thickening/);
+  assert.doesNotMatch(cornstarch.knowThis?.mechanism ?? "", /force chains and hydroclusters/);
+  assert.doesNotMatch(cornstarch.knowThis?.mechanism ?? "", /barely want each other/);
+  assert.match(cornstarch.knowThis?.mechanism ?? "", /each grain stays a tiny hard particle/);
+  assert.equal(cornstarch.knowThis?.diagram?.imageUrl, "/images/experiments/cornstarch-physics-sketch.webp");
+  assert.equal(
+    cornstarch.knowThis?.diagram?.alt,
+    "Two-panel sketch. Slow spoon: water films keep starch grains apart so they slide and the mix pours. Fast smash: grains are pushed into contact faster than water can escape, forming force chains down to the bowl bottom, so it briefly acts like a solid.",
+  );
+  assert.deepEqual(
+    cornstarch.knowThis?.diagram?.smallScreen?.map((img) => img.imageUrl),
+    [
+      "/images/experiments/cornstarch-physics-sketch-slow.webp",
+      "/images/experiments/cornstarch-physics-sketch-smash.webp",
+    ],
+  );
   assert.match(cornstarch.knowThis?.mechanism ?? "", /shear-thickening/);
   assert.match(cornstarch.knowThis?.mechanism ?? "", /shear-thinning/);
   assert.match(cornstarch.knowThis?.mechanism ?? "", /volume fraction/);
