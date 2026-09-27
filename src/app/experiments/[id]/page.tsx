@@ -4,7 +4,14 @@ import { notFound } from "next/navigation";
 import { ExperimentViewTracker } from "@/components/ExperimentViewTracker";
 import { JsonLd } from "@/components/JsonLd";
 import { VolcanoExperimentView } from "@/components/VolcanoExperimentView";
-import type { Experiment, ExperimentProduct, KnowThis, RunThis, Trap } from "@/db/schema";
+import type {
+  Experiment,
+  ExperimentProduct,
+  KnowThis,
+  KnowThisDiagram,
+  RunThis,
+  Trap,
+} from "@/db/schema";
 import { amazonPackCartHref, amazonProductHref } from "@/lib/amazon";
 import {
   difficultyLabel,
@@ -256,6 +263,7 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
                 {knowThis.mechanism && (
                   <div>
                     <h3 className="text-sm font-semibold text-ink">Mechanism</h3>
+                    {knowThis.diagram?.imageUrl && <MechanismDiagram diagram={knowThis.diagram} />}
                     <p className="mt-1 whitespace-pre-line text-sm text-ink-muted">
                       {knowThis.mechanism}
                     </p>
@@ -412,6 +420,38 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
         )}
       </aside>
     </div>
+  );
+}
+
+function MechanismDiagram({ diagram }: { diagram: KnowThisDiagram }) {
+  const small = diagram.smallScreen ?? [];
+  const frame = "h-auto w-full rounded-2xl border border-sage-200/80 bg-white";
+  return (
+    <figure className="mt-2 mb-3">
+      <Image
+        src={diagram.imageUrl}
+        alt={diagram.alt}
+        width={diagram.width}
+        height={diagram.height}
+        className={small.length > 0 ? `hidden sm:block ${frame}` : frame}
+        sizes="(max-width: 1024px) 100vw, 40rem"
+      />
+      {small.length > 0 && (
+        <div className="space-y-3 sm:hidden">
+          {small.map((img) => (
+            <Image
+              key={img.imageUrl}
+              src={img.imageUrl}
+              alt={img.alt}
+              width={img.width}
+              height={img.height}
+              className={frame}
+              sizes="100vw"
+            />
+          ))}
+        </div>
+      )}
+    </figure>
   );
 }
 
