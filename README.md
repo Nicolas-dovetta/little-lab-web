@@ -29,3 +29,14 @@ Known `ranOn` dates: Density Layers `2026-09-05`, Salt ice fishing `2026-09-12`,
 Known `plannedFor` dates: Water-bottle rocket `2026-10-03`.
 
 The experiments index **Done** filter groups `winner` and `tested`. **Planned** filters `status === "planned"`. A planned chip includes the Saturday when `plannedFor` is set (`Planned · Sat Sep 26`). Winner chips stay Winner.
+
+## Physics sketches in Mechanism (`knowThis.panels`)
+
+Each sketch panel renders full width of the text column directly above its own walk-through paragraphs (KNOW THIS → Mechanism; on the volcano pilot spine, "Bear with me").
+
+- `knowThis.mechanism` is plain paragraphs (blank line between them) with `<!-- panel:N -->` on its own line where panel N starts. These are the same markers the little-lab-mechanics `physics-rewrite.md` files use, so the approved Mechanism text pastes in unchanged.
+- `knowThis.panels[N - 1]` is panel N: `{ imageUrl (PNG fallback), webpUrl, alt, width, height }`. Rendered as `<picture>` (WebP source + PNG `<img>`, served as-is so labels stay crisp) with width/height set (no layout shift).
+- Text before the first marker is the intro (incl. the arrow key). Panels with no marker show first; without `panels` the old `diagram` layout still works.
+- Logic: `src/lib/mechanism.ts` (`mechanismBlocks`), UI: `src/components/MechanismWalkthrough.tsx`, tests: `src/lib/mechanism.test.ts`.
+
+To add a sketched experiment: copy `panel-N-*.png/.webp` to `public/images/experiments/<slug>-physics-panel-N-*.{png,webp}`, paste the rewrite's Mechanism (with markers) into `mechanism`, add the `panels` array in `src/data/seed.ts`, add the slug to `SKETCHED` in `mechanism.test.ts`, and mirror it in Neon (`know_this = know_this || '{"mechanism": …, "panels": […]}'::jsonb`).

@@ -46,12 +46,25 @@ export type KnowThisDiagram = KnowThisImage & {
   smallScreen?: KnowThisImage[];
 };
 
+/**
+ * One physics-sketch panel. `<!-- panel:N -->` in `mechanism` places
+ * `panels[N - 1]` full width directly above the paragraphs that follow it.
+ */
+export type KnowThisPanel = KnowThisImage & {
+  /** Preferred WebP; `imageUrl` (PNG) is the fallback. */
+  webpUrl?: string;
+};
+
 export type KnowThis = {
+  /** Plain paragraphs; may contain `<!-- panel:N -->` markers (see `panels`). */
   mechanism: string;
   goDeeper?: string;
   numbersNote?: string;
   nameForThis?: string;
+  /** Legacy single diagram at the top of Mechanism. Ignored when `panels` is set. */
   diagram?: KnowThisDiagram;
+  /** Per-panel sketch walk-through, interleaved via markers in `mechanism`. */
+  panels?: KnowThisPanel[];
 };
 
 export type Trap = {
