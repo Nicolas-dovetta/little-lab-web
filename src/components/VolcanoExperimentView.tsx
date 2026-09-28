@@ -2,7 +2,9 @@ import Image from "next/image";
 import type { Experiment, ExperimentProduct, KnowThis, RunThis, Trap } from "@/db/schema";
 import { amazonPackCartHref, amazonProductHref } from "@/lib/amazon";
 import { kidVerdictProse, uniqueMoveSteps } from "@/lib/experiments";
+import { simForExperiment } from "@/lib/sims";
 import { MechanismWalkthrough } from "./MechanismWalkthrough";
+import { SimTryIt } from "./SimTryIt";
 
 export function VolcanoExperimentView({ experiment: e }: { experiment: Experiment }) {
   const materials = (e.materials as string[]) || [];
@@ -14,6 +16,7 @@ export function VolcanoExperimentView({ experiment: e }: { experiment: Experimen
   const moves = uniqueMoveSteps(steps, runThis.tracks);
   const verdict = kidVerdictProse(e.notesFromHome, e.experience);
   const packHref = amazonPackCartHref(products);
+  const sim = simForExperiment(e.id);
 
   return (
     <div className="mx-auto max-w-3xl space-y-12 px-4 py-10 sm:px-6">
@@ -154,6 +157,8 @@ export function VolcanoExperimentView({ experiment: e }: { experiment: Experimen
           )}
         </div>
       </section>
+
+      {sim && <SimTryIt sim={sim} />}
 
       {(e.safety ?? "").trim() && (
         <section>
