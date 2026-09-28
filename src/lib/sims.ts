@@ -13,8 +13,6 @@ export type SimEmbed = {
   title: string;
   /** One plain sentence under the heading. */
   blurb: string;
-  /** Button that loads the sim. */
-  buttonLabel: string;
   /** Accessible name of the iframe. */
   iframeTitle: string;
   /** Iframe height (px) until the sim reports its own; fits the sim (after Pour) at 390 and 1280. */
@@ -29,7 +27,6 @@ const SIMS: Record<string, SimEmbed> = {
     src: "/sims/baking-soda-volcano/index.html",
     title: "Try it: which runs out first?",
     blurb: "Pick how much baking soda and vinegar go in, pour, and see which one runs out first.",
-    buttonLabel: "Load the volcano sim",
     iframeTitle: "Baking-soda volcano sim: which runs out first, the baking soda or the vinegar?",
     fallbackHeight: 2000,
   },
