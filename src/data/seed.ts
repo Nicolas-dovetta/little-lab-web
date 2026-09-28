@@ -31,12 +31,25 @@ export type KnowThisDiagram = KnowThisImage & {
   smallScreen?: KnowThisImage[];
 };
 
+/**
+ * One physics-sketch panel. `<!-- panel:N -->` in `mechanism` places
+ * `panels[N - 1]` full width directly above the paragraphs that follow it.
+ */
+export type KnowThisPanel = KnowThisImage & {
+  /** Preferred WebP; `imageUrl` (PNG) is the fallback. */
+  webpUrl?: string;
+};
+
 export type KnowThis = {
+  /** Plain paragraphs; may contain `<!-- panel:N -->` markers (see `panels`). */
   mechanism: string;
   goDeeper?: string;
   numbersNote?: string;
   nameForThis?: string;
+  /** Legacy single diagram at the top of Mechanism. Ignored when `panels` is set. */
   diagram?: KnowThisDiagram;
+  /** Per-panel sketch walk-through, interleaved via markers in `mechanism`. */
+  panels?: KnowThisPanel[];
 };
 
 export type Trap = {
@@ -103,7 +116,7 @@ export const experimentSeeds: ExperimentSeed[] = [
     ageBands: ["3-5"],
     domains: ["physics"],
     learningGoal:
-      "Different liquids stack because some are denser — more mass in the same amount of space. Salt water can hold up an egg. Balsamic can fall through oil and then climb.",
+      "Different liquids stack because some are denser — more mass in the same amount of space. Salt water can hold up an egg. A balsamic drop falls through oil — then the oil it dragged down floats back up.",
     timeMinutes: 60,
     messLevel: "high",
     location: "indoor",
@@ -182,9 +195,32 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     },
     knowThis: {
       mechanism:
-        "Density is mass per volume: how much stuff is packed into the same amount of space. A spoon of honey has more mass than a spoon of oil, so honey sits lower if the two do not mix.\n\n“Heavy” without “for its size” is the mistake this Saturday exists to kill. A cork is light for its size and floats. A small coin can sink. The same egg does both, depending on the liquid around it.\n\nA typical hen’s egg is a little denser than tap water, so it sinks. Dissolve enough salt and the water’s density rises. The egg is now less dense than the liquid around it, so it floats. You changed the water, not the egg.\n\nHoney, water, and oil also differ in whether they mix. Oil and water stay as separate layers because their molecules prefer their own company — they are immiscible. That sharp line is not oil being “afraid.” Honey and water will mix if you stir. Poured slowly, honey can sit underneath for a while because it is denser and it is viscous (it flows slowly). Viscosity is not density. Honey sinks because it is packed tighter than water. It pours slowly because it is thick. Those are different jobs.\n\nBalsamic through oil is the honest party trick. Balsamic is mostly water, sugar, and acid. It is denser than oil, so a drop falls. On the way down it often picks up a thin oily skin. That blob is two materials stuck together, not one liquid that changed its mind. When the skin ruptures lower down, freed oil rises. Sometimes it drags a speck of vinegar with it. That is the down-and-back-up. Not magic. Unsticking. The upward push has a name if you want it: buoyancy — the liquid pushes up with a force equal to the weight of the liquid displaced.",
+        "Density is mass per volume: how much stuff is packed into the same amount of space. A spoon of honey has more mass than a spoon of oil, so honey sits lower if the two do not mix.\n\n“Heavy” without “for its size” is the mistake this Saturday exists to kill. A cork is light for its size and floats. A small coin can sink. The same egg does both, depending on the liquid around it. Bear with me while I walk through the sketch, because it shows exactly that. A note on the arrows first: solid orange arrows are forces (pushes and pulls). Dashed ones show which way something moves.\n\n<!-- panel:1 -->\nPanel 1, \"Egg: sink, then float\". On the left is the glass of water with the egg on the bottom, and a spoon tipping salt in (\"add salt, stir\"; the dashed curve is the stirring). The window on the right is split in two: \"tap water\" on the left, \"salty water\" on the right. Same egg in both.\n\nIn tap water the egg sits on the bottom. In salty water it floats at the top, with only a small cap poking out above the surface. Most of it stays under.\n\nThe dashed boxes, \"forces on the egg\", show why. Two forces act on the egg. Weight pulls it down. The water pushes it up: that push is buoyancy, and it equals the weight of the water the egg pushes aside.\n\nIn the tap water box, look at the arrow lengths. The push up is almost as long as the weight, but not quite. A typical hen’s egg is a little denser than tap water. The water holds up most of the egg (something like 92–97% of its weight), and the glass bottom carries the little bit left over. That is the tiny \"+ bottom\" arrow, starting where the egg touches the glass. It is also why a little salt is enough to tip it.\n\nSalt adds a lot of mass but only a little extra volume. The dissolved salt tucks in among the water molecules. So each spoonful of the water gets heavier: denser. In the salty water box, the two arrows are the same length (\"equal\"). Push up = weight, and the egg floats. You changed the water, not the egg.\n\n<!-- panel:2 -->\nPanel 2, \"Denser sits lower\". On the left is the layered glass: \"honey\" at the bottom, \"water\" in the middle, \"oil\" on top, with sharp lines between them. On the right is a density ladder in g/mL, with denser going down (\"denser\"), so it lines up with the glass.\n\nRead it top to bottom: oil ~0.91–0.93, water 1.00, egg ~1.03–1.09, salt water up to ~1.2, balsamic 1.1–1.3 (it depends on the bottle), honey ~1.4. Whatever is lower on the ladder sits lower in the glass.\n\nThe ladder also shows panel 1 again. The egg bar sits just below water, so the egg sinks in tap water. The salt water bar reaches past the egg, so enough salt floats it.\n\nHoney, water, and oil also differ in whether they mix. Oil and water stay as separate layers; they are immiscible. That sharp line is not oil being “afraid,” and it is not the oil molecules snubbing the water. Water molecules cling tightly to each other. Oil molecules can't join in, so the water keeps squeezing them out into their own layer.\n\nHoney and water will mix if you stir. Poured slowly, honey can sit underneath for a while because it is denser and it is viscous (it flows slowly). The panel 2 caption says it: thick (viscous) is a different thing, and honey is both. Honey sinks because it is packed tighter than water. It pours slowly because it is thick. Those are different jobs.\n\n<!-- panel:3 -->\nPanel 3, \"Balsamic falls; oil climbs back\". This is the honest party trick. On the left, a spoon drips \"balsamic drops\" into the oil. The magnifier sits on the line where oil meets water. The window on the right is that line, in three steps, numbered 1 to 3. The boundary is at the same height in all three.\n\nStep 1, \"balsamic drop\": the dark drop sinks through the yellow oil (dashed arrow down). Balsamic is mostly water, sugar, and acid, and it is denser than oil, so it falls. The dashed arrow shows which way it moves, not a force. It falls at a steady speed, with the oil's drag holding it back.\n\nStep 2, \"thin oil film\": the drop reaches the water and presses into it, making a dent. It doesn't join the water right away. A thin film of oil is trapped between the drop and the water, and that film has to drain or break first. Some drops wait right there at the boundary while it drains. (That's most likely what the half-vinegar, half-oil drops stuck at the middle line were doing at our table.)\n\nStep 3, \"freed oil rises\": the film has broken. The vinegar mixes down into the water; those are the dark wisps. The bit of oil that got dragged down with the drop (the oil lining the dent it pushed into the water) is cut loose. It's less dense than water, so it floats back up to the oil layer (dashed arrow up). That is the down-and-back-up. The drop that fell was balsamic. What climbs back is oil. Not magic. Unsticking.",
+      panels: [
+        {
+          imageUrl: "/images/experiments/density-layers-physics-panel-1-egg.png",
+          webpUrl: "/images/experiments/density-layers-physics-panel-1-egg.webp",
+          alt: "Sketch panel 1, Egg: sink, then float. Salt is stirred into a glass of water; side by side, the egg sits on the bottom in tap water, where the push up is a little shorter than its weight and the glass bottom carries the rest, and floats in salty water, where push up and weight are equal.",
+          width: 1200,
+          height: 800,
+        },
+        {
+          imageUrl: "/images/experiments/density-layers-physics-panel-2-layers.png",
+          webpUrl: "/images/experiments/density-layers-physics-panel-2-layers.webp",
+          alt: "Sketch panel 2, Denser sits lower. A glass layered honey, water, oil next to a density ladder in g/mL: oil about 0.91 to 0.93, water 1.00, egg about 1.03 to 1.09, salt water up to about 1.2, balsamic 1.1 to 1.3, honey about 1.4, denser lower.",
+          width: 1200,
+          height: 800,
+        },
+        {
+          imageUrl: "/images/experiments/density-layers-physics-panel-3-balsamic.png",
+          webpUrl: "/images/experiments/density-layers-physics-panel-3-balsamic.webp",
+          alt: "Sketch panel 3, Balsamic falls; oil climbs back. Three steps at the oil and water line: a balsamic drop sinks through oil, sits on a thin oil film at the water, then the film breaks, the vinegar mixes into the water and the freed oil rises back up.",
+          width: 1200,
+          height: 800,
+        },
+      ],
       numbersNote:
-        "Keep these off the kid table. Tap water is about 1.00 g/mL. Vegetable oil is about 0.91–0.93. A hen’s egg is often about 1.03–1.09. Balsamic is often around 1.2. Honey is around 1.4. Well-salted water can pass the egg; if you really pack it, it can approach ~1.2. You do not need the numbers to run the Saturday. They are here so you can check a claim.",
+        "Keep these off the kid table. Tap water is about 1.00 g/mL. Vegetable oil is about 0.91–0.93. A hen’s egg is often about 1.03–1.09. Balsamic is about 1.1–1.3, depending on the bottle. Honey is around 1.4. Well-salted water can pass the egg; if you really pack it, it can approach ~1.2. To float a fresh egg, figure roughly 2–3 tablespoons of table salt per cup of water (about 11–13% salt by weight), stirred until it dissolves. If you don't stir, the salt settles at the bottom, and the egg can hover in the middle. You do not need the numbers to run the Saturday. They are here so you can check a claim.",
     },
     traps: [
       {
@@ -202,9 +238,9 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       {
         wrong:
           "The vinegar and oil don’t like each other, so the vinegar bounces.",
-        why: "They do not mix. That is real. The climb is not a bounce. It is the oily coat breaking and oil going back up.",
+        why: "They do not mix. That is real. The climb is not a bounce. It is oil the drop dragged down, cut loose when the thin film breaks, going back up.",
         replace:
-          "The drop fell because it is denser. The climb is oil going home after the skin breaks.",
+          "The drop fell because it is denser. The climb is oil going home after the film breaks.",
       },
     ],
   },
@@ -306,31 +342,27 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     },
     knowThis: {
       mechanism:
-        "This is not a gel, not melted plastic, and not a chemical reaction. You mixed water and billions of tiny hard cornstarch grains. Starch actually likes water: water wets each grain and it swells a little, but each grain stays a tiny hard particle. The grains do not dissolve. They sit in the water as a crowded suspension — a particle slurry.\n\nEach grain is roughly a few to tens of micrometers across (about the size of a fine dust speck under a microscope), irregular, and stiff. Between grains sits a thin film of water. At rest or under a gentle, slow push, those water films act like tiny lubricated bearings. Grains can slide, roll, and rearrange. Macroscopically the mix pours and drips — a thick liquid.\n\nHit it hard and fast and the story flips. The sudden stress forces grains into each other before the water films can rearrange. Grains get pressed into direct contact, rubbing with friction, and form brief force chains: jammed networks that reach from where you hit down to something firm, like the bottom of the bowl. (Hydroclusters, grains the flowing water drags into clumps, only explain mild thickening, not this sudden jam.) For that moment the pile locks. It feels solid. Ease up, and the network falls apart; water films return; it melts back into a puddle.\n\nSame water. Same starch. No new material appeared. What changed is the rate and strength of the push — how hard and how fast you sheared the suspension. Slow shear → flow. Fast, high shear → jam.\n\nFluids whose resistance rises when you shear them harder are called dilatant or shear-thickening. Cornstarch + water is a classic kitchen case. (Ketchup and paint do the opposite: they get runnier when you shear them — shear-thinning. Different particle and polymer physics.) At high enough grain loading and sudden stress, the thickening can jump almost discontinuously: a soft pour becomes a crack when you punch it. That discontinuous jump is why smash toys and slap games feel so dramatic.\n\nHow crowded the bowl is matters. If the volume fraction of grains is too low, there is always space to rearrange and you only get a thin sludge. If it is dense enough (roughly the crowded regime parents hit by feel — firm when poked, still drips when poured), a hard hit can jam the whole pile. That is why “don’t be scared to put too much cornstarch” works: more grains → easier jamming → a real solid-ish liquid under stress. Too dry and crumbly just needs a splash of water; the target is dense but still wet.\n\nFlour + water usually will not give the same sharp switch. Wheat flour particles hydrate and stick differently; cornstarch granules have the size, stiffness, and surface behavior that jam cleanly under sudden stress. That is why this kitchen mix is famous and flour goo is not the same show.\n\nWalking quickly across a deep tray of the mix (or the backyard-pool demos online) uses the same physics: each footfall is a fast, high-stress punch that briefly jams a pad under the foot. Stand still and you sink, because slow loading lets grains rearrange again.",
+        "Bear with me as I over explain this one, using the sketch.\n\nThis is not a gel, not melted plastic, and not a chemical reaction. You mixed water and billions of tiny hard cornstarch grains. Starch actually likes water: water wets each grain and it swells a little, but each grain stays a tiny hard particle. The grains do not dissolve. They sit in the water as a crowded suspension, a particle slurry.\n\nA note on the arrows: solid orange arrows are pushes (forces), and dashed ones show which way something moves.\n\n<!-- panel:1 -->\nPanel 1, \"Slow spoon → it flows\". On the left is the bowl, with a spoon moving through the mix slowly (the dashed orange \"slow\" arrow). The circle is a magnifier. The big window is what a tiny patch of the mix looks like zoomed way in. Check the scale bar: 20 µm. A human hair is a few of those bars wide.\n\nEach cream blob is one starch grain: a few to tens of micrometers across, irregular, and stiff. The pale blue is water. Look between the grains. There is a thin water film between neighbours (\"water film\"). The films are drawn much thicker than they really are, so you can see them. At rest or under a gentle, slow push, that film acts like a lubricant between the grains. There is also a tiny push-apart force between the grain surfaces, and it helps keep them from touching, as long as you don't push harder than it.\n\nThe small dashed arrows on the grains show them moving along with the spoon. Grains near the top move the most and lower ones less, so layers of grains slide, roll, and rearrange past each other. Zoom back out and that is the mix pouring and dripping like a thick liquid.\n\n<!-- panel:2 -->\nPanel 2, \"Fast smash → it jams\". Same bowl, same mix. This time a fist comes down fast and hard (the big solid \"fast, hard\" arrow is the push). Look at the shaded cone under the fist in the bowl. That is the jammed region. It grows from where you hit, down until it reaches the bottom (\"jam reaches bottom\").\n\nNow the zoom. The push is so hard and sudden that, right where two grains are closest, it pushes through the last whisper-thin film and the tiny push-apart force. The grains touch and rub with friction (\"grains touch\"). Those are the grains shaded orange.\n\nThe rest of the water can't move fast enough to help. To slide past each other, the grains would have to spread apart a little, and water can't flow into the pile that quickly (\"water can't escape in time\"). So the grains stay pressed together.\n\nThe orange lines running through them are force chains: lines of touching grains passing the push along, from the arrows at the top down \"to bowl bottom\". Once chains reach something firm, like the bottom of the bowl, the pile locks. It feels solid. For that moment it can even crack.\n\nNotice what is the same in both zooms: how crowded the grains are and how much water is there. Same water, same starch. No new material appeared, and the water did not leave. What changed is how hard and how fast you pushed: the rate and strength of the push. (Hydroclusters, grains the flowing water drags into clumps, only explain mild thickening, not this sudden jam. The sketch doesn't draw them.)\n\nStop pushing and the second line of the panel 2 caption happens: \"Stop pushing → they let go → it flows again.\" The chains fall apart, water films come back between the grains, and it melts back into a puddle. Slow shear → flow. Fast, high shear → jam.\n\nFluids whose resistance rises when you shear them harder are called dilatant or shear-thickening. Cornstarch + water is a classic kitchen case. (Ketchup and paint do the opposite: they get runnier when you shear them. That is shear-thinning, and it comes from different particle and polymer physics.) At high enough grain loading and sudden stress, the thickening can jump almost discontinuously. A punch is closely related to that jump: a jammed front shoots down from where you hit, and a soft pour becomes a crack. That is why smash toys and slap games feel so dramatic.\n\nHow crowded the bowl is matters. If the volume fraction of grains is too low, there is always space to rearrange and you only get a thin sludge. If it is dense enough, a hard hit can jam the whole pile. That is roughly the crowded regime parents hit by feel: firm when poked, still drips when poured. That is why “don’t be scared to put too much cornstarch” works: more grains → easier jamming → a real solid-ish liquid under stress. Too dry and crumbly just needs a splash of water; the target is dense but still wet.\n\nFlour + water usually won't give the same sharp switch. Flour isn't pure starch. Its proteins (gluten) get sticky and stretchy in water and glue the particles together into a paste, so they can't slide freely one moment and lock the next. Pure starch powders (corn, potato) do the trick; flour mostly doesn't.\n\nWalking quickly across a deep tray of the mix (or the backyard-pool demos online) uses the same physics. Each footfall is a fast, high-stress punch that briefly jams a pad under the foot, like the cone in panel 2. Stand still and you sink, because slow loading lets grains rearrange again, like panel 1.",
+      panels: [
+        {
+          imageUrl: "/images/experiments/cornstarch-physics-panel-1-slow.png",
+          webpUrl: "/images/experiments/cornstarch-physics-panel-1-slow.webp",
+          alt: "Sketch panel 1, Slow spoon, it flows. A spoon moves slowly through the bowl; the zoom (20 µm scale bar) shows starch grains in water with thin water films between them, and dashed arrows showing the grains sliding past each other, so the mix pours.",
+          width: 1200,
+          height: 800,
+        },
+        {
+          imageUrl: "/images/experiments/cornstarch-physics-panel-2-smash.png",
+          webpUrl: "/images/experiments/cornstarch-physics-panel-2-smash.webp",
+          alt: "Sketch panel 2, Fast smash, it jams. A fist hits fast and hard; a jammed cone grows down to the bowl bottom. The zoom shows grains pushed into touching contact, water that can't escape in time, and orange force chains carrying the push to the bowl bottom, so it acts like a solid until you stop pushing.",
+          width: 1200,
+          height: 800,
+        },
+      ],
       numbersNote:
-        "No exact kitchen ratio. Start with shallow water; add Maïzena until it feels fun — firm on a poke, still drips on a slow pour. Dense suspensions that shear-thicken hard are typically packed with a large volume fraction of grains (crowded, not watery). Feel beats measuring cups.",
+        "No exact kitchen ratio needed. A good starting point is about 2 cups of cornstarch to 1 cup of water (roughly 2:1 by volume; the grains are then about 40% of the volume). Then adjust by feel: firm on a poke, still drips on a slow pour. Dense suspensions that shear-thicken hard are typically packed with a large volume fraction of grains (crowded, not watery). Feel beats measuring cups.",
       nameForThis:
-        "Optional names (after the plain story): shear-thickening suspension, dilatant fluid, particle jamming / hydroclusters, non-Newtonian fluid, oobleck. The useful idea for a parent is the jam: hard/fast locks the grain pile; slow lets it flow.",
-      diagram: {
-        imageUrl: "/images/experiments/cornstarch-physics-sketch.webp",
-        alt: "Two-panel sketch. Slow spoon: water films keep starch grains apart so they slide and the mix pours. Fast smash: grains are pushed into contact faster than water can escape, forming force chains down to the bowl bottom, so it briefly acts like a solid.",
-        width: 2440,
-        height: 800,
-        smallScreen: [
-          {
-            imageUrl: "/images/experiments/cornstarch-physics-sketch-slow.webp",
-            alt: "Sketch panel 1. Slow spoon: water films keep starch grains apart so they slide and the mix pours.",
-            width: 1200,
-            height: 800,
-          },
-          {
-            imageUrl: "/images/experiments/cornstarch-physics-sketch-smash.webp",
-            alt: "Sketch panel 2. Fast smash: grains are pushed into contact faster than water can escape, forming force chains down to the bowl bottom, so it briefly acts like a solid.",
-            width: 1200,
-            height: 800,
-          },
-        ],
-      },
+        "Optional names (after the plain story): shear-thickening suspension, dilatant fluid, frictional jamming / force chains, non-Newtonian fluid, oobleck. The useful idea for a parent is the jam: hard/fast locks the grain pile; slow lets it flow.",
       goDeeper:
         "• Squeeze a ball in your fist (firm), then open your hand and watch it melt — jam on, jam off.\n• Fingertips walking across a tray: quick steps stay up; slow ones sink.\n• Compare with flour + water (different feel) or plain water (no jam).\n• Ask: did we make a new substance, or did we change how the same pile of grains rearranges?",
     },
@@ -359,7 +391,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     difficulty: 1,
     ageBands: ["1-2", "3-5"],
     domains: ["physics", "sensory"],
-    learningGoal: "Soap can break the “skin” on water so floating powder suddenly rushes away.",
+    learningGoal: "Soap can weaken the “skin” on water so floating powder suddenly rushes away.",
     timeMinutes: 10,
     messLevel: "medium",
     location: "indoor",
@@ -409,14 +441,30 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     },
     knowThis: {
       mechanism:
-        "Quiet water has a stretchy skin on top — water molecules at the surface pull harder on their neighbors than molecules deeper down. Floating cinnamon just sits on that skin. Soap weakens the pull where you touch. The unbroken skin farther out still pulls hard, so the surface races away from the soap spot and the cinnamon rides that rush to the edges. That’s surface tension. Soap, a surfactant, lowers it.",
-      numbersNote: "One tiny drop is enough. More soap is just dirty water.",
+        "Bear with me. This one happens in half a second, so the sketch slows it down. For the arrows: solid orange arrows are pulls (forces), and dashed ones show which way something moves.\n\n<!-- panel:1 -->\nPanel 1, \"BEFORE: stretched skin\". On the left is the plate: a thin layer of water with cinnamon floating on top. The circle is a magnifier, and it zooms way, way in, all the way to the water molecules (\"zoom: water molecules\"). A cinnamon speck would be enormous at that scale, so it is left out of the zoom.\n\nEach blue ball is a water molecule. Water molecules pull on the neighbours right next to them. Notice the top row is just as jumbled as the rest. There is no special tidy layer at the surface.\n\nLook at the one marked \"inside: balanced\". It has neighbours all around it, so its pull arrows go every way and cancel out.\n\nNow look at the one right at the top, \"surface: none above, net pull in\". It has neighbours beside it and below it, but none above (that's air). So its pulls don't cancel. The sideways ones balance each other, and what is left over is a pull inward, into the water: the bigger arrow down.\n\nEvery molecule along the top is like that: tugged inward, with fewer friends than the ones below. (The molecules underneath push back, so nothing sinks.) So water tries to keep as few molecules at the surface as it can. It pulls its surface as small and tight as possible, like a stretched skin (\"acts like a stretched skin\"). That tightness is surface tension. Floating cinnamon just sits on that skin.\n\n<!-- panel:2 -->\nPanel 2, \"SOAP: the skin pulls away\". On the left is the plate seen from above, a second after the soap touch. The green dot in the middle is the soap. The dashed arrows point outward from it: the surface is moving out, and the cinnamon has already been carried out toward the rim.\n\nThe window on the right is a side view cut straight through the soap spot: soap molecules in the middle, clean water on both sides. The green balls with tails sitting on the surface are \"soap molecules\". Soap is a surfactant: it sits at the surface and weakens the pull there.\n\nNow look at the two black squares, one at each edge of the soap patch, right at the soap front. Each one is a little bit of surface caught in a tug of war. The short solid arrow pointing back over the soap is the pull from the soapy side: \"weak\". The long solid arrow pointing out is the pull from the clean water: \"strong\". Strong wins, so the surface slides away from the soap spot, on both sides.\n\nThe dashed arrows under the surface are the moving surface dragging the water just under it along: \"surface slides out, dragging water\". The cinnamon rides on top of that moving surface, all the way to the edges. Nothing pushes the cinnamon: not air, not the soap. The water's surface moves and carries it. (Where does that water come from? It wells up from underneath the soap spot, and a slow return flow creeps back along the bottom.)",
+      panels: [
+        {
+          imageUrl: "/images/experiments/cinnamon-soap-rush-physics-panel-1-skin.png",
+          webpUrl: "/images/experiments/cinnamon-soap-rush-physics-panel-1-skin.webp",
+          alt: "Sketch panel 1, BEFORE: stretched skin. A plate of water with floating cinnamon; the zoom into water molecules shows an inside molecule with balanced pulls and a surface molecule with none above and a net pull inward, so the surface acts like a stretched skin.",
+          width: 1200,
+          height: 800,
+        },
+        {
+          imageUrl: "/images/experiments/cinnamon-soap-rush-physics-panel-2-soap.png",
+          webpUrl: "/images/experiments/cinnamon-soap-rush-physics-panel-2-soap.webp",
+          alt: "Sketch panel 2, SOAP: the skin pulls away. Top view a second after the soap touch, with cinnamon carried out toward the rim (dashed arrows); the side view through the soap spot shows soap molecules on the surface, a weak pull on the soapy side and a strong pull from clean water, and the surface sliding out, dragging water.",
+          width: 1200,
+          height: 800,
+        },
+      ],
+      numbersNote: "One tiny drop is enough. Once soap coats the whole surface, the skin is weak everywhere, so extra soap has nothing stronger to pull against. Clean water's skin pulls with about 72 millinewtons per metre; soapy water only about 25–35. That's roughly half to a third as strong: a big lopsided tug.",
     },
     traps: [
       {
         wrong: "The soap pushes the cinnamon like a tiny fan.",
         why: "You’re not seeing air push powder. You’re seeing the water’s surface rearrange when tension drops at one spot.",
-        replace: "Soap breaks the skin on the water — the rest of the skin pulls the cinnamon away.",
+        replace: "Soap weakens the skin at one spot — the stronger skin farther out pulls the surface, and the cinnamon, away.",
       },
       {
         wrong: "More soap always makes a bigger whoosh.",
@@ -433,7 +481,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     ageBands: ["3-5"],
     domains: ["physics", "chemistry"],
     learningGoal:
-      "Salt can melt a little ice into water; that water can freeze again around a string. Pressure from a thin wire can also melt ice for a moment, then it freezes again.",
+      "Salt can melt a little ice into water; that water can freeze again around a string. A thin wire squeezed onto ice melts a path, and the copper carries the refreezing heat down to keep it going; the ice closes up behind.",
     timeMinutes: 30,
     messLevel: "high",
     location: "indoor",
@@ -517,31 +565,47 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
           title: "Pressure melting",
           imageUrl: "/images/experiments/salt-ice-wire-groove.png",
           blurb:
-            "Copper wire + bottle weights. Squeeze melts a path; ice can freeze again behind. ~1–2 hours.",
+            "Copper wire + bottle weights. Squeeze + copper melt a path; ice freezes again behind. ~1–2 hours.",
         },
       ],
     },
     knowThis: {
       mechanism:
-        "Two different mechanisms on one morning.\n\nFAST fishing = an ice hug (freezing-point depression if you want the name). Salt melts a thin bit of ice into water. The rest of the cube is still cold enough to freeze that water again around the yarn fibers, so you can lift by the string. A tiny pinch is enough; a mountain of salt usually digs a puddle. Water in the bowl helps: cubes stay wetter at the contact line. Draping over many cubes raises the odds. Pulling slowly keeps fresh ice bridges from snapping.\n\nLONG wire = squeeze melts a path (pressure melting / regelation if you want the name). Hanging bottles squeeze a thin line into the ice. That pressure melts ice for a moment under the wire. As the wire sinks, water above can freeze again. The block can stay one piece even if the wire cuts through. Room-temperature copper is not a hot knife — the squeeze does the melting.",
+        "Two different mechanisms on one morning. The sketch has one panel for each. Bear with me, I'm going to over explain both.\n\nThe little key in the top-left corner of each panel tells you the colours. Ice is white with light hatching, water is blue, salty water is teal, and new ice (ice that just froze) is white with an orange outline. For the arrows: dotted orange is heat, dashed is something moving, and solid is a push (a force).\n\n<!-- panel:1 -->\nPanel 1, \"FAST: salt ice hug\". On the left is the bowl: water with lots of ice cubes floating in it, the string draped over them, and a \"tiny pinch of salt\" where the string touches a cube. The cubes float mostly under water, with just their tops out. The circle is a magnifier on that spot.\n\nThe window on the right is a slice through the string lying on top of a cube. Above is air. The string is the bundle of tan circles, its fibres cut across. Under it is a thin wet film on the ice, drawn much thicker than it really is so you can see its colour.\n\nFrame ①. Salt sits in the film, next to the string. Salt melts a thin bit of ice: see the teal dip under the string, \"salty water melts ice\". Melting takes heat. The salty spot pulls that heat from whatever it touches, the ice under it and around it. That is what the dotted arrows show, \"heat soaks in\". So that little spot ends up colder than ordinary freezing, below 0 °C. (If you want the name: freezing-point depression. Salty water stays liquid below 0 °C.)\n\nFrame ②. The dashed arrows run sideways inside the film, away from the string: \"salt spreads away\". The salt spreads out into the water around it. Now the water right at the string is much less salty, so its freezing point climbs back up toward 0 °C. But the spot is still colder than that, so it freezes.\n\nThat is the white ice with the orange outline, \"new ice grips string\". It fills the dip where the meltwater was and wraps around the bottom of the fibres, locking them in. That is the ice hug, and why you can lift a cube by the string.\n\nThat is also why the steps matter. A tiny pinch is enough. A mountain of salt keeps everything salty, so it just digs a puddle and nothing refreezes. Water in the bowl helps, because cubes stay wetter at the contact line. Draping over many cubes raises the odds. Pulling slowly keeps fresh ice bridges from snapping.\n\n<!-- panel:2 -->\nPanel 2, \"LONG: wire squeeze\". On the left, the ice block sits on an upside-down container, with the copper wire across it and a bottle hanging from each end (\"bottles hang\"). The wire has already sunk partway in, and the orange line above it is the path it left. The magnifier is on the wire. The window on the right is a slice across the wire, deep in the ice.\n\nThe big solid arrow is the \"bottles pull\": the bottles squeeze the wire down onto the ice under it. That squeeze lowers ice's melting point, just a tiny bit. It works only because ice in a kitchen is already sitting right at 0 °C, so even a tiny nudge tips it over. Two water bottles on a thin wire press with a few atmospheres, which lowers the melting point by only a few hundredths of a degree. That is enough for the ice right under the wire to turn to water: the thin blue film, \"squeeze: melts\".\n\nThe dashed arrows show that water slipping around both sides of the wire to the top (\"water slips around\"). Up there it isn't squeezed anymore, so it freezes again: the white strip with orange edges, \"refreezes above\". The wire sinks, and the block closes up behind it. The block can stay one piece even after the wire is all the way through.\n\nHere is the part that is easy to miss. Melting ice takes heat, so where does the heat come from? Water gives off heat when it freezes. The dotted arrow inside the wire shows that heat, from the refreezing on top, traveling down through the copper to melt the next bit underneath (\"heat flows down the copper\"). Copper is great at carrying heat, and that is why it works. Warm room air leaking in along the wire helps a little too. A string would barely cut, because it doesn't carry heat.\n\nRoom-temperature copper is not a hot knife. It is a heat bridge from the top of the wire to the bottom. (If you want the name: regelation.)",
+      panels: [
+        {
+          imageUrl: "/images/experiments/salt-ice-fishing-physics-panel-1-salt-hug.png",
+          webpUrl: "/images/experiments/salt-ice-fishing-physics-panel-1-salt-hug.webp",
+          alt: "Sketch panel 1, FAST: salt ice hug. A string over ice cubes in a bowl with a tiny pinch of salt; the zoom shows salty water melting a dip in the ice under the string while heat soaks in (dotted arrows), then the salt spreading away and new ice gripping the string. Colour key: ice, water, salty water, new ice.",
+          width: 1200,
+          height: 800,
+        },
+        {
+          imageUrl: "/images/experiments/salt-ice-fishing-physics-panel-2-wire.png",
+          webpUrl: "/images/experiments/salt-ice-fishing-physics-panel-2-wire.webp",
+          alt: "Sketch panel 2, LONG: wire squeeze. A copper wire across an ice block with a bottle hanging from each end; the cross-section shows the bottles pulling the wire down, the squeezed ice under it melting, water slipping around to refreeze above, and heat flowing down through the copper.",
+          width: 1200,
+          height: 800,
+        },
+      ],
       goDeeper:
-        "No-salt vs salt string side by side in the same watery bowl. Try nylon fishing line vs cotton twine (nylon often fails the hug).",
+        "No-salt vs salt string side by side in the same watery bowl. Try nylon fishing line vs cotton twine. Our guess: smooth nylon gives the new ice less to grip (no fuzzy fibres), so it slips out more often. Test it!",
       numbersNote:
-        "Wait ~60 seconds after a tiny pinch of salt. Exact grams don’t matter; “tiny pinch” does. Wire can take on the order of 1–2 hours with bottle weights at kitchen temperature.",
+        "Wait ~60 seconds after a tiny pinch of salt. Exact grams don’t matter; “tiny pinch” does. Wire can take on the order of 1–2 hours with bottle weights at kitchen temperature. The squeeze only lowers ice's melting point by about 0.0074 °C per atmosphere of pressure; a couple of bottles on a thin wire make a few atmospheres, so a few hundredths of a degree. That's tiny, which is why the heat carried by the copper matters. For scale on the salt side: sea water (about 3.5% salt) freezes at about −1.9 °C, and the saltiest salt water stays liquid down to about −21 °C.",
     },
     traps: [
       {
         wrong: "Salt makes the string sticky so it grabs the ice.",
-        why: "Salt isn’t glue. It melts a thin bit of ice; cold ice refreezes that water around the string.",
+        why: "Salt isn’t glue. It melts a thin bit of ice, and melting chills that spot below ordinary freezing. Once the salt spreads away, the chilled water refreezes around the string.",
         replace:
-          "Salt melts a little ice into water. The cold ice freezes that water around the string — an ice hug.",
+          "Salt melts a little ice into water. That melting chills the spot, and when the salt spreads away the water freezes around the string — an ice hug.",
       },
       {
         wrong:
           "The wire is hot, so it melts through like a knife, and of course the ice falls apart.",
-        why: "Room-temperature wire isn’t a heated knife. Thin pressure melts a path; ice can refreeze behind the wire, so the block may stay one piece.",
+        why: "Room-temperature wire isn’t a heated knife. The squeeze lowers the melting point a tiny bit so ice under the wire melts; the water refreezes above, and the heat from that refreezing flows down the copper to melt more. So the block may stay one piece.",
         replace:
-          "The bottles squeeze a thin line. That squeeze melts a little path. When the squeeze moves on, it can freeze again.",
+          "The bottles squeeze a thin line. The ice under the wire melts, slips around, and freezes again on top — and the copper carries that freezing heat down to melt the next bit.",
       },
     ],
   },
@@ -666,11 +730,27 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     },
     knowThis: {
       mechanism:
-        "Baking soda is a powder of sodium bicarbonate. Vinegar is mostly water with a weak acid dissolved in it: acetic acid. When they meet, the acid hands a hydrogen ion to the bicarbonate. That piece is unstable — it falls apart into water and carbon dioxide gas. The gas is the same molecule as the bubbles in soda pop and what we breathe out.\n\nMillions of tiny CO₂ bubbles form in the liquid all at once. Foam is leftover liquid stretched around those gas holes, so the volume jumps, climbs the glass, and spills onto the tray. Nothing “turns into lava.” You’re making gas inside a liquid — an acid–base reaction (bicarbonate + acetic acid) that releases carbon dioxide.",
+        "Bear with me as I over explain this one, with the sketch. The orange arrows in both panels are dashed. Dashed means something is moving (here, bubbles and foam going up), not a push.\n\n<!-- panel:1 -->\nPanel 1, \"Acid + baking soda → CO₂ gas\". On the left is the glass on the tray. The baking soda is in the bottom, vinegar is pouring in from the cup, and the first bubbles are already showing at the powder. The circle is a magnifier. The big window on the right is that spot, zoomed way in. It is not to scale; the grains and bubbles are drawn big enough to see.\n\nThe cream chunks sitting on the bottom are baking soda grains. Baking soda is sodium bicarbonate. The pale blue all around them is the vinegar: mostly water, with a weak acid dissolved in it, acetic acid. That is why the label says \"vinegar (water + acid)\".\n\nWhen the acid touches a grain, it hands the bicarbonate a hydrogen ion (a proton, H⁺). The piece that makes is carbonic acid, and it is unstable. It falls apart right away into water and carbon dioxide. That is the panel 1 caption: \"The result (carbonic acid) splits into water + CO₂.\"\n\nAt first that CO₂ is dissolved in the liquid, like the fizz in a closed soda bottle. Very quickly there is more than the liquid can hold, so it comes out as bubbles. Bubbles start most easily on rough surfaces. Look where the white bubbles are in the zoom: sitting on the grains (\"new CO₂ bubble\"). Bubbles pop out all over the powder, on the grains' rough surfaces, within a few seconds.\n\nWhen a bubble gets big enough, it lets go and rises. That is what the short dashed arrows pointing up show. The gas is carbon dioxide: the same molecule as the bubbles in soda pop, and part of what we breathe out.\n\n<!-- panel:2 -->\nPanel 2, \"Foam = liquid stretched around gas\". On the left, the glass has filled with foam. It domes over the rim and runs down onto the tray (the dashed arrow: \"foam climbs\"). At the very bottom of the glass, under the foam, there is a thin layer of clear liquid. That is liquid that has already drained back down out of the foam. The zoom on the right is a piece of that foam at the rim.\n\nLook at what the foam is made of. Big white bubbles of CO₂ gas crowd together in the liquid. Where two bubbles nearly touch, the liquid between them is only a thin wall (\"thin liquid wall\"). That liquid is the same liquid that was in the glass: vinegar water, with the leftovers of the reaction dissolved in it. Nothing new and gooey was made. The same liquid got stretched around a lot of gas.\n\nGas takes a lot of room. With this recipe the reaction makes about ten times the glass's volume in gas, so the foam has to climb the glass and spill onto the tray. Nothing “turns into lava.”\n\nThe circle at the top right of that zoom zooms in once more, onto one wall: \"water\" in the middle, \"gas\" on both sides. The little green dots with tails, lined up on both faces, are the \"soap molecules\". Each one has its head in the water and its tail sticking out into the gas. That is all the dish soap does. It makes no extra gas. It sits on the walls and helps them last before they pop, so the foam gets thicker and climbs higher.\n\nSo, in one line: an acid–base reaction (bicarbonate + acetic acid) makes carbon dioxide gas inside the liquid, and the liquid gets stretched into foam around it.",
+      panels: [
+        {
+          imageUrl: "/images/experiments/baking-soda-volcano-physics-panel-1-fizz.png",
+          webpUrl: "/images/experiments/baking-soda-volcano-physics-panel-1-fizz.webp",
+          alt: "Sketch panel 1, Acid plus baking soda makes CO2 gas. Vinegar pours onto baking soda in a glass on a tray; the zoom shows baking soda grains in vinegar (water plus acid) with new CO2 bubbles forming on the grains and dashed arrows as bubbles rise.",
+          width: 1200,
+          height: 800,
+        },
+        {
+          imageUrl: "/images/experiments/baking-soda-volcano-physics-panel-2-foam.png",
+          webpUrl: "/images/experiments/baking-soda-volcano-physics-panel-2-foam.webp",
+          alt: "Sketch panel 2, Foam is liquid stretched around gas. Foam climbs out of the glass (dashed arrow); the zoom shows CO2 gas bubbles crowded in the liquid with thin liquid walls, and a close-up of one wall with soap molecules lined up on both faces, water in the middle and gas on each side.",
+          width: 1200,
+          height: 800,
+        },
+      ],
       goDeeper:
-        "Hold a hand near (not in) the foam: the gas is CO₂; the spill is leftover liquid + bubbles. Dish soap does not make more CO₂ — it helps bubbles last longer so the foam looks thicker (surfactant). Grocery white vinegar is usually about 5% acetic acid by volume; the rest is water. That is plenty for this demo.",
+        "Touch the glass: it gets a few degrees cooler, because this reaction soaks up heat. The gas itself is invisible and has no smell; the sharp smell is the vinegar. The spill is leftover liquid + bubbles. Dish soap does not make more CO₂ — it helps bubbles last longer so the foam looks thicker (surfactant). Grocery white vinegar is usually about 5% acetic acid (roughly 5 g per 100 mL); the rest is water. That is plenty for this demo. (Cleaning vinegar can be 8–14%: stronger fizz, more sting in eyes.)",
       numbersNote:
-        "Reaction: NaHCO₃(s) + CH₃COOH(aq) → CH₃COONa(aq) + H₂O(l) + CO₂(g). In words: bicarbonate + acetic acid → acetate salt + water + carbon dioxide gas. The gas is what you see as fizz and foam. Keep formulas off the kid table unless they ask — the plain story is enough for ages 1–5.",
+        "Reaction: NaHCO₃(s) + CH₃COOH(aq) → CH₃COONa(aq) + H₂O(l) + CO₂(g). In words: bicarbonate + acetic acid → acetate salt + water + carbon dioxide gas. The gas is what you see as fizz and foam. With this recipe (3 Tbsp baking soda, 1 cup vinegar) the vinegar runs out first and makes about 5 litres of CO₂, around ten times the volume of the glass. That's why it has to come over the top. Keep formulas off the kid table unless they ask — the plain story is enough for ages 1–5.",
     },
     traps: [
       {
@@ -681,9 +761,9 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       },
       {
         wrong: "Food coloring makes it explode harder.",
-        why: "Color rides in the foam. Bigger fizz comes from more baking soda and vinegar reacting, not from dye.",
+        why: "Color rides in the foam. More gas only comes from more vinegar. With this recipe the baking soda is already left over. (Extra powder can make it fizz a bit faster, but it can't make more gas.)",
         replace:
-          "Color is just dye in the foam. More baking soda and vinegar make a bigger fizz.",
+          "More gas only comes from more vinegar. With this recipe the baking soda is already left over. (Extra powder can make it fizz a bit faster, but it can't make more gas.)",
       },
       {
         wrong: "A funnel is the volcano.",
@@ -706,8 +786,8 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     messLevel: "medium",
     location: "outdoor",
     materials: [
-      "Empty 1–2 L plastic soda bottle",
-      "Bike pump (or dedicated bottle-rocket pump)",
+      "Empty 1–2 L carbonated-soda (PET) bottle, undamaged",
+      "Bike pump with a pressure gauge (or dedicated bottle-rocket pump)",
       "Cork / launcher that seals the bottle neck under pressure",
       "Water (~⅓ bottle)",
       "Optional cardboard fins + simple launch stand",
@@ -715,7 +795,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     ],
     prep: "Open outdoor space clear of cars, windows, and overhead people. Fill bottle to about one-third with water. Fit seal/launcher before kids gather.",
     safety:
-      "Adult pumps and releases. Do not hand kids a pressurized bottle. Point launch away from faces and windows. Stop if the seal leaks hard or the bottle creaks oddly. Wet ground gets slippery.",
+      "Carbonated-soda (PET) bottles only, no dents or deep scratches. Not still-water bottles, not glass. Stop pumping at about 40–60 psi on the gauge: a cork usually pops before that; a latch won't, so release it by then. Pump from the end of the hose, not over the bottle. If it doesn't launch, stop pumping and wait a minute (a cork often works loose on its own). Then let the air out at a valve if you have one. If not, reach in from the side, head clear of the top, and pull the cork or trip the latch. It will launch. Adult pumps and releases. Point launch away from faces and windows. Stop if the seal leaks hard or the bottle creaks oddly. Wet ground gets slippery.",
     experience:
       "Kid-requested outdoor rocket: bottle, water, pump — count down, launch, chase the splash, refill and go again.",
     kidCanDo: [
@@ -737,16 +817,16 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       {
         title: "Seal",
         detail:
-          "Seat the cork or launcher seal in the neck; set the bottle on the pad upright (or slightly tipped away from people).",
+          "Seat the cork or launcher seal in the neck; set the bottle on the pad neck-down, nose pointing up (or slightly tipped away from people).",
       },
       {
         title: "Pump",
-        detail: "Adult pumps air into the headspace. Kids count aloud.",
+        detail: "Adult pumps air into the headspace, standing back at the end of the hose. Kids count aloud. Watch the gauge: stop around 40–60 psi.",
       },
       {
         title: "Launch",
         detail:
-          "When pressure wins the seal (or you release the latch), water shoots down and out; the bottle goes up.",
+          "The cork usually pops before 60 psi; with a latch, release it by then. Water shoots down and out; the bottle goes up. If nothing happens, stop pumping and wait a minute. Then let the air out at a valve if you have one; if not, reach in from the side, head clear of the top, and pull the cork or trip the latch. It will launch.",
       },
       {
         title: "Compare",
@@ -766,15 +846,38 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     sayThis: {},
     runThis: {
       overview:
-        "Fill, seal, pump until the bottle pops free, watch the water jet and the bottle climb, then reset.",
+        "Fill, seal, pump until it pops free (or you reach ~60 psi and release), watch the water jet and the bottle climb, then reset.",
       setup:
         "Outside on open ground. Bottle on launcher / cork seated firmly. Audience off to the side, not under the path.",
     },
     knowThis: {
       mechanism:
-        "You trap air above the water and squeeze more air in with the pump. Pressure in that air space rises. The only open path is the neck. When the cork lets go, high-pressure air pushes the water out as a fast downward jet.\n\nForces come in pairs (Newton’s third law): if the bottle pushes water one way, the water pushes the bottle the other way. The “exhaust” is liquid water with real mass — much better reaction mass than air alone — so a water-filled rocket climbs higher than an air-only blast from the same bottle.\n\nWhile it is in the air, gravity pulls down and air drag slows it; when the water is gone, thrust stops and it coasts, then falls.",
+        "Bear with me. The rocket gets three panels, because it has three moments: pump, go, fly. For the arrows: solid orange arrows are pushes (forces), and the dashed one shows which way the bottle moves.\n\n<!-- panel:1 -->\nPanel 1, \"PUMP: squeeze the air\". On the left, the bottle stands on the launcher \"neck down, nose up\", about a third full of water. The bike pump sits on the ground beside it, connected by a hose. The zoom is the bottle itself. At the bottom, the cork sits in the neck (\"cork seals it\"), with the pump tube coming up through it. When you pump, the new air comes in at the bottom and bubbles up through the water (\"pump air bubbles up\") into the space above.\n\nThat space is the \"packed air: high pressure\". Look at the dots, one for a bit of air. Inside the bottle they are packed much closer together than in the outside air around it. More air squeezed into the same space means higher pressure.\n\nThe short solid arrows show that squeezed air pushing on every wall: up on the top, out on the sides, down on the water. The water passes the push on to every wall it touches, and down onto the cork: see the arrow in the neck, pressing on the cork. The only way out is the neck, and the cork holds it shut. For now.\n\n<!-- panel:2 -->\nPanel 2, \"GO: a push pair\". This is \"just after release\". The cork has let go, and a fast jet of water is shooting down out of the neck. On the left, the dashed arrow beside the bottle shows it starting to move up.\n\nIn the zoom, look at the two big solid arrows. One points down in the neck: \"bottle pushes water down\". The other points up beside the bottle: \"water pushes bottle up\". By \"bottle\" here I mean the bottle together with the squeezed air inside it. Together they're the rocket. (It is really that squeezed air doing the shoving: it pushes the water out of the neck, and it pushes up on the inside of the dome, with nothing to push back at the open neck.)\n\nForces come in pairs (Newton’s third law). Those two are the same size and point opposite ways, and they act on different things: one on the water, one on the rocket. That is why they don't cancel. The water gets shoved down, and the rocket gets shoved up.\n\nNow look at the air at the top: \"air expands: pressure drops\". Its dots are more spread out than in panel 1, but still packed tighter than outside: it's the same air, with more room. As water leaves, the air gets more room, so it spreads out and its push gets weaker. The squeezed air is what drives the whole thing, and it fades as it goes.\n\nWhy bother with water at all? The squeezed air holds a fixed amount of energy. Spend it throwing a light puff of air, and most of it goes into making that puff very fast, which gives little push. Spend it throwing heavy water at a more moderate speed, and the energy gives a much bigger total push. That's why a water-filled rocket climbs higher than an air-only blast from the same bottle. That holds even though the air-only bottle, pumped to the same pressure, holds more squeezed air (about half as much energy again). It still gives several times less push.\n\n<!-- panel:3 -->\nPanel 3, \"FLIGHT: forces on the bottle\". Three dashed boxes, in order (the small arrows between them). Each box shows only the forces on the bottle (and whatever water is still inside it). Not to scale.\n\nWeight always pulls down. Drag is the air resisting the motion. The bottle is going up, so drag points down too.\n\n\"water burst\": the big thrust arrow up. That is the water being thrown out of the neck, from panel 2.\n\n\"air puff\": the water is gone. The leftover squeezed air rushes out, one last short puff, so there's a small thrust arrow.\n\n\"coasting up\": \"no thrust\". It keeps rising only because it is already moving. Once the water is gone, the bottle is far lighter, and drag becomes the big brake. Weight and drag slow it down, then it falls.",
+      panels: [
+        {
+          imageUrl: "/images/experiments/water-bottle-rocket-physics-panel-1-pump.png",
+          webpUrl: "/images/experiments/water-bottle-rocket-physics-panel-1-pump.webp",
+          alt: "Sketch panel 1, PUMP: squeeze the air. The bottle stands neck down, nose up on the launcher, about a third full of water, with a bike pump beside it. The zoom shows pump air bubbling up through the water into packed, high-pressure air, with short arrows pushing on every wall and down on the cork that seals the neck.",
+          width: 1200,
+          height: 800,
+        },
+        {
+          imageUrl: "/images/experiments/water-bottle-rocket-physics-panel-2-push-pair.png",
+          webpUrl: "/images/experiments/water-bottle-rocket-physics-panel-2-push-pair.webp",
+          alt: "Sketch panel 2, GO: a push pair. Just after release a water jet shoots down out of the neck and a dashed arrow shows the bottle starting up. The zoom shows two equal, opposite arrows: the bottle pushes water down, the water pushes the bottle up; the air at the top expands and its pressure drops.",
+          width: 1200,
+          height: 800,
+        },
+        {
+          imageUrl: "/images/experiments/water-bottle-rocket-physics-panel-3-flight.png",
+          webpUrl: "/images/experiments/water-bottle-rocket-physics-panel-3-flight.webp",
+          alt: "Sketch panel 3, FLIGHT: forces on the bottle. Three boxes in order: water burst, with a big thrust arrow up and weight and drag down; air puff, with a small thrust arrow; coasting up, with no thrust, only weight and drag. Not to scale.",
+          width: 1200,
+          height: 800,
+        },
+      ],
       goDeeper:
-        "Momentum: thrust lasts only while mass is leaving the nozzle. Nozzle size and seal quality change how fast pressure dumps. Real water rockets often use a launch tube so the bottle stays aimed until it clears the pad.",
+        "Momentum: thrust lasts only while mass is leaving the nozzle — and it fades as the air expands and its pressure drops, which is why how much water you put in matters. Nozzle size and seal quality change how fast pressure dumps. Real water rockets often use a launch tube so the bottle stays aimed until it clears the pad.",
       nameForThis:
         "Reaction force / Newton’s third law; momentum conservation; pressurized gas doing work on a fluid.",
     },
@@ -786,7 +889,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       },
       {
         wrong: "Air-only launches are the same.",
-        why: "Air has much less mass leaving the nozzle, so the kick is weaker for the same pressure.",
+        why: "The squeezed air holds a fixed amount of energy. Spent throwing a light puff of air, most of it goes into making the puff very fast, which gives little push. Spent throwing heavy water, the same energy gives a much bigger total push.",
         replace: "",
       },
       {

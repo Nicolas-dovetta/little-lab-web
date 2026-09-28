@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { Experiment, ExperimentProduct, KnowThis, RunThis, Trap } from "@/db/schema";
 import { amazonPackCartHref, amazonProductHref } from "@/lib/amazon";
 import { kidVerdictProse, uniqueMoveSteps } from "@/lib/experiments";
+import { MechanismWalkthrough } from "./MechanismWalkthrough";
 
 export function VolcanoExperimentView({ experiment: e }: { experiment: Experiment }) {
   const materials = (e.materials as string[]) || [];
@@ -128,9 +129,7 @@ export function VolcanoExperimentView({ experiment: e }: { experiment: Experimen
       <section>
         <h2 className="font-display text-2xl font-semibold text-ink">Bear with me</h2>
         <div className="mt-4 space-y-5 text-sm text-ink-muted">
-          {knowThis.mechanism && (
-            <p className="whitespace-pre-line">{knowThis.mechanism}</p>
-          )}
+          {knowThis.mechanism && <MechanismWalkthrough knowThis={knowThis} className="" />}
           {knowThis.numbersNote && (
             <div>
               <h3 className="font-semibold text-ink">Numbers</h3>
