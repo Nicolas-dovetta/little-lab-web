@@ -52,12 +52,6 @@ export type KnowThis = {
   panels?: KnowThisPanel[];
 };
 
-export type Trap = {
-  wrong: string;
-  why: string;
-  replace: string;
-};
-
 export type ExperimentProduct = {
   name: string;
   asin?: string;
@@ -85,7 +79,6 @@ export type ExperimentSeed = {
   adultRole: string[];
   steps: { title: string; detail: string }[];
   notice: string[];
-  stretch: string;
   notesFromHome: string;
   heroImageUrl: string | null;
   gallery: string[];
@@ -93,7 +86,6 @@ export type ExperimentSeed = {
   sayThis?: SayThis;
   runThis?: RunThis;
   knowThis?: KnowThis;
-  traps?: Trap[];
   planUnit?: string | null;
   /** Saturday the experiment was actually run, YYYY-MM-DD (America/Los_Angeles). Omit or null if unknown. */
   ranOn?: string | null;
@@ -174,8 +166,6 @@ export const experimentSeeds: ExperimentSeed[] = [
       },
     ],
     notice: [],
-    stretch: `Sugar instead of salt in the egg glasses.
-A grape, a cork, a coin — predict before you drop.`,
     notesFromHome: `My kid just wanted to steer the salt and add more — which he did, and we added way too much. The trick was to watch for the egg to start climbing and then call it.
 
 “Look the egg !! Woaaah” — that was my two seconds of magic. Then he wanted to add more salt.
@@ -222,27 +212,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       numbersNote:
         "Keep these off the kid table. Tap water is about 1.00 g/mL. Vegetable oil is about 0.91–0.93. A hen’s egg is often about 1.03–1.09. Balsamic is about 1.1–1.3, depending on the bottle. Honey is around 1.4. Well-salted water can pass the egg; if you really pack it, it can approach ~1.2. To float a fresh egg, figure roughly 2–3 tablespoons of table salt per cup of water (about 11–13% salt by weight), stirred until it dissolves. If you don't stir, the salt settles at the bottom, and the egg can hover in the middle. You do not need the numbers to run the Saturday. They are here so you can check a claim.",
     },
-    traps: [
-      {
-        wrong: "Oil is lighter than water.",
-        why: "Lighter is total mass. A bottle of oil is not lighter than a cup of water. Oil is less dense than water.",
-        replace:
-          "The same amount of oil has less stuff in it than the same amount of water, so it sits on top.",
-      },
-      {
-        wrong: "Honey sinks because it is thicker.",
-        why: "Thicker is how runny it is. Oil can look thick and still float.",
-        replace:
-          "Honey is packed tighter than water. Thick and packed-tight are different jobs.",
-      },
-      {
-        wrong:
-          "The vinegar and oil don’t like each other, so the vinegar bounces.",
-        why: "They do not mix. That is real. The climb is not a bounce. It is oil the drop dragged down, cut loose when the thin film breaks, going back up.",
-        replace:
-          "The drop fell because it is denser. The climb is oil going home after the film breaks.",
-      },
-    ],
   },
 
   {
@@ -307,8 +276,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       },
     ],
     notice: [],
-    stretch:
-      "Walk fingertips across a tray of the mix (quick steps stay up; slow ones sink). Compare with flour + water.",
     notesFromHome:
       "The maïzena was great; very messy very easy to clean. Proportions can be approx — don’t be scared to put too much corn so it becomes a real solid-ish liquid. Play with your kids it is fun.\n\nFrom the clip: 3yo on the learning tower at the counter with a wooden stick; 1yo in the high chair with a small cup and stick — both shirtless. Stainless bowls; white mix pools flat in the bowl, splatters hold as thick blobs on the granite. Counter and the 3yo’s arms and tummy thoroughly coated.\n\n1yo loved playing with it with a spoon in a cup. Would scream a lot.\n\n3yo did the mix, had a small bowl, made balls with the mix, made a giant mess and was happy.",
     heroImageUrl: "/images/experiments/cornstarch-thickening-fluid-hero.png",
@@ -366,23 +333,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       goDeeper:
         "• Squeeze a ball in your fist (firm), then open your hand and watch it melt — jam on, jam off.\n• Fingertips walking across a tray: quick steps stay up; slow ones sink.\n• Compare with flour + water (different feel) or plain water (no jam).\n• Ask: did we make a new substance, or did we change how the same pile of grains rearranges?",
     },
-    traps: [
-      {
-        wrong: "It’s a solid that turns into a liquid when you’re gentle.",
-        why: "That flips the cause. Hard/fast makes it jam (solid-like); slow lets it flow (liquid-like).",
-        replace: "Slow = runny. Hard smash = stiff — then it melts when you stop.",
-      },
-      {
-        wrong: "You need an exact recipe or it won’t work.",
-        why: "Feel matters more than a ratio. Proportions can be approximate. Don’t be scared to put too much cornstarch so it becomes a real solid-ish liquid; too watery just needs more Maïzena.",
-        replace: "Add Maïzena until it feels fun — firm when you poke, still drips when you pour.",
-      },
-      {
-        wrong: "We made glue / slime you can keep.",
-        why: "This is a water + cornstarch suspension for play, not a craft to store. It dries out; a big blob can clog a drain.",
-        replace: "Play now — scrape the bulk into the trash; a big blob can clog a sink drain.",
-      },
-    ],
   },
   {
     id: "cinnamon-soap-rush",
@@ -429,7 +379,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       { title: "Optional redo", detail: "Dump, rinse, and try again for a second whoosh." },
     ],
     notice: [],
-    stretch: "Try pepper instead of cinnamon. Pair with a longer follow-up if you need more than ~10 minutes.",
     notesFromHome: "[I will fill this after Saturday]",
     heroImageUrl: "/images/experiments/cinnamon-soap-rush-hero.png",
     gallery: [],
@@ -460,18 +409,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       ],
       numbersNote: "One tiny drop is enough. Once soap coats the whole surface, the skin is weak everywhere, so extra soap has nothing stronger to pull against. Clean water's skin pulls with about 72 millinewtons per metre; soapy water only about 25–35. That's roughly half to a third as strong: a big lopsided tug.",
     },
-    traps: [
-      {
-        wrong: "The soap pushes the cinnamon like a tiny fan.",
-        why: "You’re not seeing air push powder. You’re seeing the water’s surface rearrange when tension drops at one spot.",
-        replace: "Soap weakens the skin at one spot — the stronger skin farther out pulls the surface, and the cinnamon, away.",
-      },
-      {
-        wrong: "More soap always makes a bigger whoosh.",
-        why: "Once the water is soapy, extra drops barely move anything.",
-        replace: "One clean first touch is the show; rinse and redo for a second whoosh.",
-      },
-    ],
   },
   {
     id: "salt-ice-fishing",
@@ -539,8 +476,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       },
     ],
     notice: [],
-    stretch:
-      "Food-coloring tunnels on a salted cube. Leave the wire longer and compare groove depth. Side-by-side: dry tray fishing vs watery bowl fishing.",
     notesFromHome:
       "Needs water. Trial and error. The kid can dump salt everywhere — that was fine.\n\nAbout 1/4 of the attempts worked until we got it. Best recipe: a ton of fresh ice in a ton of water, string over many cubes, catch ~5 pulling slowly. Got smoked. Kid was excited.\n\nCopper wire is the long game (~2 hours). Give the kid a fishing mission while it runs. Fun beat: remove the weights, pick up the ice holding both ends of the wire. Kid was excited explaining the wire to mom.\n\nFun. Not as entertaining as balsamic.",
     ranOn: "2026-09-12",
@@ -593,21 +528,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       numbersNote:
         "Wait ~60 seconds after a tiny pinch of salt. Exact grams don’t matter; “tiny pinch” does. Wire can take on the order of 1–2 hours with bottle weights at kitchen temperature. The squeeze only lowers ice's melting point by about 0.0074 °C per atmosphere of pressure; a couple of bottles on a thin wire make a few atmospheres, so a few hundredths of a degree. That's tiny, which is why the heat carried by the copper matters. For scale on the salt side: sea water (about 3.5% salt) freezes at about −1.9 °C, and the saltiest salt water stays liquid down to about −21 °C.",
     },
-    traps: [
-      {
-        wrong: "Salt makes the string sticky so it grabs the ice.",
-        why: "Salt isn’t glue. It melts a thin bit of ice, and melting chills that spot below ordinary freezing. Once the salt spreads away, the chilled water refreezes around the string.",
-        replace:
-          "Salt melts a little ice into water. That melting chills the spot, and when the salt spreads away the water freezes around the string — an ice hug.",
-      },
-      {
-        wrong:
-          "The wire is hot, so it melts through like a knife, and of course the ice falls apart.",
-        why: "Room-temperature wire isn’t a heated knife. The squeeze lowers the melting point a tiny bit so ice under the wire melts; the water refreezes above, and the heat from that refreezing flows down the copper to melt more. So the block may stay one piece.",
-        replace:
-          "The bottles squeeze a thin line. The ice under the wire melts, slips around, and freezes again on top — and the copper carries that freezing heat down to melt the next bit.",
-      },
-    ],
   },
   {
     id: "baking-soda-volcano",
@@ -693,8 +613,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       },
     ],
     notice: [],
-    stretch:
-      "Catch overflow on the tray and ask whether the foam is “new stuff” or the same vinegar/soda mix with gas holes in it.",
     notesFromHome:
       "Tonight the 3yo asked to do more volcanos — we did; he liked it. The 1yo was screaming (happily) at every eruption.\n\nBest was a tall transparent glass on a glass tray. He pours dish soap and coloring after the baking soda. He loved it — especially the last run with everything: all the color, all the vinegar, all the baking soda. Trying the funnel as the volcano didn’t work well; funnel is helpful to pour. Recipe each time: ~3 tablespoons baking soda, a small squeeze of dish soap, ~1 cup vinegar (a little eyeball). Let the kid do it at the end. Went through a bottle of white vinegar and baking soda. Any vinegar would probably work, but pure white vinegar doesn’t have sugar or color — easier to clean. Tried a baby bottle — works well with the opening a little smaller than the base.",
     heroImageUrl: "/images/experiments/baking-soda-volcano-overflow.png",
@@ -752,26 +670,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       numbersNote:
         "Reaction: NaHCO₃(s) + CH₃COOH(aq) → CH₃COONa(aq) + H₂O(l) + CO₂(g). In words: bicarbonate + acetic acid → acetate salt + water + carbon dioxide gas. The gas is what you see as fizz and foam. With this recipe (3 Tbsp baking soda, 1 cup vinegar) the vinegar runs out first and makes about 5 litres of CO₂, around ten times the volume of the glass. That's why it has to come over the top. Keep formulas off the kid table unless they ask — the plain story is enough for ages 1–5.",
     },
-    traps: [
-      {
-        wrong: "The vinegar turns into lava.",
-        why: "Nothing melts. You’re making gas bubbles in liquid; the “eruption” is foam overflowing.",
-        replace:
-          "You’re making gas bubbles in liquid. The overflow is foam, not lava.",
-      },
-      {
-        wrong: "Food coloring makes it explode harder.",
-        why: "Color rides in the foam. More gas only comes from more vinegar. With this recipe the baking soda is already left over. (Extra powder can make it fizz a bit faster, but it can't make more gas.)",
-        replace:
-          "More gas only comes from more vinegar. With this recipe the baking soda is already left over. (Extra powder can make it fizz a bit faster, but it can't make more gas.)",
-      },
-      {
-        wrong: "A funnel is the volcano.",
-        why: "Using the funnel as the vessel didn’t work well — tall glass or baby bottle on a tray was better. A funnel is handy to pour soda/vinegar into a narrow opening.",
-        replace:
-          "Use a tall glass or baby bottle on a tray. The funnel is for pouring, not the volcano.",
-      },
-    ],
   },
   {
     id: "water-bottle-rocket",
@@ -835,8 +733,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       },
     ],
     notice: [],
-    stretch:
-      "Same pressure, different water fractions — which goes highest? Add cardboard fins — does it fly straighter?",
     notesFromHome: "[I will fill this after Saturday]",
     heroImageUrl: null,
     gallery: [],
@@ -881,23 +777,6 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       nameForThis:
         "Reaction force / Newton’s third law; momentum conservation; pressurized gas doing work on a fluid.",
     },
-    traps: [
-      {
-        wrong: "The air blows the bottle up like a balloon floating.",
-        why: "The bottle is not buoyant flight. Thrust comes from shoving water (mass) downward.",
-        replace: "",
-      },
-      {
-        wrong: "Air-only launches are the same.",
-        why: "The squeezed air holds a fixed amount of energy. Spent throwing a light puff of air, most of it goes into making the puff very fast, which gives little push. Spent throwing heavy water, the same energy gives a much bigger total push.",
-        replace: "",
-      },
-      {
-        wrong: "Kids can hold it while you pump.",
-        why: "When the seal pops, the bottle and cork move fast. Adult owns the pressurized hardware.",
-        replace: "",
-      },
-    ],
   },
 ];
 
