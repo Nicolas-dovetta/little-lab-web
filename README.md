@@ -40,3 +40,17 @@ Each sketch panel renders full width of the text column directly above its own w
 - Logic: `src/lib/mechanism.ts` (`mechanismBlocks`), UI: `src/components/MechanismWalkthrough.tsx`, tests: `src/lib/mechanism.test.ts`.
 
 To add a sketched experiment: copy `panel-N-*.png/.webp` to `public/images/experiments/<slug>-physics-panel-N-*.{png,webp}`, paste the rewrite's Mechanism (with markers) into `mechanism`, add the `panels` array in `src/data/seed.ts`, add the slug to `SKETCHED` in `mechanism.test.ts`, and mirror it in Neon (`know_this = know_this || '{"mechanism": …, "panels": […]}'::jsonb`).
+
+## Interactive sims ("Try it" box)
+
+An experiment page can carry a tap-to-load sim, placed right after "Bear with me" (volcano pilot spine). Nothing loads until the reader taps the button.
+
+- Mapping (slug → sim, title, sentence, button, iframe title): `src/lib/sims.ts`. Code-side, no DB change. UI: `src/components/SimTryIt.tsx`.
+- The sim is a self-contained static file at `public/sims/<slug>/index.html`, copied from `little-lab-mechanics/sims/<slug>/index.html`. **After any fix to the sim there, re-copy it:**
+
+  ```sh
+  node scripts/sync-sims.mjs            # expects ../little-lab-mechanics; or MECHANICS_DIR=/path/to/little-lab-mechanics
+  npm test                              # checks the copy is noindex, self-contained and posts its height
+  ```
+
+- The copy step adds `<meta name="robots" content="noindex">` (if missing) and a tiny script that posts the sim's height to the page, so the iframe grows to fit (no scroll box inside the page). Until the first message arrives the iframe uses `fallbackHeight`. The iframe is `sandbox="allow-scripts"`.
