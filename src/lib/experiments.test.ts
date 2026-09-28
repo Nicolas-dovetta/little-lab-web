@@ -189,7 +189,8 @@ test("water-bottle-rocket is planned for 2026-10-03 with little-lab materials", 
   assert.equal(rocket.plannedFor, "2026-10-03");
   assert.equal(rocket.ranOn ?? null, null);
   assert.equal(rocket.location, "outdoor");
-  assert.ok(rocket.materials.some((m) => /soda bottle/i.test(m)));
+  assert.ok(rocket.materials.some((m) => /carbonated-soda \(PET\) bottle, undamaged/i.test(m)));
+  assert.ok(rocket.materials.some((m) => /Bike pump with a pressure gauge/.test(m)));
   assert.ok(rocket.materials.some((m) => /Bike pump/i.test(m)));
   assert.match(rocket.notesFromHome, /I will fill this after Saturday/);
   assert.equal(rocket.products, undefined);

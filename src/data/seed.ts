@@ -786,8 +786,8 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     messLevel: "medium",
     location: "outdoor",
     materials: [
-      "Empty 1–2 L plastic soda bottle",
-      "Bike pump (or dedicated bottle-rocket pump)",
+      "Empty 1–2 L carbonated-soda (PET) bottle, undamaged",
+      "Bike pump with a pressure gauge (or dedicated bottle-rocket pump)",
       "Cork / launcher that seals the bottle neck under pressure",
       "Water (~⅓ bottle)",
       "Optional cardboard fins + simple launch stand",
