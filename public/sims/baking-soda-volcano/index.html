@@ -6,7 +6,11 @@
 <!-- No network at all: no fonts, no CDN, no analytics. Everything is inline. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
 <meta name="robots" content="noindex">
-<title>Try it: which runs out first? (prototype, not published)</title>
+<title>Try it: which runs out first?</title>
+<script>
+// Inside the site's box (an iframe) the box already shows the title, so the page hides its own heading there.
+(function(){ var e = true; try { e = window.self !== window.top; } catch (x) {} if (e) document.documentElement.className += ' embedded'; })();
+</script>
 <style>
 :root{
   --cream:#faf7f0; --cream-deep:#f3eee3; --ink:#1f2a24; --ink-muted:#5c6b62;
@@ -19,6 +23,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--body);-webkit-text-size-adjust:100%}
 .sim{max-width:1040px;margin:0 auto;padding:16px 14px 40px}
+.embedded .kicker,.embedded h1{display:none}
 .kicker{margin:0;font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sage-700)}
 h1{font-family:var(--display);font-weight:600;font-size:1.55rem;line-height:1.2;margin:.2rem 0 .3rem}
 .lede{margin:0 0 12px;color:var(--ink-muted);font-size:1rem}
@@ -87,7 +92,7 @@ details.why ul{padding-left:1.1rem}
     <div class="stage">
       <p class="stagehead" id="stageHead" aria-hidden="true"></p>
       <svg id="scene" viewBox="0 62 400 314" role="img" aria-label="A tall glass on a tray with baking soda in the bottom, and a measuring cup of vinegar beside it."></svg>
-      <p class="note">Glass, cup, tray and foam drawn to one scale; speed not real. Each bubble drawn is 10 mL of CO₂. Foam tuned to Nico's fullest run (see “Why?”). The end picture is the moment the fizzing stops. Orange dashed arrows show which way things move.</p>
+      <p class="note">Glass, cup, tray and foam amounts drawn to one scale (bubble sizes aren't); speed not real. Each bubble drawn is 10 mL of CO₂. Foam tuned to Nico's fullest run (see “Why?”). The end picture is the moment the fizzing stops. Orange dashed arrows show which way things move.</p>
     </div>
 
     <div class="panel">
@@ -149,20 +154,19 @@ details.why ul{padding-left:1.1rem}
     </ul>
     <h3>The gas</h3>
     <p>At room temperature (20 °C) and sea level, a mole of any gas takes about <span data-n="vm">24</span> litres. Nico's recipe makes about <span data-n="molCup3">0.20</span> mol of CO₂, so about <span data-n="gasL">4.7</span> litres: about <span data-n="bottles">2.4</span> big 2-litre soda bottles, or <span data-n="glasses">11</span> of his 14.3 oz glasses. A little of it (about <span data-n="heldPct">5</span>%) stays dissolved in the liquid for a while, like an opened soda that's still fizzy. Up high the same gas takes more room: about <span data-n="denverPct">20</span>% more in Denver.</p>
-    <p>Always leave it open: gas trapped in a capped bottle builds up pressure and can pop the cap or crack the container.</p>
     <p>Where does it go? Some of it gets trapped in the soapy foam (below). The rest is invisible and a bit heavier than air (about 1.5 times as dense), so it slowly spills over the rim as it's made and spreads out low before it mixes into the room.</p>
     <p>More baking soda can make it fizz a bit faster, but once the vinegar's acid is used up, it can't make more gas. Only more vinegar does that.</p>
     <h3>Will it come over the top?</h3>
-    <p>Foam is gas wrapped in thin walls of liquid. The foam's liquid comes out of the glass itself, so the top of the foam sits where the liquid plus the gas trapped in the foam would reach. Whatever doesn't fit in the glass spills into the tray:</p>
-    <p><strong>foam that spills = gas trapped in foam − empty room above the liquid</strong></p>
-    <p>The dish soap doesn't trap all the gas. The rest is never caught: it escapes at the top while it's being made (that's the invisible gas spilling over the rim), and a little stays dissolved in the liquid (about <span data-n="heldPct2">5</span>%, see above). Foam that does form lasts: Nico saw it survive a long time, so in the sim it stays.</p>
+    <p>Foam is gas wrapped in thin walls of liquid. The foam's liquid comes out of the glass itself, so the top of the foam sits where the liquid and powder plus the gas trapped in the foam would reach. Whatever doesn't fit in the glass spills into the tray:</p>
+    <p><strong>foam that spills = gas trapped in foam − empty room above the liquid and powder</strong></p>
+    <p>The dish soap doesn't trap all the gas. The rest is never caught: it escapes at the top while it's being made (that's the invisible gas spilling over the rim, drawn thicker when more is escaping), and a little stays dissolved in the liquid (about <span data-n="heldPct2">5</span>% with Nico's recipe; more when there's extra vinegar). Foam that does form lasts: Nico saw it survive a long time, so in the sim it stays.</p>
     <p>How much gas the soap traps isn't something you can look up (I found no measurement for this kitchen reaction), so the sim is tuned to a real run: Nico's fullest run, which left foam 1 to 2 cm deep in his tray (about 20 × 40 cm). Taking 1.5 cm, about <span data-n="spillL">1.2</span> litres of foam spilled. Together with the foam that filled the glass, that foam holds about <span data-n="trapL">1.37</span> litres of gas: about <span data-n="trapPct">29</span>% of the <span data-n="gasL2">4.7</span> litres made. (With 1 cm it would be about <span data-n="trap1">20</span>%, with 2 cm about <span data-n="trap2">37</span>%.) That was the most foam he got, so the sim shows about the most you'd expect; a typical run spills less.</p>
-    <p>The foam is wet: it carries liquid up and out with it. Nico also saw that a run like his recipe ends up as "just a bunch of foam", with the liquid gone into it. The sim takes that at its word: with his recipe all <span data-n="vinMl">237</span> mL of vinegar ends up in the foam (in the glass and in the tray), which makes the foam about <span data-n="phiPct">15</span>% liquid (<span data-n="vinMl2">237</span> mL of liquid in about <span data-n="foamL">1.6</span> litres of foam). People who study foam call it "dry" under about 5% liquid and "wet" over about 15%, so this foam is at the wet end. It's one family's observation, not a measurement, and the sim uses the same share of liquid for every mix.</p>
-    <p>That has a neat result. Whenever the vinegar runs out first, or both run out together, each cup of vinegar makes the same amount of gas, so the foam takes all the liquid: the glass ends up foam to the rim, with the leftover baking soda at the bottom and no liquid left. With extra vinegar there's less gas for all that liquid, so some stays at the bottom: with 1 Tbsp of baking soda and 1½ cups of vinegar, about <span data-n="xvFreeMl">160</span> mL.</p>
+    <p>The foam is wet: it carries liquid up and out with it. Nico said: "especially if the reaction is balanced, it looks like just a bunch of foam." The sim reads that as all the liquid ending up in the foam, so it is calibrated so the foam carries all the liquid when the vinegar runs out, matching what Nico saw. (His recipe isn't balanced: it has more baking soda than 1 cup of vinegar can use. But the vinegar runs out, and each cup of vinegar makes the same gas either way.) So with his recipe all <span data-n="vinMl">237</span> mL of vinegar ends up in the foam (in the glass and in the tray), which makes the foam about <span data-n="phiPct">15</span>% liquid (<span data-n="vinMl2">237</span> mL of liquid in about <span data-n="foamL">1.6</span> litres of foam). People who study foam call it "dry" under about 5% liquid and "wet" over about 15%, so this foam is at the wet end. It's one family's observation, not a measurement, and the sim uses the same share of liquid for every mix. It also assumes each bit of vinegar reacts with the baking soda before the foam carries it up and out (if it didn't, the acid carried away would stop fizzing and less gas would be made).</p>
+    <p>That has a neat result. Whenever the vinegar runs out first, each cup of vinegar makes the same amount of gas, so the foam takes all the liquid: the glass ends up foam to the rim, with the leftover baking soda at the bottom and no liquid left except a little dampening the powder. When both run out together it's nearly the same: a few spoonfuls of liquid can stay. With extra vinegar there's less gas for all that liquid, so some stays at the bottom: with 1 Tbsp of baking soda and 1½ cups of vinegar, about <span data-n="xvFreeMl">160</span> mL.</p>
     <p>Small mixes may not make enough foam to fill the empty part of the glass: with ¼ Tbsp of baking soda and ¼ cup of vinegar the foam gets about <span data-n="tinyPct">79</span>% of the way up, so nothing spills. That depends on how foamy your soap is: at the 2 cm end of Nico's range the same small mix would get about <span data-n="tinyPct2">102</span>% of the way, and just spill. The dish soap makes no gas; it holds some of it in bubbles, so without it far less would spill.</p>
-    <p>The end picture is the moment the fizzing stops. Left alone, soap foam slowly drains: liquid runs down out of it and collects at the bottom again, over a long time.</p>
+    <p>The end picture is the moment the fizzing stops. Left alone, liquid then drains down out of the foam and collects at the bottom again.</p>
     <h3>The leftover baking soda</h3>
-    <p>This is what the chemistry predicts; nobody has checked Nico's glass yet. The drawing shows it as powder at the bottom, under the foam. Once the foam drains back and you stir, much of it can dissolve: the liquid from Nico's recipe can take up roughly <span data-n="dissolveG">16</span> g of the about <span data-n="leftG2">25</span> g (plain water holds about <span data-n="solub">96</span> g per litre; the dissolved sodium acetate lowers that). So you may see less powder than the drawing. Unstirred, most of it stays as wet powder for a while.</p>
+    <p>This is what the chemistry predicts; nobody has checked Nico's glass yet. The drawing shows it as powder at the bottom, under the foam. Once the foam drains back and you stir, much of it can dissolve: the liquid from Nico's recipe can take up roughly <span data-n="dissolveG">16</span> g of the about <span data-n="leftG2">25</span> g (plain water holds about <span data-n="solub">96</span> g per litre; the dissolved sodium acetate lowers that). So you may see less powder than the drawing. Unstirred, most of it stays as damp powder for a while.</p>
     <p>To check: wait for the fizz to stop, stir, then pour in a splash of fresh vinegar. If it fizzes hard again, there was baking soda left. (Adding more baking soda isn't a fair test: the used liquid still holds dissolved gas, and fresh powder makes it bubble a little anyway.)</p>
     <p>The liquid left when the vinegar runs out isn't vinegar any more: its acid is used up. It's water with sodium acetate dissolved in it (salty water, a little on the basic side). The drawing turns it greyer to show that, in the glass and in the foam.</p>
     <p class="small">Assumptions: level US spoons and cups, 5% white vinegar, 20 °C, sea level. Heaped spoons just leave more baking soda over. Nothing is sent anywhere from this page.</p>
@@ -251,8 +255,10 @@ details.why ul{padding-left:1.1rem}
     //   GAS_TRAPPED_FRACTION = (empty room in the glass + tray floor x FOAM_DEPTH_CM) / recipe gas
     //                        = (167.5 mL + 1200 mL) / 4738.5 mL = 0.2886   (1 cm -> 0.204, 2 cm -> 0.373).
     GAS_TRAPPED_FRACTION: null,
-    // FOAM_LIQUID_FRACTION: liquid volume / foam volume. Calibrated to Nicolas's observation that a run like his recipe
-    // ends as "just a bunch of foam": with the recipe, all the vinegar ends up in the foam, and no more:
+    // FOAM_LIQUID_FRACTION: liquid volume / foam volume. Nicolas: "especially if the reaction is balanced, it looks like
+    // just a bunch of foam". Calibrated so the foam carries all the liquid when the vinegar runs out, matching what Nico
+    // saw. Every mix where the vinegar runs out makes the same gas per mL of vinegar, so the recipe (3 Tbsp + 1 cup,
+    // more soda than 1 cup can use; not balanced) gives the same number as the balanced mix with 1 cup:
     //   FOAM_LIQUID_FRACTION = recipe vinegar / (recipe vinegar + recipe trapped gas)
     //                        = 236.6 / (236.6 + 1367.5) = 0.1475   (SPEC section 7a; between "dry" < 0.05 and
     //                          "wet" > 0.15, at the wet end: Furuta et al. 2016).
@@ -321,6 +327,7 @@ details.why ul{padding-left:1.1rem}
     var gasMl = gasL * 1000;
     // foam (SPEC 7, 7a): the soap traps GAS_TRAPPED_FRACTION of the gas; the foam carries liquid with it
     var foamGasMl = gasMl * C.GAS_TRAPPED_FRACTION;    // trapped gas (the rest escapes at the top as it's made)
+    var dissolvedGasMl = Math.min(gasMl - foamGasMl, co2HeldMol(vinegarMl) * molarVolumeL() * 1000);
     var foamLiquidMl = carriedLiquidMl(foamGasMl, vinegarMl);
     var foamMl = foamGasMl + foamLiquidMl;              // wet foam: gas + liquid
     var freeLiquidMl = vinegarMl - foamLiquidMl;        // liquid left at the bottom of the glass
@@ -363,7 +370,7 @@ details.why ul{padding-left:1.1rem}
       foamGasMl: foamGasMl,
       foamLiquidMl: foamLiquidMl,
       foamMl: foamMl,
-      foamLiquidFraction: phi,                  // = FOAM_LIQUID_FRACTION unless the liquid runs short (drier foam)
+      foamLiquidFraction: phi,                  // = FOAM_LIQUID_FRACTION for every setting (the liquid never runs short)
       freeLiquidMl: freeLiquidMl,
       foamInGlassMl: foamInGlassMl,             // wet foam in the glass (fills it to the rim if it spills)
       foamSpilledMl: foamSpilledMl,             // wet foam in the tray
@@ -371,6 +378,10 @@ details.why ul{padding-left:1.1rem}
       trayLiquidMl: phi * foamSpilledMl, trayGasMl: (1 - phi) * foamSpilledMl,
       glassFoamLiquidMl: phi * foamInGlassMl, glassFoamGasMl: (1 - phi) * foamInGlassMl,
       escapedGasMl: gasMl - foamGasMl,          // never trapped: escapes at the top as it's made (a little dissolves)
+      // of that: what the liquid can hold dissolved for a while (Henry's law, SPEC section 4; grows with the vinegar),
+      // and what leaves at the top while the gas is being made (drawn as the CO2 arrows, in proportion)
+      dissolvedGasMl: dissolvedGasMl,
+      escapesAsMadeMl: gasMl - foamGasMl - dissolvedGasMl,
       foamTopFraction: emptyMl > 0 ? Math.min(1, foamGasMl / emptyMl) : (foamGasMl > 0 ? 1 : 0),
       spills: foamSpilledMl > 0,
       trayMess: trayMess(foamSpilledMl),
@@ -508,13 +519,13 @@ details.why ul{padding-left:1.1rem}
   function foamText(r) {
     if (!(r.gasL > 0)) return '';
     var head = 'The dish soap traps about ' + pct(C.GAS_TRAPPED_FRACTION) + ' of that gas in foam (tuned to Nico\u2019s fullest run); the rest escapes at the top as it\u2019s made. The foam is wet, about ' + pct(r.foamLiquidFraction) + ' liquid, so it carries liquid up with it. ';
-    var left = r.freeLiquidMl < C.FEW_DROPS_ML ? ' Little or no liquid is left at the bottom of the glass: it has all gone into the foam.'
+    var left = r.freeLiquidMl < C.FEW_DROPS_ML ? ' Little or no liquid is left at the bottom of the glass: it has gone into the foam' + (r.sodaLeftMol > 0 ? ' (apart from a little that dampens the leftover powder).' : '.')
       : ' About ' + volText(r.freeLiquidMl) + ' of liquid stays at the bottom of the glass.';
     if (r.foamSpilledMl > 0) {
       var m = r.trayMess;
       if (!(r.foamSpilledMl >= C.FEW_DROPS_ML))
         return head + 'The foam fills the glass to the rim and only a few drops spill over (with foam this close to the rim, a real run could go either way).' + left;
-      var how = m.coverage < 1 ? ' (covering part of the tray floor)' : ' (a layer about ' + (Math.round(m.depthCm * 2) / 2).toFixed(1).replace(/\.0$/, '') + ' cm deep)';
+      var how = m.coverage < 1 ? ' (covering part of the tray floor)' : ' (a layer about ' + (Math.round(m.depthCm * 10) / 10).toFixed(1).replace(/\.0$/, '') + ' cm deep)';
       return head + 'About ' + volText(r.foamInGlassMl) + ' of foam fills the glass to the rim, and about ' + volText(r.foamSpilledMl) + ' spills into the tray' + how + '.' + left;
     }
     return head + 'The foam doesn\u2019t reach the rim: it rises about ' + pct(r.foamTopFraction) + ' of the way up the empty part of the glass, so nothing spills.' + left;
@@ -618,7 +629,12 @@ var NS = 'http://www.w3.org/2000/svg';
 // Bubbles: one drawn bubble per M.C.ML_PER_BUBBLE of CO2. Nothing moves without gas.
 var DUR = 5600;               // animation length, ms (not real time)
 var T_REACT0 = 700, T_REACT1 = 3900;     // the reaction, sped up
-var T_CLIMB_END = 4200, T_GAS_ON = 4400; // "foam climbs" arrow hidden from 4200 ms, before the CO2 arrows
+// "foam climbs" shows until the foam reaches the rim, and at most until T_CLIMB_END; from then on the CO2 arrows show
+// the gas escaping (one of the two at a time, review 2 S3). Review 4 #4: the CO2 arrows are drawn during the fizz, their
+// thickness in proportion to how fast gas is escaping at the top (GAS_W_MAX = the fastest escape any slider setting
+// reaches); after the fizz they stay thin (GAS_TAIL_W, a drawing choice): the dissolved gas keeps seeping out slowly.
+var T_CLIMB_END = 1600;
+var GAS_W_MAX = 5, GAS_TAIL_W = 1.2, GAS_W_MIN = 0.3;
 // Spilled foam takes SPILL_LAG ms (animation time) to get from the rim to the tray; while on its way it is drawn as a cap
 // over the rim (CAP_SHARE of it) and a film down the outside of the glass (the rest). Drawing choices; volumes exact.
 var SPILL_LAG = 300, CAP_SHARE = 0.4;
@@ -626,7 +642,7 @@ var TBSP_STEP = 0.25, CUP_STEP = 0.125;
 var sodaInEl = document.getElementById('soda'), vinInEl = document.getElementById('vin');
 // shared bar scale, from the model at the sliders' maxima (so the bars can never clamp and lie)
 var BAR_MAX_L = Math.ceil(Math.max(M.mix(+sodaInEl.max*TBSP_STEP, 0).sodaCouldMakeL, M.mix(0, +vinInEl.max*CUP_STEP).acidCouldMakeL));
-var VINEGAR_RGB = [0xCF, 0xE7, 0xF4], SPENT_RGB = [0xDD, 0xE1, 0xDC];   // spent liquid (no acid): greyer
+var VINEGAR_RGB = [0xCF, 0xE7, 0xF4], SPENT_RGB = [0xC6, 0xCF, 0xC2];   // spent liquid (no acid): greyer (darker since review 4 #2, so wet foam reads)
 var VINEGAR_LINE = [0x8F, 0xBB, 0xD6], SPENT_LINE = [0xA3, 0xAD, 0xA6];
 function mixRGB(a, b, f){ return 'rgb(' + a.map(function(v, i){ return Math.round(v + (b[i]-v)*f); }).join(',') + ')'; }
 
@@ -653,11 +669,19 @@ el('path', {d:'M0,0 L10,5 L0,10 z', fill:'#E0562B'}, mk);
 // Wet foam, from the model's liquid fraction: bubbles (white) in a hexagonal packing on the liquid (tinted like the
 // liquid). Tile s x s*sqrt(3) holds two whole bubbles, so the liquid showing = 1 - 2 pi r^2 / (sqrt(3) s^2) = the
 // foam's liquid fraction (area in the drawing for volume in the foam). Every foam in the picture uses it.
-var WET = {s:9}; WET.h = WET.s*Math.sqrt(3);
-var pat = el('pattern', {id:'foamPat', width:WET.s, height:WET.h.toFixed(4), patternUnits:'userSpaceOnUse'}, defs);
-var wetBg = el('rect', {width:WET.s, height:WET.h.toFixed(4), fill:'#CFE7F4'}, pat);
-var wetC = [[0,0],[WET.s,0],[0,WET.h],[WET.s,WET.h],[WET.s/2,WET.h/2]].map(function(p){
-  return el('circle', {cx:p[0], cy:p[1].toFixed(4), r:0, fill:'#fff', stroke:'#2B2A33', 'stroke-width':0.5, 'stroke-opacity':0.7}, pat); });
+var WET = {s:16, nx:8, ny:4}; WET.h = WET.s*Math.sqrt(3);
+// One pattern tile holds 8 x 4 lattice tiles: Chrome anti-aliases the bubbles cut by a pattern tile's edge against the
+// liquid, which showed as thin liquid seams (about +3 points of liquid at 390 px); a bigger tile has 1/4 as many seams.
+WET.W = WET.s*WET.nx; WET.H = WET.h*WET.ny;
+var pat = el('pattern', {id:'foamPat', width:WET.W, height:WET.H.toFixed(4), patternUnits:'userSpaceOnUse'}, defs);
+var wetBg = el('rect', {width:WET.W, height:WET.H.toFixed(4), fill:'#CFE7F4'}, pat);
+var wetPts = [];
+for (var wi = 0; wi <= WET.nx; wi++) for (var wj = 0; wj <= WET.ny; wj++){
+  wetPts.push([wi*WET.s, wj*WET.h]);
+  if (wi < WET.nx && wj < WET.ny) wetPts.push([wi*WET.s + WET.s/2, wj*WET.h + WET.h/2]);
+}
+var wetC = wetPts.map(function(p){
+  return el('circle', {cx:p[0], cy:p[1].toFixed(4), r:0, fill:'#fff'}, pat); });   // no outline: an ink ring would cover the liquid between bubbles (review 4 #2)
 function setWet(phi){
   var r = WET.s*Math.sqrt(Math.max(0, 1 - phi)*Math.sqrt(3)/(2*Math.PI));
   r = Math.min(r, WET.s/2);   // hexagonal packing limit (phi >= 9.3 %); the model's foam is 14.7 % liquid
@@ -733,8 +757,18 @@ var climbT = el('text', {x:G.outL - 18, y:200, stroke:'#FBF6EC', 'stroke-width':
 // CO2 is ~1.5x denser than air: the gas the soap doesn't trap spills over the rim and sinks/spreads (review M1)
 function flow(d, parent){ return el('path', {d:d, fill:'none', stroke:'#E0562B', 'stroke-width':3.5, 'stroke-dasharray':'8 6', 'marker-end':'url(#ah)'}, parent); }
 var gasG = el('g', {opacity:0});
-flow('M156 120 C 140 104, 118 106, 116 128 L 116 160', gasG);
-flow('M224 120 C 240 104, 262 106, 264 128 L 264 160', gasG);
+var gasFlows = [flow('M156 120 C 140 104, 118 106, 116 128 L 116 160', gasG), flow('M224 120 C 240 104, 262 106, 264 128 L 264 160', gasG)];
+// escape rate at the top, relative: gas that leaves as it's made x the reaction's speed (d/du of ease = 6u(1-u));
+// GAS_REF = the largest over every slider setting (the peak of the fastest mix)
+var GAS_REF = 0;
+for (var gi = 0; gi <= 16; gi++) for (var gj = 0; gj <= 12; gj++) GAS_REF = Math.max(GAS_REF, M.mix(gi*TBSP_STEP, gj*CUP_STEP).escapesAsMadeMl*1.5);
+function gasWidth(r, t){
+  if (!(r.gasL > 0) || t < T_REACT0) return 0;
+  if (t >= T_REACT1) return GAS_TAIL_W;
+  var u = (t - T_REACT0)/(T_REACT1 - T_REACT0);
+  return GAS_W_MAX * r.escapesAsMadeMl * 6*u*(1 - u) / GAS_REF;
+}
+var lastGasW = 0;
 var gasT = el('text', {x:190, y:80, 'font-size':14, 'font-weight':700, fill:'#2B2A33', 'text-anchor':'middle'}, gasG); gasT.textContent = 'CO₂ gas spills out';
 var gasT2 = el('text', {x:190, y:96, 'font-size':12.5, fill:'#2B2A33', 'text-anchor':'middle'}, gasG); gasT2.textContent = '(invisible, heavier than air)';
 
@@ -778,22 +812,26 @@ function tbsp(){ return +sodaIn.value * TBSP_STEP; }
 function cups(){ return +vinIn.value * CUP_STEP; }
 var fmtTbsp = M.tbspText, fmtCups = M.cupsText, fmtL = M.litresText;
 
-function powderPath(ml){
-  // mound with the same area as a flat layer of this bulk volume
+// The powder: a mound whose drawn area is exactly a flat layer of this bulk volume (heights scaled to make it so).
+// Returns its top edge, left wall to right wall, or null if too thin to draw.
+function powderTop(ml){
   var h = G.inH * ml / CAP;
-  if (h < 0.3) return '';
-  var L = G.inL, R = G.inR, B = G.bot + 1, mid = (L+R)/2;
-  var edge = Math.max(0.35*h, 0), peak = 1.65*h;
-  var d = 'M'+L+' '+B+' L'+L+' '+(B-edge);
-  var n = 10;
-  for (var i = 1; i <= n; i++){
+  if (!(h >= 0.3)) return null;
+  var L = G.inL, R = G.inR, B = G.bot, mid = (L+R)/2, n = 10, pts = [], A = 0, i;
+  for (i = 0; i <= n; i++){
     var x = L + (R-L)*i/n, t = (x-mid)/((R-L)/2);
-    var y = B - (edge + (peak-edge)*(1 - t*t)) + (i%2 ? 1.2 : -0.8)*(h > 4 ? 1 : 0.3);
-    d += ' L'+x.toFixed(1)+' '+y.toFixed(1);
+    pts.push([x, 0.35 + 1.3*(1 - t*t) + (i > 0 && i < n ? (i%2 ? 1 : -1)*(h > 4 ? 1/h : 0.3/h) : 0)]);
   }
-  return d + ' L'+R+' '+B+' Z';
+  for (i = 1; i <= n; i++) A += (pts[i][0] - pts[i-1][0])*(pts[i][1] + pts[i-1][1])/2;
+  var k = h*(R-L)/A;
+  return pts.map(function(p){ return [p[0], B - p[1]*k]; });
 }
-function powderTopY(ml){ return G.bot - 1.65*G.inH*ml/CAP; }
+function powderPath(ml){
+  var p = powderTop(ml);
+  if (!p) return '';
+  return 'M'+G.inL+' '+G.bot+' '+p.map(function(q){ return 'L'+q[0].toFixed(2)+' '+q[1].toFixed(3); }).join(' ')+' L'+G.inR+' '+G.bot+' Z';
+}
+function powderTopY(ml){ var p = powderTop(ml); return p ? Math.min.apply(null, p.map(function(q){ return q[1]; })) : G.bot; }
 
 // ml = free liquid + powder solid (the level the foam sits on); the liquid itself is drawn only if some is free
 function setLiquid(ml, spentF, freeMl){
@@ -809,12 +847,24 @@ function setLiquid(ml, spentF, freeMl){
 }
 function setCup(tr, cupsInCup){
   cupG.setAttribute('transform', 'translate('+tr.x.toFixed(1)+' '+tr.y.toFixed(1)+') rotate('+tr.a.toFixed(1)+')');
-  var y = cupLevelY(cupsInCup), h = 96 - y;
+  var y = cupLevelY(cupsInCup), h = CUP.yb - y;   // from the cup's inside bottom (review 4 MUST-FIX 1)
   cupFill.setAttribute('y', y); cupFill.setAttribute('height', Math.max(0, h));
   cupSurf.setAttribute('y1', y); cupSurf.setAttribute('y2', y); cupSurf.setAttribute('opacity', cupsInCup > 0.01 ? 1 : 0);
 }
 function hideFoam(){ foamGlass.setAttribute('d', ''); }
-function drawFoam(topY, levelY){ foamGlass.setAttribute('d', bumpyPath(G.inL, G.inR, levelY, levelY - topY)); }
+// Wet foam in the glass, from topY down to the free liquid's surface (levelY). With no free liquid it sits right on the
+// powder (review 4 #9): its bottom edge is the powder's top edge (or the glass bottom), so no gap shows under it.
+function drawFoam(topY, levelY, powderMl, onPowder){
+  if (!(levelY - topY > 0.05)){ foamGlass.setAttribute('d', ''); return; }
+  if (!onPowder){ foamGlass.setAttribute('d', bumpyPath(G.inL, G.inR, levelY, levelY - topY)); return; }
+  var p = powderTop(powderMl) || [[G.inL, G.bot], [G.inR, G.bot]];
+  var f = function(v){ return v.toFixed(3); }, lo = G.inL, hi = G.inR;
+  var c = Math.min(BUMP, levelY - topY), chord = topY + c/3, ctrl = chord - c;
+  var d = 'M'+f(lo)+' '+f(Math.max(chord, p[0][1]))+' L'+f(lo)+' '+f(chord), n = Math.max(1, Math.round((hi - lo)/8)), w = (hi - lo)/n;
+  for (var i = 0; i < n; i++) d += ' Q'+f(lo + w*(i + 0.5))+' '+f(ctrl)+' '+f(lo + w*(i + 1))+' '+f(chord);
+  for (var j = p.length - 1; j >= 0; j--) d += ' L'+f(p[j][0])+' '+f(Math.max(chord, p[j][1]));
+  foamGlass.setAttribute('d', d + ' Z');
+}
 // Foam on its way from the rim to the tray (transitMl), to scale. CAP_SHARE of it is a half-ellipsoid cap over the rim,
 // as wide as the glass: V = 2/3 pi a^2 h. The rest is a film of thickness t down the outside, from the rim to the top
 // of the tray layer: V = pi D H t. Hidden below FEW_DROPS_ML (too little to see).
@@ -916,7 +966,7 @@ function drawReady(){
   document.getElementById('sodaOut').textContent = fmtTbsp(cur.tbsp);
   document.getElementById('vinOut').textContent = fmtCups(cur.cups);
   clearLabels(); hideFoam(); killBubbles(); setMess(0, false, null, 0); setTransit(0, TRAY.floor - 1.5);
-  bubbleArrows.setAttribute('opacity', 0); climbG.setAttribute('opacity', 0); gasG.setAttribute('opacity', 0);
+  bubbleArrows.setAttribute('opacity', 0); climbG.setAttribute('opacity', 0); gasG.setAttribute('opacity', 0); lastGasW = 0;
   stream.setAttribute('opacity', 0);
   setLiquid(0);
   powder.setAttribute('d', powderPath(cur.tbsp*POWDER_ML_PER_TBSP));
@@ -958,7 +1008,8 @@ function frame(r, t, dt){
 
   // powder shrinks by what has reacted (bulk volume)
   var sodaLeftTbsp = r.tbsp - react*(r.reactedMol*C.M_NAHCO3/C.SODA_G_PER_TBSP);
-  powder.setAttribute('d', powderPath(Math.max(0, sodaLeftTbsp)*POWDER_ML_PER_TBSP));
+  var powderMl = Math.max(0, sodaLeftTbsp)*POWDER_ML_PER_TBSP;
+  powder.setAttribute('d', powderPath(powderMl));
 
   // bubbles, to scale: by now react * bubblesDrawn bubbles have been released (one per ML_PER_BUBBLE of CO2)
   var liquidTall = G.bot - levelY;
@@ -989,8 +1040,8 @@ function frame(r, t, dt){
   // the rim. It stays: the end picture is the moment the fizzing stops.
   var foamMl = hasGas ? fp.inGlassMl : 0;
   var topY = yForMl(fp.liquidMl + foamMl);
-  drawFoam(topY, levelY);
-  lastFoam = {topY: topY, levelY: levelY, foamMl: foamMl, spilledMl: fp.spilledMl, liquidMl: fp.liquidMl, freeMl: fp.freeLiquidMl, carriedMl: fp.carriedMl};
+  drawFoam(topY, levelY, powderMl, fp.freeLiquidMl <= 0.5);
+  lastFoam = {topY: topY, levelY: levelY, foamMl: foamMl, onPowder: fp.freeLiquidMl <= 0.5, powderMl: powderMl, belowRim: fp.topMl < r.glassMl - 0.01, spilledMl: fp.spilledMl, liquidMl: fp.liquidMl, freeMl: fp.freeLiquidMl, carriedMl: fp.carriedMl};
   // spilled foam: what went over the rim SPILL_LAG ms ago is in the tray; the rest is on its way (cap + film)
   var inTray = hasGas ? M.foamProgress(r, pourAt(t - SPILL_LAG), reactAt(t - SPILL_LAG)).spilledMl : 0;
   var overRim = hasGas ? fp.spilledMl : 0;
@@ -998,10 +1049,16 @@ function frame(r, t, dt){
   setTransit(overRim - inTray, lastMess.topY);
   // "foam climbs" arrow: inside the glass, from the surface to the foam top actually drawn; gone before the CO2 arrows
   var climbLen = levelY - topY;
-  var climbOn = hasGas && t < T_CLIMB_END && climbLen > 40;
+  var climbPhase = hasGas && t < T_CLIMB_END && fp.topMl < r.glassMl - 0.01;   // foam still climbing below the rim
+  var climbOn = climbPhase && climbLen > 40;
   if (climbOn){ climbA.setAttribute('y1', levelY - 4); climbA.setAttribute('y2', topY + 10); climbT.setAttribute('y', (levelY + topY)/2 + 5); }
   climbG.setAttribute('opacity', climbOn ? 1 : 0);
-  gasG.setAttribute('opacity', hasGas && t > T_GAS_ON ? 1 : 0);
+  var gw = climbPhase ? 0 : gasWidth(r, t);   // the CO2 arrows take over once the climbing phase is over
+  lastGasW = gw >= GAS_W_MIN ? gw : 0;
+  gasFlows.forEach(function(f){ f.setAttribute('stroke-width', lastGasW.toFixed(3)); });
+  gasG.setAttribute('opacity', lastGasW > 0 ? 1 : 0);
+  // its words wait until the tipped cup is back down (they would sit on the cup's lip); the arrows don't
+  gasT.setAttribute('opacity', tip > 0.02 ? 0 : 1); gasT2.setAttribute('opacity', tip > 0.02 ? 0 : 1);
   setBars(r, react);
 }
 
@@ -1121,7 +1178,8 @@ window.__sim = { set: function(t, c){ sodaIn.value = Math.round(t/TBSP_STEP); vi
                    var on = function(c){ return c.getAttribute('display') === 'inline'; };
                    return {climb: climbG.getAttribute('opacity') === '1', gas: gasG.getAttribute('opacity') === '1', foam: lastFoam,
                      climbY1: +climbA.getAttribute('y1'), climbY2: +climbA.getAttribute('y2'),
-                     bubbleArrows: bubbleArrows.getAttribute('opacity') === '1',
+                     bubbleArrows: bubbleArrows.getAttribute('opacity') === '1', gasW: lastGasW,
+                     gasDrawnW: +gasFlows[0].getAttribute('stroke-width'),
                      bubbles: bubbles.filter(function(b){ return on(b.c); }).length, spawned: bub.spawned,
                      foamCircles: foamGlass.getAttribute('d') ? 1 : 0, dome: capP.getAttribute('display') === 'inline' ? 1 : 0,
                      mess: lastMess, messShown: !!(messL.getAttribute('d') || messR.getAttribute('d')),
@@ -1133,17 +1191,19 @@ window.__sim = { set: function(t, c){ sodaIn.value = Math.round(t/TBSP_STEP); vi
                    var area = function(p){ if (!withArea || !p.getAttribute('d')) return 0; var L = p.getTotalLength(), n = 1500, A = 0, q0 = p.getPointAtLength(0), a = q0;
                      for (var i = 1; i <= n; i++){ var b = p.getPointAtLength(L*i/n); A += a.x*b.y - b.x*a.y; a = b; } A += a.x*q0.y - q0.x*a.y; return Math.abs(A)/2; };
                    return {messL: bb(messL), messR: bb(messR), areaL: area(messL), areaR: area(messR), cap: bb(capP), runL: bb(runL), runR: bb(runR),
-                     foamGlass: bb(foamGlass), areaFoamGlass: area(foamGlass),
+                     foamGlass: bb(foamGlass), areaFoamGlass: area(foamGlass), areaPowder: area(powder),
+                     cupFill: {y: +cupFill.getAttribute('y'), h: +cupFill.getAttribute('height'), shown: cupFill.getAttribute('opacity') !== '0'},
+                     wetBg: wetBg.getAttribute('fill'),
                      liquidRect: {y: +liquid.getAttribute('y'), h: +liquid.getAttribute('height')},
-                     wet: {w: +pat.getAttribute('width'), h: +pat.getAttribute('height'), r: wetC.map(function(c){ return +c.getAttribute('r'); }),
+                     wet: {s: WET.s, th: WET.h, w: +pat.getAttribute('width'), h: +pat.getAttribute('height'), r: wetC.map(function(c){ return +c.getAttribute('r'); }),
                            cx: wetC.map(function(c){ return +c.getAttribute('cx'); }), cy: wetC.map(function(c){ return +c.getAttribute('cy'); }),
                            users: ['messL','messR','capP','runL','runR','foamGlass'].length},
                      labels: Array.prototype.map.call(labelLayer.querySelectorAll('rect'), function(r){ var b = r.getBBox(); return {x:b.x, y:b.y, w:b.width, h:b.height}; }),
                      leaders: Array.prototype.map.call(labelLayer.querySelectorAll('line'), function(l){ return {x1:+l.getAttribute('x1'), y1:+l.getAttribute('y1'), x2:+l.getAttribute('x2'), y2:+l.getAttribute('y2')}; })};
                  },
-                 capShare: CAP_SHARE, spillLag: SPILL_LAG,
+                 showLabels: function(on){ labelLayer.setAttribute('visibility', on ? 'visible' : 'hidden'); }, capShare: CAP_SHARE, spillLag: SPILL_LAG, gasArrows: {max: GAS_W_MAX, tail: GAS_TAIL_W, min: GAS_W_MIN, ref: GAS_REF},
                  frameStep: function(ms){ frame(cur, ms, 16); },
-                 rim: G.rim, cap: CAP, yForMl: yForMl, pxPerCm: PX_PER_CM, tray: TRAY, glass: G, cupPxPerMl: CUP_PX_PER_ML, cupIn: CUP_IN, bump: BUMP, times: {climbEnd: T_CLIMB_END, gasOn: T_GAS_ON, dur: DUR, react1: T_REACT1} };
+                 rim: G.rim, cap: CAP, yForMl: yForMl, pxPerCm: PX_PER_CM, tray: TRAY, glass: G, cupPxPerMl: CUP_PX_PER_ML, cupIn: CUP_IN, cupYb: CUP.yb, mlPerTbsp: POWDER_ML_PER_TBSP, powderTopY: powderTopY, bump: BUMP, times: {climbEnd: T_CLIMB_END, react0: T_REACT0, dur: DUR, react1: T_REACT1} };
 drawReady();
 })();
 </script>
