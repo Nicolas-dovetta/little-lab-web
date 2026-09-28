@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { Experiment, ExperimentProduct, KnowThis, RunThis, Trap } from "@/db/schema";
+import type { Experiment, ExperimentProduct, KnowThis, RunThis } from "@/db/schema";
 import { amazonPackCartHref, amazonProductHref } from "@/lib/amazon";
 import { kidVerdictProse, uniqueMoveSteps } from "@/lib/experiments";
 import { MechanismWalkthrough } from "./MechanismWalkthrough";
@@ -10,7 +10,6 @@ export function VolcanoExperimentView({ experiment: e }: { experiment: Experimen
   const steps = (e.steps as { title: string; detail: string }[]) || [];
   const runThis = (e.runThis as RunThis) || {};
   const knowThis = (e.knowThis as KnowThis) || { mechanism: "" };
-  const traps = (e.traps as Trap[]) || [];
   const moves = uniqueMoveSteps(steps, runThis.tracks);
   const verdict = kidVerdictProse(e.notesFromHome, e.experience);
   const packHref = amazonPackCartHref(products);
@@ -140,16 +139,6 @@ export function VolcanoExperimentView({ experiment: e }: { experiment: Experimen
             <div>
               <h3 className="font-semibold text-ink">Go deeper</h3>
               <p className="mt-1">{knowThis.goDeeper}</p>
-            </div>
-          )}
-          {traps.length > 0 && (
-            <div>
-              <h3 className="font-semibold text-ink">Easy to mix up</h3>
-              <ul className="mt-2 list-disc space-y-2 pl-5">
-                {traps.map((trap) => (
-                  <li key={trap.wrong}>{trap.replace}</li>
-                ))}
-              </ul>
             </div>
           )}
         </div>

@@ -91,14 +91,16 @@ test("banned sections stay gone", () => {
   assert.equal(raw.includes("Does not prove"), false);
   assert.equal(raw.includes("Words at the table"), false);
   assert.equal(raw.includes("SAY THIS"), false);
+  // Trap and Stretch sections retired 2026-09-28.
+  assert.equal(/\btraps\??:/.test(raw), false);
+  assert.equal(/\bstretch\??:/.test(raw), false);
+  for (const e of experimentSeeds) {
+    assert.equal("traps" in e, false, e.id);
+    assert.equal("stretch" in e, false, e.id);
+  }
 });
 
-test("volcano 'Easy to mix up' line and approved rewrite bits", () => {
-  const volcano = experimentSeeds.find((e) => e.id === "baking-soda-volcano");
-  assert.equal(
-    volcano?.traps?.[1]?.replace,
-    "More gas only comes from more vinegar. With this recipe the baking soda is already left over. (Extra powder can make it fizz a bit faster, but it can't make more gas.)",
-  );
+test("approved rewrite bits", () => {
   const salt = experimentSeeds.find((e) => e.id === "salt-ice-fishing");
   assert.match(salt?.learningGoal ?? "", /copper carries the refreezing heat down/);
   assert.equal(

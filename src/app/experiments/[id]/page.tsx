@@ -10,7 +10,6 @@ import type {
   ExperimentProduct,
   KnowThis,
   RunThis,
-  Trap,
 } from "@/db/schema";
 import { amazonPackCartHref, amazonProductHref } from "@/lib/amazon";
 import {
@@ -150,11 +149,10 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
     (track) => Boolean(track.imageUrl?.trim()) && stepTitles.has(track.title.trim()),
   );
   const cardTracks = tracks.filter((track) => !stepPhotoTracks.includes(track));
-  const traps = (e.traps as Trap[]) || [];
 
   const showRun = hasRunContent(runThis);
   const showKnow = hasKnowContent(knowThis);
-  const showThreeMessage = showRun || showKnow || traps.length > 0;
+  const showThreeMessage = showRun || showKnow;
   const showLegacySteps = !showRun && steps.length > 0;
   const showLegacyRoles = !showThreeMessage && (kidCanDo.length > 0 || adultRole.length > 0);
   const showLegacyNotice = !showKnow && notice.length > 0;
@@ -291,36 +289,6 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
               </MessageCard>
             )}
 
-            {traps.length > 0 && (
-              <div className="space-y-4">
-                {traps.map((t, i) => (
-                  <div
-                    key={i}
-                    className="rounded-3xl border-2 border-rose-300 bg-rose-50/90 p-5 shadow-sm"
-                  >
-                    <p className="text-xs font-bold uppercase tracking-wide text-rose-800">
-                      Trap{traps.length > 1 ? ` ${i + 1}` : ""}
-                    </p>
-                    <dl className="mt-3 space-y-3 text-sm">
-                      <div>
-                        <dt className="font-semibold text-rose-950">Wrong</dt>
-                        <dd className="mt-0.5 text-ink-muted">{t.wrong}</dd>
-                      </div>
-                      <div>
-                        <dt className="font-semibold text-rose-950">Why</dt>
-                        <dd className="mt-0.5 text-ink-muted">{t.why}</dd>
-                      </div>
-                      {t.replace?.trim() && (
-                        <div>
-                          <dt className="font-semibold text-rose-950">Replace</dt>
-                          <dd className="mt-0.5 text-ink-muted">{t.replace}</dd>
-                        </div>
-                      )}
-                    </dl>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
         )}
 
@@ -347,12 +315,6 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
             <blockquote className="whitespace-pre-line rounded-2xl border border-amber-200/80 bg-amber-50/80 p-5 text-sm text-ink">
               {e.notesFromHome}
             </blockquote>
-          </Section>
-        )}
-
-        {e.stretch && (
-          <Section title="Stretch it">
-            <p className="text-sm text-ink-muted">{e.stretch}</p>
           </Section>
         )}
       </div>

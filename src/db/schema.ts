@@ -67,12 +67,6 @@ export type KnowThis = {
   panels?: KnowThisPanel[];
 };
 
-export type Trap = {
-  wrong: string;
-  why: string;
-  replace: string;
-};
-
 export type ExperimentProduct = {
   name: string;
   asin?: string;
@@ -100,7 +94,6 @@ export const experiments = pgTable("experiments", {
   adultRole: jsonb("adult_role").$type<string[]>().notNull().default([]),
   steps: jsonb("steps").$type<{ title: string; detail: string }[]>().notNull().default([]),
   notice: jsonb("notice").$type<string[]>().notNull().default([]),
-  stretch: text("stretch").notNull().default(""),
   notesFromHome: text("notes_from_home").notNull().default(""),
   heroImageUrl: text("hero_image_url"),
   gallery: jsonb("gallery").$type<string[]>().notNull().default([]),
@@ -110,7 +103,6 @@ export const experiments = pgTable("experiments", {
   knowThis: jsonb("know_this").$type<KnowThis>().notNull().default({
     mechanism: "",
   }),
-  traps: jsonb("traps").$type<Trap[]>().notNull().default([]),
   planUnit: text("plan_unit"),
   /** Saturday session date (America/Los_Angeles), not created_at. Actually run. */
   ranOn: date("ran_on", { mode: "string" }),
