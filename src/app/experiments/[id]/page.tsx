@@ -183,7 +183,7 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
           </Section>
         )}
 
-        {products.length > 0 && <GetTheBits products={products} />}
+        {products.length > 0 && <GrabBag products={products} />}
 
         {showThreeMessage && (
           <div className="space-y-6">
@@ -389,10 +389,10 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
   );
 }
 
-function GetTheBits({ products }: { products: ExperimentProduct[] }) {
+function GrabBag({ products }: { products: ExperimentProduct[] }) {
   const packHref = amazonPackCartHref(products);
   return (
-    <Section title="Get the bits">
+    <Section title="Grab bag">
       <p className="text-sm text-ink-muted">
         Kitchen first. If you&apos;re missing something, these are the pieces that worked at our
         table.

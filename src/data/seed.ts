@@ -124,6 +124,18 @@ export const experimentSeeds: ExperimentSeed[] = [
       "Balsamic vinegar",
       "A spoon",
     ],
+    products: [
+      {
+        name: "Libbey City Tumbler glasses (14.3 oz, set of 8)",
+        asin: "B07BMFJ4KB",
+        note: "Tall clear vessel. You only need a few — same glasses as the volcano.",
+      },
+      {
+        name: "Nordic Ware Baker's Half Sheet",
+        asin: "B00SRSP9VM",
+        note: "Rimmed sheet under the glasses. Any tray with sides works.",
+      },
+    ],
     prep: "",
     safety: "Raw egg. Oil on tile is slick. Balsamic stains. I mean, it is a kitchen..",
     experience:
@@ -235,6 +247,23 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "Towels",
       "Optional: food coloring",
       "Optional: learning tower / high chair so both kids can reach",
+    ],
+    products: [
+      {
+        name: "Fleischmann's Canada Corn Starch, 1kg/2.2 lbs",
+        asin: "B0746DFXN8",
+        note: "Pure cornstarch, ~1 kg. Spoon until firm poke / slow drip. (Argo 35 oz B0045DMLXM had no offers.)",
+      },
+      {
+        name: "Nordic Ware Baker's Half Sheet",
+        asin: "B00SRSP9VM",
+        note: "Rimmed sheet under the bowl. Any tray with sides works.",
+      },
+      {
+        name: "365 Plant-Based Food Coloring (4 bottles)",
+        asin: "B07G2Z6CLG",
+        note: "Optional color. Same pack as the volcano.",
+      },
     ],
     prep: "",
     safety: "",
@@ -353,6 +382,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "cotton swab or tip of a finger",
       "towel",
     ],
+    products: [],
     prep: "",
     safety:
       "No tasting cinnamon water or soap. Keep soap out of eyes. Cinnamon stains light surfaces.",
@@ -690,6 +720,22 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "Water (~⅓ bottle)",
       "Optional cardboard fins + simple launch stand",
       "Eye protection for the person pumping",
+    ],
+    products: [
+      {
+        name: "Schwinn Air Center Plus Floor Bike Pump with gauge",
+        asin: "B072J8D6GR",
+        note: "Floor pump with a gauge. Garage first if you already have one.",
+      },
+      {
+        name: "Natural Soft Wood Corks 25-pack",
+        asin: "B0FH5JSJ8X",
+        note: "Must seal the neck under pressure (~40–60 psi).",
+      },
+      {
+        name: "Eye protection for the person pumping",
+        note: "Adult pumps.",
+      },
     ],
     prep: "Open outdoor space clear of cars, windows, and overhead people. Fill bottle to about one-third with water. Fit seal/launcher before kids gather.",
     safety:
