@@ -415,7 +415,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     title: "Salt ice fishing",
     status: "tested",
     difficulty: 3,
-    ageBands: ["3-5"],
+    ageBands: ["1-2", "3-5"],
     domains: ["physics", "chemistry"],
     learningGoal:
       "Salt can melt a little ice into water; that water can freeze again around a string. A thin wire squeezed onto ice melts a path, and the copper carries the refreezing heat down to keep it going; the ice closes up behind.",
@@ -668,7 +668,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       goDeeper:
         "Touch the glass: it gets a few degrees cooler, because this reaction soaks up heat. The gas itself is invisible and has no smell; the sharp smell is the vinegar. The spill is leftover liquid + bubbles. Dish soap does not make more CO₂ — it helps bubbles last longer so the foam looks thicker (surfactant). Grocery white vinegar is usually about 5% acetic acid (roughly 5 g per 100 mL); the rest is water. That is plenty for this demo. (Cleaning vinegar can be 8–14%: stronger fizz, more sting in eyes.)",
       numbersNote:
-        "Reaction: NaHCO₃(s) + CH₃COOH(aq) → CH₃COONa(aq) + H₂O(l) + CO₂(g). In words: bicarbonate + acetic acid → acetate salt + water + carbon dioxide gas. The gas is what you see as fizz and foam. With this recipe (3 Tbsp baking soda, 1 cup vinegar) the vinegar runs out first and makes about 5 litres of CO₂, around ten times the volume of the glass. That's why it has to come over the top. Keep formulas off the kid table unless they ask — the plain story is enough for ages 1–5.",
+        "Reaction: NaHCO₃(s) + CH₃COOH(aq) → CH₃COONa(aq) + H₂O(l) + CO₂(g). In words: bicarbonate + acetic acid → acetate salt + water + carbon dioxide gas. The gas is what you see as fizz and foam. With this recipe (3 Tbsp baking soda, 1 cup vinegar) the vinegar runs out first and makes about 5 litres of CO₂, around ten times the volume of the glass. That's why it has to come over the top. Keep formulas off the kid table unless they ask — the plain story is enough for ages 1 and up.",
     },
   },
   {
@@ -786,7 +786,7 @@ export const faqSeeds: FaqSeed[] = [
     sortOrder: 1,
     question: "What ages is Weekend Experiments for?",
     answer:
-      "Ideas are curated for ages 1–5, with clear age bands on each card (like 1–2 or 3–5). Many activities flex younger or older with small tweaks — we note that when we know it.",
+      "Ideas are curated for ages 1 and up, with a clear age label on each card (like 1 and up or 3 and up). Many activities flex younger or older with small tweaks — we note that when we know it.",
   },
   {
     sortOrder: 2,

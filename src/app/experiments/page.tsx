@@ -1,5 +1,5 @@
 import { ExperimentCard } from "@/components/ExperimentCard";
-import { listExperiments, matchesStatusFilter } from "@/lib/experiments";
+import { ageLabel, listExperiments, matchesStatusFilter } from "@/lib/experiments";
 import { DEFAULT_SOCIAL_IMAGE, canonicalMetadata } from "@/lib/site";
 import Link from "next/link";
 
@@ -29,7 +29,7 @@ export default async function ExperimentsPage({
   const all = await listExperiments({ sort: params.sort });
 
   const filtered = all.filter((e) => {
-    if (params.age && !e.ageBands.includes(params.age)) return false;
+    if (params.age && ageLabel(e.ageBands) !== params.age) return false;
     if (params.domain && !e.domains.includes(params.domain)) return false;
     if (params.mess && e.messLevel !== params.mess) return false;
     if (params.location && e.location !== params.location) return false;
@@ -37,7 +37,10 @@ export default async function ExperimentsPage({
     return true;
   });
 
-  const ages = Array.from(new Set(all.flatMap((e) => e.ageBands))).sort();
+  const ages = Array.from(new Set(all.map((e) => ageLabel(e.ageBands)))).sort((a, b) => {
+    const age = (label: string) => Number(label.match(/^\d+/)?.[0] ?? Number.POSITIVE_INFINITY);
+    return age(a) - age(b) || a.localeCompare(b);
+  });
   const domains = Array.from(new Set(all.flatMap((e) => e.domains))).sort();
 
   function hrefFor(next: Partial<Search>) {

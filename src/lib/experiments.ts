@@ -347,3 +347,19 @@ export function messLabel(level: string): string {
       return level;
   }
 }
+
+/**
+ * Parent-facing age label derived from the stored age bands. The youngest
+ * band is the floor; an experiment that starts at 1 is for 1 and up, while
+ * one that starts at 3 is for 3 and up.
+ */
+export function ageLabel(ageBands: Iterable<string> | null | undefined): string {
+  const youngest = [...(ageBands ?? [])]
+    .map((band) => band.trim().match(/^(\d+)/)?.[1])
+    .filter((start): start is string => Boolean(start))
+    .map(Number)
+    .filter(Number.isFinite)
+    .sort((a, b) => a - b)[0];
+
+  return youngest === undefined ? "Age not specified" : `${youngest} and up`;
+}

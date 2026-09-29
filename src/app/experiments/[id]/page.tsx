@@ -14,6 +14,7 @@ import type {
 } from "@/db/schema";
 import { amazonPackCartHref, amazonProductHref } from "@/lib/amazon";
 import {
+  ageLabel,
   difficultyLabel,
   formatRanOn,
   getExperiment,
@@ -103,7 +104,7 @@ function ExperimentTitleBand({
             {difficultyLabel(e.difficulty)}
           </span>
           <span className="rounded-full bg-white px-2.5 py-0.5 text-xs text-ink-muted">
-            Ages {e.ageBands.join(", ")}
+            {ageLabel(e.ageBands)}
           </span>
           <span className="rounded-full bg-white px-2.5 py-0.5 text-xs text-ink-muted">
             {e.timeMinutes} min · {messLabel(e.messLevel)} · {e.location}
@@ -260,7 +261,7 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
             )}
 
             {showKnow && (
-              <MessageCard eyebrow="KNOW THIS" title="Bear with me" tone="know">
+              <MessageCard title="Bear with me" tone="know">
                 {knowThis.mechanism && (
                   <div>
                     <h3 className="text-sm font-semibold text-ink">Mechanism</h3>
@@ -295,7 +296,7 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
           </div>
         )}
 
-        {/* Try it sim, right after the physics (KNOW THIS), as the volcano has it after "Bear with me". */}
+        {/* Try it sim, right after the physics, as the volcano has it after "Bear with me". */}
         {sim && <SimTryIt sim={sim} />}
 
         {showLegacySteps && (
@@ -461,7 +462,7 @@ function MessageCard({
   tone,
   children,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   tone: "run" | "know";
   children: React.ReactNode;
@@ -476,8 +477,10 @@ function MessageCard({
   };
   return (
     <section className={`rounded-3xl border-2 p-5 shadow-sm sm:p-6 ${tones[tone]}`}>
-      <p className={`text-xs font-bold uppercase tracking-wide ${eyebrowTone[tone]}`}>{eyebrow}</p>
-      <h2 className="mt-1 font-display text-xl font-semibold text-ink">{title}</h2>
+      {eyebrow && (
+        <p className={`text-xs font-bold uppercase tracking-wide ${eyebrowTone[tone]}`}>{eyebrow}</p>
+      )}
+      <h2 className={`${eyebrow ? "mt-1" : ""} font-display text-xl font-semibold text-ink`}>{title}</h2>
       <div className="mt-4 space-y-4">{children}</div>
     </section>
   );

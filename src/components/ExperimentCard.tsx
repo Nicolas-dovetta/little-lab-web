@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Experiment } from "@/db/schema";
-import { difficultyLabel, formatRanOn, messLabel, plannedChipLabel } from "@/lib/experiments";
+import { ageLabel, difficultyLabel, formatRanOn, messLabel, plannedChipLabel } from "@/lib/experiments";
 
 export function ExperimentCard({ experiment }: { experiment: Experiment }) {
   const ranOnLabel = formatRanOn(experiment.ranOn);
@@ -48,11 +48,14 @@ export function ExperimentCard({ experiment }: { experiment: Experiment }) {
           <span className="rounded-full bg-cream px-2 py-0.5 text-[11px] font-medium text-ink-muted">
             {messLabel(experiment.messLevel)}
           </span>
+          <span className="rounded-full bg-cream px-2 py-0.5 text-[11px] font-medium text-ink-muted">
+            {ageLabel(experiment.ageBands)}
+          </span>
         </div>
         <h3 className="font-display text-lg font-semibold text-ink">{experiment.title}</h3>
         <p className="line-clamp-2 text-sm text-ink-muted">{experiment.learningGoal}</p>
         <p className="mt-auto pt-2 text-xs text-sage-700">
-          Ages {experiment.ageBands.join(", ")} · {experiment.domains.join(", ")}
+          {experiment.domains.join(", ")}
           {ranOnLabel ? ` · ${ranOnLabel}` : ""}
         </p>
       </div>

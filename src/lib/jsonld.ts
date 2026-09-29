@@ -43,7 +43,7 @@ export const websiteJsonLd = {
   "@type": "WebSite",
   name: "Weekend Experiments",
   url: SITE_ORIGIN,
-  description: "Parent-tested kitchen science experiments for ages 1–5.",
+  description: "Parent-tested kitchen science experiments for ages 1 and up.",
   publisher: {
     "@type": "Person",
     name: "Nicolas Dovetta",

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { experimentSeeds } from "../data/seed";
 import {
+  ageLabel,
   isDoneStatus,
   kidVerdictProse,
   matchesStatusFilter,
@@ -95,6 +96,25 @@ test("baking-soda-volcano seed: empty gallery, unique step pics, notes prose", (
   assert.doesNotMatch(volcano.notesFromHome, /!\[[^\]]*]\([^)]+\)|<img\b|\.png|\.jpg|\.webp/i);
   const trackUrls = volcano.runThis?.tracks?.map((track) => track.imageUrl) ?? [];
   assert.deepEqual(trackUrls, VOLCANO_TRACKS);
+});
+
+test("age labels use the youngest stored band", () => {
+  assert.equal(ageLabel(["1-2", "3-5"]), "1 and up");
+  assert.equal(ageLabel(["3-5"]), "3 and up");
+  assert.equal(ageLabel(["5-7", "3-5"]), "3 and up");
+  assert.equal(ageLabel([]), "Age not specified");
+
+  const labels = new Map(experimentSeeds.map((experiment) => [experiment.id, ageLabel(experiment.ageBands)]));
+  assert.equal(labels.get("density-layers"), "3 and up");
+  for (const id of [
+    "baking-soda-volcano",
+    "cornstarch-thickening-fluid",
+    "cinnamon-soap-rush",
+    "salt-ice-fishing",
+    "water-bottle-rocket",
+  ]) {
+    assert.equal(labels.get(id), "1 and up");
+  }
 });
 
 test("planned chip uses the Saturday date when plannedFor is set", () => {

@@ -1,6 +1,6 @@
 # Weekend Experiments
 
-Public web app for curated kids experiment ideas (ages 1–5).
+Public web app for curated kids experiment ideas (ages 1 and up).
 Product bot: Little Lab. Content repo: `Nicolas-dovetta/little-lab`.
 Domain: weekend-experiments.app
 
@@ -32,7 +32,7 @@ The experiments index **Done** filter groups `winner` and `tested`. **Planned** 
 
 ## Physics sketches in Mechanism (`knowThis.panels`)
 
-Each sketch panel renders full width of the text column directly above its own walk-through paragraphs (KNOW THIS → Mechanism; on the volcano pilot spine, "Bear with me").
+Each sketch panel renders full width of the text column directly above its own walk-through paragraphs (the "Bear with me" Mechanism section).
 
 - `knowThis.mechanism` is plain paragraphs (blank line between them) with `<!-- panel:N -->` on its own line where panel N starts. These are the same markers the little-lab-mechanics `physics-rewrite.md` files use, so the approved Mechanism text pastes in unchanged.
 - `knowThis.panels[N - 1]` is panel N: `{ imageUrl (PNG fallback), webpUrl, alt, width, height }`. Rendered as `<picture>` (WebP source + PNG `<img>`, served as-is so labels stay crisp) with width/height set (no layout shift).
@@ -43,7 +43,7 @@ To add a sketched experiment: copy `panel-N-*.png/.webp` to `public/images/exper
 
 ## Interactive sims ("Try it" box)
 
-An experiment page can carry an inline sim (lazy iframe): on the volcano pilot spine right after "Bear with me"; on the other pages (rocket, salt ice fishing, density layers) right after the KNOW THIS card.
+An experiment page can carry an inline sim (lazy iframe): on the volcano pilot spine right after "Bear with me"; on the other pages (rocket, salt ice fishing, density layers) right after the "Bear with me" card.
 
 - Mapping (slug → sim, title, sentence, button, iframe title): `src/lib/sims.ts`. Code-side, no DB change. UI: `src/components/SimTryIt.tsx`.
 - The sim is a self-contained static file at `public/sims/<slug>/index.html`, copied from `little-lab-mechanics/sims/<slug>/index.html`. **After any fix to the sim there, re-copy it:**
