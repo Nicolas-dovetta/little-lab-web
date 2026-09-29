@@ -260,7 +260,7 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
             )}
 
             {showKnow && (
-              <MessageCard eyebrow="KNOW THIS" title="What’s happening" tone="know">
+              <MessageCard eyebrow="KNOW THIS" title="Bear with me" tone="know">
                 {knowThis.mechanism && (
                   <div>
                     <h3 className="text-sm font-semibold text-ink">Mechanism</h3>
