@@ -7,6 +7,8 @@
  * noindex meta and a tiny script that posts the sim's height to this page.
  */
 export type SimEmbed = {
+  /** The sim's own short name (its "Try it ·" kicker), used on /simulators. */
+  name: string;
   /** Static file under public/. */
   src: string;
   /** Heading of the Try it box. */
@@ -22,8 +24,12 @@ export type SimEmbed = {
 /** postMessage type sent by the script scripts/sync-sims.mjs adds to each sim. */
 export const SIM_HEIGHT_MESSAGE = "little-lab-sim-height";
 
+/** id of the inline sim wrapper on experiment pages; /simulators links to /experiments/<slug>#simulator. */
+export const SIM_ANCHOR_ID = "simulator";
+
 const SIMS: Record<string, SimEmbed> = {
   "baking-soda-volcano": {
+    name: "Baking-soda volcano",
     src: "/sims/baking-soda-volcano/index.html",
     title: "Try it: which runs out first?",
     blurb: "Pick how much baking soda and vinegar go in, pour, and see which one runs out first.",
@@ -31,6 +37,7 @@ const SIMS: Record<string, SimEmbed> = {
     fallbackHeight: 2000,
   },
   "water-bottle-rocket": {
+    name: "Water-bottle rocket",
     src: "/sims/water-bottle-rocket/index.html",
     title: "Try it: how much water gives the highest flight?",
     blurb: "Set the water and the pump pressure, launch, and see which fill sends the bottle highest.",
@@ -38,6 +45,7 @@ const SIMS: Record<string, SimEmbed> = {
     fallbackHeight: 2200,
   },
   "salt-ice-fishing": {
+    name: "Salt ice fishing",
     src: "/sims/salt-ice-fishing/index.html",
     title: "Try it: how much salt catches the cube?",
     blurb: "Pick how much salt goes on the ice cube, salt it, and see whether the string freezes in and lifts the cube.",
@@ -45,6 +53,7 @@ const SIMS: Record<string, SimEmbed> = {
     fallbackHeight: 2500,
   },
   "density-layers": {
+    name: "Density layers",
     src: "/sims/density-layers/index.html",
     title: "Try it: which liquids stack, and which just mix?",
     blurb: "Pick the order to pour honey, water, oil and balsamic drops, then stir, and see which liquids stack and which just mix.",
@@ -59,6 +68,11 @@ export function simForExperiment(slug: string): SimEmbed | null {
 
 export function simSlugs(): string[] {
   return Object.keys(SIMS);
+}
+
+/** Link to the inline sim on its experiment page. */
+export function simHref(slug: string): string {
+  return `/experiments/${slug}#${SIM_ANCHOR_ID}`;
 }
 
 /** Clamp a height reported by a sim to something sane (px), or null if invalid. */
