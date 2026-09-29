@@ -124,6 +124,18 @@ export const experimentSeeds: ExperimentSeed[] = [
       "Balsamic vinegar",
       "A spoon",
     ],
+    products: [
+      {
+        name: "Libbey City Tumbler glasses (14.3 oz, set of 8)",
+        asin: "B07BMFJ4KB",
+        note: "Tall clear vessel. You only need a few — same glasses as the volcano.",
+      },
+      {
+        name: "Nordic Ware Baker's Half Sheet",
+        asin: "B00SRSP9VM",
+        note: "Rimmed sheet under the glasses. Any tray with sides works.",
+      },
+    ],
     prep: "",
     safety: "Raw egg. Oil on tile is slick. Balsamic stains. I mean, it is a kitchen..",
     experience:
@@ -235,6 +247,18 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "Towels",
       "Optional: food coloring",
       "Optional: learning tower / high chair so both kids can reach",
+    ],
+    products: [
+      {
+        name: "Nordic Ware Baker's Half Sheet",
+        asin: "B00SRSP9VM",
+        note: "Rimmed sheet under the bowl. Any tray with sides works.",
+      },
+      {
+        name: "365 Plant-Based Food Coloring (4 bottles)",
+        asin: "B07G2Z6CLG",
+        note: "Optional color. Same pack as the volcano.",
+      },
     ],
     prep: "",
     safety: "",
@@ -352,6 +376,16 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "dish soap (one drop)",
       "cotton swab or tip of a finger",
       "towel",
+    ],
+    products: [
+      {
+        name: "Ground cinnamon",
+        note: "Kitchen staple — any brand. Sprinkle enough for a dusty film.",
+      },
+      {
+        name: "Dish soap",
+        note: "One drop. What you already have at the sink.",
+      },
     ],
     prep: "",
     safety:
@@ -690,6 +724,20 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "Water (~⅓ bottle)",
       "Optional cardboard fins + simple launch stand",
       "Eye protection for the person pumping",
+    ],
+    products: [
+      {
+        name: "Bike pump with a pressure gauge",
+        note: "Or a dedicated bottle-rocket pump. Garage first.",
+      },
+      {
+        name: "Cork / bottle-rocket launcher",
+        note: "Must seal the neck under pressure (~40–60 psi).",
+      },
+      {
+        name: "Eye protection for the person pumping",
+        note: "Adult pumps.",
+      },
     ],
     prep: "Open outdoor space clear of cars, windows, and overhead people. Fill bottle to about one-third with water. Fit seal/launcher before kids gather.",
     safety:
