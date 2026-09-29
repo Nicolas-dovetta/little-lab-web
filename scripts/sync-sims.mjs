@@ -23,7 +23,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const mechanics = resolve(process.env.MECHANICS_DIR ?? join(root, "..", "little-lab-mechanics"));
 
 // Keep in step with src/lib/sims.ts.
-const SIMS = ["baking-soda-volcano"];
+const SIMS = ["baking-soda-volcano", "water-bottle-rocket", "salt-ice-fishing", "density-layers"];
 
 const MARKER = "little-lab-web: embed height";
 // Keep the message type in step with SIM_HEIGHT_MESSAGE in src/lib/sims.ts.

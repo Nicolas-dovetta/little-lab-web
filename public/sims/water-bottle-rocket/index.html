@@ -1,0 +1,1238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- No network at all: no fonts, no CDN, no analytics. Everything is inline. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="robots" content="noindex">
+<title>Try it: how much water gives the highest flight?</title>
+<script>
+// Inside the site's box (an iframe) the box already shows the title, so the page hides its own heading there.
+(function(){ var e = true; try { e = window.self !== window.top; } catch (x) {} if (e) document.documentElement.className += ' embedded'; })();
+</script>
+<style>
+.embedded .kicker,.embedded h1{display:none}
+:root{
+  --cream:#faf7f0; --cream-deep:#f3eee3; --ink:#1f2a24; --ink-muted:#5c6b62;
+  --sage-50:#f3f7f4; --sage-100:#e4efe8; --sage-200:#c8dccf; --sage-600:#3f6f56; --sage-700:#345c47; --sage-800:#2a4a39;
+  /* sketch palette (little-lab-mechanics/tools/style.py) */
+  --bg:#FBF6EC; --sk-ink:#2B2A33; --accent:#E0562B; --water:#CFE7F4; --faint:#8FBBD6; --neutral:#D9D3C7; --air:#F4F1EA;
+  --body:"Source Sans 3","Source Sans Pro",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --display:Fraunces,Georgia,"Times New Roman",serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--body);-webkit-text-size-adjust:100%}
+.sim{max-width:1040px;margin:0 auto;padding:16px 14px 40px}
+.kicker{margin:0;font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sage-700)}
+h1{font-family:var(--display);font-weight:600;font-size:1.55rem;line-height:1.2;margin:.2rem 0 .3rem}
+.lede{margin:0 0 12px;color:var(--ink-muted);font-size:1rem}
+.grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media (max-width:819px){.buttons{order:-1} .sim{padding-top:10px} h1{font-size:1.4rem;margin:.1rem 0 .2rem} .lede{margin-bottom:6px} .grid{gap:10px} .stagehead{margin-top:3px} .panel{gap:10px}}
+@media (min-width:820px){.grid{grid-template-columns:1.05fr 1fr;gap:24px;align-items:start} h1{font-size:2rem}}
+.stage{background:var(--bg);border:1px solid var(--sage-200);border-radius:22px;padding:6px 6px 8px;position:relative}
+.stage svg{display:block;width:100%;height:auto;touch-action:manipulation;cursor:pointer}
+.stagehead{margin:6px 12px 0;min-height:2.6em;font-family:var(--display);font-weight:600;font-size:1.05rem;color:var(--sage-800);line-height:1.25}
+.note{margin:2px 10px 0;font-size:.9rem;color:var(--ink-muted);line-height:1.3}
+.panel{display:flex;flex-direction:column;gap:12px}
+.control{background:#fff;border:1px solid var(--sage-200);border-radius:18px;padding:10px 12px 8px}
+.control .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.control label{font-weight:700;font-size:1.05rem}
+.control output{font-weight:700;font-size:1.15rem;color:var(--sage-800);white-space:nowrap}
+.row{display:flex;align-items:center;gap:10px;margin-top:4px}
+.step{flex:0 0 48px;height:48px;border-radius:50%;border:2px solid var(--sage-600);background:#fff;color:var(--sage-800);font-size:1.6rem;font-weight:700;line-height:1;cursor:pointer;touch-action:manipulation}
+.step:active{background:var(--sage-100)}
+input[type=range]{flex:1;min-width:0;height:48px;-webkit-appearance:none;appearance:none;background:transparent;margin:0;touch-action:pan-y}
+input[type=range]:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:12px}
+input[type=range]::-webkit-slider-runnable-track{height:12px;border-radius:6px;background:var(--sage-100);border:1px solid var(--sage-200)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:44px;height:44px;margin-top:-17px;border-radius:50%;background:var(--water);border:3px solid var(--sk-ink);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+input[type=range]::-moz-range-track{height:12px;border-radius:6px;background:var(--sage-100);border:1px solid var(--sage-200)}
+input[type=range]::-moz-range-thumb{width:40px;height:40px;border-radius:50%;background:var(--water);border:3px solid var(--sk-ink)}
+.hint{font-size:.8rem;color:var(--ink-muted);margin-top:0}
+.buttons{display:flex;gap:10px;flex-wrap:wrap}
+.btn{min-height:56px;border-radius:999px;font-family:var(--body);font-size:1.15rem;font-weight:700;padding:0 22px;cursor:pointer;touch-action:manipulation}
+.go{flex:1 1 160px;background:var(--sage-600);color:#fff;border:0;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.go:hover{background:var(--sage-700)} .go:disabled{opacity:.6;cursor:default}
+.alt{flex:1 1 160px;background:#fff;color:var(--sage-800);border:2px solid var(--sage-600)}
+.small-btn{min-height:44px;min-width:44px;border-radius:999px;font-family:var(--body);font-size:.95rem;font-weight:700;padding:0 16px;cursor:pointer;background:#fff;color:var(--sage-800);border:2px solid var(--sage-600)}
+.card{background:#fff;border:1px solid var(--sage-200);border-radius:18px;padding:12px}
+.card h2{font-size:1rem;margin:0;font-weight:700}
+.card .sub{margin:2px 0 6px;font-size:.88rem;color:var(--ink-muted)}
+.card svg{display:block;width:100%;height:auto}
+.chartbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.readout .head{font-family:var(--display);font-size:1.3rem;font-weight:600;margin:0 0 4px;line-height:1.25}
+.readout p{margin:0 0 6px;font-size:1rem;line-height:1.4}
+.readout .real{font-size:.95rem}
+.readout .safety{font-size:.9rem;color:var(--ink-muted);margin-top:4px}
+details.why{margin-top:18px;background:#fff;border:1px solid var(--sage-200);border-radius:18px;padding:0 14px}
+details.why summary{cursor:pointer;min-height:52px;display:flex;align-items:center;font-weight:700;font-size:1.05rem;color:var(--sage-800)}
+details.why h3{font-size:1rem;margin:14px 0 4px}
+details.why p,details.why li{font-size:.97rem;line-height:1.5;color:var(--ink)}
+details.why ul{padding-left:1.1rem}
+details.why table{border-collapse:collapse;font-size:.92rem;margin:6px 0 10px}
+details.why th,details.why td{border:1px solid var(--sage-200);padding:4px 7px;text-align:right}
+details.why th:first-child,details.why td:first-child{text-align:left}
+.small{font-size:.85rem;color:var(--ink-muted)}
+details.howto{margin-top:0}
+@media (min-width:820px){.grid{grid-template-rows:auto 1fr} .stage{grid-column:1;grid-row:1} .panel{grid-column:2;grid-row:1 / span 2} details.howto{grid-column:1;grid-row:2;align-self:start}}
+.readout .curvenote{font-size:.95rem;color:var(--ink-muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="sim">
+  <p class="kicker">Try it · water-bottle rocket</p>
+  <h1>How much water gives the highest flight?</h1>
+  <p class="lede">Set the water and the pump pressure, then press Launch (or tap the picture). A 2 L soda bottle.</p>
+
+  <div class="grid">
+    <div class="stage">
+      <p class="stagehead" id="stageHead" aria-live="off"></p>
+      <svg id="scene" viewBox="0 0 400 424" role="img" aria-label="Left: a close-up of the bottle standing neck-down on its cork, part filled with water, drawn to scale. Right: a height ruler in metres with the bottle drawn at its true size."></svg>
+      <p class="note">To scale except the shoulder, cork and pad (drawn by eye). Shown slowed down, at 1/8 speed.</p>
+    </div>
+
+    <div class="panel">
+      <div class="control">
+        <div class="top"><label for="fill">Water in the bottle</label><output id="fillOut" for="fill">700 mL</output></div>
+        <div class="row">
+          <button class="step" type="button" data-d="-1" aria-label="Less water">−</button>
+          <input id="fill" type="range" min="0" max="20" step="1" value="7" aria-describedby="fillHint">
+          <button class="step" type="button" data-d="1" aria-label="More water">+</button>
+        </div>
+        <p class="hint" id="fillHint">mL of water, 0 to a full 2 L bottle, in 100 mL steps.</p>
+      </div>
+      <div class="control">
+        <div class="top"><label for="psi">Pump pressure</label><output id="psiOut" for="psi">40 psi</output></div>
+        <div class="row">
+          <button class="step" type="button" data-p="-1" aria-label="Less pressure">−</button>
+          <input id="psi" type="range" min="20" max="60" step="5" value="40" aria-describedby="psiHint">
+          <button class="step" type="button" data-p="1" aria-label="More pressure">+</button>
+        </div>
+        <p class="hint" id="psiHint">On the pump's gauge, 20 to 60 psi in 5 psi steps. The page says stop at about 40–60 psi, so the slider stops at 60.</p>
+      </div>
+      <div class="buttons">
+        <button id="launch" class="btn go" type="button">Launch</button>
+        <button id="third" class="btn alt" type="button">The page's ⅓</button>
+      </div>
+
+      <section class="card" aria-labelledby="chartTitle">
+        <h2 id="chartTitle">Your launches</h2>
+        <p class="sub" id="chartSub">Each launch adds a dot: how high it went (from the model) against how much water.</p>
+        <svg id="chart" viewBox="0 0 340 196" role="img" aria-label="Chart of flight height against water fill for the launches so far."></svg>
+        <div class="chartbar">
+          <button id="curveBtn" class="small-btn" type="button" aria-pressed="false">Show the model's whole curve</button>
+          <button id="clearBtn" class="small-btn" type="button">Clear dots</button>
+        </div>
+      </section>
+
+      <section class="card readout" aria-live="polite">
+        <p class="head" id="head"></p>
+        <div id="lines"></div>
+        <p class="curvenote" id="curveNote" hidden></p>
+        <p class="real" id="real">Real flights come in lower than the model. With no fins the bottle wobbles and can tumble (tumbling adds more drag than the model has), it rarely goes straight up, and the seal can leak. A cork also usually pops before the gauge reaches 40–60 psi (the page says so), so the real pressure can be lower than the one set here. Use the heights to compare fills, not as a promise.</p>
+        <p class="safety" id="safety">Heads-up, from the page: an adult pumps and releases, standing at the end of the hose, and stops at about 40–60 psi.</p>
+      </section>
+    </div>
+
+    <details class="why howto" id="howto">
+      <summary>How to read the picture (arrow scales)</summary>
+      <p>To scale: the bottle's width, neck, height and 2 L, the water in it, and the heights (the close-up in centimetres, the flight in metres, where the bottle is a speck with a ring around it). The shoulder curve, the cork and the pad are drawn by eye.</p>
+      <p>Everything is shown at 1/8 speed, the whole flight at the same rate, so what you see speeds up and slows down exactly as the model's bottle does. The clock at the top of the picture is the real time since launch.</p>
+      <p>Solid orange arrow: the push on the bottle, 0.5 px per newton. Dashed arrows: how fast things move, 1.5 px per m/s. At the neck, the dashed arrow shows how fast the water or air leaves compared with the bottle. The air's arrow is too long to fit, so it's cut off and its speed is printed next to it.</p>
+    </details>
+  </div>
+
+  <details class="why">
+    <summary>Why? The numbers, over-explained</summary>
+    <p><strong>In one line:</strong> for a bare 2 L bottle at <span data-n="psi">40</span> psi the model's best fill is only <span data-n="bestFrac">about a fifth</span> (<span data-n="bestMl">410</span> mL, about <span data-n="bestM">22</span> m), but anything from about <span data-n="band90Lo">200</span> to <span data-n="band90Hi">800</span> mL gets within 10% of that. A full bottle does nothing, and no water at all still flies, lower. With a nose cone and fins the same model goes about <span data-n="finM">37</span> m (section 7).</p>
+
+    <h3>What I assumed (nothing here is measured yet)</h3>
+    <p>Nico hasn't launched it yet (it's planned for 3 October), so every height here is a prediction from physics, not an observation. The page says a 1–2 L carbonated-soda bottle and a bike pump with a gauge, and to stop at about 40–60 psi. I took the 2 L end. The pressure slider starts at <span data-n="psi2">40</span> psi, the bottom of that band (the page says a cork usually pops before 40–60 psi anyway), and goes from 20 psi up to the page's <span data-n="psiMax">60</span> psi, never above. The numbers in parts 1 to 7 are for 40 psi; part 8 gives the other pressures. The rocket is a bare bottle, like the one in the picture: no nose cone, no fins (the page's fins are optional). Launched straight up, from a cork or latch with no launch tube, on a still 20 °C day at sea level.</p>
+
+    <h3>1. Pumping stores the push in the air</h3>
+    <p>Water hardly squeezes at all; air does. Pumping to <span data-n="psi3">40</span> psi on the gauge means the air inside is at 40 psi <em>above</em> the outside air, about <span data-n="p0Atm">3.7</span> times normal air pressure in total. That squeezed air is the only thing doing the work. With no air in the bottle (full to the top) there is nothing to push, so nothing happens.</p>
+
+    <h3>2. The water burst: how fast the water leaves</h3>
+    <p>When the cork lets go, the only way out is the neck. A soda-bottle neck has an opening <span data-n="nozzleMm">21.74</span> mm across (the standard "PCO 1881" neck), about <span data-n="nozzleCm2">3.7</span> cm². The squeezed air pushes the water out through it. Bernoulli's rule for a liquid says the pressure difference turns into speed: ½ × density × speed² = pressure difference. So the water leaves at about <span data-n="veStart">23.5</span> m/s at the start (compared with the bottle).</p>
+    <p>The push on the bottle is the water thrown out each second times its speed. That works out to twice the pressure difference times the opening: about <span data-n="thrustStart">205</span> newtons at the start, the weight of about <span data-n="thrustKg">21</span> kg. With the best fill the whole rocket weighs <span data-n="liftKg">0.46</span> kg, so the push is about <span data-n="thrustOverWeight">46</span> times its weight. That's why it leaps.</p>
+
+    <h3>3. Why the push fades</h3>
+    <p>Every drop that leaves gives the air more room, and air with more room pushes less. It happens too fast for the air to take heat from anything (a few hundredths of a second), so it cools as it spreads, and its pressure drops faster than it would at a steady temperature. Physicists call that adiabatic: pressure × volume<sup>1.4</sup> stays the same. With the page's third (<span data-n="thirdMl">667</span> mL of water), by the time the water is out the gauge would read only about <span data-n="thirdEndPsi">16</span> psi, and the air has cooled to about <span data-n="thirdEndC">−24</span> °C. (That cooling is why you often see a puff of fog.)</p>
+
+    <h3>4. The air puff, then the coast</h3>
+    <p>If there's still squeezed air when the water is gone, it rushes out through the neck: one last, short puff. At first it leaves at the speed of sound, about 300 m/s (the neck can't pass it any faster), then slower, until the inside is back to outside pressure. With the best fill the water is out after about <span data-n="bestWaterT">0.05</span> s and the puff lasts about another <span data-n="bestPuffT">0.03</span> s. By then the bottle is only about <span data-n="bestBoH">2.4</span> m up but going about <span data-n="bestBoV">55</span> m/s. Everything after that is coasting: no push, just weight and air drag slowing it down. It reaches the top about <span data-n="bestTop">1.6</span> s after launch, and then falls back down.</p>
+    <p><strong>When does it speed up hardest?</strong> Not at the start. At the start the push is biggest (about <span data-n="accStartN">205</span> N), but the bottle is heavy with water (<span data-n="accStartKg">0.46</span> kg), so it speeds up by about <span data-n="accStartG">45</span> g (g = the pull of gravity; 45 g means gaining speed 45 times as fast as a dropped stone). As the water leaves, the push fades (the air spreads out), but the bottle gets lighter much faster. So it speeds up harder and harder, and hardest in the last instant before the water runs out: about <span data-n="accPeakG">250</span> g, from about <span data-n="accPeakN">129</span> N on only about <span data-n="accPeakGm">50</span> g of bottle and air. Then the air puff pushes less (about <span data-n="accAirN">91</span> N at first), so the speeding-up drops to about <span data-n="accAirG">170</span> g and fades to nothing as the puff ends. From then on it only slows down, at first by about <span data-n="accCoastG">30</span> g, mostly from drag. That peak at the moment the water runs out is real physics, and the picture shows it because it runs at one steady slow-motion rate. (The model's peak is sharp because it treats the last water as leaving cleanly; in a real launch the last water sprays out mixed with air, so the real peak is lower and more rounded.)</p>
+    <p>Drag matters a lot here. Drag = ½ × air density × drag coefficient × the bottle's cross-section × speed². For a bare bottle I used a drag coefficient of <span data-n="cd">0.75</span>: a physics paper on water rockets (Gommes, 2010) gives "about 0.75" for a rocket with a round cross-section and no fins. The bottle is <span data-n="diamMm">106</span> mm wide. The empty bottle weighs so little (<span data-n="coastG">46</span> g with the air left inside) that drag equals its weight at only about <span data-n="vTerm">10</span> m/s. At the <span data-n="bestBoV2">55</span> m/s it starts coasting with, drag is about <span data-n="dragOverWeight">29</span> times its weight. So it slows down fast.</p>
+
+    <h3>5. So why is there a best amount of water?</h3>
+    <ul>
+      <li><strong>Too little water:</strong> the air ends up throwing mostly air. Air is so light that, for the same energy, it gives much less push. With no water at all the bottle gets a total push of about <span data-n="airImpulse">1.6</span> newton-seconds; with the page's third it's about <span data-n="thirdImpulse">13</span>.</li>
+      <li><strong>Too much water:</strong> there's little air to do the pushing, and the bottle has to lift all that water first. Above about <span data-n="leftAboveMl">1220</span> mL the air is back to outside pressure before the water is all out, and the bottle carries the rest up with it. With <span data-n="fullishMl">1900</span> mL it hops about <span data-n="fullishCm">4</span> cm. Full to the top: nothing.</li>
+      <li><strong>In between</strong>, the model's best is <span data-n="bestMl2">410</span> mL, about <span data-n="bestM2">22</span> m. The curve is flat on top: the page's third (<span data-n="thirdMl2">667</span> mL) reaches about <span data-n="thirdM">21</span> m, <span data-n="thirdPct">97</span>% of the best. The button "The page's ⅓" uses <span data-n="btnMl">700</span> mL, the nearest 100 mL step, which also gives about <span data-n="btnM">21</span> m. So "about a third" is a fine rule; the very top is just a little lower for a bare, light bottle.</li>
+    </ul>
+
+    <h3>6. No water isn't nothing</h3>
+    <p>You might expect air alone to do almost nothing, or to do as well as water. In the model it does neither: the empty bottle throws out only about <span data-n="airOnlyG">5</span> g of air in about <span data-n="airOnlyT">0.03</span> s, and it coasts to about <span data-n="airOnlyM">14</span> m, <span data-n="airOnlyPct">65</span>% of the best. That's several times less push than with water, but a very light bottle doesn't need much. The classic "air alone does almost nothing" is true for heavier rockets: the <span data-n="heavyG">133</span> g rocket with a nose cone and fins in the next section gets only about <span data-n="heavyAir">6</span> m on air alone. A real empty bottle with no fins is also the one most likely to tumble, which makes drag far bigger.</p>
+
+    <h3>7. With a nose cone and fins</h3>
+    <p>The page lists cardboard fins as optional. A streamlined rocket slips through the air much more easily. A 2 L bottle rocket with a nose cone and fins, weighing <span data-n="heavyG2">133</span> g, was measured in timed drops at a drag coefficient of <span data-n="cdFin">0.345</span> (Barrio-Perotti and colleagues, 2009), less than half the bare bottle's. In the same model that rocket's best fill is <span data-n="heavyFrac">about a quarter</span> (<span data-n="heavyMl">560</span> mL), about <span data-n="heavyM">37</span> m, and the page's third gives about <span data-n="finThirdM">37</span> m. It wants more water because it's heavier. "Show the model's whole curve" draws it as a dashed line. Cardboard fins alone, without a nose cone, would land somewhere in between; I have no measured number for that.</p>
+
+    <h3>8. Other pressures</h3>
+    <p>Same model, same bare bottle, the pressures on the slider. More pressure goes higher, but the best fill hardly moves.</p>
+    <table>
+      <tr><th>Gauge</th><th>Best fill</th><th>Best height</th><th>⅓ full</th><th>No water</th></tr>
+      <tr><td>20 psi</td><td><span data-n="t20Ml">380</span> mL</td><td><span data-n="t20M">15</span> m</td><td><span data-n="t20Third">14</span> m</td><td><span data-n="t20Air">6</span> m</td></tr>
+      <tr><td>30 psi</td><td><span data-n="t30Ml">400</span> mL</td><td><span data-n="t30M">19</span> m</td><td><span data-n="t30Third">18</span> m</td><td><span data-n="t30Air">10</span> m</td></tr>
+      <tr><td>40 psi</td><td><span data-n="t40Ml">410</span> mL</td><td><span data-n="t40M">22</span> m</td><td><span data-n="t40Third">21</span> m</td><td><span data-n="t40Air">14</span> m</td></tr>
+      <tr><td>50 psi</td><td><span data-n="t50Ml">400</span> mL</td><td><span data-n="t50M">24</span> m</td><td><span data-n="t50Third">23</span> m</td><td><span data-n="t50Air">17</span> m</td></tr>
+      <tr><td>60 psi</td><td><span data-n="t60Ml">400</span> mL</td><td><span data-n="t60M">26</span> m</td><td><span data-n="t60Third">25</span> m</td><td><span data-n="t60Air">20</span> m</td></tr>
+    </table>
+    <p>The table and the slider stop at 60 psi, the top of the page's band.</p>
+
+    <h3>9. Why real flights come in lower</h3>
+    <p>The model is a best case: the bottle flies straight up, pointing the right way, with no leaks. Real launches lose height to all of these:</p>
+    <ul>
+      <li><strong>No fins:</strong> the bottle wobbles and can turn sideways, and a sideways bottle has far more drag than even the 0.75 used here. I have no measured number for a tumbling bottle, so the model doesn't guess one.</li>
+      <li><strong>Leaks and early release:</strong> a cork seal leaks while you pump and usually pops before the gauge reaches 40–60 psi. Less pressure, less height (see the table).</li>
+      <li><strong>Not straight up</strong>, and wind: some of the push goes sideways.</li>
+    </ul>
+    <p>The model also leaves out three things that push both ways: water vapour condensing in the cooling air (the fog), which gives back a little push; the rocket's own acceleration pressing the water toward the neck; and flow that isn't perfectly steady. A careful study (Gommes, American Journal of Physics, 2010) worked these out and found they "mostly cancel each other". He also compares with high-speed-camera measurements of a 2 L soda-bottle rocket (Kagan and colleagues, 1995): the real bottle speeds up substantially faster at the very start than this kind of model says, while its speed at the end of the push comes out about right. That comparison is what the next sentence rests on: the push itself isn't why real flights come in lower; drag on a finless bottle, wobble, tumbling, tilt and leaks are.</p>
+
+    <h3>Where the numbers come from</h3>
+    <ul>
+      <li>Neck opening <span data-n="nozzleMm2">21.74</span> mm: the PCO 1881 soda-bottle neck standard (ISBT), bore "21.74 mm or nominally, 22 mm".</li>
+      <li>Bottle <span data-n="bottleG">42</span> g empty ("a 2-liter PET bottle … now weighs as little as 42 grams", PET Resin Association). That's the lightest kind; a 50 g bottle goes a bit higher in the model, about <span data-n="kg50M">23</span> m. Width <span data-n="diamMm2">106</span> mm, measured on a 2 L bottle rocket (Barrio-Perotti and colleagues, European Journal of Physics, 2009).</li>
+      <li>Drag coefficient <span data-n="cd2">0.75</span> for the bare bottle: Gommes (American Journal of Physics, 2010), "about 0.75" for "a rocket with a circular cross section and no side wings", taken from Landau and Lifshitz's <em>Fluid Mechanics</em>. It's a rough textbook value, not a measurement on a soda bottle.</li>
+      <li>Drag coefficient <span data-n="cdFin2">0.345</span> with a nose cone and fins: Barrio-Perotti and colleagues (2009), from timed drops. They dropped it from <span data-n="finDropM">14</span> m, so the fastest they actually tested was about <span data-n="finDropV">15</span> m/s at the bottom of the drop. They give the number for speeds up to about <span data-n="finVmax">29</span> m/s, because on a general chart of drag against speed the number for a shape like this stays nearly flat over that range. That rocket is going about <span data-n="finBoV">34</span> m/s when its push ends: more than twice the speed of their drops, and a bit past even the range they give. So for the fastest part of its climb, 0.345 is a reasonable guess, not a measurement.</li>
+      <li>Air: 1.4 for how it cools as it spreads, 287 J/(kg·K) for its gas constant (U.S. Standard Atmosphere). Water: 998 kg/m³ at 20 °C (CRC Handbook). Gravity 9.81 m/s² (standard gravity).</li>
+    </ul>
+    <p class="small">Model: straight-up flight; adiabatic air; Bernoulli exit speed through the neck; mass lost as water and then air leave; gravity, the air's buoyancy and drag (bare bottle, drag coefficient 0.75). Nothing is sent anywhere from this page.</p>
+  </details>
+</main>
+
+<script>
+/* BEGIN model.js */
+/* Water-bottle rocket: how much water gives the highest flight?
+ * Single source of truth for the numbers. Used by index.html (inlined copy, checked
+ * byte-for-byte by test.js) and by the Node tests. Every constant is cited in SPEC.md section 5.
+ * Plain JS, no dependencies, no network. SI units inside (m, kg, s, Pa); mL and psi only at the edges. */
+(function (root, factory) {
+  var M = factory();
+  if (typeof module === 'object' && module.exports) module.exports = M;
+  else root.RocketModel = M;
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  var C = {
+    // Units. 1 psi = 6894.757 Pa (NIST SP 811, Appendix B). Standard atmosphere 101 325 Pa (ISO 2533 / NIST).
+    PA_PER_PSI: 6894.757293168,
+    P_ATM: 101325,
+    // Air. Specific gas constant of dry air 287.05 J/(kg K) (U.S. Standard Atmosphere 1976: R*/M0 = 8314.32/28.9644).
+    // Ratio of specific heats 1.40 for dry air near room temperature (NIST-JANAF / any thermodynamics text).
+    R_AIR: 287.05,
+    GAMMA: 1.40,
+    T_K: 293.15,           // a 20 C day, assumed (the page gives no temperature)
+    // Water at 20 C: 998.2 kg/m^3 (CRC Handbook of Chemistry and Physics, density of water table; IAPWS-95).
+    RHO_WATER: 998.2,
+    // Standard gravity 9.80665 m/s^2 (3rd CGPM 1901; NIST SP 330).
+    G: 9.80665,
+    // Kinematic viscosity of air at 20 C, 1 atm: 1.516e-5 m^2/s (CRC Handbook, "Viscosity of gases": mu = 18.25 uPa s,
+    // with rho = 1.204 kg/m^3). Used only to turn the finned rocket's measured Reynolds-number range into a speed.
+    NU_AIR: 1.516e-5,
+    // The comparison rocket "with a nose cone and fins": the 2 L bottle rocket of Barrio-Perotti et al. 2009 (same paper
+    // as CD_FINNED below): effective mass m* = 133 +/- 1 g (their balance reading, m - rho_air V, so the true mass is
+    // about 2 g more; the model adds the air's buoyancy separately, so this is conservative by about 2 %).
+    FINNED_ROCKET_KG: 0.133,
+
+    // The bottle: the page's "Empty 1-2 L carbonated-soda (PET) bottle, undamaged". The page gives a range, not one
+    // size, so the sim uses the 2 L end (SPEC section 2).
+    BOTTLE_ML: 2000,
+    // Empty 2 L PET soda bottle: "now weighs as little as 42 grams" (PET Resin Association, "Did you know?"). That is
+    // the lightest current bottle, not a typical one; heavier bottles fly slightly higher in this model (SPEC section 6
+    // runs 47 and 50 g).
+    BOTTLE_KG: 0.042,
+    // Widest diameter of a 2 L soft-drink bottle rocket, measured with a slide gauge: 106.0 mm
+    // (Barrio-Perotti et al., Eur. J. Phys. 30, 1039 (2009): "D = 106.0 +/- 0.1 mm").
+    BOTTLE_D_M: 0.106,
+    // Nozzle = the open neck once the cork lets go. PCO 1881 finish (the standard 28 mm soda-bottle neck; ISBT
+    // drawing PCO 1881-1, 3784253-21): bore "C" = 21.74 mm, quoted in patent WO2016019321A1 ("21.74 mm or
+    // nominally, 22 mm").
+    NOZZLE_D_M: 0.02174,
+    // Drag coefficient of the sim's rocket, a BARE bottle (no nose cone, no fins): Gommes, Am. J. Phys. 78, 236 (2010),
+    // p. 239: "For a rocket with a circular cross section and no side wings, C_A is about 0.75" (citing Landau &
+    // Lifshitz, Fluid Mechanics), with the drag referred to the maximum cross-section, as here. (Independent review 2,
+    // MUST-FIX 1: the old baseline 0.345 belongs to a streamlined rocket with a nose cone and fins.)
+    CD: 0.75,
+    // Comparison only, "with a nose cone and fins" (the page's optional cardboard fins): Cd = 0.345 +/- 0.004 for
+    // 1e3 < Re < 2e5, from free-fall tests of a 2 L bottle rocket with a nose cone and fins (Barrio-Perotti,
+    // Blanco-Marigorta, Arguelles-Diaz, Fernandez-Oro, Eur. J. Phys. 30, 1039 (2009)); same reference area.
+    CD_FINNED: 0.345,
+    // The Reynolds number up to which the paper QUOTES CD_FINNED (same paper: "within the Reynolds interval
+    // 10^3 < Re < 2 10^5", read off the flat part of a general Cd-Re curve). That is about 29 m/s for this body; the
+    // drops themselves were much slower (FINNED_DROP_M below). Independent review 3, S1.
+    CD_FINNED_RE_MAX: 2e5,
+    // Height of the timed free-fall drops that CD_FINNED comes from: 14 m (same paper; their Fig. 7 shows Re just above
+    // 1e5 at impact). finnedDropSpeed() turns it into the fastest speed actually tested, about 15 m/s.
+    FINNED_DROP_M: 14,
+
+    // Launch pressure. The page: "Stop pumping at about 40-60 psi on the gauge: a cork usually pops before that; a
+    // latch won't, so release it by then." The sim uses 40 psi (gauge), the bottom of that band, and never goes above
+    // the page's 60 psi (the "Why?" table stops there).
+    LAUNCH_PSI: 40,
+    PAGE_PSI_LOW: 40,
+    PAGE_PSI_MAX: 60,
+    // The pressure slider (Nicolas, 2026-09-28: pressure as a second slider). Range 20 to 60 psi gauge, 5 psi steps,
+    // default 40. Why this range: 20 psi is an easy, gentle launch with any bike pump; 60 psi is the top of the page's
+    // own "stop at about 40-60 psi" and the usual ceiling quoted for 2 L soda-bottle rockets pumped by hand. The slider
+    // never goes above it, and nothing in the sim suggests going higher (test.js fails if any pressure above 60 psi
+    // appears on the page or in the model's tables).
+    PSI_MIN: 20,
+    PSI_MAX: 60,
+    PSI_STEP: 5,
+
+    // The slider: water fill in mL, 0 to a full bottle, 100 mL steps (a measuring jug's marks).
+    FILL_STEP_ML: 100,
+    // The page's own suggestion: "Fill the bottle about one-third with water".
+    PAGE_FILL_FRACTION: 1 / 3,
+
+    // Drawing only (SPEC section 9). Neck length = PCO 1881 finish height "X" 17.00 mm (same patent). The shoulder
+    // and base lengths are NOT sourced: they are drawn by eye so the outline looks like a soda bottle, and the body
+    // length is then solved so the outline holds exactly 2 L. The water level is read off this outline.
+    NECK_LEN_M: 0.017,
+    SHOULDER_LEN_M: 0.080,  // drawing only, approximate
+    BASE_LEN_M: 0.025,      // drawing only, approximate
+
+    // Integration steps (s). Halving them changes the top height by less than 0.1 % (test.js checks).
+    DT_THRUST: 1e-4,
+    DT_COAST: 2e-3
+  };
+
+  function nozzleArea() { return Math.PI * C.NOZZLE_D_M * C.NOZZLE_D_M / 4; }
+  function bottleArea() { return Math.PI * C.BOTTLE_D_M * C.BOTTLE_D_M / 4; }
+  function airDensity(P, T) { return P / (C.R_AIR * T); }
+  function gaugePa(psi) { return psi * C.PA_PER_PSI; }
+  function criticalRatio(g) { return Math.pow((g + 1) / 2, g / (g - 1)); } // 1.893 for air
+
+  /* One flight, straight up, launched from a cork/latch on the pad (no launch tube).
+   * fillMl: water in the bottle (mL). opt: { psi, gamma, cd, g, bottleKg, record, dtThrust, dtCoast, noBuoyancy, noCoast }.
+   * Phases: 'water' (air pushes water out of the neck), 'air' (the leftover squeezed air rushes out),
+   * 'coast' (no thrust; weight + drag until the top). Returns the top height and the story of the flight. */
+  function flight(fillMl, opt) {
+    opt = opt || {};
+    var psi = opt.psi != null ? +opt.psi : C.LAUNCH_PSI;
+    var gam = opt.gamma != null ? opt.gamma : C.GAMMA;
+    // gamma = 1 exactly is the isothermal limit; the adiabatic formulas divide by (gamma - 1), so step just past it.
+    if (gam < 1 + 1e-6) gam = 1 + 1e-6;
+    var cd = opt.cd != null ? opt.cd : C.CD;
+    var g = opt.g != null ? opt.g : C.G;
+    var mb = opt.bottleKg != null ? opt.bottleKg : C.BOTTLE_KG;
+    var dtT = opt.dtThrust || C.DT_THRUST, dtC = opt.dtCoast || C.DT_COAST;
+    var rec = !!opt.record;
+    fillMl = Math.min(C.BOTTLE_ML, Math.max(0, +fillMl || 0));
+    psi = Math.max(0, psi || 0);
+
+    var Vb = C.BOTTLE_ML * 1e-6, Vw0 = fillMl * 1e-6, Va0 = Vb - Vw0;
+    if (Va0 < 1e-12) Va0 = 0;
+    var Pa = C.P_ATM, P0 = Pa + gaugePa(psi), T0 = C.T_K;
+    var An = nozzleArea(), Ab = bottleArea(), r2 = Math.pow(An / Ab, 2);
+    var rhoA = airDensity(Pa, T0);                  // outside air, 1.204 kg/m^3
+    var ma0 = Va0 > 0 ? P0 * Va0 / (C.R_AIR * T0) : 0; // air sealed in the bottle (kg)
+    var buoy = opt.noBuoyancy ? 0 : rhoA * Vb;      // Archimedes: the bottle displaces 2 L of outside air
+    var kD = 0.5 * rhoA * cd * Ab;
+    var rw = C.RHO_WATER;
+
+    var out = {
+      fillMl: fillMl, psi: psi, airMl: Va0 * 1e6, P0: P0, airKg0: ma0, waterKg0: rw * Vw0,
+      liftoffMassKg: mb + rw * Vw0 + ma0,
+      startThrustN: 0, startJetMs: 0,
+      water: null, air: null, apexM: 0, tApex: 0, lifted: false, maxSpeed: 0, maxThrustN: 0,
+      impulseWater: 0, impulseAir: 0, waterOutKg: 0, waterLeftMl: fillMl, airOutKg: 0,
+      jetEnergyJ: 0, airWorkJ: 0, samples: rec ? [] : null
+    };
+    var t = 0, h = 0, v = 0;
+    function drag(v) { return kD * v * Math.abs(v); }
+    function accel(F, m, h, v) {
+      var a = (F - (m * g - buoy * g) - drag(v)) / m;
+      if (h <= 0 && v <= 0 && a < 0) a = 0;          // sitting on the pad: the pad holds it up
+      return a;
+    }
+    function sample(phase, extra) {
+      if (!rec) return;
+      var s = { t: t, h: h, v: v, phase: phase };
+      for (var k in extra) s[k] = extra[k];
+      if (s.F != null && s.m != null) s.a = accel(s.F, s.m, h, v);   // net acceleration (m/s^2): push - weight + buoyancy - drag, over mass
+      out.samples.push(s);
+    }
+
+    // ---------- phase 1: water ----------
+    var Vw = Vw0;
+    function waterState(Vw) {
+      var Va = Vb - Vw, P = P0 * Math.pow(Va0 / Va, gam), dp = P - Pa;
+      var ve = dp > 0 ? Math.sqrt(2 * dp / (rw * (1 - r2))) : 0;   // Bernoulli, surface -> neck, quasi-steady
+      return { P: P, ve: ve, Q: An * ve, F: rw * An * ve * ve, m: mb + rw * Vw + ma0 };
+    }
+    function dWater(h, v, Vw) {
+      var s = waterState(Vw);
+      return [v, accel(s.F, s.m, h, v), -s.Q];
+    }
+    if (Vw0 > 0 && Va0 > 0 && P0 > Pa) {
+      var s0 = waterState(Vw0);
+      out.startThrustN = s0.F; out.startJetMs = s0.ve;
+      var lastRec = -1;
+      while (true) {
+        var st = waterState(Vw);
+        if (st.P - Pa < 1) break;                    // the air is back to outside pressure: the water stops
+        out.maxThrustN = Math.max(out.maxThrustN, st.F);
+        if (rec && (t - lastRec >= 2e-4 || lastRec < 0)) { sample('water', { Vw: Vw, P: st.P, F: st.F, ve: st.ve, m: st.m }); lastRec = t; }
+        var dt = dtT, y = rk4(dWater, [h, v, Vw], dt);
+        if (y[2] < 0) {                              // the last of the water leaves inside this step: shorten it
+          dt = dt * Vw / (Vw - y[2]);
+          y = rk4(dWater, [h, v, Vw], dt);
+          y[2] = 0;
+        }
+        // bookkeeping (trapezoid on the step): impulse, jet kinetic energy (relative to the bottle), air work
+        var st1 = waterState(Math.max(0, y[2]));
+        out.impulseWater += 0.5 * (st.F + st1.F) * dt;
+        out.jetEnergyJ += 0.5 * (0.5 * rw * st.Q * st.ve * st.ve * (1 - r2) + 0.5 * rw * st1.Q * st1.ve * st1.ve * (1 - r2)) * dt;
+        t += dt; h = Math.max(0, y[0]); v = (y[0] <= 0 && y[1] < 0) ? 0 : y[1]; Vw = y[2];
+        if (h > 0) out.lifted = true;
+        if (Vw <= 0) { Vw = 0; break; }
+      }
+      var Va1 = Vb - Vw, P1w = P0 * Math.pow(Va0 / Va1, gam);
+      out.airWorkJ = (P0 * Va0 - P1w * Va1) / (gam - 1) - Pa * (Va1 - Va0);  // air's work on the water, minus pushing the outside air back
+      out.waterOutKg = rw * (Vw0 - Vw); out.waterLeftMl = Vw * 1e6;
+      out.water = { t: t, h: h, v: v, P: P1w, Tk: T0 * Math.pow(Va0 / Va1, gam - 1), waterLeftMl: Vw * 1e6 };
+      sample('water', { Vw: Vw, P: P1w, F: 0, ve: 0, m: mb + rw * Vw + ma0 });
+    }
+
+    // ---------- phase 2: the leftover squeezed air rushes out ----------
+    var ma = ma0, Pair = Va0 > 0 ? P0 * Math.pow(Va0 / (Vb - Vw), gam) : Pa;
+    if (Vw === 0 && Va0 > 0 && Pair > Pa) {
+      var rho1 = ma0 / Vb, P1 = Pair, crit = criticalRatio(gam);
+      var airState = function (ma) {
+        var rho = ma / Vb, P = P1 * Math.pow(rho / rho1, gam), T = P / (rho * C.R_AIR);
+        var Pe, Te, ve;
+        if (P / Pa >= crit) {                        // choked: sonic at the neck, exit pressure above outside
+          Te = 2 * T / (gam + 1); Pe = P * Math.pow(2 / (gam + 1), gam / (gam - 1)); ve = Math.sqrt(gam * C.R_AIR * Te);
+        } else if (P > Pa) {                         // subsonic: exits at outside pressure
+          Pe = Pa; Te = T * Math.pow(Pa / P, (gam - 1) / gam); ve = Math.sqrt(2 * gam / (gam - 1) * C.R_AIR * (T - Te));
+        } else { Pe = Pa; Te = T; ve = 0; }
+        var mdot = Pe / (C.R_AIR * Te) * An * ve;
+        return { P: P, T: T, mdot: mdot, ve: ve, F: mdot * ve + (Pe - Pa) * An, m: mb + ma, choked: P / Pa >= crit };
+      };
+      var dAir = function (h, v, ma) { var s = airState(ma); return [v, accel(s.F, s.m, h, v), -s.mdot]; };
+      var lastRecA = -1;
+      while (true) {
+        var sa = airState(ma);
+        if (sa.P - Pa < 1) break;
+        out.maxThrustN = Math.max(out.maxThrustN, sa.F);
+        if (rec && (t - lastRecA >= 1e-4 || lastRecA < 0)) { sample('air', { Vw: 0, P: sa.P, F: sa.F, ve: sa.ve, m: sa.m }); lastRecA = t; }
+        var dta = dtT / 4, ya = rk4(dAir, [h, v, ma], dta);
+        var sa1 = airState(ya[2]);
+        out.impulseAir += 0.5 * (sa.F + sa1.F) * dta;
+        t += dta; h = Math.max(0, ya[0]); v = (ya[0] <= 0 && ya[1] < 0) ? 0 : ya[1]; ma = ya[2];
+        if (h > 0) out.lifted = true;
+        if (t > 5) break;                           // guard (never reached)
+      }
+      var sEnd = airState(ma);
+      out.airOutKg = ma0 - ma;
+      out.air = { t: t, h: h, v: v, P: sEnd.P, Tk: sEnd.T };
+      sample('air', { Vw: 0, P: sEnd.P, F: 0, ve: 0, m: mb + ma });
+    }
+
+    // ---------- phase 3: coast to the top (weight + drag, no thrust) ----------
+    var mc = mb + rw * Vw + ma;
+    var dCoast = function (h, v) { return [v, accel(0, mc, h, v)]; };
+    out.coastMassKg = mc;
+    out.burnout = { t: t, h: h, v: v };
+    out.maxSpeed = v;
+    if (v > 0 && !opt.noCoast) {
+      var lastRecC = t;
+      sample('coast', { Vw: Vw, P: Pa, F: 0, m: mc });
+      while (true) {
+        var yc = rk4(dCoast, [h, v], dtC);
+        if (yc[1] <= 0) {                            // the top is inside this step: shorten it to land on v = 0
+          var dtc = dtC * v / (v - yc[1]);
+          yc = rk4(dCoast, [h, v], dtc);
+          t += dtc; h = yc[0]; v = 0;
+          break;
+        }
+        t += dtC; h = yc[0]; v = yc[1];
+        if (t > 120) break;                         // guard (a real flight tops out within seconds)
+        if (rec && t - lastRecC >= 0.01) { sample('coast', { Vw: Vw, P: Pa, F: 0, m: mc }); lastRecC = t; }
+      }
+    }
+    out.apexM = h; out.tApex = t;
+    sample('top', { Vw: Vw, P: Pa, F: 0, m: mc });
+    out.waterLeftMl = Vw * 1e6;
+    return out;
+  }
+
+  /* Acceleration through the flight (2026-09-28, Nicolas: "the acceleration looks like it peaks when the water runs
+   * out"). From the recorded samples: a = (push - (m - rho_air V) g - drag) / m. Returns the peak and the moments that
+   * explain it: at the start the push is biggest but the bottle is heaviest; the push fades as the air spreads, but the
+   * mass falls much faster (the water leaves), so the acceleration keeps climbing until the last water leaves. Then the
+   * air puff pushes less on an almost empty bottle, fading to nothing, and the coast is all slowing down. */
+  function accelStory(fillMl, opt) {
+    var o = {}; for (var k in (opt || {})) o[k] = opt[k]; o.record = true;
+    var r = flight(fillMl, o), S = r.samples.filter(function (x) { return x.a != null; });
+    var pk = S[0], firstAir = null, firstCoast = null, lastWater = null;
+    S.forEach(function (x) {
+      if (x.a > pk.a) pk = x;
+      if (x.phase === 'water' && x.F > 0) lastWater = x;
+      if (x.phase === 'air' && !firstAir) firstAir = x;
+      if (x.phase === 'coast' && !firstCoast) firstCoast = x;
+    });
+    return { flight: r, samples: S, peak: pk, start: S[0], lastWater: lastWater, firstAir: firstAir, firstCoast: firstCoast,
+      waterEndT: r.water ? r.water.t : 0, burnoutT: r.burnout.t };
+  }
+
+  function rk4(f, y, dt) {
+    var n = y.length, k1 = f.apply(null, y), y2 = [], y3 = [], y4 = [], i;
+    for (i = 0; i < n; i++) y2[i] = y[i] + 0.5 * dt * k1[i];
+    var k2 = f.apply(null, y2);
+    for (i = 0; i < n; i++) y3[i] = y[i] + 0.5 * dt * k2[i];
+    var k3 = f.apply(null, y3);
+    for (i = 0; i < n; i++) y4[i] = y[i] + dt * k3[i];
+    var k4 = f.apply(null, y4), r = [];
+    for (i = 0; i < n; i++) r[i] = y[i] + dt / 6 * (k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i]);
+    return r;
+  }
+
+  var apexCache = {};
+  function optKey(o) { o = o || {}; return [o.psi == null ? C.LAUNCH_PSI : o.psi, o.cd, o.bottleKg, o.gamma].join('|'); }
+  function apex(fillMl, psi, opt) {
+    var o = {}; for (var k in (opt || {})) o[k] = opt[k];
+    if (psi != null) o.psi = psi;
+    var key = fillMl + '|' + optKey(o);
+    if (!(key in apexCache)) apexCache[key] = flight(fillMl, o).apexM;
+    return apexCache[key];
+  }
+
+  /* The model's best fill for a pressure: a 50 mL scan, then a golden-section search to about 1 mL.
+   * (test.js checks it against a plain 10 mL scan.) */
+  function bestFill(psi, opt) {
+    var best = 0, bestH = -1, ml, step = 50;
+    for (ml = 0; ml <= C.BOTTLE_ML; ml += step) { var hh = apex(ml, psi, opt); if (hh > bestH) { bestH = hh; best = ml; } }
+    var a = Math.max(0, best - step), b = Math.min(C.BOTTLE_ML, best + step), gr = (Math.sqrt(5) - 1) / 2;
+    var c = b - gr * (b - a), d = a + gr * (b - a), fc = apex(c, psi, opt), fd = apex(d, psi, opt);
+    while (b - a > 1) {
+      if (fc > fd) { b = d; d = c; fd = fc; c = b - gr * (b - a); fc = apex(c, psi, opt); }
+      else { a = c; c = d; fc = fd; d = a + gr * (b - a); fd = apex(d, psi, opt); }
+    }
+    var x = (a + b) / 2;
+    return { fillMl: x, apexM: apex(x, psi, opt), fraction: x / C.BOTTLE_ML };
+  }
+
+  /* Fill above which the air is back to outside pressure before the water is all out (adiabatic):
+   * the air must grow to the whole bottle, V_air0 * (P0/Patm)^(1/gamma) = V_bottle. */
+  function waterLeftAboveMl(psi) {
+    var P0 = C.P_ATM + gaugePa(psi == null ? C.LAUNCH_PSI : psi);
+    return C.BOTTLE_ML * (1 - Math.pow(C.P_ATM / P0, 1 / C.GAMMA));
+  }
+
+  /* Heights on the slider grid (0, 100, ... 2000 mL) at one pressure. */
+  function curve(psi, step, opt) {
+    step = step || C.FILL_STEP_ML;
+    var pts = [];
+    for (var ml = 0; ml <= C.BOTTLE_ML + 1e-9; ml += step) pts.push({ fillMl: ml, apexM: apex(ml, psi, opt) });
+    return pts;
+  }
+
+  // ---------- the bottle outline (drawing only; SPEC section 9) ----------
+  // Radius (m) at height z (m) above the nozzle, bottle standing neck-down. Neck (inner bore), a cosine shoulder,
+  // a straight body, and an elliptical base. The body length is solved so the inside holds exactly BOTTLE_ML.
+  var geo = null;
+  function radiusAt(z, G) {
+    G = G || bottleGeometry();
+    var rn = C.NOZZLE_D_M / 2, R = C.BOTTLE_D_M / 2;
+    if (z < 0 || z > G.height) return 0;
+    if (z <= C.NECK_LEN_M) return rn;
+    var z1 = C.NECK_LEN_M + C.SHOULDER_LEN_M;
+    if (z <= z1) { var s = (z - C.NECK_LEN_M) / C.SHOULDER_LEN_M; return rn + (R - rn) * (1 - Math.cos(Math.PI * s)) / 2; }
+    var z2 = z1 + G.bodyLen;
+    if (z <= z2) return R;
+    var q = (z - z2) / C.BASE_LEN_M; return R * Math.sqrt(Math.max(0, 1 - q * q));
+  }
+  function volumeBelow(z, G) {                       // m^3 inside the outline from the nozzle up to z (Simpson)
+    G = G || bottleGeometry();
+    z = Math.max(0, Math.min(G.height, z));
+    var n = 400, h = z / n, s = 0;
+    for (var i = 0; i <= n; i++) { var r = radiusAt(i * h, G); s += (i === 0 || i === n ? 1 : (i % 2 ? 4 : 2)) * Math.PI * r * r; }
+    return s * h / 3;
+  }
+  function bottleGeometry() {
+    if (geo) return geo;
+    var R = C.BOTTLE_D_M / 2, rn = C.NOZZLE_D_M / 2;
+    var neck = Math.PI * rn * rn * C.NECK_LEN_M;
+    // shoulder: integral of pi r(s)^2 over the cosine blend (Simpson, fine)
+    var n = 1000, sh = 0;
+    for (var i = 0; i <= n; i++) {
+      var s = i / n, r = rn + (R - rn) * (1 - Math.cos(Math.PI * s)) / 2;
+      sh += (i === 0 || i === n ? 1 : (i % 2 ? 4 : 2)) * Math.PI * r * r;
+    }
+    sh *= C.SHOULDER_LEN_M / n / 3;
+    var base = 2 / 3 * Math.PI * R * R * C.BASE_LEN_M;
+    var bodyLen = (C.BOTTLE_ML * 1e-6 - neck - sh - base) / (Math.PI * R * R);
+    geo = { bodyLen: bodyLen, height: C.NECK_LEN_M + C.SHOULDER_LEN_M + bodyLen + C.BASE_LEN_M };
+    return geo;
+  }
+  /* Height of the water surface above the nozzle (m) for a water volume (mL), read off the outline. */
+  function levelForMl(ml) {
+    var G = bottleGeometry(), target = Math.max(0, ml) * 1e-6;
+    if (target <= 0) return 0;
+    if (target >= C.BOTTLE_ML * 1e-6) return G.height;
+    var lo = 0, hi = G.height;
+    for (var i = 0; i < 50; i++) { var mid = (lo + hi) / 2; if (volumeBelow(mid, G) < target) lo = mid; else hi = mid; }
+    return (lo + hi) / 2;
+  }
+
+  // ---------- words ----------
+  // Fraction words for the slider readout. Fifths and tenths are in the list so 400 mL reads "⅕ full", the same
+  // words as the best fill's "about a fifth" (self-review MUST-FIX 1).
+  var FRACS = [[0, '0'], [1 / 10, '⅒'], [1 / 8, '⅛'], [1 / 5, '⅕'], [1 / 4, '¼'], [1 / 3, '⅓'], [3 / 8, '⅜'], [2 / 5, '⅖'], [1 / 2, '½'],
+    [3 / 5, '⅗'], [5 / 8, '⅝'], [2 / 3, '⅔'], [3 / 4, '¾'], [4 / 5, '⅘'], [7 / 8, '⅞'], [1, 'full']];
+  function fillWords(ml) {
+    var f = ml / C.BOTTLE_ML;
+    if (ml <= 0) return 'no water';
+    if (ml >= C.BOTTLE_ML) return 'full to the top';
+    var best = FRACS[1];
+    for (var i = 1; i < FRACS.length - 1; i++) if (Math.abs(FRACS[i][0] - f) < Math.abs(best[0] - f)) best = FRACS[i];
+    var exact = Math.abs(best[0] - f) < 1e-9;
+    if (f > 7 / 8 + 0.02) return 'almost full';
+    if (f < 1 / 10 - 0.02) return 'a splash';
+    return (exact ? '' : 'about ') + best[1] + ' full';
+  }
+  function roundM(x) {                                // plain rounding for heights: 1 decimal under 1 m... 
+    if (x < 0.005) return '0 m';
+    if (x < 1) return Math.round(x * 100) + ' cm';
+    if (x < 10) return (Math.round(x * 10) / 10) + ' m';
+    return Math.round(x) + ' m';
+  }
+  // Times in the results, without false precision (independent review 2, S1): hundredths under 0.1 s, tenths above.
+  function fmtS(t) {
+    if (t < 0.005) return 'under 0.01 s';
+    if (t < 0.095) return (Math.round(t * 100) / 100).toFixed(2) + ' s';
+    return (Math.round(t * 10) / 10).toFixed(1) + ' s';
+  }
+  // The running slow-motion clock keeps two decimals.
+  function fmtClock(t) { return t < 1 ? t.toFixed(2) + ' s' : t.toFixed(1) + ' s'; }
+  function r50(x) { return Math.round(x / 50) * 50; }
+  // The comparison rocket: the finned, nose-coned 2 L rocket of Barrio-Perotti et al. 2009.
+  /* Speed at the end of the paper's 14 m drop: m* dv/dt = m* g - 1/2 rho Cd A v^2, from rest (RK4, 1 ms steps). With
+   * m* 133 g and Cd 0.345 this gives about 15 m/s after about 1.75 s (their measured fall time: 1.78 s). */
+  function finnedDropSpeed() {
+    var m = C.FINNED_ROCKET_KG, k = 0.5 * airDensity(C.P_ATM, C.T_K) * C.CD_FINNED * bottleArea();
+    var y = [0, 0], dt = 1e-3, t = 0, f = function(h, v){ return [v, C.G - k * v * v / m]; };
+    while (y[0] < C.FINNED_DROP_M) { var prev = y; y = rk4(f, y, dt); t += dt;
+      if (y[0] >= C.FINNED_DROP_M) { var a = (C.FINNED_DROP_M - prev[0]) / (y[0] - prev[0]); return { v: prev[1] + a * (y[1] - prev[1]), t: t - dt + a * dt }; } }
+    return { v: 0, t: 0 };
+  }
+  function finnedOpt(o) { var r = { cd: C.CD_FINNED, bottleKg: C.FINNED_ROCKET_KG }; for (var k in (o || {})) r[k] = o[k]; return r; }
+
+  /* Result text for one flight (the page uses it verbatim; test.js sweeps every slider setting). */
+  function describe(r, best) {
+    best = best || bestFill(r.psi);
+    var lines = [], head;
+    if (r.airMl <= 0) {
+      head = 'Full to the top: nothing happens.';
+      lines.push('With no air in the bottle there is nothing squeezed to push. Water hardly squeezes at all, so pumping only stretches the bottle a little. No jet, no lift.');
+      return { head: head, lines: lines };
+    }
+    if (!r.lifted || r.apexM < 0.005) {
+      head = 'It barely moved.';
+      lines.push('Only ' + Math.round(r.airMl) + ' mL of air: it spent its push on a short squirt of water and the bottle stayed on the pad.');
+      return { head: head, lines: lines };
+    }
+    head = 'Top of the flight: about ' + roundM(r.apexM) + '.';
+    if (r.fillMl === 0) {
+      lines.push('Air only. The squeezed air rushed out in about ' + fmtS(r.air ? r.air.t : 0) + ', pushing hard for a moment, but it threw out only about ' + Math.round(r.airOutKg * 1000) + ' g of air. The bottle coasted up to about ' + roundM(r.apexM) + ', ' + fmtS(r.tApex) + ' after launch, and then fell back down.');
+    } else {
+      var w = r.water;
+      if (r.waterLeftMl > 0.5) {
+        lines.push('The air ran out of push before the water did: it was back to outside pressure with about ' + r50(r.waterLeftMl) + ' mL of water still inside, which the bottle had to carry up.');
+      } else {
+        lines.push('The water was all out after ' + fmtS(w.t) + ', when the bottle was ' + roundM(w.h) + ' up and going ' + Math.round(w.v) + ' m/s. The leftover squeezed air (still ' + Math.round((w.P - C.P_ATM) / C.PA_PER_PSI) + ' psi on the gauge) gave one last puff of ' + fmtS(r.air ? r.air.t - w.t : 0) + '.');
+      }
+      lines.push('Then it coasted, slowed by its weight and by the air, to about ' + roundM(r.apexM) + ', ' + fmtS(r.tApex) + ' after launch, and then fell back down.');
+    }
+    var diff = r.apexM - best.apexM;
+    if (Math.abs(diff) < 0.02 * best.apexM) lines.push('That is about as high as this bottle goes at ' + r.psi + ' psi.');
+    else lines.push('The best fill in the model at ' + r.psi + ' psi (about ' + Math.round(best.fillMl / 10) * 10 + ' mL) reaches about ' + roundM(best.apexM) + '.');
+    return { head: head, lines: lines };
+  }
+
+
+  // Simple fraction words for the best fill ("about a fifth"), nearest of 1/6, 1/5, 1/4, 1/3, 1/2.
+  function simpleFraction(f) {
+    var F = [[1 / 6, 'a sixth'], [1 / 5, 'a fifth'], [1 / 4, 'a quarter'], [1 / 3, 'a third'], [1 / 2, 'a half']], b = F[0];
+    for (var i = 1; i < F.length; i++) if (Math.abs(F[i][0] - f) < Math.abs(b[0] - f)) b = F[i];
+    return 'about ' + b[1];
+  }
+  function minus(n) { return (n < 0 ? '\u2212' : '') + Math.abs(n); }
+  function r10(x) { return Math.round(x / 10) * 10; }
+  function fix(x, d) { return (Math.round(x * Math.pow(10, d)) / Math.pow(10, d)).toFixed(d); }
+
+  /* Every number printed in the page's "Why?" section, from the model. inline-model.js writes these into index.html,
+   * and the page (shots.js) re-computes them and fails if the printed text disagrees. */
+  function whyNumbers() {
+    var N = {}, psi = C.LAUNCH_PSI, Pa = C.P_ATM, P0 = Pa + gaugePa(psi);
+    var best = bestFill(psi), third = flight(C.BOTTLE_ML * C.PAGE_FILL_FRACTION), rb = flight(best.fillMl);
+    var air = flight(0), fullish = flight(C.BOTTLE_ML - C.FILL_STEP_ML);
+    var An = nozzleArea(), Ab = bottleArea(), rhoA = airDensity(Pa, C.T_K);
+    N.psi = String(psi); N.psiMax = String(C.PAGE_PSI_MAX);
+    N.bottleG = String(Math.round(C.BOTTLE_KG * 1000)); N.diamMm = String(Math.round(C.BOTTLE_D_M * 1000));
+    N.nozzleMm = fix(C.NOZZLE_D_M * 1000, 2); N.cd = String(C.CD); N.cdFin = String(C.CD_FINNED);
+    N.p0Atm = fix(P0 / Pa, 1); N.nozzleCm2 = fix(An * 1e4, 1);
+    N.veStart = fix(rb.startJetMs, 1); N.thrustStart = String(Math.round(rb.startThrustN));
+    N.thrustKg = String(Math.round(rb.startThrustN / C.G));
+    N.bestMl = String(r10(best.fillMl)); N.bestFrac = simpleFraction(best.fraction); N.bestM = String(Math.round(best.apexM));
+    N.bestMl2 = N.bestMl; N.bestM2 = N.bestM;
+    N.liftKg = fix(rb.liftoffMassKg, 2); N.thrustOverWeight = String(Math.round(rb.startThrustN / (rb.liftoffMassKg * C.G)));
+    N.bestWaterT = fmtS(rb.water.t).replace(' s', ''); N.bestPuffT = fmtS(rb.air.t - rb.water.t).replace(' s', ''); N.bestBoV = String(Math.round(rb.burnout.v));
+    N.bestBoH = fix(rb.burnout.h, 1); N.bestTop = fix(rb.tApex, 1);
+    N.bestEndPsi = String(Math.round((rb.water.P - Pa) / C.PA_PER_PSI));
+    N.thirdMl = String(Math.round(C.BOTTLE_ML * C.PAGE_FILL_FRACTION)); N.thirdM = String(Math.round(third.apexM));
+    N.thirdPct = String(Math.round(100 * third.apexM / best.apexM));
+    N.thirdEndPsi = String(Math.round((third.water.P - Pa) / C.PA_PER_PSI));
+    N.thirdEndC = minus(Math.round(third.water.Tk - 273.15));
+    N.airEndC = minus(Math.round(third.air.Tk - 273.15));
+    N.airOnlyM = String(Math.round(air.apexM)); N.airOnlyPct = String(Math.round(100 * air.apexM / best.apexM));
+    N.airOnlyG = String(Math.round(air.airOutKg * 1000)); N.airOnlyT = fmtS(air.air.t).replace(' s', '');
+    N.airImpulse = fix(air.impulseAir, 1); N.thirdImpulse = String(Math.round(third.impulseWater + third.impulseAir));
+    N.bestImpulse = fix(rb.impulseWater + rb.impulseAir, 1);
+    N.leftAboveMl = String(r10(waterLeftAboveMl(psi)));
+    N.fullishMl = String(C.BOTTLE_ML - C.FILL_STEP_ML); N.fullishCm = String(Math.round(fullish.apexM * 100));
+    var coastM = rb.coastMassKg, wEff = (coastM - rhoA * C.BOTTLE_ML * 1e-6) * C.G, kD = 0.5 * rhoA * C.CD * Ab;
+    N.vTerm = String(Math.round(Math.sqrt(wEff / kD)));
+    N.dragOverWeight = String(Math.round(kD * rb.burnout.v * rb.burnout.v / wEff));
+    N.coastG = String(Math.round(coastM * 1000));
+    [20, 30, 40, 50, 60].forEach(function (p) {
+      var b = bestFill(p); N['t' + p + 'Ml'] = String(r10(b.fillMl)); N['t' + p + 'M'] = String(Math.round(b.apexM));
+      N['t' + p + 'Air'] = String(Math.round(apex(0, p))); N['t' + p + 'Third'] = String(Math.round(apex(C.BOTTLE_ML * C.PAGE_FILL_FRACTION, p)));
+    });
+    // the comparison rocket with a nose cone and fins (Barrio-Perotti 2009: Cd 0.345, 133 g)
+    var h133 = bestFill(psi, finnedOpt()), fr = flight(h133.fillMl, finnedOpt());
+    N.heavyMl = String(r10(h133.fillMl)); N.heavyM = String(Math.round(h133.apexM)); N.finM = N.heavyM;
+    N.heavyAir = String(Math.round(apex(0, psi, finnedOpt())));
+    N.finThirdM = String(Math.round(apex(C.BOTTLE_ML * C.PAGE_FILL_FRACTION, psi, finnedOpt())));
+    N.finVmax = String(Math.round(C.CD_FINNED_RE_MAX * C.NU_AIR / C.BOTTLE_D_M));   // Re = v D / nu -> v
+    N.finBoV = String(Math.round(fr.burnout.v));
+    var drop = finnedDropSpeed();                                                   // the fastest speed their drops reached
+    N.finDropM = String(C.FINNED_DROP_M); N.finDropV = String(Math.round(drop.v));
+    // the button "The page's 1/3" sets 700 mL, the nearest 100 mL step to 666.7 mL
+    N.btnMl = String(Math.round(C.BOTTLE_ML * C.PAGE_FILL_FRACTION / C.FILL_STEP_ML) * C.FILL_STEP_ML);
+    N.btnM = String(Math.round(apex(+N.btnMl, psi)));
+    // a heavier bottle (50 g) for the sensitivity line
+    var b50 = bestFill(psi, { bottleKg: 0.050 });
+    N.kg50M = String(Math.round(b50.apexM));
+    N.heavyFrac = simpleFraction(h133.fraction); N.heavyG = String(Math.round(C.FINNED_ROCKET_KG * 1000));
+    var band = curve(psi).filter(function (p) { return p.apexM >= 0.9 * best.apexM; });
+    N.band90Lo = String(band[0].fillMl); N.band90Hi = String(band[band.length - 1].fillMl);
+    // how hard it speeds up (best fill): in g, rounded to 5 g (10 g above 100 g); the model's peak is idealised
+    var A = accelStory(best.fillMl), gR = function (a) { var x = a / C.G; return String(x >= 100 ? r10(x) : Math.round(x / 5) * 5); };
+    N.accStartG = gR(A.start.a); N.accStartN = String(Math.round(A.start.F)); N.accStartKg = fix(A.start.m, 2);
+    N.accPeakG = gR(A.peak.a); N.accPeakN = String(Math.round(A.lastWater.F)); N.accPeakGm = String(Math.round(A.lastWater.m * 1000));
+    N.accAirG = gR(A.firstAir.a); N.accAirN = String(Math.round(A.firstAir.F));
+    N.accCoastG = gR(-A.firstCoast.a);
+    return N;
+  }
+
+  return {
+    C: C, flight: flight, apex: apex, bestFill: bestFill, curve: curve, describe: describe,
+    fillWords: fillWords, roundM: roundM, fmtS: fmtS, fmtClock: fmtClock, finnedOpt: finnedOpt, finnedDropSpeed: finnedDropSpeed,
+    nozzleArea: nozzleArea, bottleArea: bottleArea, airDensity: airDensity, gaugePa: gaugePa, criticalRatio: criticalRatio,
+    bottleGeometry: bottleGeometry, radiusAt: radiusAt, volumeBelow: volumeBelow, levelForMl: levelForMl,
+    waterLeftAboveMl: waterLeftAboveMl, whyNumbers: whyNumbers, simpleFraction: simpleFraction, accelStory: accelStory
+  };
+});
+/* END model.js */
+</script>
+<script>
+(function(){
+'use strict';
+var M = window.RocketModel, C = M.C;
+var NS = 'http://www.w3.org/2000/svg';
+// Playback speed: ONE constant time scale for the whole flight (Nicolas 2026-09-28: the earlier two-speed playback,
+// 1/30 for the push and 1/4 for the climb, switched at burnout and made the on-screen motion lie about the physics).
+// On-screen motion is the model trajectory with time stretched 8x, so speeds on screen are proportional to the
+// model's. Why 8: at the default (40 psi, best fill) the water push lasts 0.053 s -> 0.42 s on screen (about 25 frames
+// at 60 fps, enough to watch the bottle empty) and the whole flight to the top 1.62 s -> 13 s. 1/5 would leave the
+// push only ~16 frames; 1/10 would stretch the climb to ~16 s. The stage head and the caption say "1/8 speed".
+var SLOW = 8;
+var fillEl = document.getElementById('fill'), psiEl = document.getElementById('psi');
+var STEP = C.FILL_STEP_ML;
+
+// ---------- scene geometry (SVG units) ----------
+// Close-up: 0.85 px per mm, so the bottle (2 L, 106 mm wide, neck 21.74 mm) is to scale. The frame follows the bottle.
+var K1 = 850;                                  // px per metre in the close-up
+var BX = 122, NY = 336;                        // bottle centre line, nozzle (neck mouth) at rest
+var FR1 = {x0:4, x1:224, y0:30, y1:418};       // close-up frame
+var GEO = M.bottleGeometry();
+var BTOP = NY - GEO.height * K1;               // top of the bottle (its base, pointing up)
+// Flight view: height to scale on a ruler in metres. Axis top from the model: the best height at the slider's top
+// pressure, +25 %, so the ruler stays the same for every pressure and heights can be compared by eye.
+var FR2 = {x0:232, x1:396, y0:30, y1:418};
+var RX = 268, GY2 = 404, AXTOP = 50;
+var BEST = M.bestFill(C.LAUNCH_PSI);             // recomputed from the model whenever the pressure changes
+var AXIS_M = Math.ceil(M.bestFill(C.PSI_MAX).apexM * 1.25 / 10) * 10;
+var K2 = (GY2 - AXTOP) / AXIS_M;               // px per metre in the flight view
+var FX = 330;                                  // the bottle's x in the flight view
+// Arrow scales (both views): solid push arrow 0.5 px per newton; dashed speed arrow 1.5 px per m/s.
+var PX_PER_N = 0.5, PX_PER_MS = 1.5;
+
+var svg = document.getElementById('scene');
+function el(tag, attrs, parent){ var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); (parent||svg).appendChild(e); return e; }
+function txt(x, y, s, attrs, parent){ var a = {x:x, y:y, 'font-size':12.5, 'font-weight':700, fill:'#2B2A33'}; for (var k in attrs) a[k] = attrs[k]; var t = el('text', a, parent); t.textContent = s; return t; }
+
+var defs = el('defs', {});
+var mk = el('marker', {id:'ah', viewBox:'0 0 10 10', refX:'6', refY:'5', markerWidth:'3.4', markerHeight:'3.4', orient:'auto-start-reverse'}, defs);
+el('path', {d:'M0,0 L10,5 L0,10 z', fill:'#E0562B'}, mk);
+var clip1 = el('clipPath', {id:'frame1'}, defs); el('rect', {x:FR1.x0, y:FR1.y0, width:FR1.x1-FR1.x0, height:FR1.y1-FR1.y0, rx:14}, clip1);
+
+// bottle outline from the model's radius profile (neck, shoulder, body, base)
+var outline = (function(){
+  var pts = [], n = 160, z, i;
+  var zs = [];
+  for (i = 0; i <= n; i++) zs.push(GEO.height * i / n);
+  zs.push(C.NECK_LEN_M, C.NECK_LEN_M + C.SHOULDER_LEN_M, C.NECK_LEN_M + C.SHOULDER_LEN_M + GEO.bodyLen);
+  zs.sort(function(a,b){ return a-b; });
+  var right = zs.map(function(z){ return [BX + M.radiusAt(z, GEO)*K1, NY - z*K1]; });
+  var left = zs.slice().reverse().map(function(z){ return [BX - M.radiusAt(z, GEO)*K1, NY - z*K1]; });
+  return right.concat(left);
+})();
+var outlineD = 'M' + outline.map(function(p){ return p[0].toFixed(2)+' '+p[1].toFixed(2); }).join(' L') + ' Z';
+var clipB = el('clipPath', {id:'inside'}, defs); el('path', {d:outlineD}, clipB);
+
+// frames and titles
+el('rect', {x:FR1.x0, y:FR1.y0, width:FR1.x1-FR1.x0, height:FR1.y1-FR1.y0, rx:14, fill:'#FBF6EC', stroke:'#c8dccf', 'stroke-width':1.2});
+el('rect', {x:FR2.x0, y:FR2.y0, width:FR2.x1-FR2.x0, height:FR2.y1-FR2.y0, rx:14, fill:'#FBF6EC', stroke:'#c8dccf', 'stroke-width':1.2});
+txt(FR1.x0 + 6, 21, 'Close-up, to scale', {'font-size':13.5});
+txt(FR2.x0 + 6, 21, 'Height, to scale', {'font-size':13.5});
+
+var g1 = el('g', {'clip-path':'url(#frame1)'});
+// ground, pad and ruler move together (the frame follows the bottle); drawn inside group 'world'
+var world = el('g', {}, g1);
+var GROUND_Y = NY + 46;                        // the cork and launcher, drawn by eye
+el('rect', {x:FR1.x0, y:GROUND_Y, width:FR1.x1-FR1.x0, height:400, fill:'#EDE6D6'}, world);
+el('line', {x1:FR1.x0, x2:FR1.x1, y1:GROUND_Y, y2:GROUND_Y, stroke:'#2B2A33', 'stroke-width':1.6}, world);
+// launcher: a stand and the cork (prop grey). The cork sits just under the neck and stays on the launcher.
+el('path', {d:'M'+(BX-30)+' '+GROUND_Y+' L'+(BX-12)+' '+(NY+26)+' L'+(BX+12)+' '+(NY+26)+' L'+(BX+30)+' '+GROUND_Y+' Z', fill:'#D9D3C7', stroke:'#2B2A33', 'stroke-width':1.4}, world);
+var cork = el('path', {d:'M'+(BX-9.5)+' '+NY+' L'+(BX+9.5)+' '+NY+' L'+(BX+12.5)+' '+(NY+26)+' L'+(BX-12.5)+' '+(NY+26)+' Z', fill:'#D9D3C7', stroke:'#2B2A33', 'stroke-width':1.4}, world);
+el('path', {d:'M'+(BX-30)+' '+(NY+36)+' C '+(BX-60)+' '+(NY+36)+' '+(BX-70)+' '+(NY+44)+' '+(FR1.x0)+' '+(NY+42), fill:'none', stroke:'#8d877c', 'stroke-width':3}, world);
+txt(FR1.x0 + 8, NY + 36, 'hose to pump', {'font-size':10.5, 'font-weight':400}, world);
+// ruler: distance climbed, zero at the neck's rest height; ticks every cm, labels every 10 cm
+var ruler = el('g', {}, world), rulerLabels = [];
+for (var cm = 0; cm <= 60; cm++) {
+  var yy = NY - cm * K1 / 100, big = cm % 10 === 0, mid = cm % 5 === 0;
+  el('line', {x1:FR1.x0 + 2, x2:FR1.x0 + (big ? 16 : mid ? 11 : 7), y1:yy, y2:yy, stroke:'#2B2A33', 'stroke-width':big ? 1.4 : 0.8}, ruler);
+  if (big && cm > 0) rulerLabels.push([txt(FR1.x0 + 19, yy + 4, String(cm), {'font-size':10.5, 'font-weight':700}, ruler), yy]);
+}
+var climbedBg = el('rect', {x:FR1.x0 + 2, y:FR1.y1 - 25, width:0, height:20, fill:'#FBF6EC'}, g1);
+var climbedT = txt(FR1.x0 + 8, FR1.y1 - 10, '', {'font-size':12}, g1);
+el('rect', {x:FR1.x0 + 2, y:34, width:62, height:14, fill:'#FBF6EC'}, g1);
+txt(FR1.x0 + 6, 44, 'cm climbed', {'font-size':10.5, 'font-weight':400}, g1);
+
+// jet (to scale: the neck's width), then the bottle on top
+var jet = el('rect', {x:(BX - C.NOZZLE_D_M/2*K1).toFixed(3), width:(C.NOZZLE_D_M*K1).toFixed(3), y:NY, height:0, fill:'#CFE7F4', stroke:'#8FBBD6', 'stroke-width':1}, g1);
+// arrows at the neck, to scale (1.5 px per m/s, speed compared with the bottle): the water's or the air's exit speed.
+// They start just below the neck and stop at the cork or the frame's edge; when cut off, the label says so.
+var NECK_A0 = NY + 4;
+var jetArrow = el('line', {x1:BX, x2:BX, y1:NECK_A0, y2:NECK_A0, stroke:'#E0562B', 'stroke-width':3, 'stroke-dasharray':'8 5', 'marker-end':'url(#ah)', display:'none'}, g1);
+var airOut = el('line', {x1:BX, x2:BX, y1:NECK_A0, y2:NECK_A0, stroke:'#E0562B', 'stroke-width':3, 'stroke-dasharray':'8 5', 'marker-end':'url(#ah)', display:'none'}, g1);
+var neckT = [0, 1, 2].map(function(i){ return txt(BX + 20, NY - 22 + 16 * i, '', {'font-size':11, 'font-weight':i === 1 ? 700 : 400, display:'none'}, g1); });
+var bottleG = el('g', {}, g1);
+el('path', {d:outlineD, fill:'#F4F1EA'}, bottleG);
+var inside = el('g', {'clip-path':'url(#inside)'}, bottleG);
+var water = el('rect', {x:BX - 60, width:120, y:NY, height:0, fill:'#CFE7F4'}, inside);
+var surf = el('line', {x1:BX - 60, x2:BX + 60, y1:NY, y2:NY, stroke:'#8FBBD6', 'stroke-width':2}, inside);
+el('path', {d:outlineD, fill:'none', stroke:'#2B2A33', 'stroke-width':2.2, 'stroke-linejoin':'round'}, bottleG);
+var airT = txt(BX, 0, '', {'text-anchor':'middle', 'font-size':12}, bottleG);
+var airT2 = txt(BX, 0, '', {'text-anchor':'middle', 'font-size':12}, bottleG);
+var waterT = txt(BX, 0, '', {'text-anchor':'middle', 'font-size':12}, bottleG);
+// push arrow (solid, on the right) and speed arrow (dashed, on the left), both from the bottle's middle
+var ARROW_Y = NY - GEO.height * K1 * 0.42;
+var push = el('line', {x1:BX + 62, x2:BX + 62, y1:ARROW_Y, y2:ARROW_Y, stroke:'#E0562B', 'stroke-width':5, 'marker-end':'url(#ah)', display:'none'}, g1);
+var pushT = txt(BX + 62, 0, '', {'text-anchor':'middle', 'font-size':11.5, display:'none'}, g1);
+var pushT2 = txt(BX + 62, 0, '', {'text-anchor':'middle', 'font-size':11.5, display:'none'}, g1);
+var spd1 = el('line', {x1:BX - 64, x2:BX - 64, y1:ARROW_Y, y2:ARROW_Y, stroke:'#E0562B', 'stroke-width':3.5, 'stroke-dasharray':'9 6', 'marker-end':'url(#ah)', display:'none'}, g1);
+var spd1T = txt(BX - 64, 0, '', {'text-anchor':'middle', 'font-size':11.5, display:'none'}, g1);
+// 10 cm scale bar (top right of the close-up)
+el('line', {x1:FR1.x1 - 12 - 0.1*K1, x2:FR1.x1 - 12, y1:44, y2:44, stroke:'#2B2A33', 'stroke-width':2});
+el('line', {x1:FR1.x1 - 12 - 0.1*K1, x2:FR1.x1 - 12 - 0.1*K1, y1:40, y2:48, stroke:'#2B2A33', 'stroke-width':1.4});
+el('line', {x1:FR1.x1 - 12, x2:FR1.x1 - 12, y1:40, y2:48, stroke:'#2B2A33', 'stroke-width':1.4});
+txt(FR1.x1 - 12 - 0.05*K1, 60, '10 cm', {'text-anchor':'middle', 'font-size':11});
+
+// flight view: ruler in metres, ground, the bottle at true size with a ring
+el('rect', {x:FR2.x0 + 1, y:GY2, width:FR2.x1 - FR2.x0 - 2, height:FR2.y1 - GY2 - 1, fill:'#EDE6D6'});
+el('line', {x1:FR2.x0, x2:FR2.x1, y1:GY2, y2:GY2, stroke:'#2B2A33', 'stroke-width':1.6});
+el('line', {x1:RX, x2:RX, y1:GY2, y2:AXTOP, stroke:'#2B2A33', 'stroke-width':1.4});
+for (var m = 0; m <= AXIS_M; m += 5) {
+  var ym = GY2 - m * K2, bigm = m % 10 === 0;
+  el('line', {x1:RX - (bigm ? 9 : 5), x2:RX, y1:ym, y2:ym, stroke:'#2B2A33', 'stroke-width':bigm ? 1.4 : 0.9});
+  if (bigm) txt(RX - 12, m === 0 ? ym - 3 : ym + 4, m + ' m', {'text-anchor':'end', 'font-size':11});
+}
+var apexLine = el('line', {x1:RX, x2:FX - 12, y1:0, y2:0, stroke:'#2B2A33', 'stroke-width':1.3, display:'none'});
+var apexT = txt(RX + 4, 0, '', {'font-size':11.5, display:'none'});
+var fb = el('rect', {x:(FX - C.BOTTLE_D_M/2*K2).toFixed(3), width:(C.BOTTLE_D_M*K2).toFixed(3), y:0, height:(GEO.height*K2).toFixed(3), fill:'#2B2A33'});
+var ring = el('circle', {cx:FX, cy:0, r:9, fill:'none', stroke:'#2B2A33', 'stroke-width':1.3});
+var ringT = txt(FX + 13, 0, 'bottle', {'font-size':11.5});
+var ringT2 = txt(FX + 13, 0, '(true size)', {'font-size':10.5, 'font-weight':400});
+var spd2 = el('line', {x1:FX - 16, x2:FX - 16, y1:0, y2:0, stroke:'#E0562B', 'stroke-width':3.5, 'stroke-dasharray':'9 6', 'marker-end':'url(#ah)', display:'none'});
+
+// ---------- state ----------
+var S = { fill: 700, psi: C.LAUNCH_PSI, run: null, state: 'ready', launches: [], showCurve: false, lastFlight: null, t: 0 };
+var headEl = document.getElementById('head'), linesEl = document.getElementById('lines'), stageHead = document.getElementById('stageHead');
+var launchBtn = document.getElementById('launch');
+function fmt(n){ return String(n); }
+
+// Interpolate the recorded flight at model time t (s)
+function at(f, t){
+  var s = f.samples, n = s.length;
+  if (!n) return {t:0, h:0, v:0, Vw:f.fillMl*1e-6, P:f.P0, F:0, phase:'ready'};
+  if (t <= s[0].t) return s[0];
+  if (t >= s[n-1].t) return s[n-1];
+  var lo = 0, hi = n - 1;
+  while (hi - lo > 1) { var mid = (lo + hi) >> 1; if (s[mid].t <= t) lo = mid; else hi = mid; }
+  var a = s[lo], b = s[hi], u = (t - a.t) / (b.t - a.t), o = {phase: a.phase === 'top' ? 'top' : (a.phase === b.phase ? a.phase : a.phase)};
+  ['t','h','v','Vw','P','F','ve'].forEach(function(k){ var x = a[k], y = b[k]; o[k] = (x == null || y == null) ? (x == null ? y : x) : x + (y - x) * u; });
+  // thrust is zero once a phase has ended (the last sample of a phase carries F = 0)
+  if (a.phase !== b.phase) { o.F = 0; o.phase = b.phase; o.Vw = b.Vw; }
+  return o;
+}
+// model time of the end of the thrust (water + air puff)
+function thrustEnd(f){ return f.burnout.t; }
+function wallDuration(f){ return Math.max(thrustEnd(f), f.tApex) * SLOW * 1000; }
+function modelTimeAt(f, ms){ return ms / SLOW / 1000; }   // one constant scale: no switch anywhere
+
+// the jet's tail after the water stops: the last water keeps the speed it left with (bottle speed minus jet speed) and
+// falls freely; the close-up follows the bottle, so it is drawn at (tail height - bottle height).
+function jetTailRel(f, st){
+  if (!f.water || st.t <= f.water.t) return 0;
+  var w = f.water, veEnd = f.waterLeftMl > 0.5 ? 0 : Math.sqrt(Math.max(0, 2 * (w.P - C.P_ATM) / (C.RHO_WATER * (1 - Math.pow(M.nozzleArea()/M.bottleArea(), 2)))));
+  var dt = st.t - w.t, yTail = w.h + (w.v - veEnd) * dt - 0.5 * C.G * dt * dt;
+  return yTail - st.h;   // metres, negative = below the neck
+}
+
+function draw(st){
+  var f = S.lastFlight || M.flight(S.fill, {record:true, psi:S.psi});
+  var Vw = st ? st.Vw : S.fill * 1e-6, h = st ? st.h : 0, v = st ? st.v : 0, F = st ? st.F : 0, phase = st ? st.phase : 'ready';
+  var P = st ? st.P : (f.airMl > 0 ? f.P0 : C.P_ATM);
+  // water level from the outline's own volume
+  var zl = M.levelForMl(Vw * 1e6), yl = NY - zl * K1;
+  water.setAttribute('y', yl.toFixed(3)); water.setAttribute('height', Math.max(0, NY - yl + 1).toFixed(3));
+  surf.setAttribute('y1', yl.toFixed(3)); surf.setAttribute('y2', yl.toFixed(3));
+  surf.setAttribute('display', Vw > 1e-7 && Vw * 1e6 < C.BOTTLE_ML - 0.5 ? 'inline' : 'none');
+  water.setAttribute('display', Vw > 1e-7 ? 'inline' : 'none');
+  // labels inside the bottle: the air (with its gauge pressure) and the water
+  var airMl = C.BOTTLE_ML - Vw * 1e6;
+  if (airMl > 1) {
+    var ya = (BTOP + yl) / 2, gaugePsi = Math.max(0, (P - C.P_ATM) / C.PA_PER_PSI);
+    var roomA = yl - BTOP;
+    airT.setAttribute('display', roomA > 44 ? 'inline' : 'none'); airT2.setAttribute('display', roomA > 44 ? 'inline' : 'none');
+    airT.setAttribute('y', (ya - 5).toFixed(1)); airT2.setAttribute('y', (ya + 13).toFixed(1));
+    // under 1 psi (but still above outside pressure) says so, rather than a rounded "0 psi" while water still moves
+    var stillPushing = P - C.P_ATM >= 1;
+    airT.textContent = gaugePsi >= 1 ? 'squeezed air' : 'air';
+    airT2.textContent = gaugePsi >= 1 ? Math.round(gaugePsi) + ' psi' : (stillPushing ? 'under 1 psi' : '0 psi');
+  } else { airT.setAttribute('display', 'none'); airT2.setAttribute('display', 'none'); }
+  var wy = yl + 16, zw = (NY - wy + 4) / K1;
+  var showW = Vw * 1e6 >= 0.5 && NY - yl > 24 && 2 * M.radiusAt(zw, GEO) * K1 > 84;
+  waterT.setAttribute('display', showW ? 'inline' : 'none'); waterT.setAttribute('y', wy.toFixed(1));
+  var wMl = Vw * 1e6;                                             // no false precision: 50 mL steps, 10 mL under 100 mL
+  waterT.textContent = 'water ' + (wMl >= 100 ? Math.round(wMl / 50) * 50 : Math.round(wMl / 10) * 10) + ' mL';
+  // the world (ground, pad, ruler) moves down by the height climbed
+  world.setAttribute('transform', 'translate(0,' + (h * K1).toFixed(3) + ')');
+  var hideCork = phase !== 'ready';
+  climbedT.textContent = h * K1 > (FR1.y1 - NY - 14) ? 'climbed ' + M.roundM(h) : '';
+  climbedBg.setAttribute('width', climbedT.textContent ? 96 : 0);
+  rulerLabels.forEach(function(r){ var y = r[1] + h * K1; r[0].setAttribute('display', (climbedT.textContent && y > FR1.y1 - 38) || y < FR1.y0 + 12 ? 'none' : 'inline'); });
+  // jet: while water is leaving, from the neck down to the cork on the pad (or out of the frame)
+  var padY = NY + h * K1, jetOn = phase === 'water' && F > 0;
+  var jy0 = NY, jy1 = Math.min(padY, FR1.y1 + 2);
+  if (!jetOn && f.water && phase !== 'ready' && st) {           // the tail of the jet falling away
+    var rel = jetTailRel(f, st); jy0 = NY - rel * K1;
+    if (f.waterLeftMl > 0.5) jy0 = FR1.y1 + 10;                  // flow just stopped: no jet leaves
+  }
+  var jetShown = (jetOn || (phase !== 'ready' && f.water && jy0 < jy1 - 0.5 && st && st.t < f.water.t + 0.2)) && jy1 > jy0;
+  jet.setAttribute('y', jy0.toFixed(3)); jet.setAttribute('height', Math.max(0, jy1 - jy0).toFixed(3));
+  jet.setAttribute('display', jetShown ? 'inline' : 'none');
+  // neck arrows: length = exit speed x 1.5 px per m/s, cut off at the cork or the frame edge (and the label says so)
+  var airOn = phase === 'air' && F > 0, ve = st && st.ve ? st.ve : 0;
+  var room = Math.min(padY, FR1.y1 - 6) - NECK_A0, full = ve * PX_PER_MS, len = Math.max(0, Math.min(full, room)), clipped = full > room + 1e-9;
+  var neckOn = (jetOn || airOn) && len > 6, neckTxt = (jetOn || airOn) && ve > 0;
+  [jetArrow, airOut].forEach(function(a, i){
+    var on = neckOn && (i === 0 ? jetOn : airOn);
+    a.setAttribute('display', on ? 'inline' : 'none'); a.setAttribute('y2', (NECK_A0 + len).toFixed(3));
+  });
+  var vShown = airOn ? (ve >= 100 ? Math.round(ve / 10) * 10 : Math.round(ve)) : Math.round(ve);
+  var neckWords = [jetOn ? 'water out' : 'air out', (airOn && ve >= 100 ? 'about ' : '') + vShown + ' m/s', neckOn && clipped ? '(arrow cut off)' : ''];
+  neckT.forEach(function(t, i){ t.textContent = neckWords[i]; t.setAttribute('display', neckTxt && neckWords[i] ? 'inline' : 'none'); });
+  // push arrow (solid) = model thrust; speed arrows (dashed) = model speed
+  var pl = F * PX_PER_N;
+  push.setAttribute('y2', (ARROW_Y - pl).toFixed(3)); push.setAttribute('display', pl > 6 ? 'inline' : 'none');
+  pushT.setAttribute('display', pl > 6 ? 'inline' : 'none'); pushT2.setAttribute('display', pl > 6 ? 'inline' : 'none');
+  pushT.setAttribute('y', (ARROW_Y + 15).toFixed(1)); pushT2.setAttribute('y', (ARROW_Y + 32).toFixed(1));
+  pushT.textContent = 'push'; pushT2.textContent = Math.round(F) + ' N';
+  var sl = Math.max(0, v) * PX_PER_MS;
+  spd1.setAttribute('y2', (ARROW_Y - sl).toFixed(3)); spd1.setAttribute('display', sl > 6 ? 'inline' : 'none');
+  spd1T.setAttribute('display', sl > 6 ? 'inline' : 'none'); spd1T.setAttribute('y', (ARROW_Y + 16).toFixed(1));
+  spd1T.textContent = Math.round(v) + ' m/s';
+  // flight view
+  var yb = GY2 - h * K2;                                          // the neck end of the bottle
+  fb.setAttribute('y', (yb - GEO.height * K2).toFixed(3));
+  var yc = yb - GEO.height * K2 / 2;
+  ring.setAttribute('cy', yc.toFixed(3));
+  var yt = Math.min(yc, GY2 - 14);
+  ringT.setAttribute('y', (yt - 4).toFixed(1)); ringT2.setAttribute('y', (yt + 12).toFixed(1));
+  var sl2 = Math.max(0, v) * PX_PER_MS;
+  spd2.setAttribute('y1', yc.toFixed(3)); spd2.setAttribute('y2', (yc - sl2).toFixed(3));
+  spd2.setAttribute('display', sl2 > 6 ? 'inline' : 'none');
+  var top = phase === 'top' && st && f.apexM > 0.005;
+  ringT.setAttribute('display', top ? 'none' : 'inline'); ringT2.setAttribute('display', top ? 'none' : 'inline');
+  apexLine.setAttribute('display', top ? 'inline' : 'none'); apexT.setAttribute('display', top ? 'inline' : 'none');
+  if (top) {
+    var ay = GY2 - f.apexM * K2;
+    apexLine.setAttribute('y1', ay.toFixed(3)); apexLine.setAttribute('y2', ay.toFixed(3));
+    apexT.setAttribute('y', (ay - 5).toFixed(1)); apexT.textContent = 'top ' + M.roundM(f.apexM);
+  }
+  S.drawn = {Vw: Vw, h: h, v: v, F: F, phase: phase, yl: yl, jetShown: jetShown, jetOn: jetOn, jy0: jy0, jy1: jy1, pushLen: push.getAttribute('display') === 'none' ? 0 : pl,
+    spdLen: spd1.getAttribute('display') === 'none' ? 0 : sl, spd2Len: spd2.getAttribute('display') === 'none' ? 0 : sl2, yb: yb, worldDy: h * K1, apexShown: top,
+    neckOn: neckOn, neckKind: neckOn ? (jetOn ? 'water' : 'air') : null, neckVe: ve, neckLen: neckOn ? len : 0, neckFull: full, neckRoom: room, neckClipped: neckOn && clipped,
+    neckLabel: neckTxt ? neckWords.join(' ').trim() : '', airLabel: airT2.getAttribute('display') === 'none' ? '' : airT2.textContent, gaugePa: P - C.P_ATM};
+}
+
+// ---------- chart ----------
+var chart = document.getElementById('chart');
+var CH = {x0:44, x1:330, y0:10, y1:160};
+// the comparison rocket with a nose cone and fins (Barrio-Perotti 2009), drawn dashed with the whole curve
+var FIN_BEST = M.bestFill(C.LAUNCH_PSI, M.finnedOpt());
+var CHART_M = 40;
+// the chart's height axis follows the chosen pressure (both curves recomputed from the model)
+function setPressureModel(){
+  BEST = M.bestFill(S.psi); FIN_BEST = M.bestFill(S.psi, M.finnedOpt());
+  CHART_M = Math.ceil(Math.max(BEST.apexM, FIN_BEST.apexM) * 1.05 / 10) * 10;
+}
+function cx(ml){ return CH.x0 + (CH.x1 - CH.x0) * ml / C.BOTTLE_ML; }
+function cy(m){ return CH.y1 - (CH.y1 - CH.y0) * m / CHART_M; }
+// does the segment p-q cross the box B {x0,x1,y0,y1}? (Liang-Barsky clip)
+function segHitsBox(p, q, B){
+  var t0 = 0, t1 = 1, dx = q[0] - p[0], dy = q[1] - p[1];
+  var P = [[-dx, p[0] - B.x0], [dx, B.x1 - p[0]], [-dy, p[1] - B.y0], [dy, B.y1 - p[1]]];
+  for (var i = 0; i < 4; i++) {
+    var a = P[i][0], b = P[i][1];
+    if (a === 0) { if (b < 0) return false; continue; }
+    var r = b / a; if (a < 0) { if (r > t1) return false; if (r > t0) t0 = r; } else { if (r < t0) return false; if (r < t1) t1 = r; }
+  }
+  return true;
+}
+function drawChart(){
+  while (chart.firstChild) chart.removeChild(chart.firstChild);
+  el('rect', {x:CH.x0, y:CH.y0, width:CH.x1 - CH.x0, height:CH.y1 - CH.y0, fill:'#FBF6EC'}, chart);
+  for (var m = 0; m <= CHART_M; m += 10) {
+    el('line', {x1:CH.x0, x2:CH.x1, y1:cy(m), y2:cy(m), stroke:'#c8dccf', 'stroke-width':0.8}, chart);
+    txt(CH.x0 - 5, cy(m) + 4, m + ' m', {'text-anchor':'end', 'font-size':11, 'font-weight':400}, chart);
+  }
+  [0, 500, 1000, 1500, 2000].forEach(function(ml){
+    el('line', {x1:cx(ml), x2:cx(ml), y1:CH.y1, y2:CH.y1 + 4, stroke:'#2B2A33'}, chart);
+    txt(cx(ml), CH.y1 + 16, String(ml), {'text-anchor':'middle', 'font-size':11, 'font-weight':400}, chart);
+  });
+  txt((CH.x0 + CH.x1) / 2, CH.y1 + 31, 'mL of water (2000 = full)', {'text-anchor':'middle', 'font-size':11, 'font-weight':700}, chart);
+  el('line', {x1:CH.x0, x2:CH.x1, y1:CH.y1, y2:CH.y1, stroke:'#2B2A33', 'stroke-width':1.2}, chart);
+  el('line', {x1:CH.x0, x2:CH.x0, y1:CH.y0, y2:CH.y1, stroke:'#2B2A33', 'stroke-width':1.2}, chart);
+  // the page's third, marked on the axis
+  var x3 = cx(C.BOTTLE_ML * C.PAGE_FILL_FRACTION);
+  el('path', {d:'M'+x3+' '+(CH.y1 - 1)+' l-5 -8 l10 0 z', fill:'#3f6f56'}, chart);
+  var p3Label = txt(x3, CH.y1 - 12, "page's ⅓", {'text-anchor':'middle', 'font-size':10.5, fill:'#345c47'}, chart);
+  if (S.showCurve) {
+    var fpts = M.curve(S.psi, null, M.finnedOpt());
+    el('polyline', {points: fpts.map(function(p){ return cx(p.fillMl).toFixed(2)+','+cy(p.apexM).toFixed(2); }).join(' '), fill:'none', stroke:'#8d877c', 'stroke-width':1.8, 'stroke-dasharray':'5 4'}, chart);
+    txt(cx(FIN_BEST.fillMl) + 24, cy(FIN_BEST.apexM) - 4, 'with nose cone + fins', {'font-size':10.5, 'font-weight':400, fill:'#5f5a50'}, chart);
+    var pts = M.curve(S.psi);
+    el('polyline', {points: pts.map(function(p){ return cx(p.fillMl).toFixed(2)+','+cy(p.apexM).toFixed(2); }).join(' '), fill:'none', stroke:'#3f6f56', 'stroke-width':2}, chart);
+    el('circle', {cx:cx(BEST.fillMl), cy:cy(BEST.apexM), r:6, fill:'none', stroke:'#3f6f56', 'stroke-width':2}, chart);
+    // the label sits next to the best marker, in two short lines, clear of both curves and of the "page's ⅓" label at
+    // every pressure (review 3 N5; shots.js checks all slider pressures): the first free spot of a few candidates
+    var l1 = txt(0, 0, 'bare bottle, best:', {'font-size':11, fill:'#2a4a39'}, chart);
+    var l2 = txt(0, 0, 'about ' + Math.round(BEST.fillMl / 10) * 10 + ' mL, ' + M.roundM(BEST.apexM), {'font-size':11, fill:'#2a4a39'}, chart);
+    var segs = [pts, fpts].map(function(P){ return P.map(function(p){ return [cx(p.fillMl), cy(p.apexM)]; }); });
+    var avoid = [p3Label.getBBox()];
+    var place = function(bx, by){ l1.setAttribute('x', bx); l1.setAttribute('y', by); l2.setAttribute('x', bx); l2.setAttribute('y', by + 13); };
+    place(0, 0);
+    var a0 = l1.getBBox(), b0 = l2.getBBox(), pad = 2;
+    var box = {x0:Math.min(a0.x, b0.x) - pad, x1:Math.max(a0.x + a0.width, b0.x + b0.width) + pad, y0:a0.y - pad, y1:b0.y + b0.height + pad};
+    var free = function(bx, by){
+      var B = {x0:box.x0 + bx, x1:box.x1 + bx, y0:box.y0 + by, y1:box.y1 + by};
+      if (B.x0 < CH.x0 || B.x1 > CH.x1 || B.y0 < CH.y0 || B.y1 > CH.y1) return false;
+      for (var i = 0; i < avoid.length; i++) { var o = avoid[i]; if (B.x0 < o.x + o.width && o.x < B.x1 && B.y0 < o.y + o.height && o.y < B.y1) return false; }
+      for (var k = 0; k < segs.length; k++) for (var j = 1; j < segs[k].length; j++) if (segHitsBox(segs[k][j-1], segs[k][j], B)) return false;
+      return true;
+    };
+    // candidates on a grid over the chart, nearest to the best marker first (the preferred spot, just under it, first)
+    var mx = cx(BEST.fillMl), my = cy(BEST.apexM), cands = [[mx + 10, my + 34]];
+    for (var gx = CH.x0; gx <= CH.x1; gx += 6) for (var gy = CH.y0; gy <= CH.y1; gy += 3) cands.push([gx, gy]);
+    var d2 = function(c){ return c === cands[0] ? -1 : Math.pow(c[0] - mx, 2) + Math.pow(c[1] + 6 - my, 2); };
+    cands.sort(function(a, b){ return d2(a) - d2(b); });
+    var spot = cands[0];
+    for (var si = 0; si < cands.length; si++) if (free(cands[si][0], cands[si][1])) { spot = cands[si]; break; }
+    place(spot[0], spot[1]);
+  }
+  var cn = document.getElementById('curveNote');
+  cn.hidden = !S.showCurve;
+  cn.textContent = S.showCurve ? 'On the chart, the solid line is this bare bottle at ' + S.psi + ' psi. The dashed line is the same model for a ' + Math.round(C.FINNED_ROCKET_KG * 1000) + ' g rocket with a nose cone and fins (its best: about ' + Math.round(FIN_BEST.fillMl / 10) * 10 + ' mL, ' + M.roundM(FIN_BEST.apexM) + '). See "Why?", part 7.' : '';
+  // only the launches made at the chosen pressure (the curves are for that pressure)
+  var here = S.launches.filter(function(L){ return L.psi === S.psi; });
+  document.getElementById('chartSub').textContent = 'Each launch at ' + S.psi + ' psi adds a dot: how high it went (from the model) against how much water.' + (here.length < S.launches.length ? ' Launches at other pressures come back when you set that pressure again.' : '');
+  here.forEach(function(L, i){
+    var last = i === here.length - 1;
+    el('circle', {cx:cx(L.fillMl), cy:cy(L.apexM), r:last ? 5 : 4, fill:last ? '#2B2A33' : '#fff', stroke:'#2B2A33', 'stroke-width':1.5}, chart);
+  });
+}
+
+// ---------- readout ----------
+function setReadout(f, done){
+  var fillMl = S.fill;
+  if (!done) {
+    headEl.textContent = fillMl >= C.BOTTLE_ML ? 'Full to the top: no room for air.' : 'Ready: ' + fillMl + ' mL of water, ' + M.fillWords(fillMl) + '.';
+    linesEl.innerHTML = '';
+    var p = document.createElement('p');
+    var btnMl = Math.round(C.BOTTLE_ML * C.PAGE_FILL_FRACTION / STEP) * STEP;
+    p.textContent = fillMl >= C.BOTTLE_ML ? 'Press Launch to see what a full bottle does.' : (fillMl === btnMl ? btnMl + ' mL is the nearest step to the page\'s third (' + Math.round(C.BOTTLE_ML * C.PAGE_FILL_FRACTION) + ' mL). ' : '') + 'The air above the water is pumped to ' + S.psi + ' psi. Press Launch, then try other amounts: which one goes highest?';
+    linesEl.appendChild(p);
+    return;
+  }
+  var d = M.describe(f, BEST);
+  headEl.textContent = d.head;
+  linesEl.innerHTML = '';
+  d.lines.forEach(function(s){ var p = document.createElement('p'); p.textContent = s; linesEl.appendChild(p); });
+}
+// while the bottle is in the air the card says so (review 3 N2), never "Ready ... Press Launch"
+function setFlyingReadout(){
+  headEl.textContent = 'Flying… ' + S.fill + ' mL of water, ' + S.psi + ' psi.';
+  linesEl.innerHTML = '';
+  var p = document.createElement('p');
+  p.textContent = 'Watch the picture. When the bottle reaches the top, how high it went and why shows up here.';
+  linesEl.appendChild(p);
+}
+function setStageHead(st, f){
+  if (!st || st.phase === 'ready') { stageHead.textContent = S.fill >= C.BOTTLE_ML ? 'No air to squeeze.' : 'On the pad: ' + S.fill + ' mL of water, pumped to ' + S.psi + ' psi.'; return; }
+  if (st.phase === 'top') { stageHead.textContent = f.lifted && f.apexM >= 0.005 ? 'Top: about ' + M.roundM(f.apexM) + ', ' + M.fmtS(f.tApex) + ' after launch. Then it falls back down.' : (f.airMl > 0 ? 'Over: it never left the pad.' : 'Nothing happened: no air, no push.'); return; }
+  stageHead.textContent = M.fmtClock(st.t) + ' after the cork lets go · shown at 1/' + SLOW + ' speed';
+}
+
+// ---------- run ----------
+var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function setFill(ml){
+  cancelRun();
+  S.fill = Math.max(0, Math.min(C.BOTTLE_ML, Math.round(ml / STEP) * STEP));
+  fillEl.value = S.fill / STEP;
+  document.getElementById('fillOut').textContent = S.fill + ' mL · ' + M.fillWords(S.fill);
+  S.lastFlight = M.flight(S.fill, {record:true, psi:S.psi});
+  S.state = 'ready';
+  draw(null); setReadout(S.lastFlight, false); setStageHead(null, S.lastFlight);
+  cork.setAttribute('display', 'inline');
+}
+function setPsi(p){
+  cancelRun();
+  S.psi = Math.max(C.PSI_MIN, Math.min(C.PSI_MAX, Math.round(p / C.PSI_STEP) * C.PSI_STEP));
+  psiEl.value = S.psi;
+  document.getElementById('psiOut').textContent = S.psi + ' psi';
+  setPressureModel();
+  setFill(S.fill); drawChart();
+}
+function cancelRun(){ if (S.run) { cancelAnimationFrame(S.run.raf); S.run = null; } launchBtn.disabled = false; launchBtn.textContent = 'Launch'; }
+function finish(f){
+  S.run = null; S.state = 'done';
+  var st = f.samples[f.samples.length - 1];
+  draw(st); setStageHead(st, f); setReadout(f, true);
+  launchBtn.disabled = false; launchBtn.textContent = 'Launch again';
+  S.launches.push({fillMl: f.fillMl, apexM: f.apexM, psi: f.psi}); drawChart();
+}
+function launch(){
+  if (S.run) return;
+  var f = S.lastFlight = M.flight(S.fill, {record:true, psi:S.psi});
+  // nothing can move without squeezed air: a full bottle goes straight to the result
+  if (!(f.airMl > 0) || reduce) { finish(f); return; }
+  launchBtn.disabled = true; launchBtn.textContent = 'Flying…';
+  S.state = 'running'; setFlyingReadout();
+  var dur = wallDuration(f), t0 = null;
+  S.run = {f: f, dur: dur, raf: 0, manual: false};
+  // one animation frame at ms after launch (wall clock); shots.js drives it with simulated times via __sim.runAt
+  var frame = function(ms){
+    if (ms >= dur) { finish(f); return false; }
+    var st = at(f, modelTimeAt(f, ms));
+    draw(st); setStageHead(st, f);
+    return true;
+  };
+  var stepFn = function(now){
+    if (!S.run || S.run.manual) return;
+    if (t0 == null) t0 = now;
+    if (frame(now - t0)) S.run.raf = requestAnimationFrame(stepFn);
+  };
+  S.run.frame = frame;
+  S.run.raf = requestAnimationFrame(stepFn);
+}
+
+fillEl.addEventListener('input', function(){ setFill(+fillEl.value * STEP); });
+[].forEach.call(document.querySelectorAll('.step[data-d]'), function(b){ b.addEventListener('click', function(){ setFill(S.fill + (+b.dataset.d) * STEP); }); });
+[].forEach.call(document.querySelectorAll('.step[data-p]'), function(b){ b.addEventListener('click', function(){ setPsi(S.psi + (+b.dataset.p) * C.PSI_STEP); }); });
+psiEl.addEventListener('input', function(){ setPsi(+psiEl.value); });
+launchBtn.addEventListener('click', launch);
+svg.addEventListener('click', launch);
+document.getElementById('third').addEventListener('click', function(){ setFill(C.BOTTLE_ML * C.PAGE_FILL_FRACTION); });
+document.getElementById('curveBtn').addEventListener('click', function(){
+  S.showCurve = !S.showCurve; this.setAttribute('aria-pressed', String(S.showCurve));
+  this.textContent = S.showCurve ? "Hide the model's curve" : "Show the model's whole curve"; drawChart(); });
+document.getElementById('clearBtn').addEventListener('click', function(){ S.launches = []; drawChart(); });
+
+// ---------- "Why?" numbers: printed text must match the model ----------
+function whyMismatch(){
+  var N = M.whyNumbers(), out = [];
+  var alias = {psi2:'psi', psi3:'psi', bestBoV2:'bestBoV', thirdMl2:'thirdMl', nozzleMm2:'nozzleMm', diamMm2:'diamMm', cd2:'cd', heavyG2:'heavyG', cdFin2:'cdFin'};
+  [].forEach.call(document.querySelectorAll('[data-n]'), function(e){
+    var k = e.getAttribute('data-n'), want = N[k] != null ? N[k] : N[alias[k]];
+    if (want == null) out.push(k + ': no model value');
+    else if (e.textContent !== want) out.push(k + ': page "' + e.textContent + '" vs model "' + want + '"');
+  });
+  return out;
+}
+
+// test hooks (shots.js)
+window.__sim = {
+  set: setFill, setPsi: setPsi, psi: function(){ return S.psi; }, state: function(){ return S.state; }, flight: function(){ return S.lastFlight; },
+  showAt: function(t){ var f = S.lastFlight, st = at(f, t); draw(st); setStageHead(st, f); return S.drawn; },
+  frameAtModelTime: function(t){ var f = S.lastFlight; var st = t == null ? null : at(f, t); draw(st); return S.drawn; },
+  drawn: function(){ return S.drawn; }, whyMismatch: whyMismatch, launches: function(){ return S.launches; },
+  geom: {K1:K1, K2:K2, NY:NY, GY2:GY2, BX:BX, BTOP:BTOP, FR1:FR1, FR2:FR2, AXIS_M:AXIS_M, PX_PER_N:PX_PER_N, PX_PER_MS:PX_PER_MS, SLOW:SLOW, outline:outline, jetWidth:+jet.getAttribute('width'), fbW:+fb.getAttribute('width'), fbH:+fb.getAttribute('height')},
+  // stop the real clock and draw the running animation at ms after launch (deterministic screenshots)
+  runAt: function(ms){ if (!S.run) return false; S.run.manual = true; cancelAnimationFrame(S.run.raf); var r = S.run.frame(ms); return r; },
+  chartM: function(){ return CHART_M; }, finBest: function(){ return FIN_BEST; },
+  wallDuration: function(){ return wallDuration(S.lastFlight); }, modelTimeAt: function(ms){ return modelTimeAt(S.lastFlight, ms); },
+  best: function(){ return BEST; }
+};
+
+setFill(700);
+drawChart();
+})();
+</script>
+<!-- little-lab-web: embed height (added by scripts/sync-sims.mjs; tells the embedding page how tall the sim is) -->
+<script>
+(function () {
+  if (window.parent === window) return;
+  var last = 0;
+  function send() {
+    var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h > 0 && h !== last) {
+      last = h;
+      window.parent.postMessage({ type: "little-lab-sim-height", height: h }, "*");
+    }
+  }
+  if (window.ResizeObserver) new ResizeObserver(send).observe(document.documentElement);
+  window.addEventListener("load", send);
+  window.addEventListener("resize", send);
+  send();
+})();
+</script>
+</body>
+</html>
