@@ -250,6 +250,11 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     ],
     products: [
       {
+        name: "Fleischmann's Canada Corn Starch, 1kg/2.2 lbs",
+        asin: "B0746DFXN8",
+        note: "Pure cornstarch, ~1 kg. Spoon until firm poke / slow drip. (Argo 35 oz B0045DMLXM had no offers.)",
+      },
+      {
         name: "Nordic Ware Baker's Half Sheet",
         asin: "B00SRSP9VM",
         note: "Rimmed sheet under the bowl. Any tray with sides works.",
@@ -377,16 +382,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
       "cotton swab or tip of a finger",
       "towel",
     ],
-    products: [
-      {
-        name: "Ground cinnamon",
-        note: "Kitchen staple — any brand. Sprinkle enough for a dusty film.",
-      },
-      {
-        name: "Dish soap",
-        note: "One drop. What you already have at the sink.",
-      },
-    ],
+    products: [],
     prep: "",
     safety:
       "No tasting cinnamon water or soap. Keep soap out of eyes. Cinnamon stains light surfaces.",

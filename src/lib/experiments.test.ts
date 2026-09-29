@@ -195,8 +195,16 @@ test("cornstarch is a winner from 2026-09-26 with Nicolas's home note", () => {
     [null, null, pour?.imageUrl, play?.imageUrl],
   );
   assert.deepEqual(cornstarch.sayThis, {});
+  assert.ok(cornstarch.products?.some((p) => p.asin === "B0746DFXN8"));
   assert.ok(cornstarch.products?.some((p) => p.asin === "B00SRSP9VM"));
   assert.ok(cornstarch.products?.some((p) => p.asin === "B07G2Z6CLG"));
+  assert.equal(cornstarch.products?.length, 3);
+});
+
+test("cinnamon-soap-rush has no Grab bag products", () => {
+  const cinnamon = experimentSeeds.find((e) => e.id === "cinnamon-soap-rush");
+  assert.ok(cinnamon);
+  assert.equal((cinnamon.products ?? []).length, 0);
 });
 
 test("water-bottle-rocket is planned for 2026-10-03 with little-lab materials", () => {
