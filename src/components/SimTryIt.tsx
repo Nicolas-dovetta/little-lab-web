@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { SIM_HEIGHT_MESSAGE, sanitizeSimHeight, type SimEmbed } from "@/lib/sims";
+import { SIM_ANCHOR_ID, SIM_HEIGHT_MESSAGE, sanitizeSimHeight, type SimEmbed } from "@/lib/sims";
 
 /**
  * "Try it" box: title, one sentence and an inline sim. The sim posts its
@@ -27,8 +27,9 @@ export function SimTryIt({ sim }: { sim: SimEmbed }) {
 
   return (
     <section
+      id={SIM_ANCHOR_ID}
       aria-labelledby="try-it-heading"
-      className="overflow-hidden rounded-3xl border border-sage-200/80 bg-sage-50/80 shadow-sm"
+      className="scroll-mt-32 overflow-hidden rounded-3xl border border-sage-200/80 bg-sage-50/80 shadow-sm"
     >
       <div className="p-5 sm:p-6">
         <h2 id="try-it-heading" className="font-display text-2xl font-semibold text-ink">

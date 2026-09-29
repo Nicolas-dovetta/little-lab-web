@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
-import { SIM_HEIGHT_MESSAGE, sanitizeSimHeight, simForExperiment, simSlugs } from "./sims";
+import { SIM_ANCHOR_ID, SIM_HEIGHT_MESSAGE, sanitizeSimHeight, simForExperiment, simHref, simSlugs } from "./sims";
 
 const publicDir = join(process.cwd(), "public");
 
@@ -35,6 +35,22 @@ test("each sim file exists, is noindex, self-contained and posts its height", ()
     assert.ok(html.includes(`type: "${SIM_HEIGHT_MESSAGE}"`), "height message type out of step");
     assert.doesNotMatch(html, /\b(src|href)=["']https?:/i);
   }
+});
+
+test("/simulators: each sim has its short name and links to the sim anchor on its page", () => {
+  assert.deepEqual(
+    simSlugs().map((s) => simForExperiment(s)!.name),
+    ["Baking-soda volcano", "Water-bottle rocket", "Salt ice fishing", "Density layers"],
+  );
+  assert.equal(SIM_ANCHOR_ID, "simulator");
+  assert.equal(simHref("water-bottle-rocket"), "/experiments/water-bottle-rocket#simulator");
+  const tryIt = readFileSync(join(process.cwd(), "src/components/SimTryIt.tsx"), "utf8");
+  assert.match(tryIt, /id=\{SIM_ANCHOR_ID\}/);
+  assert.match(tryIt, /scroll-mt-/);
+  const header = readFileSync(join(process.cwd(), "src/components/Header.tsx"), "utf8");
+  assert.match(header, /"\/about", label: "About" \},\n\s*\{ href: "\/simulators", label: "Simulators" \}/);
+  const sitemap = readFileSync(join(process.cwd(), "src/app/sitemap.ts"), "utf8");
+  assert.match(sitemap, /\/simulators/);
 });
 
 test("sanitizeSimHeight clamps and rejects junk", () => {
