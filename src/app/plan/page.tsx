@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { listExperiments, plannedChipLabel } from "@/lib/experiments";
+import { ageLabel, listExperiments, plannedChipLabel } from "@/lib/experiments";
 import { canonicalMetadata } from "@/lib/site";
 
 export const metadata = canonicalMetadata("/plan", {
@@ -157,6 +157,9 @@ export default async function PlanPage() {
                         className="flex flex-wrap items-center gap-2 rounded-2xl bg-cream/80 px-3 py-2 text-sm font-medium text-ink transition hover:bg-sage-100"
                       >
                         <span>{e.title}</span>
+                        <span className="rounded-full bg-white px-2.5 py-0.5 text-xs font-medium text-ink-muted">
+                          {ageLabel(e.ageBands)}
+                        </span>
                         {statusTag(e.status, e.plannedFor)}
                       </Link>
                     </li>

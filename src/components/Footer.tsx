@@ -15,7 +15,7 @@ export function Footer() {
             className="h-6 w-auto"
           />
           <p className="mt-3 max-w-sm text-sm text-ink-muted">
-            Parent-tested activities for ages 1–5 — keepers our kids loved that show how the world
+            For ages 1 and up — parent-tested activities our kids loved that show how the world
             works.
           </p>
         </div>

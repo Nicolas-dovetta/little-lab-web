@@ -25,7 +25,7 @@ const body = Source_Sans_3({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
   title: {
-    default: "Weekend Experiments — Kids experiments for ages 1–5",
+    default: "Weekend Experiments — Kids experiments for ages 1 and up",
     template: "%s · Weekend Experiments",
   },
   description:
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Weekend Experiments",
-    title: "Weekend Experiments — Kids experiments for ages 1–5",
+    title: "Weekend Experiments — Kids experiments for ages 1 and up",
     description:
       "Parent-tested experiment ideas for toddlers and preschoolers. Real home runs that kids enjoyed and that show a physical phenomenon.",
     images: [{ url: defaultSocialImage }],

@@ -26,6 +26,10 @@ export default function AboutPage() {
         </p>
 
         <p>
+          These experiments are designed to work with my kids ages 1–3. They can work with any kids
+          too — vary how deep you go into the science, or how much they do themselves.
+        </p>
+        <p>
           At this age their brains are like sponges — full of questions and hungry to see how
           things work. That&apos;s what I want to give my kids: curiosity and excitement, weird
           stuff with real explanations, and the idea that understanding is built through

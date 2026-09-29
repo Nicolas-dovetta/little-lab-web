@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ExperimentCard } from "@/components/ExperimentCard";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import {
+  ageLabel,
   difficultyLabel,
   getFeaturedExperiment,
   listExperiments,
@@ -22,7 +23,7 @@ export default async function HomePage() {
       <section className="border-b border-sage-200/60 bg-gradient-to-b from-sage-50 to-cream">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:py-16">
           <p className="text-sm font-semibold uppercase tracking-wider text-sage-700">
-            Ages 1–5 · Parent-tested
+            For ages 1 and up · Parent-tested
           </p>
           <h1 className="mt-3 max-w-2xl font-display text-4xl font-semibold leading-tight text-ink sm:text-5xl">
             Weekend Experiments
@@ -76,6 +77,9 @@ export default async function HomePage() {
                 </span>
                 <span className="rounded-full bg-cream px-2.5 py-0.5 text-xs text-ink-muted">
                   {featured.timeMinutes} min · {messLabel(featured.messLevel)}
+                </span>
+                <span className="rounded-full bg-cream px-2.5 py-0.5 text-xs text-ink-muted">
+                  {ageLabel(featured.ageBands)}
                 </span>
               </div>
               <h3 className="mt-3 font-display text-2xl font-semibold text-ink">{featured.title}</h3>
