@@ -723,11 +723,13 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     ],
     products: [
       {
-        name: "Bike pump with a pressure gauge",
-        note: "Or a dedicated bottle-rocket pump. Garage first.",
+        name: "Schwinn Air Center Plus Floor Bike Pump with gauge",
+        asin: "B072J8D6GR",
+        note: "Floor pump with a gauge. Garage first if you already have one.",
       },
       {
-        name: "Cork / bottle-rocket launcher",
+        name: "Natural Soft Wood Corks 25-pack",
+        asin: "B0FH5JSJ8X",
         note: "Must seal the neck under pressure (~40–60 psi).",
       },
       {
