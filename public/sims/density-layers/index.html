@@ -1,0 +1,1263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- No network at all: no fonts, no CDN, no analytics. Everything is inline. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="robots" content="noindex">
+<title>Try it: which liquids stack, and which just mix?</title>
+<script>
+// Inside the site's box (an iframe) the box already shows the title, so the page hides its own heading there.
+(function(){ var e = true; try { e = window.self !== window.top; } catch (x) {} if (e) document.documentElement.className += ' embedded'; })();
+</script>
+<style>
+.embedded .kicker,.embedded h1{display:none}
+:root{
+  --cream:#faf7f0; --cream-deep:#f3eee3; --ink:#1f2a24; --ink-muted:#5c6b62;
+  --sage-50:#f3f7f4; --sage-100:#e4efe8; --sage-200:#c8dccf; --sage-600:#3f6f56; --sage-700:#345c47; --sage-800:#2a4a39;
+  /* sketch palette (little-lab-mechanics/tools/style.py) */
+  --bg:#FBF6EC; --sk-ink:#2B2A33; --accent:#E0562B; --water:#CFE7F4; --oil:#F3E4A6; --honey:#E6B04F; --balsamic:#6A4334;
+  --body:"Source Sans 3","Source Sans Pro",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --display:Fraunces,Georgia,"Times New Roman",serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--body);-webkit-text-size-adjust:100%}
+.sim{max-width:1040px;margin:0 auto;padding:16px 14px 40px}
+.kicker{margin:0;font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sage-700)}
+h1{font-family:var(--display);font-weight:600;font-size:1.55rem;line-height:1.2;margin:.2rem 0 .3rem}
+.lede{margin:0 0 12px;color:var(--ink-muted);font-size:1rem}
+.grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media (max-width:819px){h1{font-size:1.4rem} .lede{margin-bottom:8px}}
+@media (min-width:820px){.grid{grid-template-columns:1.05fr 1fr;gap:24px;align-items:start} h1{font-size:2rem}}
+.stage{background:var(--bg);border:1px solid var(--sage-200);border-radius:22px;padding:6px 6px 8px;position:relative}
+.stage svg{display:block;width:100%;height:auto;touch-action:manipulation}
+.stagehead{margin:6px 12px 0;min-height:1.4em;font-family:var(--display);font-weight:600;font-size:1.12rem;color:var(--sage-800)}
+.clock{margin:0 12px;min-height:1.2em;font-size:.9rem;font-weight:700;color:var(--sk-ink)}
+.note{margin:2px 10px 0;font-size:.9rem;color:var(--ink-muted);line-height:1.3}
+.panel{display:flex;flex-direction:column;gap:12px}
+.control{background:#fff;border:1px solid var(--sage-200);border-radius:18px;padding:10px 12px 8px}
+.control .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.control .lbl,.control label{font-weight:700;font-size:1.05rem}
+.control output{font-weight:700;font-size:1.25rem;color:var(--sage-800);white-space:nowrap}
+.liqs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.liq{position:relative;min-height:62px;border-radius:14px;border:2px solid var(--sage-200);background:#fff;font-family:var(--body);font-size:.98rem;font-weight:700;color:var(--ink);cursor:pointer;touch-action:manipulation;padding:25px 2px 5px;line-height:1.1}
+.liq .sw{position:absolute;left:50%;top:6px;width:26px;height:9px;margin-left:-13px;border-radius:5px;border:1.5px solid var(--sk-ink)}
+.liq[aria-pressed="true"]{border-color:var(--sage-700);background:var(--sage-50);box-shadow:inset 0 0 0 2px var(--sage-600)}
+.liq .n{position:absolute;right:4px;top:3px;min-width:20px;height:20px;border-radius:10px;background:var(--sage-700);color:#fff;font-size:.8rem;line-height:20px;display:none}
+.liq[aria-pressed="true"] .n{display:block}
+.presets{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.chip{flex:1 1 140px;min-height:44px;border-radius:999px;border:2px solid var(--sage-600);background:#fff;color:var(--sage-800);font-family:var(--body);font-size:.95rem;font-weight:700;cursor:pointer;touch-action:manipulation}
+.row{display:flex;align-items:center;gap:10px;margin-top:4px}
+.step{flex:0 0 48px;height:48px;border-radius:50%;border:2px solid var(--sage-600);background:#fff;color:var(--sage-800);font-size:1.6rem;font-weight:700;line-height:1;cursor:pointer;touch-action:manipulation}
+.step:active{background:var(--sage-100)}
+input[type=range]{flex:1;min-width:0;height:48px;-webkit-appearance:none;appearance:none;background:transparent;margin:0;touch-action:pan-y}
+input[type=range]:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:12px}
+input[type=range]::-webkit-slider-runnable-track{height:12px;border-radius:6px;background:var(--sage-100);border:1px solid var(--sage-200)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:44px;height:44px;margin-top:-17px;border-radius:50%;background:var(--balsamic);border:3px solid var(--sk-ink);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+input[type=range]::-moz-range-track{height:12px;border-radius:6px;background:var(--sage-100);border:1px solid var(--sage-200)}
+input[type=range]::-moz-range-thumb{width:40px;height:40px;border-radius:50%;background:var(--balsamic);border:3px solid var(--sk-ink)}
+.hint{font-size:.82rem;color:var(--ink-muted);margin:4px 0 0}
+.bandRow{margin-top:0}.bandRow .sp{flex:0 0 48px}.bandTrack{flex:1;position:relative;height:10px;margin:0 22px;border-radius:5px;background:var(--sage-50);border:1px solid var(--sage-200)}
+#bandSeg{position:absolute;top:-1px;bottom:-1px;background:repeating-linear-gradient(45deg,#C9B7A6 0 4px,#E9DED3 4px 8px);border:1px solid var(--sk-ink);border-radius:3px}
+.bandText{display:flex;justify-content:space-between;font-size:.78rem;color:var(--ink-muted);margin:2px 58px 0 58px}
+.buttons{display:flex;gap:10px;flex-wrap:wrap}
+.btn{min-height:56px;border-radius:999px;font-family:var(--body);font-size:1.15rem;font-weight:700;padding:0 22px;cursor:pointer;touch-action:manipulation}
+.go{flex:2 1 160px;background:var(--sage-600);color:#fff;border:0;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.go:hover{background:var(--sage-700)} .go:disabled,.alt:disabled{opacity:.5;cursor:default}
+.alt{flex:1 1 120px;background:#fff;color:var(--sage-800);border:2px solid var(--sage-600)}
+.card{background:#fff;border:1px solid var(--sage-200);border-radius:18px;padding:12px}
+.readout .head{font-family:var(--display);font-size:1.3rem;font-weight:600;margin:0 0 4px;line-height:1.25}
+.readout p{margin:0 0 6px;font-size:1rem;line-height:1.4}
+.readout .small{font-size:.9rem;color:var(--ink-muted)}
+details.why{margin-top:18px;background:#fff;border:1px solid var(--sage-200);border-radius:18px;padding:0 14px}
+details.why summary{cursor:pointer;min-height:52px;display:flex;align-items:center;font-weight:700;font-size:1.05rem;color:var(--sage-800)}
+details.why h3{font-size:1rem;margin:14px 0 4px}
+details.why p,details.why li{font-size:.97rem;line-height:1.5;color:var(--ink)}
+details.why ul{padding-left:1.1rem}
+.small{font-size:.85rem;color:var(--ink-muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="sim">
+  <p class="kicker">Try it · density layers</p>
+  <h1>Which liquids stack, and which just mix?</h1>
+  <p class="lede">Tap the liquids in the order you'd pour them, then press Pour. Then press Stir.</p>
+
+  <div class="grid">
+    <div class="stage">
+      <p class="stagehead" id="stageHead" aria-hidden="true"></p>
+      <p class="clock" id="clock" aria-hidden="true"></p>
+      <svg id="scene" viewBox="0 18 400 334" role="img" aria-label="A tall empty glass, drawn to scale."></svg>
+      <p class="note">Glass, layers, drops and the oil coat they carry drawn to one scale (20 px per cm). ¼ cup of each liquid, 3 drops of balsamic, let go half a second apart. Pouring and stirring are sped up; the drops move at their computed speed (including the drag of the glass walls), shown <span data-n="slowmo">3</span>× slower. The blurry lines between the water-based liquids start as thin as they really are, then (sped up, once the pour ends) widen to how they would look about an hour after pouring, which is what the finished picture shows. Orange dashed arrows show which way things move.</p>
+    </div>
+
+    <div class="panel">
+      <div class="control">
+        <div class="top"><span class="lbl" id="liqLbl">Pour order</span><output id="orderOut" for="liqs"></output></div>
+        <div class="liqs" id="liqs" role="group" aria-labelledby="liqLbl">
+          <button class="liq" type="button" data-liq="honey" aria-pressed="false"><span class="sw" style="background:var(--honey)"></span><span class="n"></span>Honey</button>
+          <button class="liq" type="button" data-liq="water" aria-pressed="false"><span class="sw" style="background:var(--water)"></span><span class="n"></span>Water</button>
+          <button class="liq" type="button" data-liq="oil" aria-pressed="false"><span class="sw" style="background:var(--oil)"></span><span class="n"></span>Oil</button>
+          <button class="liq" type="button" data-liq="balsamic" aria-pressed="false"><span class="sw" style="background:var(--balsamic)"></span><span class="n"></span>Balsamic drops</button>
+        </div>
+        <p class="hint">Tap in the order you'd pour. Tap again to take one out.</p>
+        <div class="presets">
+          <button class="chip" id="pageOrder" type="button">The page's order</button>
+          <button class="chip" id="revOrder" type="button">Upside-down order</button>
+        </div>
+      </div>
+      <div class="buttons">
+        <button id="pour" class="btn go" type="button">Pour</button>
+        <button id="stir" class="btn alt" type="button" disabled>Stir</button>
+      </div>
+      <div class="control">
+        <div class="top"><label for="drop">Balsamic per drop</label><output id="dropOut" for="drop">1/4 tsp · 13.3 mm</output></div>
+        <div class="row">
+          <button class="step" type="button" data-d="-1" aria-label="Smaller drops">−</button>
+          <input id="drop" type="range" min="0" max="5" step="1" value="4" aria-describedby="dropHint">
+          <button class="step" type="button" data-d="1" aria-label="Bigger drops">+</button>
+        </div>
+        <div class="row bandRow" aria-hidden="true"><span class="sp"></span><div class="bandTrack"><span id="bandSeg"></span></div><span class="sp"></span></div>
+        <div class="bandText" aria-hidden="true"><span>held at the oil–water line</span><span>pushes through</span></div>
+        <p class="hint" id="dropHint">How much balsamic goes in each drop, 1/64 to 1/2 teaspoon, doubling each step; the number after it is how wide that much balsamic is as a ball. A drop that drips off on its own is about the smallest step; the starting 1/4 tsp is a spoonful-scale drip (a guess: we don't know how much Nico dropped). Shaded: balls from about <span data-n="bandLo">6</span> to <span data-n="bandHi">10</span> mm could be held at the oil–water line or push through; the physics only pins it down that well, and the low end least.</p>
+      </div>
+
+      <section class="card readout" aria-live="polite">
+        <p class="head" id="head"></p>
+        <p id="detail"></p>
+        <p id="drops"></p>
+        <p class="small" id="stirHint"></p>
+      </section>
+    </div>
+  </div>
+
+  <details class="why">
+    <summary>Why? The numbers, over-explained</summary>
+    <p><strong>In one line:</strong> the oil ends up on top whatever order you pour, because it never mixes with the others; honey, balsamic and water are all water-based, so they only sit in density order for a while, and stirring turns them into one liquid for good.</p>
+
+    <h3>Denser sits lower</h3>
+    <p>Density is mass per volume: how much stuff is packed into the same space. When two liquids don't mix, the denser one ends up underneath, because the pair has less energy that way (the heavier-for-its-size liquid gets as low as it can, and pushes the other one up). The numbers the sim uses, all at room temperature (20 °C):</p>
+    <ul>
+      <li><strong>Vegetable oil <span data-n="oilRho">0.92</span> g/mL.</strong> In the US "vegetable oil" is usually soybean oil. The international food standard for named oils (Codex CXS 210) gives soybean oil a relative density of 0.919 to 0.925, which is <span data-n="oilLo">0.917</span> to <span data-n="oilHi">0.923</span> g/mL.</li>
+      <li><strong>Water <span data-n="waterRho">0.998</span> g/mL</strong> (CRC Handbook).</li>
+      <li><strong>Balsamic <span data-n="balRho">1.30</span> g/mL.</strong> Nico's is the thick, syrupy aged kind. The rules for traditional balsamic from Modena say it must be at least <span data-n="balLo">1.24</span> g/mL at 20 °C, and a study of such vinegars (Falcone and others, 2017) finds their texture changes near <span data-n="balHi">1.32</span>. That rule is for the traditional kind only, so it's a reference point, not a measurement of his bottle. I picked <span data-n="balRho">1.30</span>. Thin supermarket balsamic is less dense (the page says 1.1 to 1.3, "it depends on the bottle"); it would still sink through the oil and sit below the water.</li>
+      <li><strong>Honey <span data-n="honeyRho">1.42</span> g/mL.</strong> It depends on how much water the honey holds: <span data-n="honeyHi">1.44</span> g/mL at 13% water down to <span data-n="honeyLo">1.39</span> at 21% (White, 1975, in the FAO's beekeeping handbook). I picked a typical 17%.</li>
+    </ul>
+    <p>The glass holds <span data-n="pourMl">59</span> mL (¼ cup) of each liquid. The page gives no amounts and no glass, so the sim borrows the tall glass from Nico's volcano page (Libbey City, 14.3 oz, 3 × 6.1 in): about <span data-n="areaCm2">29</span> cm² inside, so ¼ cup makes a layer about <span data-n="layerCm">2</span> cm thick. Every layer in the drawing is its volume divided by that area.</p>
+
+    <h3>Which ones mix, and why</h3>
+    <p><strong>The oil mixes with none of them.</strong> Water molecules cling tightly to each other (hydrogen bonds). Oil molecules can't join in, so the water keeps squeezing them out into their own layer. That's why the oil-to-water line is sharp, and why the oil comes back up after you stir.</p>
+    <p><strong>Honey, balsamic and water all mix with each other.</strong> Honey is sugar with a little water; balsamic is grape sugar and vinegar acid in water, cooked down thick; water is water. Sugar and vinegar acid dissolve in water, so these three dissolve into each other. There's no real line between them, only a blurry zone that slowly gets wider.</p>
+    <p>So why do they sit in layers at all? Because the denser one is underneath and nothing stirs them. Dissolving on its own (diffusion) is very slow: sugar spreads by about <span data-n="blurMm">3</span> mm in an hour, which is the blurry band drawn between them in the finished picture. (That's sugar in plain water. Inside thick honey or balsamic it spreads far more slowly, so the real band sits mostly on the water side; take it as a rough scale.) The page says it for honey: "Poured slowly, honey can sit underneath for a while." The sim draws that careful, unstirred pour. A splashy pour would stir some of them together at once; the sim doesn't model that.</p>
+
+    <h3>Pour order doesn't matter here (for where the layers end up)</h3>
+    <p>Honey poured into water goes down as a thick ribbon and settles at the bottom (the page's step 4). Water poured onto honey sits on top. Oil poured first gets pushed up when the others go in under it; oil poured last floats. Try the upside-down order: the layers end the same. The sim draws each pour as a straight stream down to where that liquid settles; really honey goes down as a rope, and water poured through oil breaks into blobs on the way.</p>
+    <p>That works for these four because of what they are. The oil can't mix with the others. Honey is about ten thousand times thicker than water (about 19 Pa·s; FAO beekeeping handbook, Table 2.3), so poured into water it goes down as a rope and hardly mixes. And water, the only runny one, is also the least dense, so it is never poured on top of something less dense that it could stir into. Pour a runny, denser liquid onto one it mixes with (salt water onto plain water, or thin balsamic onto water) and it falls through in fingers and stirs itself in on the way: then the order matters, which is why density towers are poured densest first, or slowly over a spoon. Even honey poured into water leaves a bit more honey dissolved in the water than the careful order does; the sim draws the same blurry line both ways.</p>
+    <p>The upside-down order's end picture, with the balsamic puddles on top of the honey, is what you'd see after minutes or more: the honey has to work its way under them. By then the water poured onto the drops will have mixed some of them away. The drops are the one real exception to "order doesn't matter": whether they get held at the oil–water line depends on whether there is an oil–water line when they go in.</p>
+
+    <h3>Stir it</h3>
+    <p>Stirring breaks the oil into drops, but they float back up and join into one layer again, the same thickness as before: oil and water "un-mix" on their own. The water-based ones don't: they become one liquid, and its density is the volume-weighted average of what went in. With ¼ cup each of honey and water: (<span data-n="honeyRho2">1.42</span> + <span data-n="waterRho2">1.00</span>) ÷ 2 = about <span data-n="mixHW">1.21</span> g/mL. (That assumes the volumes just add up; real sugar solutions shrink very slightly when mixed.) The size of the stirred-up oil drops and how fast they rise are drawn, not modelled; the total oil stays the same.</p>
+
+    <h3>The balsamic drops, step by step</h3>
+    <p><strong>Through the oil.</strong> A drop sinks because it's denser than the oil, and the oil's drag holds it to a steady speed. The starting drop, <span data-n="dTsp">1/4 tsp</span> of balsamic (<span data-n="dMl">1.23</span> mL, a ball <span data-n="dDef">13</span> mm across), reaches about <span data-n="vOil">17.2</span> cm/s. In open oil it would reach <span data-n="vOilOpen">21.4</span> cm/s; in a glass this narrow the walls slow it by about <span data-n="wallPct">20</span>% (Di Felice's wall correction, 1996), and the sim includes that for every drop and droplet. (The simple Stokes formula would say <span data-n="vStokes">67</span> cm/s; it only works for slow, small things, and at this size the flow around the drop has momentum, so the sim uses the standard drag curve for spheres, Clift and Gauvin's, as given in Clift, Grace and Weber's textbook.) Syrupy balsamic is thick: about <span data-n="balMu">1</span> Pa·s (Falcone and others, 2012), about <span data-n="kappa">18</span> times thicker than the oil (<span data-n="oilMu">54</span> mPa·s, Noureddini and others, 1992). A drop that much thicker than what it falls through hardly stirs inside, so it falls like a solid ball: the Hadamard–Rybczynski formula for a liquid drop says only about <span data-n="hrPct">2</span>% faster than a solid ball. So the sim treats it as a solid ball.</p>
+    <p><strong>At the oil–water line: held, or through?</strong> To sink into the water wrapped in oil, the drop has to pull the oil–water surface down around itself until the oil pinches off behind it. Pierson and Magnaudet (2018, part 1, section 4) worked out what holds a sphere up at a line like this. Three things: the surface pulls back like a stretched sheet (at most 2π × the drop's radius × the surface's tension; Vella, 2015, says the same); the part of the drop that's down in the water is buoyed up more than it would be in oil; and the oil sitting in the dent above the drop has to be held up too, so it helps. The sim uses their formula (their equation 4.4). Vegetable oil against water has a tension of about 23 to 26 mN/m (Fisher and others, 1985), and bottled oils drift lower with time (Gaonkar, 1989), so the sim uses <span data-n="sigLo">20</span> to <span data-n="sigHi">30</span> mN/m. The smallest drop on the slider, <span data-n="dMin">1/64 tsp (5.3 mm)</span>, weighs only <span data-n="r3w">about a third</span> of what the line can hold, so it stays.</p>
+    <p><strong>The drop wears a coat of oil.</strong> Where it meets the line, the drop is not bare balsamic: it is wrapped in oil, and it takes that coat down with it. So the sim treats it as a ball of balsamic inside a shell of oil, and works out the hold for the whole coated ball (its full radius, which the line pulls on and the water buoys up), with the push being the coated ball's weight in oil. (The coat is oil, so it adds nothing to that push, but it makes the ball wider, and a wider ball is easier to hold.) How thick is the coat? Nobody measured it for balsamic. The sim uses <span data-n="shellMm">1</span> mm, an estimate from the physics of liquid dragged along by a moving object (Landau and Levich, 1942; de Ryck and Quéré, 1998), which for this oil at these speeds gives about 1 to 3 mm. Pierson and Magnaudet saw spheres drag down oil "of the same order as" their own size; a <span data-n="shellMm2">1</span> mm coat on the starting drop is <span data-n="shellPct">52</span>% of the balsamic's volume, so the sim is on the cautious side.</p>
+    <p>Speed helps too: a drop arriving fast dents the line deeper. How much isn't known well. The sim adds its own rough estimate (not from either paper): for the starting drop, its speed adds <span data-n="inertW">about a third</span> to its weight. The one study that measured it saw speed lower the size needed by up to about half in some cases. So the cut-off is a band: balls of balsamic somewhere between about <span data-n="bandLo">6</span> and <span data-n="bandHi">10</span> mm across (about <span data-n="bandLoMl">0.11</span> to <span data-n="bandHiMl">0.5</span> mL). The top is the strongest tension with no help from speed; the bottom uses that study's biggest help, and it's the least sure part (at the weakest tension it could be as low as <span data-n="bandLowest">5.5</span> mm). The coat's thickness moves the band too: with a <span data-n="shellLo">0.5</span> mm coat the bottom drops to about <span data-n="bandLoS">5.5</span> mm, with a <span data-n="shellHi">2</span> mm coat the top rises to about <span data-n="bandHiS">11.5</span> mm. In the band a drop could go either way. The sim draws the middle numbers: drops up to <span data-n="heldMax">1/32 tsp (6.7 mm)</span> held, <span data-n="thruMin">1/16 tsp (8.4 mm)</span> and up through.</p>
+    <p><strong>Drop size matters.</strong> Small drops get held at the oil–water line. Where they sit follows from the same balance: the smallest ride high, only dimpling the line; bigger ones sit lower, in a dent they push into the line (drawn to scale, coat included). They stay until the oil film under them breaks, then mix into the water right there, in dark wisps. Big drops are heavy enough to pull through, wrapped in oil. Nico saw both: drops "half vinegar, half oil, stuck in the middle, not moving or only really slowly", and a drop that fell through the water as a ball. The sim doesn't model what a held drop does next: how long it stays; right around the cut-off a real drop can sit a while and then slowly sink; a held drop can sag and slip through later; and held drops near each other drift together (like cereal in milk) and can sink as one bigger drop.</p>
+    <p><strong>Why <span data-n="dTsp2">1/4 tsp</span> to start?</strong> We don't know how much balsamic Nico dropped, only that his drops were big. The starting drop is a spoonful-scale drip, a quarter of a teaspoon: a ball of balsamic <span data-n="dDef2">13</span> mm across, in a <span data-n="outerMm">15</span> mm coated ball once it has its oil coat. That's a guess, not a measurement. It is well above the whole band, so it goes through at any tension in the range, as Nico's did. A drop that drips off a bottle or spoon on its own is much smaller, about 4 to 6 mm across (Tate's law: a drop falls off when its weight beats the surface tension holding it to the rim), about the slider's smallest step, and most of those would be held. That could be why Nico saw both: drips right around the size where the line can just hold them, some held and some through.</p>
+    <p><strong>Through the water, still wearing oil.</strong> This is what Nico saw with his syrupy balsamic: the drop fell through the water as a ball, still coated in oil, and didn't mix on the way down. Why not? Here's the likely reason (it fits what he saw, but nobody filmed it): before the vinegar can touch the water, the oil between them has to be squeezed out. The water does push on the front of the falling drop: it's the same kind of push as the drop later gives the bottom, though by the end of the fall only <span data-n="pushW">about a third</span> as hard (the drop reaches about <span data-n="vWater">14</span> cm/s of the <span data-n="vWaterT">25</span> cm/s it would need for its weight to be fully carried by the water's push). The real difference is time: the fall lasts only about <span data-n="tWater">0.16</span> s, and squeezing out an oil film takes much longer; drops resting on an oil–water surface wait seconds or more before they merge (Charles and Mason, 1960). At the bottom, the push is focused on a small flat patch and goes on as long as it takes, so the film finally thins and breaks. (Speeds in the water use the same drag curve and wall correction; that wall formula is used at every speed, and at the water's speeds it may slow the drop a few percent too much.)</p>
+    <p><strong>How much oil rides down?</strong> The coat: a shell <span data-n="shellMm">1</span> mm thick, drawn to scale. In Pierson and Magnaudet's study of spheres crossing an oil–water line, most of the oil pulled down pinches off near the sphere and rides on its top; the sim spreads the same oil evenly round the drop instead (a simplification: it keeps the amount, not the shape). The coat makes the falling ball wider and less dense, so it falls about <span data-n="spdPct">21</span>% slower through the water than bare balsamic would; its density drops by <span data-n="filmPct">10</span>%. The oil taken down leaves the oil layer (you can see it get a little thinner) until it comes back.</p>
+    <p><strong>At the bottom.</strong> The drop stops when the bottom of its coat touches the honey (honey is denser, and Nico's glass had honey: "the oil + water + honey") or the glass. The sim draws the film breaking at once; really it takes a moment. The balsamic spreads into a small puddle about <span data-n="pudMm">3</span> mm thick. It's denser than water, so it stays low and mixes in slowly, from the bottom up. By the plain-water number, sugar would spread out of a puddle that thin in about <span data-n="dissolveH">4.6</span> hours; really it takes much longer, because sugar moves far more slowly through the syrup itself.</p>
+    <p><strong>The oil climbs back.</strong> The freed oil gathers into one droplet (about <span data-n="calMm3">11</span> mm across for the starting drop's coat), which is less dense than water, so it floats up at about <span data-n="vRise">14.5</span> cm/s and rejoins the oil layer in about <span data-n="tRise">0.2</span> s. That's the page's "Then pieces climb": what climbs is oil, not vinegar. The oil layer ends exactly as big as it started.</p>
+    <p>With no oil in the glass, the drop has no oil coat and no line to cross; a real one would smear out as it falls, which the sim doesn't model.</p>
+    <p class="small">Assumptions: room temperature (densities at 20 °C; the oil's thickness was measured at 24 °C), level ¼ cups, spherical drops touched onto the surface from a spoon. Oil on tile is slick, and balsamic stains. Nothing is sent anywhere from this page.</p>
+  </details>
+</main>
+<script>
+/* BEGIN model.js */
+/* Density layers: which liquids stack, and which just mix?
+ * Single source of truth for the numbers. Used by index.html (inlined copy, checked
+ * byte-for-byte by test.js) and by the Node tests. Every constant is cited in SPEC.md section 5.
+ * Plain JS, no dependencies, no network. SI units inside the drag code; mL, cm and g/mL outside. */
+(function (root, factory) {
+  var M = factory();
+  if (typeof module === 'object' && module.exports) module.exports = M;
+  else root.DensityModel = M;
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  var C = {
+    // Kitchen units (US customary, exact: 1 cup = 8 US fl oz; NIST Handbook 44 Appendix C)
+    ML_PER_US_FL_OZ: 29.5735295625,
+    get ML_PER_CUP() { return 8 * this.ML_PER_US_FL_OZ; },   // 236.588 mL
+    G: 9.80665,                                              // standard gravity, m/s2 (CGPM 1901, exact)
+
+    // ---- the liquids the page uses (little-lab experiments/density-layers.md: honey, water, vegetable oil,
+    // balsamic vinegar). Densities in g/mL at 20 C unless noted; viscosities in Pa s. SPEC section 5. ----
+    // Water, 20 C: 0.99820 g/mL, 1.0016 mPa s (CRC Handbook / IAPWS).
+    RHO_WATER: 0.9982,
+    MU_WATER: 1.0016e-3,
+    // Vegetable oil = soybean oil (the usual US "vegetable oil"). Codex CXS 210-1999: relative density
+    // 0.919-0.925 (20 C / water 20 C) -> 0.917-0.923 g/mL; picked 0.920. Viscosity 54.3 mPa s at 23.9 C
+    // (Noureddini, Teoh & Clements 1992, JAOCS 69:1189, Table 1).
+    RHO_OIL: 0.920,
+    RHO_OIL_RANGE: [0.917, 0.923],
+    MU_OIL: 0.0543,
+    // Honey: true specific gravity at 20 C vs water content (White 1975, FAO "Value-added products from
+    // beekeeping" Table 2.4): 13 % water 1.4457 ... 17 % 1.4237 ... 21 % 1.3950. Picked 17 % water:
+    // 1.4237 x 0.9982 = 1.421 g/mL. Range (13-21 % water): 1.393-1.443 g/mL.
+    HONEY_SG_17PCT: 1.4237,
+    HONEY_SG_RANGE: [1.3950, 1.4457],
+    // Balsamic: Nicolas's is the thick, syrupy aged kind (or a glaze). Aceto Balsamico Tradizionale di Modena
+    // DOP disciplinare: density at 20 C "non inferiore a 1,240". Falcone et al. 2017 (Int. J. Food Studies 6:95)
+    // find the structure change in such vinegars near 1.32 g/mL. Picked 1.30 (inside 1.24-1.32, and the top of the
+    // page's "1.1-1.3"). Viscosity: Falcone, Mozzon & Frega 2012 (Food Res. Int. 45:75): shear-thinning starts at a
+    // low-shear viscosity of about 0.95 Pa s (72 Brix); picked 1.0 Pa s. Only the ratio to the oil's viscosity
+    // matters, and it only changes the fall speed by a few % (hrFactor), so 1.0 vs 0.95 is irrelevant.
+    RHO_BALSAMIC: 1.30,
+    RHO_BALSAMIC_RANGE: [1.24, 1.32],
+    MU_BALSAMIC: 1.0,
+    // Oil-water interfacial tension. Fisher, Mitchell & Parker 1985 (J. Food Sci. 50:1201, pendant drop): every
+    // commercial vegetable oil against water measured 23-26 mN/m. Gaonkar 1989 (JAOCS 66:1090): commercial oils drift
+    // lower with time (monoglyceride impurities), purified oils sit higher. The sim uses 20-30 mN/m, centre 25; the low
+    // end is a stated allowance for that drift (Gaonkar's numbers are not quoted here). Balsamic's own surface-active
+    // compounds could lower it further; not modelled.
+    SIGMA_OW: 0.025,
+    SIGMA_OW_RANGE: [0.020, 0.030],
+    // Glucose in water, 25 C, infinite dilution: 0.673e-9 m2/s (CRC Handbook, "Diffusion coefficients in liquids").
+    // Used only for "how slowly do they mix on their own" (the blurry lines, and hours for a drop to dissolve).
+    D_SUGAR: 0.673e-9,
+
+    // ---- the glass, to scale. The page names no glass and his photos don't give a size, so the sim borrows the one
+    // tall glass on record in his pages: the Libbey City tumbler (14.3 US fl oz, 3 x 6.1 in) from the volcano page.
+    GLASS_FL_OZ: 14.3,
+    GLASS_DIAM_CM: 7.62,
+    GLASS_TALL_CM: 15.494,
+    GLASS_BASE_CM: 1.05,        // thick base: a drawing choice, the same as the volcano sim (14 px at 13.39 px/cm)
+    // ---- amounts: the page gives none. A stated choice: 1/4 cup of each poured liquid, and 3 drops of balsamic
+    // (RUN THIS: "Drip balsamic onto the oil ... Do it more than once").
+    POUR_CUPS: 0.25,
+    DROPS: 3,
+    // ---- the drop (reworked 2026-09-28: Nicolas, "the drop should be MUCH bigger") ----
+    // Sized from the VOLUME of balsamic dropped, in level US teaspoons (1 tsp = 4.92892159375 mL, NIST Handbook 44,
+    // Appendix C: 1/6 US fl oz). ASSUMPTION, not a measurement (the page and the notes give no amount): a
+    // spoonful-scale drip. The slider doubles from 1/64 tsp (0.077 mL, a 5.3 mm ball: about the size a drop of balsamic
+    // that drips off on its own reaches, Tate's law, SPEC 3b) up to 1/2 tsp (2.46 mL, a 16.8 mm ball; three of them
+    // with their oil coats still fit across the glass). Default 1/4 tsp (1.23 mL, a 13.3 mm ball of balsamic).
+    // The drop is a BALSAMIC CORE (this volume) plus, once it meets the oil-water line, an OIL SHELL SHELL_MM thick
+    // that it drags into the water (SHELL_MM below). dMm everywhere in this file is the CORE's diameter.
+    ML_PER_TSP: 4.92892159375,
+    DROP_TSP: [1 / 64, 1 / 32, 1 / 16, 1 / 8, 1 / 4, 1 / 2],
+    DROP_TSP_TEXT: ['1/64 tsp', '1/32 tsp', '1/16 tsp', '1/8 tsp', '1/4 tsp', '1/2 tsp'],
+    DROP_STEP_DEFAULT: 4,
+    // The oil shell: a coat of oil SHELL_MM thick round the balsamic core, dragged down when the drop crosses the
+    // oil-water line. ASSUMPTION (order of magnitude), not a measurement, from two independent pieces of physics:
+    //  - film drag-out: a body pulled out of a viscous liquid at capillary number Ca = mu_oil v / sigma carries a film
+    //    ~ 0.94 l_c Ca^(2/3) thick (Landau & Levich 1942; Derjaguin 1943), capped at high Ca by the viscous boundary
+    //    layer ~ sqrt(nu d / v) (de Ryck & Quere 1998, J. Colloid Interface Sci. 203:278). With the oil's 54 mPa s,
+    //    sigma 25 mN/m and 5-15 cm/s, both give about 1-3 mm;
+    //  - Pierson & Magnaudet 2018 Part 1 (JFM 835:762, section 5): the oil a crossing sphere drags down "may in some
+    //    cases be of the same order as or even larger than" the sphere itself. A 1 mm shell on the default 13.3 mm core
+    //    holds 0.54 of the core's volume: the same order, at the cautious end.
+    // So 1 mm, with 0.5-2 mm as the sensitivity range (SPEC 3a). It also sets the returning oil bubble (same volume).
+    SHELL_MM: 1.0,
+    SHELL_MM_RANGE: [0.5, 2.0],
+    // Drops are touched onto the surface from a spoon held just above it: they start at rest (the short fall in air
+    // is left out). They are released DROP_GAP_S apart (how you drip them: a choice, not physics). There are no
+    // invented waits: a drop either pushes through the oil-water line at once or is held there (capture(), SPEC 3b),
+    // and a held drop stays for as long as the sim runs (how long it really stays is not modelled).
+    DROP_GAP_S: 0.5,
+    // Added mass of a sphere: half the displaced fluid (potential flow; Batchelor 1967). Basset history force ignored.
+    ADDED_MASS: 0.5,
+    // ---- the oil carried down (Nicolas's observation, SPEC section 3a): a drop that pushes through the oil-water line
+    // takes oil with it (its shell, SHELL_MM above), falls as a sphere, breaks open at the bottom, and "a bubble of oil
+    // comes back up": the shell's oil, gathered into one droplet of the same volume.
+    // The oil-water capture (SPEC 3b): capillary length, Euler's constant for P&M eq. 4.4, and the factor "of the order
+    // of 2" by which P&M (section 4.3) saw arrival inertia lower the static threshold (used only for the band's low end).
+    EULER_GAMMA: 0.5772156649,
+    PM_DYNAMIC_FACTOR: 2,
+    // Blurry lines between water-based layers in the finished picture: drawn as they'd be after this long standing still
+    // (diffusion only). During the pour they are drawn as they'd be after the real seconds that have passed (crisp).
+    BLUR_TIME_S: 3600
+  };
+  function dMmForTsp(tsp) { return 10 * Math.cbrt(6 * tsp * C.ML_PER_TSP / Math.PI); }   // core diameter (mm) of a ball of tsp
+  C.DROP_STEPS_MM = C.DROP_TSP.map(dMmForTsp);             // 5.3, 6.7, 8.4, 10.6, 13.3, 16.8 mm
+  C.DROP_MM_DEFAULT = C.DROP_STEPS_MM[C.DROP_STEP_DEFAULT];
+  C.DROP_MM_MIN = C.DROP_STEPS_MM[0]; C.DROP_MM_MAX = C.DROP_STEPS_MM[C.DROP_STEPS_MM.length - 1];
+
+  var IDS = ['honey', 'water', 'oil', 'balsamic'];
+  var LIQ = {
+    honey:    { name: 'honey', rho: C.HONEY_SG_17PCT * C.RHO_WATER, group: 'water-based', what: 'sugars (mostly fructose and glucose) with about 17% water' },
+    water:    { name: 'water', rho: C.RHO_WATER, mu: C.MU_WATER, group: 'water-based', what: 'water' },
+    oil:      { name: 'vegetable oil', rho: C.RHO_OIL, mu: C.MU_OIL, group: 'oil', what: 'fats (triglycerides)' },
+    balsamic: { name: 'balsamic', rho: C.RHO_BALSAMIC, mu: C.MU_BALSAMIC, group: 'water-based', what: 'grape sugars and acetic acid in water, cooked down thick' }
+  };
+
+  function pourMl() { return C.POUR_CUPS * C.ML_PER_CUP; }                 // 59.1 mL
+  function glassMl() { return C.GLASS_FL_OZ * C.ML_PER_US_FL_OZ; }         // 422.9 mL
+  function insideCm() { return C.GLASS_TALL_CM - C.GLASS_BASE_CM; }        // 14.44 cm
+  function areaCm2() { return glassMl() / insideCm(); }                     // 29.3 cm2: capacity over inside height
+  function cmForMl(ml) { return ml / areaCm2(); }
+  function insideDiamCm() { return Math.sqrt(4 * areaCm2() / Math.PI); }     // 6.11 cm: the inside width the drawing uses
+
+  /* ---- mixing rules (real miscibility) ---- */
+  function mixes(a, b) { return a === b || (LIQ[a].group === 'water-based' && LIQ[b].group === 'water-based'); }
+  function pairRule(a, b) {
+    var A = LIQ[a], B = LIQ[b];
+    if (mixes(a, b)) return { mix: true, text: capital(A.name) + ' and ' + B.name + ' mix: both are mostly water with things dissolved in it, so they dissolve into each other. Unstirred, the denser one sits under the other for a while with a blurry line; stir and they become one liquid.' };
+    return { mix: false, text: capital(A.name) + ' and ' + B.name + ' never mix: water molecules cling tightly to each other, oil molecules can\u2019t join in, so the water keeps squeezing the oil out into its own layer. Stir them and the oil comes back up.' };
+  }
+
+  /* ---- drag and motion of a sphere (SPEC section 6). Rigid-sphere drag, Clift & Gauvin (1971) correlation as given in
+   * Clift, Grace & Weber, "Bubbles, Drops, and Particles" (1978), Table 5.2: valid for Re < 3e5; within a few % of
+   * Stokes' law (Cd = 24/Re) for Re < 0.1. d in m, densities in kg/m3, mu in Pa s. */
+  function dragCd(Re) { return 24 / Re * (1 + 0.15 * Math.pow(Re, 0.687)) + 0.42 / (1 + 42500 * Math.pow(Re, -1.16)); }
+  /* Wall effect: a sphere falling on the axis of a tube is slower than in open liquid. Di Felice 1996 (Int. J. Multiphase
+   * Flow 22:527): v_wall / v_open = ((1 - lam) / (1 - 0.33 lam))^alpha, alpha = (3.3 + 0.085 Re) / (1 + 0.1 Re),
+   * lam = d / D_tube, Re of the open-liquid speed. The glass is part of the to-scale model, so the sim applies it (on
+   * the axis; the side drops, 1.5 cm off the axis, would be a little slower still: not modelled). */
+  function wallFactor(lam, Re) { if (!(lam > 0)) return 1; var a = (3.3 + 0.085 * Re) / (1 + 0.1 * Re); return Math.pow((1 - lam) / (1 - 0.33 * lam), a); }
+  function lamFor(dM) { return dM / (insideDiamCm() / 100); }
+  // Drag force per unit volume at speed v, with the wall: the open-liquid drag at the speed u that the wall factor maps
+  // to v (u f(Re_u) = v). That makes the terminal speed exactly f x the open-liquid one, and keeps the same curve.
+  function dragPerVol(v, dM, rhoF, mu, lam) {
+    var u = v;
+    if (lam > 0) for (var i = 0; i < 30; i++) { var un = v / wallFactor(lam, rhoF * u * dM / mu); if (Math.abs(un - u) <= 1e-13 * un) { u = un; break; } u = un; }
+    var Re = Math.max(1e-12, rhoF * u * dM / mu);
+    return 0.75 * rhoF * dragCd(Re) * u * u / dM;
+  }
+  function terminal(dM, rhoP, rhoF, mu, lam) {
+    var drive = Math.abs(rhoP - rhoF) * C.G, lo = 0, hi = 10;
+    for (var i = 0; i < 100; i++) {
+      var v = (lo + hi) / 2;
+      if (drive - dragPerVol(v, dM, rhoF, mu, lam || 0) > 0) lo = v; else hi = v;
+    }
+    var vt = (lo + hi) / 2;
+    return { v: vt, Re: rhoF * vt * dM / mu, stokes: Math.abs(rhoP - rhoF) * C.G * dM * dM / (18 * mu), lam: lam || 0 };   // Stokes' law (open liquid), for reference
+  }
+  // Hadamard-Rybczynski: creeping-flow speed of a fluid sphere / speed of a rigid one = 3(1 + k) / (2 + 3k),
+  // k = viscosity inside / viscosity outside. -> 1 as k -> infinity (the drop acts rigid).
+  function hrFactor(k) { return 3 * (1 + k) / (2 + 3 * k); }
+  /* Integrate the fall (or rise) of a sphere from speed v0 over a distance (m):
+   * (rhoP + Cm rhoF) dv/dt = |rhoP - rhoF| g - (3/4) rhoF Cd v^2 / d.  Returns samples every ~2 ms. */
+  function travel(dM, rhoP, rhoF, mu, distM, v0, lam) {
+    var m = rhoP + C.ADDED_MASS * rhoF, drive = Math.abs(rhoP - rhoF) * C.G;
+    var v = v0 || 0, y = 0, t = 0, dt = 5e-5, out = { t: [0], y: [0], v: [v] }, nextS = 0.002;
+    if (!(distM > 0)) return { t: [0], y: [0], v: [v], T: 0, vEnd: v };
+    var acc = function (vv) { return (drive - dragPerVol(vv, dM, rhoF, mu, lam || 0)) / m; };
+    while (y < distM && t < 120) {
+      var k1 = acc(v), k2 = acc(v + k1 * dt);
+      var vn = v + 0.5 * (k1 + k2) * dt;
+      var yn = y + 0.5 * (v + vn) * dt;
+      if (yn >= distM) { var f = (distM - y) / (yn - y); t += f * dt; v = v + f * (vn - v); y = distM; break; }
+      v = vn; y = yn; t += dt;
+      if (t >= nextS) { out.t.push(t); out.y.push(y); out.v.push(v); nextS += 0.002; }
+    }
+    out.t.push(t); out.y.push(y); out.v.push(v);
+    out.T = t; out.vEnd = v;
+    return out;
+  }
+  function at(tr, t) { // position (m) along a travel() at time t (s)
+    if (t <= 0) return 0;
+    if (t >= tr.T) return tr.y[tr.y.length - 1];
+    var lo = 0, hi = tr.t.length - 1;
+    while (hi - lo > 1) { var mid = (lo + hi) >> 1; if (tr.t[mid] <= t) lo = mid; else hi = mid; }
+    var f = (t - tr.t[lo]) / Math.max(1e-12, tr.t[hi] - tr.t[lo]);
+    return tr.y[lo] + f * (tr.y[hi] - tr.y[lo]);
+  }
+
+  /* ---- drops: a balsamic core and its oil shell ---- */
+  function dropMl(dMm) { return Math.PI * Math.pow(dMm / 10, 3) / 6; }                  // mL (cm3): the balsamic core
+  function shellMm(s) { return s == null ? C.SHELL_MM : s; }
+  function outerMm(dMm, s) { return dMm + 2 * shellMm(s); }                              // core + shell, diameter (mm)
+  function filmMl(dMm, s) { return dropMl(outerMm(dMm, s)) - dropMl(dMm); }              // the shell's oil, mL
+  function oilDropletMm(dMm, s) { return 10 * Math.cbrt(6 * filmMl(dMm, s) / Math.PI); } // the shell's oil gathered into one bubble
+  function coatedDiamM(dMm, s) { return outerMm(dMm, s) / 1000; }                        // core + shell: one sphere, for drag and the hold
+  function coatedSpeedChange(dMm) { // fractional change in the water terminal speed from the oil shell (bigger, less dense ball)
+    var d = dMm / 1000, lam = lamFor(d);
+    var a = terminal(d, LIQ.balsamic.rho * 1000, LIQ.water.rho * 1000, LIQ.water.mu, lam).v, b = terminal(coatedDiamM(dMm), coatedDensity(dMm) * 1000, LIQ.water.rho * 1000, LIQ.water.mu, lamFor(coatedDiamM(dMm))).v;
+    return (a - b) / a;
+  }
+  function coatedDensity(dMm, s) { var V = dropMl(dMm), F = filmMl(dMm, s); return (LIQ.balsamic.rho * V + LIQ.oil.rho * F) / (V + F); }
+
+  /* ---- the oil-water line: held or through? (SPEC section 3b) ----
+   * To sink wrapped in oil, a drop has to pull the oil-water surface down around itself until the oil neck pinches off.
+   * STATIC HOLD: Pierson & Magnaudet 2018 Part 1 (JFM 835:762), section 4, eq. 4.2: a sphere wrapped in the upper liquid
+   * (total wetting) is held by
+   *   the capillary pull 2 pi sigma R sin^2(psi)   (largest, 2 pi sigma R, at the equator; also Vella 2015),
+   *   the buoyancy of the part of it below the contact line (water, not oil), and
+   *   the weight of the oil sitting in the dent above it: (rho_w - rho_o) g V_cyl, V_cyl = pi (R sin psi)^2 x dent depth.
+   * psi is where the surface meets the sphere, measured from its top (pi = just touching underneath, pi/2 = equator).
+   * The dent depth at the contact line uses the small-radius meniscus formula they use (James 1974):
+   *   h = a sin(phi) [ ln(4 l_c / (a (1 + cos phi))) - gamma_E ],  a = R sin psi, phi = pi - psi, l_c = capillary length.
+   * At psi = pi/2 this is their closed form, eq. 4.4 (within ~6% of the exact result up to Bo ~ 1, they say):
+   *   hold = 2 pi sigma R + (rho_w - rho_o) g V [ 1/2 + 3/4 ( ln(4 / sqrt(Bo)) - gamma_E ) ],  Bo = (R / l_c)^2.
+   * PUSH = the drop's weight in oil, (rho_b - rho_o) g V (the same bookkeeping as eq. 4.2), plus
+   *   the SIM'S OWN ROUGH ESTIMATE (not from either paper) of what its arrival speed adds while it dents the surface by
+   *   about one diameter: (1/2) m_eff v^2 / d, m_eff = (rho_b + 0.5 rho_oil) V.
+   * Through if push > hold. P&M 4.3 saw arrival inertia lower the static threshold "by a factor of the order of 2" in
+   * some runs; the band's low end uses that (hold halved), so the low end is the least sure part. */
+  function lcM(sigma) { return Math.sqrt((sigma == null ? C.SIGMA_OW : sigma) / ((LIQ.water.rho - LIQ.oil.rho) * 1000 * C.G)); }
+  function capVol(R, H) { H = Math.max(0, Math.min(2 * R, H)); return Math.PI * H * H * (3 * R - H) / 3; }  // m3, cap of height H
+  function dentDepthM(R, psi, sigma) {     // depth of the contact line below the far-away oil-water level (m), >= 0
+    var a = R * Math.sin(psi), phi = Math.PI - psi, lc = lcM(sigma);
+    if (a <= 0) return 0;
+    return Math.max(0, a * Math.sin(phi) * (Math.log(4 * lc / (a * (1 + Math.cos(phi)))) - C.EULER_GAMMA));
+  }
+  function holdAtN(R, psi, sigma) {        // P&M eq. 4.2 (upward force beyond the drop's weight in oil), N
+    var sg = sigma == null ? C.SIGMA_OW : sigma, a = R * Math.sin(psi), h = dentDepthM(R, psi, sg);
+    var Vbelow = capVol(R, R * (1 + Math.cos(psi)));        // the part below the contact line sits in water
+    return 2 * Math.PI * sg * R * Math.pow(Math.sin(psi), 2) + (LIQ.water.rho - LIQ.oil.rho) * 1000 * C.G * (Vbelow + Math.PI * a * a * h);
+  }
+  function staticHoldN(R, sigma) { return holdAtN(R, Math.PI / 2, sigma); }
+  function pm44HoldN(R, sigma) {           // the closed form, eq. 4.4 (identical to holdAtN at the equator; kept for the test)
+    var sg = sigma == null ? C.SIGMA_OW : sigma, V = 4 / 3 * Math.PI * R * R * R, Bo = Math.pow(R / lcM(sg), 2);
+    return 2 * Math.PI * sg * R + (LIQ.water.rho - LIQ.oil.rho) * 1000 * C.G * V * (0.5 + 0.75 * (Math.log(4 / Math.sqrt(Bo)) - C.EULER_GAMMA));
+  }
+  // COMPOSITE (2026-09-28): the drop meets the line as its balsamic core wrapped in its oil shell, so the hold is for a
+  // sphere of the OUTER radius (core + shell) and the push is the composite's weight in oil. (The shell is oil, so the
+  // composite's weight in oil equals the core's: (rho_mix - rho_o) V_outer = (rho_b - rho_o) V_core; the bigger radius
+  // gives a bigger capillary pull, buoyancy below the contact line and dent.) Arrival-speed term: the moving mass is
+  // the core plus half its displaced oil, denting the line by about one outer diameter.
+  function capture(dMm, vArrive, sigma, holdScale, shell) {
+    var d = dMm / 1000, V = Math.PI * d * d * d / 6, rb = LIQ.balsamic.rho * 1000, D = coatedDiamM(dMm, shell);
+    var Vo = Math.PI * D * D * D / 6, rmix = coatedDensity(dMm, shell) * 1000;
+    var weight = (rmix - LIQ.oil.rho * 1000) * C.G * Vo;                                    // = (rb - ro) g V_core
+    var inertia = 0.5 * (rb + C.ADDED_MASS * LIQ.oil.rho * 1000) * V * (vArrive || 0) * (vArrive || 0) / D;   // the sim's own estimate
+    var hold = staticHoldN(D / 2, sigma) * (holdScale || 1);
+    return { weightN: weight, inertiaN: inertia, holdN: hold, ratio: (weight + inertia) / hold, through: weight + inertia > hold, outerMm: D * 1000 };
+  }
+  /* Where a held drop sits (static balance, same formula): the psi at which the hold equals its weight in oil. Small drops
+   * ride high (psi near pi: the surface barely dents under them); bigger ones hang mostly below the line in a dent of oil.
+   * Returns centre height above the far-away line (cm; negative = below), dent depth at the contact line (cm), contact
+   * radius (cm), and the share of the drop's volume below the line level. Approximate (the meniscus formula is for
+   * small radii; R / l_c here is up to about 0.6). */
+  function heldPose(dMm, sigma, shell) {
+    var R = coatedDiamM(dMm, shell) / 2, V = 4 / 3 * Math.PI * R * R * R, W = (LIQ.balsamic.rho - LIQ.oil.rho) * 1000 * C.G * dropMl(dMm) * 1e-6;
+    var lo = Math.PI / 2, hi = Math.PI;               // hold(hi) = 0 < W; hold(lo) = the most it can hold
+    if (holdAtN(R, lo, sigma) < W) return null;
+    for (var i = 0; i < 60; i++) { var m = (lo + hi) / 2; if (holdAtN(R, m, sigma) >= W) lo = m; else hi = m; }
+    var psi = (lo + hi) / 2, h = dentDepthM(R, psi, sigma), zc = -h - R * Math.cos(psi);   // centre above the far level (m)
+    return { psi: psi, centreCm: zc * 100, dentCm: h * 100, contactCm: R * Math.sin(psi) * 100, lcCm: lcM(sigma) * 100,
+      belowShare: capVol(R, R - zc) / V, outerMm: 2000 * R };
+  }
+  // K0 (modified Bessel, 2nd kind, order 0; Abramowitz & Stegun 9.8.5-9.8.6): the shape of the dent away from the drop
+  function besselI0(x) { var t = x / 3.75, t2 = t * t; return 1 + t2 * (3.5156229 + t2 * (3.0899424 + t2 * (1.2067492 + t2 * (0.2659732 + t2 * (0.0360768 + t2 * 0.0045813))))); }
+  function besselK0(x) {
+    if (x <= 2) { var y = x * x / 4; return -Math.log(x / 2) * besselI0(x) - 0.57721566 + y * (0.42278420 + y * (0.23069756 + y * (0.03488590 + y * (0.00262698 + y * (0.00010750 + y * 0.0000074))))); }
+    var z = 2 / x; return Math.exp(-x) / Math.sqrt(x) * (1.25331414 + z * (-0.07832358 + z * (0.02189568 + z * (-0.01062446 + z * (0.00587872 + z * (-0.00251540 + z * 0.00053208))))));
+  }
+  // depth of the oil-water surface (cm below the far level) at distance rCm from a held drop's axis (rCm >= contact radius)
+  function dentAt(pose, rCm) { if (!pose || rCm < pose.contactCm) return pose ? pose.dentCm : 0; return pose.dentCm * besselK0(rCm / pose.lcCm) / besselK0(pose.contactCm / pose.lcCm); }
+  function oilTerminal(dMm) { var d = dMm / 1000; return terminal(d, LIQ.balsamic.rho * 1000, LIQ.oil.rho * 1000, LIQ.oil.mu, lamFor(d)); }
+  // smallest drop that gets through, for a tension and an arrival rule ('rest' or 'terminal' = arriving at its oil speed)
+  function thresholdMm(sigma, arrive, holdScale, shell) {
+    var lo = 0.5, hi = 60;
+    for (var i = 0; i < 60; i++) {
+      var m = (lo + hi) / 2, v = arrive === 'terminal' ? oilTerminal(m).v : 0;
+      if (capture(m, v, sigma, holdScale, shell).through) hi = m; else lo = m;
+    }
+    return (lo + hi) / 2;
+  }
+  function halfMm(x) { return Math.round(x * 2) / 2; }
+  function tspForMm(dMm) { return dropMl(dMm) / C.ML_PER_TSP; }
+  // a core size in kitchen words: the slider's own step names when it is one, otherwise "about N mL"
+  function tspText(dMm) { for (var i = 0; i < C.DROP_STEPS_MM.length; i++) if (Math.abs(C.DROP_STEPS_MM[i] - dMm) < 1e-6) return C.DROP_TSP_TEXT[i]; var ml = dropMl(dMm); return 'about ' + (ml < 0.95 ? ml.toFixed(2) : ml.toFixed(1)) + ' mL'; }
+  /* The band, quoted to the half millimetre (an order-of-magnitude criterion):
+   *  high end = high tension (30 mN/m), starting from rest, P&M's static hold (the hardest case to get through);
+   *  low end  = middle tension, from rest, with the hold halved (P&M's "factor of the order of 2" from arrival inertia).
+   *  With the full factor at 20 mN/m it could be lower still (loLowest). The sim's own cut (middle tension, static hold
+   *  + its own speed estimate at the real arrival speed) is cutMm. */
+  function captureBand() {
+    var lo = thresholdMm(C.SIGMA_OW, 'rest', 1 / C.PM_DYNAMIC_FACTOR), hi = thresholdMm(C.SIGMA_OW_RANGE[1], 'rest');
+    return { loMm: halfMm(lo), hiMm: halfMm(hi), loRaw: lo, hiRaw: hi,
+      loLowest: thresholdMm(C.SIGMA_OW_RANGE[0], 'rest', 1 / C.PM_DYNAMIC_FACTOR),
+      restLo: thresholdMm(C.SIGMA_OW_RANGE[0], 'rest'), restMid: thresholdMm(C.SIGMA_OW, 'rest'), restHi: hi,
+      termLo: thresholdMm(C.SIGMA_OW_RANGE[0], 'terminal'), termMid: thresholdMm(C.SIGMA_OW, 'terminal'), cutMm: thresholdMm(C.SIGMA_OW, 'terminal') };
+  }
+  function inBand(dMm) { var b = captureBand(); return dMm >= b.loMm && dMm <= b.hiMm; }
+
+  /* ---- where everything sits ----
+   * inv = {honey, water, oil, balsamic (mL), drops: [{dMm}]}.  Unstirred (settle): the oil always on top (it mixes with
+   * nothing); the water-based liquids in density order, each its own layer (they mix only slowly on their own); balsamic
+   * drops as small puddles ("lenses") on the floor = the top of the honey, or the glass bottom. Stirred (stir): all the
+   * water-based liquid is one mix whose density is the volume-weighted average (ideal mixing); the oil comes back on top. */
+  function settle(inv, stirred) {
+    var A = areaCm2(), layers = [], y = 0, lensMl = 0;
+    function push(id, ml, rho, comp) { if (!(ml > 0)) return; var h = ml / A; layers.push({ id: id, ml: ml, rho: rho, bottomCm: y, topCm: y + h, comp: comp }); y += h; }
+    var wb = (inv.honey || 0) + (inv.water || 0) + (inv.balsamic || 0);
+    var floorCm = 0, lenses = [], held = [], heldMl = 0, lineCm = null;
+    if (stirred && wb > 0) {
+      var rho = ((inv.honey || 0) * LIQ.honey.rho + (inv.water || 0) * LIQ.water.rho + (inv.balsamic || 0) * LIQ.balsamic.rho) / wb;
+      push('mix', wb, rho, { honey: inv.honey || 0, water: inv.water || 0, balsamic: inv.balsamic || 0 });
+      floorCm = y;
+    } else {
+      push('honey', inv.honey || 0, LIQ.honey.rho, { honey: inv.honey || 0 });
+      floorCm = y;                                          // the drops' puddles sit here (on the honey, or the bottom)
+      lensMl = inv.balsamic || 0;
+      (inv.drops || []).forEach(function (d) { if (d.held) { held.push({ dMm: d.dMm, ml: dropMl(d.dMm), x: d.x, pose: heldPose(d.dMm) }); heldMl += dropMl(d.dMm); } else lenses.push({ dMm: d.dMm, ml: dropMl(d.dMm), x: d.x }); });
+      lensMl -= heldMl;
+      y += lensMl / A;                                      // the puddles' volume lifts what's above (0.07 mm for 3 drops)
+      push('water', inv.water || 0, LIQ.water.rho, { water: inv.water || 0 });
+      lineCm = y;                                           // the oil-water line: held drops sit here
+      y += heldMl / A;                                      // held drops' volume lifts the oil (their split above/below the line: < 0.01 mm, ignored)
+    }
+    push('oil', inv.oil || 0, LIQ.oil.rho, { oil: inv.oil || 0 });
+    var total = layers.reduce(function (s, l) { return s + l.ml; }, 0) + lensMl + heldMl;
+    return { layers: layers, lenses: lenses, held: held, heldMl: heldMl, lineCm: lineCm, floorCm: floorCm, lensMl: lensMl, topCm: y, totalMl: total, stirred: !!stirred };
+  }
+  function layer(st, id) { for (var i = 0; i < st.layers.length; i++) if (st.layers[i].id === id) return st.layers[i]; return null; }
+  function arrangement(st) { return st.layers.map(function (l) { return l.id; }).concat(st.lenses.length ? ['balsamic-puddles@' + st.floorCm.toFixed(6)] : []).concat(st.held && st.held.length ? ['balsamic-held@' + st.lineCm.toFixed(6)] : []); }
+
+  /* One drop's journey (times in real seconds from its release; heights in cm above the inside bottom; centre of the drop).
+   * Through the oil (if any) from rest. At the oil-water line: capture() decides, with the speed it arrives at. Held: it
+   * stays at the line (no skin, no bubble). Through: into the water from rest (denting the surface uses up its momentum:
+   * a stated simplification), wearing the oil it carried (diameter d + 2h, density of drop + oil), until its bottom
+   * touches the floor (honey, puddles, or glass). It breaks open there (drawn at once; really it takes a moment) and the
+   * carried oil gathers into one droplet that rises back to the oil. No oil: no skin, no line to cross. No water: it
+   * lands on the floor under the oil, no bubble. Every leg includes the glass's wall effect. */
+  function journey(st, dMm, t0) {
+    var oil = layer(st, 'oil'), water = layer(st, 'water'), d = dMm / 1000, rb = LIQ.balsamic.rho * 1000, lam = lamFor(d), A = areaCm2();
+    var floorTop = st.floorCm + st.lensMl / A;
+    var J = { dMm: dMm, t0: t0 || 0, segs: [], coated: false, held: false, cap: null, filmMl: 0, dropletMm: 0, rise: null, landCm: floorTop + dMm / 20 };
+    var t = J.t0;
+    if (oil) {
+      var toCm = water ? water.topCm : floorTop + dMm / 20;
+      var so = travel(d, rb, LIQ.oil.rho * 1000, LIQ.oil.mu, Math.max(0, oil.topCm - toCm) / 100, 0, lam);
+      J.segs.push({ kind: 'oil', fromCm: oil.topCm, toCm: toCm, t0: t, T: so.T, tr: so, vTerm: terminal(d, rb, LIQ.oil.rho * 1000, LIQ.oil.mu, lam) });
+      t += so.T;
+      if (water) {
+        J.cap = capture(dMm, so.vEnd); J.vArrive = so.vEnd;
+        if (J.cap.through) J.coated = true;
+        else {                                              // held: it comes to rest where the static balance puts it
+          J.held = true; J.pose = heldPose(dMm); J.landCm = water.topCm + J.pose.centreCm;
+          so = travel(d, rb, LIQ.oil.rho * 1000, LIQ.oil.mu, Math.max(0, oil.topCm - J.landCm) / 100, 0, lam);
+          var s0 = J.segs[0]; s0.toCm = J.landCm; s0.T = so.T; s0.tr = so; t = J.t0 + so.T;
+        }
+      }
+    }
+    if (water && !J.held) {
+      var dd = J.coated ? coatedDiamM(dMm) : d, rp = J.coated ? coatedDensity(dMm) * 1000 : rb, stopCm = floorTop + dd * 50;
+      var sw = travel(dd, rp, LIQ.water.rho * 1000, LIQ.water.mu, Math.max(0, water.topCm - stopCm) / 100, 0, lamFor(dd));
+      J.segs.push({ kind: 'water', fromCm: water.topCm, toCm: stopCm, t0: t, T: sw.T, tr: sw, coated: J.coated, vTerm: terminal(dd, rp, LIQ.water.rho * 1000, LIQ.water.mu, lamFor(dd)),
+        vTermBare: terminal(d, rb, LIQ.water.rho * 1000, LIQ.water.mu, lam) });
+      t += sw.T; J.landCm = stopCm;
+    }
+    if (!oil && !water) J.segs.push({ kind: 'none', t0: t, T: 0 });
+    J.landT = t;
+    if (J.coated) {
+      J.filmMl = filmMl(dMm); J.dropletMm = oilDropletMm(dMm);
+      var Do = J.dropletMm / 1000, from = floorTop + J.dropletMm / 20;
+      var sr = travel(Do, LIQ.oil.rho * 1000, LIQ.water.rho * 1000, LIQ.water.mu, Math.max(0, (water.topCm - J.dropletMm / 20 - from) / 100), 0, lamFor(Do));
+      J.rise = { fromCm: from, toCm: water.topCm - J.dropletMm / 20, t0: t, T: sr.T, tr: sr, vTerm: terminal(Do, LIQ.oil.rho * 1000, LIQ.water.rho * 1000, LIQ.water.mu, lamFor(Do)) };
+      J.backT = t + sr.T;
+    } else J.backT = t;
+    return J;
+  }
+  // Where the drop is at real time t: {cm, phase: 'wait'|'oil'|'water'|'held'|'landed', coated}
+  function dropAt(J, t) {
+    if (t < J.t0) return { phase: 'wait', cm: J.segs.length && J.segs[0].fromCm != null ? J.segs[0].fromCm : J.landCm };
+    for (var i = 0; i < J.segs.length; i++) {
+      var s = J.segs[i];
+      if (t < s.t0 + s.T) return { phase: s.kind, cm: s.fromCm - 100 * at(s.tr, t - s.t0), coated: s.kind === 'water' && s.coated };
+    }
+    return { phase: J.held ? 'held' : 'landed', cm: J.landCm };
+  }
+  function dropletAt(J, t) { // the returning oil droplet: null if none (yet / any more)
+    if (!J.rise || t < J.rise.t0 || t >= J.backT) return null;
+    return { cm: J.rise.fromCm + 100 * at(J.rise.tr, t - J.rise.t0), dMm: J.dropletMm };
+  }
+  // oil in the oil layer at real time t: minus the skins that are away (on a drop in the water, or rising back)
+  function oilAwayMl(journeys, t) {
+    var s = 0;
+    journeys.forEach(function (J) { if (!J.coated) return; var w = null; for (var i = 0; i < J.segs.length; i++) if (J.segs[i].kind === 'water') w = J.segs[i]; if (t >= w.t0 && t < J.backT) s += J.filmMl; });
+    return s;
+  }
+
+  /* ---- the whole run: pour in the chosen order, then (optionally) stir ----
+   * order: array of liquid ids (each once), dMm: drop size. The layers end at the same place whatever the order (the oil
+   * on top; honey, water in density order): the oil never mixes, honey is so thick it sinks as a rope, and water, the
+   * only runny one, is also the least dense (SPEC section 3). The drops are the exception: small drops that meet an
+   * oil-water line are held there, so where they end up depends on what was poured before them. */
+  function run(order, dMm) {
+    order = (order || []).filter(function (id, i, a) { return LIQ[id] && a.indexOf(id) === i; });
+    dMm = Math.max(C.DROP_MM_MIN, Math.min(C.DROP_MM_MAX, +dMm || C.DROP_MM_DEFAULT));
+    var inv = { honey: 0, water: 0, oil: 0, balsamic: 0, drops: [] }, steps = [];
+    order.forEach(function (id) {
+      var before = settle(inv, false), step = { id: id, before: before };
+      if (id === 'balsamic') {
+        step.journeys = [];
+        for (var k = 0; k < C.DROPS; k++) {
+          var J = journey(settle(inv, false), dMm, k * C.DROP_GAP_S);
+          J.x = (k - (C.DROPS - 1) / 2);                        // -1, 0, 1: left, middle, right (drawing)
+          step.journeys.push(J);
+          inv.drops.push({ dMm: dMm, x: J.x, held: J.held }); inv.balsamic += dropMl(dMm);
+        }
+        step.T = Math.max.apply(null, step.journeys.map(function (J) { return J.backT; }));
+      } else inv[id] += pourMl();
+      step.after = settle(inv, false);
+      steps.push(step);
+    });
+    var fin = settle(inv, false);
+    return { order: order, dMm: dMm, inv: inv, steps: steps, final: fin, stirred: settle(inv, true), pouredMl: order.reduce(function (s, id) { return s + (id === 'balsamic' ? C.DROPS * dropMl(dMm) : pourMl()); }, 0) };
+  }
+
+  /* ---- slow mixing on its own: diffusion ---- */
+  function blurCm(tS) { return 100 * 2 * Math.sqrt(C.D_SUGAR * (tS == null ? C.BLUR_TIME_S : tS)); }   // 2 sqrt(D t)
+  function dissolveHours(dMm) { var a = dMm / 4000; return a * a / C.D_SUGAR / 3600; }                  // a^2 / D, a = puddle thickness d/4 (plain-water D: a lower bound)
+
+  // ---------- words (all result text is built here so test.js can sweep every setting) ----------
+  function capital(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
+  function g2(x) { return x.toFixed(2); }
+  function cmText(cm) { return cm < 0.95 ? Math.round(cm * 10) + ' mm' : (Math.round(cm * 10) / 10).toFixed(1).replace(/\.0$/, '') + ' cm'; }
+  function speedText(ms) { var c = ms * 100; return c < 9.95 ? c.toFixed(1) + ' cm/s' : Math.round(c) + ' cm/s'; }
+  function secText(s) { return s < 0.95 ? s.toFixed(1) + ' s' : (s < 9.5 ? s.toFixed(1) : Math.round(s)) + ' s'; }
+  function mmText(mm) { return mm < 0.95 ? mm.toFixed(1) + ' mm' : (Math.round(mm * 10) / 10).toFixed(1).replace(/\.0$/, '') + ' mm'; }
+  function list(a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
+
+  function describeReady(order, dMm) {
+    var head = 'Which liquids stack, and which just mix?';
+    if (!order.length) return { head: head, detail: 'Tap the liquids in the order you want to pour them, then press Pour.', drops: '', stir: '' };
+    var names = order.map(function (id) { return id === 'balsamic' ? C.DROPS + ' drops of balsamic (' + tspText(dMm) + ' each)' : LIQ[id].name; });
+    return { head: head, detail: 'Pour order: ' + list(names) + '. Press Pour to watch where each one goes.', drops: '', stir: '' };
+  }
+  function stackWords(st, coated) {
+    // read top to bottom; held drops sit at the oil-water line; puddles sit on the floor (honey's top, or the glass)
+    var parts = [], pud = !st.stirred && st.lenses.length, held = !st.stirred && st.held && st.held.length;
+    var pWords = 'the balsamic drops, ' + (coated ? 'broken open ' : '') + 'in small puddles on the ' + (layer(st, 'honey') ? 'honey' : 'glass bottom');
+    for (var i = st.layers.length - 1; i >= 0; i--) {
+      var l = st.layers[i];
+      if (held && l.id === 'water') parts.push('the balsamic drops, held at the oil\u2013water line');
+      if (pud && l.id === 'honey') parts.push(pWords);
+      if (l.id === 'mix') parts.push('one mixed liquid (' + g2(l.rho) + ' g/mL, ' + cmText(l.topCm - l.bottomCm) + ')');
+      else parts.push(LIQ[l.id].name + ' (' + g2(l.rho) + ' g/mL, ' + cmText(l.topCm - l.bottomCm) + ')');
+    }
+    if (pud && !layer(st, 'honey')) parts.push(pWords);
+    return parts;
+  }
+  function halfText(x) { var h = halfMm(x); return (h % 1 ? h.toFixed(1) : String(h)); }
+  function bandWords() { var b = captureBand(); return 'about ' + halfText(b.loMm) + ' and ' + halfText(b.hiMm) + ' mm'; }
+  // a ratio in words: an order-of-magnitude criterion shouldn't be quoted to the percent
+  function shareWords(r) { return r < 0.13 ? 'only about a tenth' : r < 0.23 ? 'about a fifth' : r < 0.3 ? 'about a quarter' : r < 0.42 ? 'about a third' : r < 0.58 ? 'about half' : r < 0.75 ? 'about two thirds' : 'most, but not all,'; }
+  function describe(R) {
+    var st = R.final, has = function (id) { return R.order.indexOf(id) >= 0; };
+    var wb = R.order.filter(function (id) { return LIQ[id].group === 'water-based'; });
+    var coated = R.steps.some(function (s) { return s.journeys && s.journeys.some(function (J) { return J.coated; }); });
+    var held = R.steps.some(function (s) { return s.journeys && s.journeys.some(function (J) { return J.held; }); });
+    if (!R.order.length) return { head: 'Nothing poured yet.', detail: 'Tap some liquids first.', drops: '', stir: '' };
+    var H, D = 'Top to bottom: ' + stackWords(st, coated).join(', then ') + '.';
+    if (held) H = 'The oil stacks on top, and the drops got stuck at the oil\u2013water line.';
+    else if (has('oil') && wb.length) H = 'The oil stacks on top. ' + (wb.length > 1 ? 'The others sit in density order, but they mix.' : 'It doesn\u2019t mix with the ' + LIQ[wb[0]].name + '.');
+    else if (has('oil')) H = 'Just oil: nothing to stack.';
+    else if (wb.length > 1) H = 'They sit in density order, but they mix.';
+    else H = 'Just ' + LIQ[wb[0]].name + ': nothing to stack.';
+    var nLayers = R.order.filter(function (id) { return id !== 'balsamic'; }).length;
+    if (nLayers > 1) D += ' With these liquids any pour order stacks the same way, denser lower: the oil can\u2019t mix, honey is so thick it sinks as a rope without mixing much, and water, the only runny one, is also the least dense. (Pour a runny, denser liquid onto one it mixes with, like salt water onto plain water, and it stirs itself in on the way down: then the order would matter.)';
+    if (wb.length > 1) D += ' ' + capital(list(wb.map(function (id) { return LIQ[id].name; }))) + (wb.length > 2 ? ' are all' : ' are both') + ' water-based, so they dissolve into each other: the lines between them are blurry, and only stay put because the denser one is below and nothing stirs them.';
+    var dr = has('balsamic') ? dropText(R) : '';
+    var s = '';
+    if (wb.length > 1 || (has('oil') && wb.length)) s = 'Press Stir to see which ones come back apart.';
+    return { head: H, detail: D, drops: dr, stir: s };
+  }
+  function dropText(R) {
+    var step = null, bi = -1; R.steps.forEach(function (s, i) { if (s.id === 'balsamic') { step = s; bi = i; } });
+    var J = step.journeys[0], o = null, w = null, b = captureBand();
+    J.segs.forEach(function (s) { if (s.kind === 'oil') o = s; if (s.kind === 'water') w = s; });
+    var d = tspText(R.dMm), out = 'Each ' + d + ' drop (a ball of balsamic about ' + mmText(R.dMm) + ' across)', near = inBand(R.dMm);
+    var land = layer(step.before, 'honey') ? 'the honey' : 'the bottom of the glass';
+    var oilL = layer(step.before, 'oil');
+    if (o) out += ' sinks through the ' + cmText(oilL.topCm - oilL.bottomCm) + ' of oil at about ' + speedText(o.vTerm.v) + ' (' + secText(o.T) + ')';
+    if (J.held) {
+      var P = J.pose, where = P.belowShare < 0.35 ? 'It rides high, only dimpling the line' : P.belowShare < 0.6 ? 'It sits in a shallow dent it pushes into the line, about ' + (P.belowShare < 0.5 ? 'half' : 'half or a bit more') + ' of it below the line' : 'It hangs mostly below the line, in a dent of oil about ' + mmText(10 * P.dentCm) + ' deep that it pulls down around itself';
+      out += ' and is held at the oil\u2013water line: its weight, plus the push of its speed, is ' + shareWords(J.cap.ratio) + ' of what the line can hold up. ' + where + ', like Nico\u2019s drops \u201chalf vinegar, half oil, stuck in the middle\u201d. When the oil film under it finally breaks, it mixes into the water right there, in dark wisps. Not modelled: how long it stays, whether it sags and slowly sinks later, and whether held drops drift together and sink as one. Only drops bigger than somewhere between ' + bandWords() + ' push through.';
+      if (near) out += ' This size is inside that uncertain band: it could go either way; the sim draws it held, at its middle numbers.';
+      return out;
+    }
+    if (o && w) out += ', and at the oil\u2013water line it is heavy enough to push through (drops smaller than somewhere between ' + bandWords() + ' get held there' + (near ? '; this size is inside that uncertain band, so it could go either way; the sim draws it going through, at its middle numbers' : (R.dMm > b.hiMm ? '; this size is above that band, so it goes through at any tension in the range' : '')) + '). It takes a coat of oil with it (the sim\u2019s estimate: about ' + mmText(C.SHELL_MM) + ' thick, so the coated ball is about ' + mmText(outerMm(R.dMm)) + ' across) and falls through the water as a ball, reaching about ' + speedText(w.tr.vEnd) + ' (' + secText(w.T) + '). It only breaks open when it stops on ' + land + ', and stays there: it is denser than water, so it mixes in slowly, from the bottom up. The oil coat gathers into one droplet about ' + mmText(J.dropletMm) + ' across (from that estimated coat; a thinner or thicker coat makes it smaller or bigger), which floats back up to the oil in about ' + secText(J.rise.T) + '.';
+    else if (o) out += ' and settles on ' + land + '.';
+    else if (w) out += ' goes straight into the water, with no oil to coat it: it sinks to ' + land + ' in about ' + secText(w.T) + '. With nothing to hold it together, a real drop would smear out on the way; the sim doesn\u2019t model that.';
+    else out += ' lands on ' + land + ' and sits there.';
+    var later = R.order.slice(bi + 1);
+    if (land !== 'the honey' && later.indexOf('honey') >= 0) out += ' The honey poured after it is denser, so it ends up under the puddles, but only after minutes or more' + (later.indexOf('water') >= 0 ? ', and the water poured onto them will already have mixed some of the balsamic away' : '') + '; the sim draws the end picture.';
+    else if (later.indexOf('water') >= 0 && !J.held) out += ' The water poured onto the puddles afterwards will mix some of the balsamic away; the sim draws the puddles as they were.';
+    return out;
+  }
+  function describeStirred(R) {
+    var st = R.stirred, mix = layer(st, 'mix'), oil = layer(st, 'oil');
+    var wb = R.order.filter(function (id) { return LIQ[id].group === 'water-based'; });
+    var H, D;
+    if (mix && oil) {
+      H = wb.length > 1 ? 'Stirred: the oil comes back apart. The rest stays mixed.' : 'Stirred: the oil comes back apart.';
+      D = 'The oil broke into drops, and they floated back up into one layer on top, the same ' + cmText(oil.topCm - oil.bottomCm) + ' as before. ';
+    } else if (mix) { H = 'Stirred: now it\u2019s one liquid.'; D = ''; }
+    else { H = 'Stirred: nothing to mix.'; D = 'Oil on its own just goes back to being oil.'; }
+    if (mix && wb.length > 1) D += capital(list(wb.map(function (id) { return id === 'balsamic' ? 'the balsamic' : LIQ[id].name; }))) + ' became one liquid' + ': ' + Math.round(mix.ml) + ' mL at ' + g2(mix.rho) + ' g/mL, the volume-weighted average of what went in. It won\u2019t come back apart.';
+    else if (mix) D += 'Only the ' + LIQ[wb[0]].name + ' is water-based here, so there was nothing for it to mix with' + (oil ? ' (the oil never mixes).' : '.');
+    return { head: H, detail: D.trim(), drops: '', stir: '' };
+  }
+
+  return {
+    C: C, LIQ: LIQ, IDS: IDS,
+    pourMl: pourMl, glassMl: glassMl, insideCm: insideCm, areaCm2: areaCm2, cmForMl: cmForMl,
+    mixes: mixes, pairRule: pairRule,
+    dragCd: dragCd, terminal: terminal, wallFactor: wallFactor, lamFor: lamFor, insideDiamCm: insideDiamCm, capture: capture, thresholdMm: thresholdMm, captureBand: captureBand, inBand: inBand, halfMm: halfMm, halfText: halfText, shareWords: shareWords, heldPose: heldPose, dentAt: dentAt, besselK0: besselK0, lcM: lcM, holdAtN: holdAtN, staticHoldN: staticHoldN, pm44HoldN: pm44HoldN, coatedDiamM: coatedDiamM, oilTerminal: oilTerminal, coatedSpeedChange: coatedSpeedChange, hrFactor: hrFactor, travel: travel, at: at,
+    dropMl: dropMl, filmMl: filmMl, oilDropletMm: oilDropletMm, coatedDensity: coatedDensity, outerMm: outerMm, dMmForTsp: dMmForTsp, tspForMm: tspForMm, tspText: tspText,
+    settle: settle, layer: layer, arrangement: arrangement, journey: journey, dropAt: dropAt, dropletAt: dropletAt, oilAwayMl: oilAwayMl,
+    run: run, blurCm: blurCm, dissolveHours: dissolveHours,
+    describeReady: describeReady, describe: describe, describeStirred: describeStirred,
+    cmText: cmText, speedText: speedText, secText: secText, mmText: mmText
+  };
+});
+/* END model.js */
+</script>
+<script>
+(function(){
+'use strict';
+var M = window.DensityModel, C = M.C, LIQ = M.LIQ;
+var NS = 'http://www.w3.org/2000/svg';
+// Everything drawn to one scale: PX px per cm (glass 3 x 6.1 in). Layer heights = volume / inside area (model).
+var PX = 20;
+var G = {outL:124, outBot:338};
+G.outR = G.outL + C.GLASS_DIAM_CM*PX; G.rim = G.outBot - C.GLASS_TALL_CM*PX; G.bot = G.outBot - C.GLASS_BASE_CM*PX;
+// inside width = the model's inside diameter (area 29.3 cm2 -> 6.11 cm), so walls come out 7.6 mm thick
+G.cx = (G.outL + G.outR)/2; G.inW = M.insideDiamCm()*PX; G.inL = G.cx - G.inW/2; G.inR = G.cx + G.inW/2;
+function yCm(cm){ return G.bot - cm*PX; }
+var POUR_MS = 1400, GAP_MS = 250, SLOWMO = 3, STIR_MS = 3600, DROP_DX = 40;   // 2 cm between drops: three 1/2 tsp drops in their oil coats (18.8 mm) still fit across the 6.1 cm glass
+var COL = {honey:[0xE6,0xB0,0x4F], water:[0xCF,0xE7,0xF4], oil:[0xF3,0xE4,0xA6], balsamic:[0x6A,0x43,0x34]};
+function rgb(c){ return 'rgb(' + c.map(function(v){ return Math.round(v); }).join(',') + ')'; }
+function mixColour(comp){ // volume-weighted blend of the colours (a drawing choice)
+  var s = 0, c = [0,0,0];
+  for (var k in comp){ if (!(comp[k] > 0)) continue; s += comp[k]; for (var i = 0; i < 3; i++) c[i] += COL[k][i]*comp[k]; }
+  return s > 0 ? c.map(function(v){ return v/s; }) : COL.water;
+}
+function lerpC(a, b, f){ return a.map(function(v, i){ return v + (b[i] - v)*f; }); }
+var seed = 11; function rnd(){ seed = (seed*16807) % 2147483647; return (seed - 1)/2147483646; }
+
+var svg = document.getElementById('scene');
+function el(tag, attrs, parent){ var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); (parent || svg).appendChild(e); return e; }
+function clear(g){ while (g.firstChild) g.removeChild(g.firstChild); }
+var defs = el('defs', {});
+var mk = el('marker', {id:'ah', viewBox:'0 0 10 10', refX:'6', refY:'5', markerWidth:'4', markerHeight:'4', orient:'auto-start-reverse'}, defs);
+el('path', {d:'M0,0 L10,5 L0,10 z', fill:'#E0562B'}, mk);
+var mk2 = el('marker', {id:'gh', viewBox:'0 0 10 10', refX:'6', refY:'5', markerWidth:'5', markerHeight:'5', orient:'auto'}, defs);
+el('path', {d:'M0,0 L10,5 L0,10 z', fill:'#2B2A33'}, mk2);
+var clip = el('clipPath', {id:'inside'}, defs);
+el('rect', {x:G.inL, y:G.rim - 2, width:G.inW, height:G.bot - G.rim + 2}, clip);
+
+// counter + glass back
+el('line', {x1:0, x2:400, y1:G.outBot + 1.5, y2:G.outBot + 1.5, stroke:'#2B2A33', 'stroke-width':1, opacity:0.35});
+el('path', {d:'M'+G.outL+' '+G.rim+' L'+G.outL+' '+G.outBot+' L'+G.outR+' '+G.outBot+' L'+G.outR+' '+G.rim, fill:'#EEF2F2'});
+el('rect', {x:G.inL, y:G.rim, width:G.inW, height:G.bot - G.rim, fill:'#FDFBF6'});
+var inside = el('g', {'clip-path':'url(#inside)'});
+var layerG = el('g', {}, inside), blurG = el('g', {}, inside), lensG = el('g', {}, inside), streamG = el('g', {}, inside);
+var blobG = el('g', {}, inside), dropG = el('g', {}, inside);
+// glass outline on top
+el('path', {d:'M'+G.outL+' '+(G.rim-1)+' L'+G.outL+' '+G.outBot+' L'+G.outR+' '+G.outBot+' L'+G.outR+' '+(G.rim-1), fill:'none', stroke:'#2B2A33', 'stroke-width':3, 'stroke-linejoin':'round', 'stroke-linecap':'round'});
+el('path', {d:'M'+G.inL+' '+G.rim+' L'+G.inL+' '+G.bot+' L'+G.inR+' '+G.bot+' L'+G.inR+' '+G.rim, fill:'none', stroke:'#2B2A33', 'stroke-width':1.4, opacity:0.55});
+el('line', {x1:G.outL, x2:G.inL, y1:G.rim-1, y2:G.rim-1, stroke:'#2B2A33', 'stroke-width':3, 'stroke-linecap':'round'});
+el('line', {x1:G.inR, x2:G.outR, y1:G.rim-1, y2:G.rim-1, stroke:'#2B2A33', 'stroke-width':3, 'stroke-linecap':'round'});
+var outStream = el('g', {});          // the pour above the rim
+var spoonG = el('g', {display:'none', 'data-spoon':1});
+el('path', {d:'M-58 -9 L-14 -3 Q-4 -3 0 0 Q-4 5 -16 4 L-58 -5 Z', fill:'#D9D3C7', stroke:'#2B2A33', 'stroke-width':1.3, 'stroke-linejoin':'round'}, spoonG);
+var arrowG = el('g', {});
+// density ladder (a diagram, not to the glass's scale): denser lower, lines up with the glass
+var LAD = {x:300, y0:150, y1:318, r0:0.90, r1:1.45};
+function yRho(r){ return LAD.y0 + (r - LAD.r0)/(LAD.r1 - LAD.r0)*(LAD.y1 - LAD.y0); }
+var ladG = el('g', {});
+var ladT = el('text', {x:LAD.x - 6, y:LAD.y0 - 28, 'font-size':12.5, 'font-weight':700, fill:'#2B2A33'}, ladG); ladT.textContent = 'density, g/mL';
+el('line', {x1:LAD.x, x2:LAD.x, y1:LAD.y0 - 12, y2:LAD.y1 + 4, stroke:'#2B2A33', 'stroke-width':1.5}, ladG);
+el('line', {x1:LAD.x - 10, x2:LAD.x - 10, y1:LAD.y0 + 4, y2:LAD.y1 - 4, stroke:'#2B2A33', 'stroke-width':1.3, 'marker-end':'url(#gh)'}, ladG);
+var dT = el('text', {x:LAD.x - 14, y:(LAD.y0 + LAD.y1)/2, 'font-size':11.5, 'font-weight':700, fill:'#2B2A33', 'text-anchor':'middle', transform:'rotate(-90 '+(LAD.x - 14)+' '+((LAD.y0 + LAD.y1)/2)+')'}, ladG); dT.textContent = 'denser';
+var tickG = el('g', {}, ladG);
+var labelLayer = el('g', {});
+
+// ---------- labels (boxed tabs like the sketches) ----------
+function clearLabels(){ clear(labelLayer); }
+function label(lines, x, y, tx, ty, anchor, nb, maxW, minW, gap){
+  // lines[0..nb-1] bold; any line wider than maxW wraps at a space (so no label reaches into the glass)
+  var g = el("g", {}, labelLayer), pad = 5, lh = 16, ts = [];
+  nb = nb || 1; maxW = maxW || (G.inL - 10);
+  function mkT(str, bold){ var t = el('text', {x:0, y:0, 'font-size': bold ? 14 : 12.5, 'font-weight': bold ? 700 : 400, fill:'#2B2A33'}, g); t.textContent = str; return t; }
+  lines.forEach(function(str, i){
+    var bold = i < nb, words = str.split(' '), cur = '';
+    words.forEach(function(w){
+      var tryS = cur ? cur + ' ' + w : w, t = mkT(tryS, bold), wid = t.getComputedTextLength(); g.removeChild(t);
+      if (cur && wid > maxW - 2*pad){ ts.push(mkT(cur, bold)); cur = w; } else cur = tryS;
+    });
+    if (cur) ts.push(mkT(cur, bold));
+  });
+  var w = Math.max(minW || 0, Math.max.apply(null, ts.map(function(t){ return t.getComputedTextLength(); })) + 2*pad), h = ts.length*lh + 2*pad - 3;
+  var bx = anchor === 'end' ? x - w : x;
+  var box = el('rect', {x:bx, y:y, width:w, height:h, rx:7, fill:'#FBF6EC', stroke:'#2B2A33', 'stroke-width':1.2});
+  g.insertBefore(box, ts[0]);
+  ts.forEach(function(t, i){ t.setAttribute('x', bx + pad); t.setAttribute('y', y + pad + 11 + i*lh); });
+  if (tx != null){
+    var sx = Math.max(bx, Math.min(tx, bx + w)), sy = Math.max(y + 4, Math.min(ty, y + h - 4));
+    var ex = tx, ey = ty;
+    if (gap){ var L = Math.hypot(tx - sx, ty - sy) || 1; ex = tx - (tx - sx)/L*gap; ey = ty - (ty - sy)/L*gap; }
+    var ln = el('line', {x1:sx, y1:sy, x2:ex, y2:ey, stroke:'#2B2A33', 'stroke-width':1.3, 'data-gap':gap || 0, 'data-tx':tx, 'data-ty':ty}, g);
+    g.insertBefore(ln, box);
+    if (!gap) el('circle', {cx:tx, cy:ty, r:1.8, fill:'#2B2A33', 'data-dot':1}, g);
+  }
+  return {g:g, h:h, w:w};
+}
+function measure(lines, nb){ var r = label(lines, -999, -999, null, null, null, nb); labelLayer.removeChild(r.g); return r; }
+function measureLines(lines, nb){ return measure(lines, nb).h; }
+// stack labels on the left without overlaps: items [{lines, ty, tx}], placed near their target heights
+function leftLabels(items){
+  items.sort(function(a, b){ return b.ty - a.ty; });   // bottom first, each as close to its target height as the one below allows
+  var placed = [], floorY = G.outBot;
+  items.forEach(function(it){
+    var h = measureLines(it.lines, it.nb), y = Math.min(it.below != null ? it.ty + it.below : it.ty - h/2, floorY - h - 4);   // below: box top under the target, so the leader comes in at an angle
+    placed.push({it:it, y:y}); floorY = y;
+  });
+  // if the stack ran off the top, shift it all down (labels may then sit lower than their targets)
+  var wMax = Math.max.apply(null, items.map(function(it){ return measure(it.lines, it.nb).w; }).concat([0]));   // one width: leaders all start at the same x and never cross a box
+  var over = (G.rim - 8) - (placed.length ? placed[placed.length - 1].y : 0);
+  placed.forEach(function(p){
+    var y = p.y + Math.max(0, over), h = measureLines(p.it.lines, p.it.nb), ty = p.it.ty;
+    if (p.it.range) ty = Math.max(p.it.range[0], Math.min(p.it.range[1], y + h/2));   // aim inside the layer, level with the box if possible
+    label(p.it.lines, 4, y, p.it.tx, ty, null, p.it.nb, null, wMax, p.it.gap);
+  });
+}
+function arrow(x1, y1, x2, y2, w){ return el('line', {x1:x1, y1:y1, x2:x2, y2:y2, stroke:'#E0562B', 'stroke-width':w || 3, 'stroke-dasharray':'7 5', 'marker-end':'url(#ah)'}, arrowG); }
+
+// ---------- drawing a state from the model ----------
+var lastDraw = null;
+function drawState(st, o){
+  o = o || {};
+  clear(layerG); clear(blurG); clear(lensG);
+  var drawn = [];
+  st.layers.forEach(function(l){
+    var col = l.id === 'mix' ? (o.mixCol || mixColour(l.comp)) : (o.cols && o.cols[l.id]) || COL[l.id];
+    var y0 = yCm(l.topCm), y1 = yCm(l.bottomCm);
+    if (y1 - y0 < 0.02) return;
+    el('rect', {x:G.inL, y:y0, width:G.inW, height:y1 - y0, fill:rgb(col), 'data-id':l.id}, layerG);
+    drawn.push({id:l.id, y0:y0, y1:y1, ml:l.ml, col:col});
+  });
+  // boundaries: sharp line at oil (it never mixes); blurry band between water-based layers (diffusion after BLUR_TIME_S)
+  for (var i = 0; i + 1 < drawn.length; i++){
+    var lo = drawn[i], hi = drawn[i + 1], yb = lo.y0;
+    if (hi.id === 'oil' || lo.id === 'oil'){
+      el('line', {x1:G.inL, x2:G.inR, y1:yb, y2:yb, stroke:'#8B7A3A', 'stroke-width':1.4}, blurG);
+    } else if (!st.stirred && !o.noBlur){
+      var bh = M.blurCm(o.blurS)*PX, gid = 'bl' + i + (o.tag || '');
+      if (bh < 0.25) continue;                                   // seconds after pouring: thinner than a line
+      var gr = el('linearGradient', {id:gid, x1:0, y1:0, x2:0, y2:1}, blurG);
+      el('stop', {offset:0, 'stop-color':rgb(hi.col)}, gr); el('stop', {offset:1, 'stop-color':rgb(lo.col)}, gr);
+      el('rect', {x:G.inL, y:yb - bh/2, width:G.inW, height:bh, fill:'url(#'+gid+')', 'data-blur':1}, blurG);
+    }
+  }
+  if (drawn.length){ var top = drawn[drawn.length - 1]; el('line', {x1:G.inL, x2:G.inR, y1:top.y0, y2:top.y0, stroke:'#2B2A33', 'stroke-width':1, opacity:0.45}, blurG); }
+  // balsamic puddles: half-lens 2d wide, height set by the drop's volume: V = (2/3) pi (d)^2 h  ->  h = d/4
+  if (!st.stirred) st.lenses.forEach(function(L){
+    var rx = L.dMm/10*PX, h = L.dMm/40*PX, x = G.cx + L.x*DROP_DX, y = yCm(st.floorCm);
+    el('path', {d:'M'+(x - rx)+' '+y+' A'+rx+' '+h+' 0 0 1 '+(x + rx)+' '+y+' Z', fill:rgb(COL.balsamic), stroke:'#2B2A33', 'stroke-width':0.5, 'data-lens':L.ml}, lensG);
+  });
+  // drops held at the oil-water line, where the model's static balance puts them (M.heldPose): small ones ride high,
+  // bigger ones hang mostly below the line in a dent of oil they pull down (drawn to scale; how long: not modelled)
+  if (!st.stirred && st.held && st.held.length){
+    var ly = yCm(st.lineCm), depth = function(x){ var dmax = 0; st.held.forEach(function(H){ dmax = Math.max(dmax, M.dentAt(H.pose, Math.abs(x - (G.cx + H.x*DROP_DX))/PX)); }); return dmax*PX; };
+    var pts = [], maxD = 0;
+    for (var x = G.inL; x <= G.inR + 0.01; x += 0.5){ var dd = depth(Math.min(x, G.inR)); maxD = Math.max(maxD, dd); pts.push([Math.min(x, G.inR), ly + dd]); }
+    if (maxD > 0.3){
+      var poly = 'M' + G.inL + ' ' + (ly - 1) + ' L' + G.inR + ' ' + (ly - 1) + ' ' + pts.slice().reverse().map(function(q){ return 'L' + q[0].toFixed(2) + ' ' + q[1].toFixed(2); }).join(' ') + ' Z';
+      el('path', {d:poly, fill:rgb(COL.oil), 'data-dent':maxD.toFixed(3)}, lensG);
+      el('path', {d:'M' + pts.map(function(q){ return q[0].toFixed(2) + ' ' + q[1].toFixed(2); }).join(' L'), fill:'none', stroke:'#8B7A3A', 'stroke-width':1.4}, lensG);
+    }
+    st.held.forEach(function(H){   // its oil coat (to scale: the hold is worked out for core + coat), then the balsamic core
+      el('circle', {cx:G.cx + H.x*DROP_DX, cy:yCm(st.lineCm + H.pose.centreCm), r:H.pose.outerMm/20*PX, fill:rgb(COL.oil), stroke:'#9C7A1E', 'stroke-width':0.5, 'data-shell':1}, lensG);
+      el('circle', {cx:G.cx + H.x*DROP_DX, cy:yCm(st.lineCm + H.pose.centreCm), r:H.dMm/20*PX, fill:rgb(COL.balsamic), stroke:'#2B2A33', 'stroke-width':0.8, 'data-held':H.ml, 'data-cy-model':yCm(st.lineCm + H.pose.centreCm)}, lensG);
+    });
+  }
+  lastDraw = {st:st, drawn:drawn};
+}
+function ticks(st, withBal){
+  clear(tickG);
+  var items = [];
+  st.layers.forEach(function(l){ items.push({name: l.id === 'mix' ? 'mix' : (l.id === 'oil' ? 'oil' : LIQ[l.id].name), rho:l.rho, col: l.id === 'mix' ? mixColour(l.comp) : COL[l.id]}); });
+  if (!st.stirred && (st.lenses.length || (st.held && st.held.length) || withBal)) items.push({name:'balsamic', rho:LIQ.balsamic.rho, col:COL.balsamic});
+  items.sort(function(a, b){ return a.rho - b.rho; });
+  var lastY = -99;
+  items.forEach(function(it){
+    var y = yRho(it.rho), ty = Math.max(y, lastY + 14); lastY = ty;
+    el('rect', {x:LAD.x - 5, y:y - 3, width:10, height:6, rx:2, fill:rgb(it.col), stroke:'#2B2A33', 'stroke-width':1}, tickG);
+    var t = el('text', {x:LAD.x + 9, y:ty + 4.5, 'font-size':13, 'font-weight':700, fill:'#2B2A33'}, tickG);
+    t.textContent = it.name + ' ' + it.rho.toFixed(2);
+  });
+}
+function layerLabels(st){
+  var items = [];
+  st.layers.forEach(function(l){
+    var h = (l.topCm - l.bottomCm), name = l.id === 'mix' ? 'mixed' : LIQ[l.id].name, yc = yCm((l.topCm + l.bottomCm)/2);
+    if (h*PX < 1) return;
+    items.push({lines:[name], ty:yc, tx:G.inL + 10, range:[yCm(l.topCm) + Math.min(5, h*PX/2), yCm(l.bottomCm) - Math.min(5, h*PX/2)]});
+    if (h*PX >= 14){ var t = el('text', {x:G.inR - 5, y:yc + 4, 'font-size':12, 'font-weight':700, fill:'#2B2A33', 'text-anchor':'end', 'data-thick':h}, labelLayer); t.textContent = M.cmText(h); }
+  });
+  if (!st.stirred && st.held && st.held.length) items.push({lines:['balsamic drops, held at the oil\u2013water line', 'each in a dent it pushes into the line; how long, and whether they drift together: not modelled'], ty:yCm(st.lineCm + st.held[0].pose.centreCm), tx:G.cx - DROP_DX - st.held[0].pose.outerMm/20*PX - 1});
+  if (!st.stirred && st.lenses.length){
+    var coated = R && R.steps.some(function(s){ return s.journeys && s.journeys[0].coated; });
+    items.push({lines:['balsamic drops', coated ? 'broke open, mixing in slowly' : 'mixing in slowly'], ty:yCm(st.floorCm) - 2, tx:G.cx - DROP_DX - st.lenses[0].dMm/10*PX*0.6});
+  }
+  leftLabels(items);
+}
+// ---------- state ----------
+var order = [], dropIn = document.getElementById('drop');
+var state = 'ready', anim = null, R = null, T = null;
+var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function dMm(){ return C.DROP_STEPS_MM[+dropIn.value]; }   // the balsamic core's diameter for the chosen volume
+function setText(d){
+  document.getElementById('head').textContent = d.head; document.getElementById('stageHead').textContent = d.head;
+  document.getElementById('detail').textContent = d.detail; document.getElementById('drops').textContent = d.drops || '';
+  document.getElementById('stirHint').textContent = d.stir || '';
+}
+function refreshButtons(){
+  Array.prototype.forEach.call(document.querySelectorAll('.liq'), function(b){
+    var i = order.indexOf(b.getAttribute('data-liq'));
+    b.setAttribute('aria-pressed', i >= 0 ? 'true' : 'false'); b.querySelector('.n').textContent = i >= 0 ? String(i + 1) : '';
+  });
+  document.getElementById('orderOut').textContent = order.length ? order.length + ' to pour' : 'none yet';
+  document.getElementById('dropOut').textContent = M.tspText(dMm()) + ' \u00b7 ' + M.mmText(dMm());
+  dropIn.setAttribute('aria-valuetext', M.tspText(dMm()) + ' of balsamic, a ball ' + M.mmText(dMm()) + ' across');
+}
+function drawReady(){
+  if (anim) cancelAnimationFrame(anim); anim = null;
+  state = 'ready'; R = M.run(order, dMm()); T = timeline(R);
+  refreshButtons();
+  clearLabels(); clear(streamG); clear(outStream); clear(dropG); clear(blobG); clear(arrowG); spoonG.setAttribute('display', 'none');
+  drawState(M.settle({}, false)); clear(tickG);
+  document.getElementById('clock').textContent = '';
+  setText(M.describeReady(R.order, R.dMm));
+  var pb = document.getElementById('pour'); pb.textContent = 'Pour'; pb.disabled = !order.length;
+  document.getElementById('stir').disabled = true;
+  svg.setAttribute('aria-label', 'A tall empty glass, drawn to scale. Pour order: ' + (order.length ? order.map(function(id){ return LIQ[id].name; }).join(', ') : 'nothing yet') + '.');
+}
+
+// ---------- the timeline (animation ms) ----------
+function timeline(R){
+  var t = 0, ph = [];
+  R.steps.forEach(function(s, i){
+    var dur = s.id === 'balsamic' ? s.T*1000*SLOWMO + 300 : POUR_MS;
+    ph.push({i:i, s:s, t0:t, t1:t + dur}); t += dur + GAP_MS;
+  });
+  return {phases:ph, dur:Math.max(0, t - GAP_MS)};
+}
+function ease(t){ return t < 0 ? 0 : t > 1 ? 1 : t*t*(3 - 2*t); }
+function invAfter(stepIdx){ // inventory after the first stepIdx steps
+  var inv = {honey:0, water:0, oil:0, balsamic:0, drops:[]};
+  for (var i = 0; i < stepIdx; i++){ var s = R.steps[i]; if (s.id === 'balsamic') s.journeys.forEach(function(J){ inv.drops.push({dMm:J.dMm, x:J.x}); inv.balsamic += M.dropMl(J.dMm); }); else inv[s.id] += M.pourMl(); }
+  return inv;
+}
+var vis = {};
+function frame(ms){
+  clearLabels(); clear(streamG); clear(outStream); clear(dropG); clear(arrowG); spoonG.setAttribute('display', 'none');
+  document.getElementById('clock').textContent = '';
+  var ph = null;
+  for (var i = 0; i < T.phases.length; i++) if (ms >= T.phases[i].t0) ph = T.phases[i];
+  vis = {ms:ms, drops:[], droplets:[], stream:false, oilMl:null};
+  if (!ph){ drawState(M.settle({}, false)); return; }
+  var s = ph.s, inv = invAfter(ph.i), f = (ms - ph.t0)/(ph.t1 - ph.t0);
+  if (s.id !== 'balsamic'){
+    var k = ease(f); inv[s.id] += k*M.pourMl();
+    var st = M.settle(inv, false); drawState(st, {tag:'p', blurS:ms/1000}); ticks(st);
+    if (f < 1){
+      var L = M.layer(st, s.id), yT = L ? yCm(L.topCm) : G.bot;
+      var sx = G.cx + 18;
+      el('rect', {x:sx - 2.5, y:G.rim - 4, width:5, height:Math.max(0, yT - G.rim + 4), fill:rgb(COL[s.id]), stroke:'#2B2A33', 'stroke-width':0.6}, streamG);
+      el('rect', {x:sx - 2.5, y:18, width:5, height:G.rim - 14, fill:rgb(COL[s.id]), stroke:'#2B2A33', 'stroke-width':0.6}, outStream);
+      label(['pouring ' + LIQ[s.id].name, '¼ cup, settles at ' + M.cmText(L ? L.bottomCm : 0) + ' up'], 4, 40, sx - 3, 60);
+      vis.stream = true;
+    }
+    vis.oilMl = inv.oil;
+    return;
+  }
+  // balsamic drops: real time = (ms - t0) / SLOWMO
+  var tr = (ms - ph.t0)/SLOWMO/1000;
+  s.journeys.forEach(function(J){ if (tr >= J.landT){ inv.drops.push({dMm:J.dMm, x:J.x, held:J.held}); inv.balsamic += M.dropMl(J.dMm); } });
+  var away = M.oilAwayMl(s.journeys, tr);
+  inv.oil -= away;
+  var st2 = M.settle(inv, false); drawState(st2, {tag:'d', blurS:ms/1000}); ticks(st2, true);
+  vis.oilMl = inv.oil; vis.away = away;
+  document.getElementById('clock').textContent = 'Real time: ' + tr.toFixed(2) + ' s (shown ' + SLOWMO + '× slower)';
+  // spoon just above the surface, over the next drop to go
+  var next = null; s.journeys.forEach(function(J){ if (!next && tr < J.t0) next = J; });   // the spoon moves on the moment a drop leaves it
+  var surfY = yCm(s.before.topCm);
+  if (next){ spoonG.setAttribute('display', 'inline'); spoonG.setAttribute('transform', 'translate(' + (G.cx + next.x*DROP_DX) + ' ' + (surfY - next.dMm/10*PX - 1) + ')'); }
+  var labelled = {};
+  s.journeys.forEach(function(J){
+    var p = M.dropAt(J, tr), x = G.cx + J.x*DROP_DX, r = J.dMm/20*PX;
+    if (p.phase === 'landed' || p.phase === 'held'){
+      if (p.phase === 'held' && !labelled.held){ labelled.held = 1; leftLabelsLater.push({lines:['held at the oil\u2013water line', 'in a dent it pushes into the line; how long, and whether they drift together: not modelled'], ty:yCm(p.cm), tx:x - r - 1, pri:3}); vis.held = (vis.held || 0) + 1; }
+      else if (p.phase === 'held') vis.held = (vis.held || 0) + 1;
+      return;
+    }
+    var y = p.phase === 'wait' ? surfY - r - 1 : yCm(p.cm);
+    if (p.phase === 'wait' && J !== next) return;                  // only the drop on the spoon
+    var ro = p.coated ? M.outerMm(J.dMm)/20*PX : r;   // in the water: its oil coat, to scale (model SHELL_MM), around the balsamic
+    if (p.coated) el('circle', {cx:x, cy:y, r:ro, fill:rgb(COL.oil), stroke:'#9C7A1E', 'stroke-width':0.6, 'data-shell':1}, dropG);
+    el('circle', {cx:x, cy:y, r:r, fill:rgb(COL.balsamic), stroke: p.coated ? 'none' : '#2B2A33', 'stroke-width': p.coated ? 0 : 0.8, 'data-drop':1}, dropG);
+    vis.drops.push({phase:p.phase, cm:p.cm, coated:!!p.coated, r:r, ro:ro, x:x, y:y});
+    if ((p.phase === 'oil' || p.phase === 'water') && !labelled.arrow){ arrow(x + ro + 7, y - 10, x + ro + 7, y + 14, 2.5); labelled.arrow = 1; }
+    if (p.coated){
+      var wL = M.layer(st2, 'water'), nearLine = wL && Math.abs(y - ro - yCm(wL.topCm)) < 8;   // label it once it is clear of the oil-water line
+      if (!labelled.coat && !nearLine){ labelled.coat = 1; leftLabelsLater.push({lines:['oil coat carried down', 'about ' + M.mmText(C.SHELL_MM) + ' thick (the sim\u2019s estimate), to scale'], ty:y, tx:x - ro - 1, pri:3, gap:3, below:14}); }
+    }
+    if (p.phase === 'oil' && !labelled.drop){ labelled.drop = 1; leftLabelsLater.push({lines:['balsamic drop', M.tspText(J.dMm) + ', ' + M.mmText(J.dMm) + ' across'], ty:y, tx:x - r - 1, pri:2}); }
+  });
+  s.journeys.forEach(function(J){
+    var q = M.dropletAt(J, tr); if (!q) return;
+    var x = G.cx + J.x*DROP_DX, y = yCm(q.cm), r = q.dMm/20*PX;
+    el('circle', {cx:x, cy:y, r:r, fill:rgb(COL.oil), stroke:'#2B2A33', 'stroke-width':Math.min(0.5, r/2), 'data-droplet':1}, dropG);
+    vis.droplets.push({cm:q.cm, r:r, dMm:q.dMm});
+    if (!labelled.up){ labelled.up = 1; arrow(x + 6, y + 8, x + 6, y - 14, 2.2);
+      var wU = M.layer(st2, 'water'), upNear = wU && Math.abs(y - yCm(wU.topCm)) < 10;   // near the oil-water line: box below, leader at an angle
+      leftLabelsLater.push({lines:['the oil coat, rising back up', 'one droplet, about ' + M.mmText(q.dMm) + ' across, to scale'], ty:y, tx:x - r - 1, pri:4, gap:4, below: upNear ? 18 : null}); }
+  });
+  flushLeft();
+}
+var leftLabelsLater = [];
+function flushLeft(){ // at most two labels at once, most telling first
+  var pr = function(it){ return it.pri || 0; };
+  var keep = leftLabelsLater.sort(function(a, b){ return pr(b) - pr(a); }).slice(0, 2);
+  leftLabelsLater = [];
+  // a leader must not run across a to-scale circle (an oil shell or a returning droplet) that it isn't pointing at;
+  // if one would, drop the less telling label and lay out again
+  var tiny = Array.prototype.map.call(dropG.querySelectorAll('circle[data-shell], circle[data-droplet]'), function(c){ return {x:+c.getAttribute('cx'), y:+c.getAttribute('cy'), r:+c.getAttribute('r')}; });
+  var n0 = labelLayer.childNodes.length;
+  while (keep.length){
+    leftLabels(keep.slice());                                  // (leftLabels sorts its argument by height)
+    var added = Array.prototype.slice.call(labelLayer.childNodes, n0), hit = false;
+    added.forEach(function(g){ Array.prototype.forEach.call(g.querySelectorAll ? g.querySelectorAll('line') : [], function(l){
+      var x1 = +l.getAttribute('x1'), y1 = +l.getAttribute('y1'), x2 = +l.getAttribute('x2'), y2 = +l.getAttribute('y2'), tx = +l.getAttribute('data-tx'), ty = +l.getAttribute('data-ty');
+      tiny.forEach(function(c){
+        if (Math.abs(c.y - ty) < 0.01 && Math.abs(c.x - c.r - 1 - tx) < 0.01) return;      // its own target
+        var dx = x2 - x1, dy = y2 - y1, t = Math.max(0, Math.min(1, ((c.x - x1)*dx + (c.y - y1)*dy)/(dx*dx + dy*dy || 1)));
+        if (Math.hypot(x1 + t*dx - c.x, y1 + t*dy - c.y) < c.r + 2.5) hit = true;
+      });
+    }); });
+    if (!hit) break;
+    added.forEach(function(g){ labelLayer.removeChild(g); });
+    keep = keep.slice(0, keep.length - 1);
+  }
+}
+
+function finish(){
+  if (anim) cancelAnimationFrame(anim); anim = null;
+  clearLabels(); clear(streamG); clear(outStream); clear(dropG); clear(arrowG); spoonG.setAttribute('display', 'none');
+  document.getElementById('clock').textContent = '';
+  drawState(R.final); ticks(R.final); layerLabels(R.final);
+  vis = {ms:T.dur, drops:[], droplets:[], stream:false, oilMl:R.inv.oil};
+  state = 'done';
+  setText(M.describe(R));
+  var pb = document.getElementById('pour'); pb.textContent = 'Pour a fresh glass'; pb.disabled = false;
+  document.getElementById('stir').disabled = !R.order.length;
+}
+// after a live pour: the blurry bands between water-based layers widen as 2 sqrt(D t), from seconds to an hour (sped up)
+function growBlur(){
+  var R0 = R, t0 = null, DUR = 1800, s0 = Math.max(1, T.dur/1000), s1 = C.BLUR_TIME_S;
+  if (!R.final.layers.some(function(l, i, a){ return i && l.id !== 'oil' && a[i-1].id !== 'oil'; })) return;
+  function step(now){
+    if (state !== 'done' || R !== R0) return;
+    if (t0 == null) t0 = now;
+    var f = Math.min(1, (now - t0)/DUR), sec = s0*Math.pow(s1/s0, f);
+    drawState(R.final, {blurS:sec});
+    document.getElementById('clock').textContent = f < 1 ? 'Blurry lines: ' + (sec < 120 ? Math.round(sec) + ' s' : Math.round(sec/60) + ' min') + ' after pouring (sped up)' : '';
+    if (f < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+function pour(){
+  if (state === 'pouring' || state === 'stirring') return;
+  drawReady();
+  if (!order.length) return;
+  state = 'pouring';
+  var pb = document.getElementById('pour'); pb.textContent = 'Pouring\u2026'; pb.disabled = true;
+  setText({head:'Pouring\u2026', detail:'', drops:'', stir:''});
+  if (reduce){ finish(); return; }
+  var t0 = null;
+  function step(now){
+    if (state !== 'pouring') return;
+    if (t0 === null) t0 = now;
+    var t = now - t0;
+    if (t >= T.dur){ finish(); growBlur(); return; }
+    frame(t); anim = requestAnimationFrame(step);
+  }
+  anim = requestAnimationFrame(step);
+}
+
+// ---------- stir: the water-based ones blend into one; the oil breaks into drops that float back ----------
+var BLOBS = 12, blobs = [];
+function stirFrame(f){
+  clearLabels(); clear(blobG); clear(arrowG);
+  var A = R.final, B = R.stirred, mixL = M.layer(B, 'mix'), oilL = M.layer(B, 'oil');
+  var c = Math.min(1, f/0.55);            // colours blend over the first 55%
+  var mixCol = mixL ? mixColour(mixL.comp) : null;
+  var oilAreaPx = oilL ? (oilL.topCm - oilL.bottomCm)*PX*G.inW : 0;
+  var r = oilL ? Math.sqrt(oilAreaPx/(BLOBS*Math.PI)) : 0;
+  var mixH = mixL ? (mixL.topCm - mixL.bottomCm)*PX : 0;
+  var COLS = 4, ROWS = BLOBS/COLS, cellW = G.inW/COLS, cellH = mixH/ROWS;
+  var canBlob = oilL && mixL && 2*r + 2 <= Math.min(cellW, cellH);   // room to keep them apart, else skip the blobs
+  var inBlobs = 0, broke = canBlob ? Math.min(1, f/0.25) : 0;
+  if (canBlob){
+    // 0-0.25: the oil layer breaks into BLOBS drops spread through the mix; 0.25-1: they rise (not at real speed) and rejoin.
+    // Oil area is conserved: blob area + oil-layer area = the oil layer's area before the stir.
+    if (!blobs.length){ for (var i = 0; i < BLOBS; i++) blobs.push({x:G.inL + cellW*((i % COLS) + 0.5), y0:yCm(mixL.bottomCm) - cellH*(Math.floor(i/COLS) + 0.5)}); }
+    var topY = yCm(mixL.topCm);
+    blobs.forEach(function(b){
+      var rise = Math.max(0, (f - 0.25)/0.75), y = b.y0 - rise*mixH;          // all at one (drawn) speed: they keep their spacing
+      if (y > topY - r + 0.01){ inBlobs++; el('circle', {cx:b.x, cy:y, r:r*Math.sqrt(broke), fill:rgb(COL.oil), stroke:'#2B2A33', 'stroke-width':0.8, 'data-blob':1}, blobG); }
+    });
+    if (f > 0.3 && f < 0.9){ arrow(G.inL + cellW, yCm(mixL.bottomCm) - 6, G.inL + cellW, topY + 6, 2.5); arrow(G.inL + 3*cellW, yCm(mixL.bottomCm) - 6, G.inL + 3*cellW, topY + 6, 2.5); }
+  }
+  var oilFrac = canBlob ? 1 - broke*inBlobs/BLOBS : 1;
+  var inv = {honey:R.inv.honey, water:R.inv.water, balsamic:R.inv.balsamic, oil:R.inv.oil, drops:R.inv.drops};
+  var st = c < 1 ? M.settle(inv, false) : M.settle(inv, true);
+  var cols = {};
+  if (mixCol && c < 1) ['honey','water'].forEach(function(id){ cols[id] = lerpC(COL[id], mixCol, c); });
+  drawState(st, {cols:cols, noBlur: c > 0.2, tag:'s'});
+  // the part of the oil that is out as blobs leaves room that the liquid below fills (the surface stays put)
+  var oR = layerG.querySelector('[data-id="oil"]');
+  if (oR && oilFrac < 1){
+    var oy = +oR.getAttribute('y'), oh = +oR.getAttribute('height'), below = oR.previousSibling;
+    oR.setAttribute('height', oh*oilFrac);
+    var fill = el('rect', {x:G.inL, y:oy + oh*oilFrac, width:G.inW, height:oh*(1 - oilFrac), fill: below ? below.getAttribute('fill') : rgb(COL.water)}, layerG);
+    layerG.insertBefore(fill, oR);
+    Array.prototype.forEach.call(blurG.querySelectorAll('line'), function(ln){ if (Math.abs(+ln.getAttribute('y1') - (oy + oh)) < 0.01){ ln.setAttribute('y1', oy + oh*oilFrac); ln.setAttribute('y2', oy + oh*oilFrac); } });
+  }
+  if (c < 1 && st.lenses.length) Array.prototype.forEach.call(lensG.childNodes, function(n){ n.setAttribute('opacity', (1 - c).toFixed(3)); });
+  if (f < 0.5){ var y = yCm(A.topCm) - 22; el('path', {d:'M'+(G.cx - 34)+' '+y+' C '+(G.cx - 10)+' '+(y + 14)+', '+(G.cx + 20)+' '+(y + 14)+', '+(G.cx + 36)+' '+(y - 2), fill:'none', stroke:'#E0562B', 'stroke-width':3, 'stroke-dasharray':'7 5', 'marker-end':'url(#ah)'}, arrowG); }
+  ticks(c < 1 ? A : B);
+  vis = {stirF:f, blobs:inBlobs, blobR:r*Math.sqrt(broke), oilFrac:oilFrac, oilAreaPx:oilAreaPx, canBlob:!!canBlob};
+}
+function stir(){
+  if (state !== 'done' || !R || !R.order.length) return;
+  state = 'stirring'; blobs = [];
+  document.getElementById('stir').disabled = true; document.getElementById('pour').disabled = true;
+  setText({head:'Stirring\u2026', detail:'', drops:'', stir:''});
+  var done = function(){
+    clear(blobG); clear(arrowG); clearLabels();
+    drawState(R.stirred); ticks(R.stirred); layerLabels(R.stirred);
+    state = 'stirred'; setText(M.describeStirred(R));
+    var pb = document.getElementById('pour'); pb.textContent = 'Pour a fresh glass'; pb.disabled = false;
+  };
+  if (reduce){ done(); return; }
+  var t0 = null;
+  function step(now){
+    if (state !== 'stirring') return;
+    if (t0 === null) t0 = now;
+    var f = (now - t0)/STIR_MS;
+    if (f >= 1){ done(); return; }
+    stirFrame(f); anim = requestAnimationFrame(step);
+  }
+  anim = requestAnimationFrame(step);
+}
+
+// ---------- controls ----------
+function changed(){ drawReady(); }
+Array.prototype.forEach.call(document.querySelectorAll('.liq'), function(b){
+  b.addEventListener('click', function(){
+    var id = b.getAttribute('data-liq'), i = order.indexOf(id);
+    if (i >= 0) order.splice(i, 1); else order.push(id);
+    changed();
+  });
+});
+document.getElementById('pageOrder').addEventListener('click', function(){ order = ['honey', 'water', 'oil', 'balsamic']; changed(); });
+document.getElementById('revOrder').addEventListener('click', function(){ order = ['balsamic', 'oil', 'water', 'honey']; changed(); });
+dropIn.addEventListener('input', changed);
+Array.prototype.forEach.call(document.querySelectorAll('.step'), function(b){
+  b.addEventListener('click', function(){ dropIn.value = Math.max(+dropIn.min, Math.min(+dropIn.max, +dropIn.value + (+b.getAttribute('data-d')))); changed(); });
+});
+document.getElementById('pour').addEventListener('click', pour);
+document.getElementById('stir').addEventListener('click', stir);
+
+// "Why?" numbers come from the model too; the static text is only a fallback and is checked against it.
+var whyMismatch = [];
+(function(){
+  var f = function(x, d){ return (Math.round(x*Math.pow(10, d))/Math.pow(10, d)).toFixed(d); };
+  var D0 = C.DROP_MM_DEFAULT, d = D0/1000, rb = LIQ.balsamic.rho*1000, ro = LIQ.oil.rho*1000, rw = LIQ.water.rho*1000;
+  var R8 = M.run(['honey', 'water', 'oil', 'balsamic'], D0), J = R8.steps[3].journeys[0], wseg = null, band = M.captureBand();
+  J.segs.forEach(function(s){ if (s.kind === 'water') wseg = s; });
+  var hw = M.settle({honey:M.pourMl(), water:M.pourMl()}, true).layers[0].rho;
+  var tOpen = M.terminal(d, rb, ro, C.MU_OIL, 0), tWall = M.terminal(d, rb, ro, C.MU_OIL, M.lamFor(d));
+  var sizes = {held:null, thru:null}; C.DROP_STEPS_MM.forEach(function(k){ var Jk = M.run(['honey', 'water', 'oil', 'balsamic'], k).steps[3].journeys[0]; if (Jk.held) sizes.held = k; else if (sizes.thru == null) sizes.thru = k; });
+  var sz = function(mm){ return M.tspText(mm) + ' (' + M.mmText(mm) + ')'; };
+  var vals = {
+    slowmo: String(SLOWMO),
+    oilRho: f(C.RHO_OIL, 2), oilLo: f(C.RHO_OIL_RANGE[0], 3), oilHi: f(C.RHO_OIL_RANGE[1], 3), waterRho: f(C.RHO_WATER, 3),
+    balRho: f(C.RHO_BALSAMIC, 2), balLo: f(C.RHO_BALSAMIC_RANGE[0], 2), balHi: f(C.RHO_BALSAMIC_RANGE[1], 2),
+    honeyRho: f(LIQ.honey.rho, 2), honeyHi: f(C.HONEY_SG_RANGE[1]*C.RHO_WATER, 2), honeyLo: f(C.HONEY_SG_RANGE[0]*C.RHO_WATER, 2),
+    pourMl: f(M.pourMl(), 0), areaCm2: f(M.areaCm2(), 0), layerCm: f(M.cmForMl(M.pourMl()), 0),
+    blurMm: f(M.blurCm()*10, 0), honeyRho2: f(LIQ.honey.rho, 2), waterRho2: f(C.RHO_WATER, 2), mixHW: f(hw, 2),
+    dDef: f(D0, 0), dDef2: f(D0, 0), dDef3: f(D0, 0), vOil: f(tWall.v*100, 1), vOilOpen: f(tOpen.v*100, 1), wallPct: f(100*(1 - tWall.v/tOpen.v), 0), vStokes: f(tOpen.stokes*100, 0),
+    balMu: f(C.MU_BALSAMIC, 0), kappa: f(C.MU_BALSAMIC/C.MU_OIL, 0), oilMu: f(C.MU_OIL*1000, 0), hrPct: f(100*(M.hrFactor(C.MU_BALSAMIC/C.MU_OIL) - 1), 0),
+    sigLo: f(C.SIGMA_OW_RANGE[0]*1000, 0), sigHi: f(C.SIGMA_OW_RANGE[1]*1000, 0), dMin: sz(C.DROP_MM_MIN), r3w: M.shareWords(M.capture(C.DROP_MM_MIN, 0).ratio), inertW: M.shareWords(J.cap.inertiaN/J.cap.weightN),
+    bandLo: M.halfText(band.loMm), bandHi: M.halfText(band.hiMm), bandLowest: M.halfText(band.loLowest), heldMax: sz(sizes.held), thruMin: sz(sizes.thru), bandLoMl: f(M.dropMl(band.loMm), 2), bandHiMl: f(M.dropMl(band.hiMm), 1),
+    tWater: f(wseg.T, 2), vWater: f(wseg.tr.vEnd*100, 0), vWaterT: f(wseg.vTerm.v*100, 0), pushW: M.shareWords(Math.pow(wseg.tr.vEnd/wseg.vTerm.v, 2)), calMm3: f(J.dropletMm, 0), dDef4: f(D0, 0),
+    dTsp: M.tspText(D0), dTsp2: M.tspText(D0), dMl: f(M.dropMl(D0), 2), shellMm: f(C.SHELL_MM, 0), shellMm2: f(C.SHELL_MM, 0), shellLo: f(C.SHELL_MM_RANGE[0], 1), shellHi: f(C.SHELL_MM_RANGE[1], 0), outerMm: f(M.outerMm(D0), 0), shellPct: f(100*M.filmMl(D0)/M.dropMl(D0), 0),
+    bandLoS: M.halfText(M.thresholdMm(C.SIGMA_OW, 'rest', 1/C.PM_DYNAMIC_FACTOR, C.SHELL_MM_RANGE[0])), bandHiS: M.halfText(M.thresholdMm(C.SIGMA_OW_RANGE[1], 'rest', 1, C.SHELL_MM_RANGE[1])), oilLayerMm: f(10*M.cmForMl(M.pourMl()), 0),
+    filmPct: f(100*(LIQ.balsamic.rho - M.coatedDensity(D0))/LIQ.balsamic.rho, 0), spdPct: f(100*M.coatedSpeedChange(D0), 0),
+    pudMm: f(D0/4, 0), dissolveH: f(M.dissolveHours(D0), 1), vRise: f(J.rise.vTerm.v*100, 1), tRise: f(J.rise.T, 1)
+  };
+  Array.prototype.forEach.call(document.querySelectorAll('[data-n]'), function(e){
+    var k = e.getAttribute('data-n'), v = vals[k];
+    if (v === undefined){ whyMismatch.push(k + ': no value'); return; }
+    if (e.textContent !== v) whyMismatch.push(k + ': text ' + e.textContent + ' vs model ' + v);
+    e.textContent = v;
+  });
+})();
+
+// the uncertain capture band, drawn under the drop-size slider (same model numbers as the text)
+// the slider's steps double the volume, so they are evenly spaced in log(diameter): place the band on that scale
+(function(){ var b = M.captureBand(), seg = document.getElementById('bandSeg'), L = function(mm){ return Math.log(mm/C.DROP_MM_MIN)/Math.log(C.DROP_MM_MAX/C.DROP_MM_MIN)*100; };
+  seg.style.left = L(b.loMm) + '%'; seg.style.width = (L(b.hiMm) - L(b.loMm)) + '%'; })();
+
+// test hooks (used by the screenshot script; harmless on the page)
+window.__sim = {
+  setOrder: function(o, mm){ order = o.slice(); if (mm != null){ var bi = 0; C.DROP_STEPS_MM.forEach(function(k, i){ if (Math.abs(Math.log(k/mm)) < Math.abs(Math.log(C.DROP_STEPS_MM[bi]/mm))) bi = i; }); dropIn.value = bi; } changed(); },
+  finishNow: function(){ drawReady(); if (order.length) finish(); },
+  frameAt: function(ms){ drawReady(); state = 'pouring'; frame(ms); setText({head:'Pouring\u2026', detail:'', drops:'', stir:''}); },
+  stirAt: function(f){ drawReady(); finish(); state = 'stirring'; blobs = []; stirFrame(f); setText({head:'Stirring\u2026', detail:'', drops:'', stir:''}); },
+  stirNow: function(){ drawReady(); finish(); stir(); },
+  state: function(){ return state; }, run: function(){ return R; }, times: function(){ return T; }, vis: function(){ return vis; },
+  whyMismatch: function(){ return whyMismatch; },
+  drawn: function(){
+    var rects = Array.prototype.map.call(layerG.querySelectorAll('rect'), function(r){ return {id:r.getAttribute('data-id'), y:+r.getAttribute('y'), h:+r.getAttribute('height'), w:+r.getAttribute('width')}; });
+    var lenses = Array.prototype.map.call(lensG.querySelectorAll('path[data-lens]'), function(p){ var b = p.getBBox(); return {w:b.width, h:b.height, ml:+p.getAttribute('data-lens')}; });
+    var circ = function(c){ return {cx:+c.getAttribute('cx'), cy:+c.getAttribute('cy'), r:+c.getAttribute('r')}; };
+    var drops = Array.prototype.map.call(dropG.querySelectorAll('circle'), function(c){ return {cx:+c.getAttribute('cx'), r:+c.getAttribute('r'), cy:+c.getAttribute('cy'), droplet:c.hasAttribute('data-droplet'), shell:c.hasAttribute('data-shell'), sw:+c.getAttribute('stroke-width')}; });
+    var held = Array.prototype.map.call(lensG.querySelectorAll('circle[data-held]'), circ);
+    var heldShells = Array.prototype.map.call(lensG.querySelectorAll('circle[data-shell]'), circ);
+    var dots = Array.prototype.map.call(labelLayer.querySelectorAll('circle[data-dot]'), circ);
+    var blobsD = Array.prototype.map.call(blobG.querySelectorAll('circle'), circ);
+    var labels = Array.prototype.map.call(labelLayer.querySelectorAll('rect'), function(r){ var b = r.getBBox(); return {x:b.x, y:b.y, w:b.width, h:b.height}; });
+    var leaders = Array.prototype.map.call(labelLayer.querySelectorAll('line'), function(l){ return {x1:+l.getAttribute('x1'), y1:+l.getAttribute('y1'), x2:+l.getAttribute('x2'), y2:+l.getAttribute('y2'), gap:+l.getAttribute('data-gap'), tx:+l.getAttribute('data-tx'), ty:+l.getAttribute('data-ty')}; });
+    var tickTexts = Array.prototype.map.call(tickG.querySelectorAll('text'), function(t){ var b = t.getBBox(); return {x:b.x, y:b.y, w:b.width, h:b.height, s:t.textContent}; });
+    return {rects:rects, lenses:lenses, drops:drops, held:held, heldShells:heldShells, dots:dots, blobs:blobsD, head:document.getElementById('head') ? document.getElementById('head').textContent : null, labels:labels, leaders:leaders, ticks:tickTexts, blur:blurG.querySelectorAll('[data-blur]').length};
+  },
+  px: PX, glass: G, slowmo: SLOWMO
+};
+drawReady();
+})();
+</script>
+<!-- little-lab-web: embed height (added by scripts/sync-sims.mjs; tells the embedding page how tall the sim is) -->
+<script>
+(function () {
+  if (window.parent === window) return;
+  var last = 0;
+  function send() {
+    var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h > 0 && h !== last) {
+      last = h;
+      window.parent.postMessage({ type: "little-lab-sim-height", height: h }, "*");
+    }
+  }
+  if (window.ResizeObserver) new ResizeObserver(send).observe(document.documentElement);
+  window.addEventListener("load", send);
+  window.addEventListener("resize", send);
+  send();
+})();
+</script>
+</body>
+</html>

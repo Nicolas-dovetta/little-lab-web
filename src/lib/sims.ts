@@ -30,6 +30,27 @@ const SIMS: Record<string, SimEmbed> = {
     iframeTitle: "Baking-soda volcano sim: which runs out first, the baking soda or the vinegar?",
     fallbackHeight: 2000,
   },
+  "water-bottle-rocket": {
+    src: "/sims/water-bottle-rocket/index.html",
+    title: "Try it: how much water gives the highest flight?",
+    blurb: "Set the water and the pump pressure, launch, and see which fill sends the bottle highest.",
+    iframeTitle: "Water-bottle rocket sim: how much water gives the highest flight?",
+    fallbackHeight: 2200,
+  },
+  "salt-ice-fishing": {
+    src: "/sims/salt-ice-fishing/index.html",
+    title: "Try it: how much salt catches the cube?",
+    blurb: "Pick how much salt goes on the ice cube, salt it, and see whether the string freezes in and lifts the cube.",
+    iframeTitle: "Salt ice fishing sim: how much salt catches the cube?",
+    fallbackHeight: 2500,
+  },
+  "density-layers": {
+    src: "/sims/density-layers/index.html",
+    title: "Try it: which liquids stack, and which just mix?",
+    blurb: "Pick the order to pour honey, water, oil and balsamic drops, then stir, and see which liquids stack and which just mix.",
+    iframeTitle: "Density layers sim: which liquids stack, and which just mix?",
+    fallbackHeight: 2200,
+  },
 };
 
 export function simForExperiment(slug: string): SimEmbed | null {

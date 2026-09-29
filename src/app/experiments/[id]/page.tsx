@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ExperimentViewTracker } from "@/components/ExperimentViewTracker";
 import { JsonLd } from "@/components/JsonLd";
 import { MechanismWalkthrough } from "@/components/MechanismWalkthrough";
+import { SimTryIt } from "@/components/SimTryIt";
 import { VolcanoExperimentView } from "@/components/VolcanoExperimentView";
 import type {
   Experiment,
@@ -22,6 +23,7 @@ import {
   usesPilotSpine,
 } from "@/lib/experiments";
 import { howToJsonLd } from "@/lib/jsonld";
+import { simForExperiment } from "@/lib/sims";
 import { DEFAULT_SOCIAL_IMAGE, canonicalMetadata } from "@/lib/site";
 
 export async function generateStaticParams() {
@@ -149,6 +151,7 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
     (track) => Boolean(track.imageUrl?.trim()) && stepTitles.has(track.title.trim()),
   );
   const cardTracks = tracks.filter((track) => !stepPhotoTracks.includes(track));
+  const sim = simForExperiment(e.id);
 
   const showRun = hasRunContent(runThis);
   const showKnow = hasKnowContent(knowThis);
@@ -291,6 +294,9 @@ function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
 
           </div>
         )}
+
+        {/* Try it sim, right after the physics (KNOW THIS), as the volcano has it after "Bear with me". */}
+        {sim && <SimTryIt sim={sim} />}
 
         {showLegacySteps && (
           <Section title="Steps">

@@ -43,7 +43,7 @@ To add a sketched experiment: copy `panel-N-*.png/.webp` to `public/images/exper
 
 ## Interactive sims ("Try it" box)
 
-An experiment page can carry a tap-to-load sim, placed right after "Bear with me" (volcano pilot spine). Nothing loads until the reader taps the button.
+An experiment page can carry an inline sim (lazy iframe): on the volcano pilot spine right after "Bear with me"; on the other pages (rocket, salt ice fishing, density layers) right after the KNOW THIS card.
 
 - Mapping (slug → sim, title, sentence, button, iframe title): `src/lib/sims.ts`. Code-side, no DB change. UI: `src/components/SimTryIt.tsx`.
 - The sim is a self-contained static file at `public/sims/<slug>/index.html`, copied from `little-lab-mechanics/sims/<slug>/index.html`. **After any fix to the sim there, re-copy it:**

@@ -1,0 +1,1309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- No network at all: no fonts, no CDN, no analytics. Everything is inline. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="robots" content="noindex">
+<title>Try it: how much salt catches the cube?</title>
+<script>
+// Inside the site's box (an iframe) the box already shows the title, so the page hides its own heading there.
+(function(){ var e = true; try { e = window.self !== window.top; } catch (x) {} if (e) document.documentElement.className += ' embedded'; })();
+</script>
+<style>
+:root{
+  --cream:#faf7f0; --cream-deep:#f3eee3; --ink:#1f2a24; --ink-muted:#5c6b62;
+  --sage-50:#f3f7f4; --sage-100:#e4efe8; --sage-200:#c8dccf; --sage-600:#3f6f56; --sage-700:#345c47; --sage-800:#2a4a39;
+  /* sketch palette (tools/style.py, and the salt-ice-fishing sketch's key) */
+  --bg:#FBF6EC; --sk-ink:#2B2A33; --accent:#E0562B; --ice:#F7FBFF; --ice-line:#5E8FB3; --hatch:#AFCBE0;
+  --water:#8EC5E8; --brine:#5FBFB3; --twine:#B89B6A;
+  --body:"Source Sans 3","Source Sans Pro",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --display:Fraunces,Georgia,"Times New Roman",serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--body);-webkit-text-size-adjust:100%}
+.sim{max-width:1040px;margin:0 auto;padding:16px 14px 40px}
+.embedded .kicker,.embedded h1{display:none}
+.kicker{margin:0;font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sage-700)}
+h1{font-family:var(--display);font-weight:600;font-size:1.55rem;line-height:1.2;margin:.2rem 0 .3rem}
+.lede{margin:0 0 12px;color:var(--ink-muted);font-size:1rem}
+.grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media (max-width:819px){.buttons{order:-1} h1{font-size:1.4rem} .lede{margin-bottom:8px}}
+@media (min-width:820px){.grid{grid-template-columns:1.1fr 1fr;gap:24px;align-items:start} h1{font-size:2rem}}
+.stage{background:var(--bg);border:1px solid var(--sage-200);border-radius:22px;padding:6px 6px 8px;position:relative}
+.stage svg{display:block;width:100%;height:auto;touch-action:manipulation;cursor:pointer}
+.stagehead{margin:6px 12px 0;min-height:1.4em;font-family:var(--display);font-weight:600;font-size:1.12rem;color:var(--sage-800)}
+.note{margin:2px 10px 0;font-size:.9rem;color:var(--ink-muted);line-height:1.3}
+.key{display:flex;flex-wrap:wrap;gap:4px 12px;margin:6px 10px 0;font-size:.85rem;color:var(--ink)}
+.key span{display:inline-flex;align-items:center;gap:5px}
+.key i{display:inline-block;width:16px;height:12px;border:1.5px solid var(--sk-ink);border-radius:3px}
+.panel{display:flex;flex-direction:column;gap:12px}
+.control{background:#fff;border:1px solid var(--sage-200);border-radius:18px;padding:10px 12px 8px}
+.control .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.control label{font-weight:700;font-size:1.05rem}
+.control output{font-weight:700;font-size:1.25rem;color:var(--sage-800);white-space:nowrap}
+.row{display:flex;align-items:center;gap:10px;margin-top:4px}
+.step{flex:0 0 48px;height:48px;border-radius:50%;border:2px solid var(--sage-600);background:#fff;color:var(--sage-800);font-size:1.6rem;font-weight:700;line-height:1;cursor:pointer;touch-action:manipulation}
+.step:active{background:var(--sage-100)}
+input[type=range]{flex:1;min-width:0;height:48px;-webkit-appearance:none;appearance:none;background:transparent;margin:0;touch-action:pan-y}
+input[type=range]:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:12px}
+input[type=range]::-webkit-slider-runnable-track{height:12px;border-radius:6px;background:var(--sage-100);border:1px solid var(--sage-200)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:44px;height:44px;margin-top:-17px;border-radius:50%;background:#fff;border:3px solid var(--sk-ink);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+input[type=range]::-moz-range-track{height:12px;border-radius:6px;background:var(--sage-100);border:1px solid var(--sage-200)}
+input[type=range]::-moz-range-thumb{width:40px;height:40px;border-radius:50%;background:#fff;border:3px solid var(--sk-ink)}
+.hint{font-size:.85rem;color:var(--ink-muted);margin:0}
+.buttons{display:flex;gap:10px;flex-wrap:wrap}
+.btn{min-height:56px;border-radius:999px;font-family:var(--body);font-size:1.15rem;font-weight:700;padding:0 22px;cursor:pointer;touch-action:manipulation}
+.go{flex:1 1 160px;background:var(--sage-600);color:#fff;border:0;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.go:hover{background:var(--sage-700)} .go:disabled{opacity:.6;cursor:default}
+.alt{flex:1 1 160px;background:#fff;color:var(--sage-800);border:2px solid var(--sage-600)} .alt:disabled{opacity:.6;cursor:default} .btn[hidden]{display:none}
+.card{background:#fff;border:1px solid var(--sage-200);border-radius:18px;padding:12px}
+.card h2{font-size:1rem;margin:0;font-weight:700}
+.card .sub{margin:2px 0 6px;font-size:.88rem;color:var(--ink-muted)}
+.card svg{display:block;width:100%;height:auto}
+.bar .name{display:flex;justify-content:space-between;font-size:.92rem;font-weight:700;gap:6px}
+.track{position:relative;height:26px;border-radius:8px;background:var(--cream-deep);margin-top:3px;overflow:hidden}
+.seg{position:absolute;top:0;bottom:0;border:2px solid var(--sk-ink)}
+#segIce{left:0;background:var(--ice);border-color:var(--ice-line);border-radius:8px 0 0 8px}
+#segCarry{background:repeating-linear-gradient(45deg,var(--ice) 0 4px,var(--hatch) 4px 7px);border-color:var(--ice-line)}
+#segBowl{background:var(--water);border-color:#4f86ad;border-radius:0 8px 8px 0}
+.legend{font-size:.88rem;margin:6px 0 0;line-height:1.35}
+.readout .head{font-family:var(--display);font-size:1.3rem;font-weight:600;margin:0 0 4px;line-height:1.25}
+.readout p{margin:0 0 6px;font-size:1rem;line-height:1.4}
+.readout .edge{font-weight:700;color:var(--sage-800)}
+.readout .safety{font-size:.9rem;color:var(--ink-muted);margin-top:4px}
+details.why{margin-top:18px;background:#fff;border:1px solid var(--sage-200);border-radius:18px;padding:0 14px}
+details.why summary{cursor:pointer;min-height:52px;display:flex;align-items:center;font-weight:700;font-size:1.05rem;color:var(--sage-800)}
+details.why h3{font-size:1rem;margin:14px 0 4px}
+details.why p,details.why li{font-size:.97rem;line-height:1.5;color:var(--ink)}
+details.why ul{padding-left:1.1rem}
+.small{font-size:.85rem;color:var(--ink-muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="sim">
+  <p class="kicker">Try it · salt ice fishing</p>
+  <h1>How much salt catches the cube?</h1>
+  <p class="lede">Pick how much salt stays on top of the cube, round the string, then press Salt it (or tap the cube).</p>
+
+  <div class="grid">
+    <div class="stage">
+      <p class="stagehead" id="stageHead" aria-hidden="true"></p>
+      <svg id="scene" viewBox="0 0 400 400" role="img" aria-label="Cut-through view of an ice cube floating in a bowl of ice water, with a string lying across its top, a zoomed-in window on the string, and a thermometer showing the temperature of the wet film on top."></svg>
+      <p class="note">Everything in the big view is drawn to one scale (6 px per mm; the zoom is 28 px per mm), from the model's numbers: how far the top face goes down evenly as it melts, how low the salt's weight pushes the cube, the salt, the new ice and the cold lines. The dashed line is where the top was. Salt is drawn as an even layer over the whole top (a real heap slumps). The wet film on top isn't to scale: the model doesn't track how thick it is. Its temperature is the coldest it could be, so the melting shown is the most there could be. Times are the model's rough seconds, sped up 10×. Dotted orange arrows: heat flowing. Dashed: something moving.</p>
+      <div class="key" aria-label="Colour key">
+        <span><i style="background:var(--ice);border-color:var(--ice-line)"></i>ice</span>
+        <span><i style="background:var(--water)"></i>water</span>
+        <span><i style="background:var(--brine)"></i>salty water</span>
+        <span><i style="background:#fff;border-color:var(--accent)"></i>new ice</span>
+        <span><i style="background:#fff"></i>salt</span>
+        <span><i style="background:var(--twine)"></i>string</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="control">
+        <div class="top"><label for="salt">Table salt</label><output id="saltOut" for="salt">1/32 tsp</output></div>
+        <div class="row">
+          <button class="step" type="button" data-d="-1" aria-label="Less salt">−</button>
+          <input id="salt" type="range" min="0" max="7" step="1" value="5" aria-describedby="saltHint">
+          <button class="step" type="button" data-d="1" aria-label="More salt">+</button>
+        </div>
+        <p class="hint" id="saltHint">Salt that stays on this cube's top, round the string. Level teaspoons, none to 1/8 tsp (a floating cube this size can't carry more); each step doubles it.</p>
+      </div>
+      <div class="buttons">
+        <button id="go" class="btn go" type="button">Salt it</button>
+        <button id="pull" class="btn alt" type="button" hidden>Pull the string</button>
+      </div>
+
+      <section class="card readout" aria-live="polite">
+        <p class="head" id="head"></p>
+        <p id="detail"></p>
+        <p class="edge" id="edge"></p>
+        <p id="cutoff"></p>
+        <p class="safety" id="safety"></p>
+      </section>
+
+      <section class="card" aria-labelledby="fpTitle">
+        <h2 id="fpTitle">Saltier water freezes colder</h2>
+        <p class="sub">Freezing point of salt water (Bodnar 1993). The dot is the wet film on top of the cube.</p>
+        <svg id="fp" viewBox="0 0 330 178" role="img" aria-label="Graph of freezing point against how salty the water is, with a dot for the film on the cube."></svg>
+        <p class="legend" id="fpNow"></p>
+      </section>
+
+      <section class="card" aria-labelledby="heatTitle">
+        <h2 id="heatTitle">Where the melting heat came from</h2>
+        <p class="sub">Melting takes heat. Full bar: the most any amount on the slider pulls out in the first minute (<span id="heatMax"></span>).</p>
+        <div class="bar"><div class="name"><span>Heat pulled out through the top</span><span id="heatTot"></span></div>
+          <div class="track"><div class="seg" id="segIce"></div><div class="seg" id="segCarry"></div><div class="seg" id="segBowl"></div></div></div>
+        <p class="legend" id="heatNow"></p>
+      </section>
+    </div>
+  </div>
+
+  <details class="why">
+    <summary>Why? The numbers, over-explained</summary>
+    <p><strong>In one line:</strong> a little salt near the string can work, and a big heap right on the string stops it freezing. The exact grams don't matter. In the first minute the top of a cube can only melt about <span data-n="meltMin">1.1</span> g of ice, and that water can only dissolve so much salt: somewhere between about <span data-n="bandLow">0.28</span> g and <span data-n="bandHigh">0.76</span> g on this cube's top (<span data-n="bandLowTsp">between 1/32 and 1/16 tsp</span>, up to <span data-n="bandHighTsp">1/8 tsp</span>), maybe less. Salt that dissolves in time drains off and leaves chilled ice that freezes new ice round the string. Salt that's still next to the string at the pull keeps the water there too salty to freeze.</p>
+
+    <h3>Salt makes the water freeze colder</h3>
+    <p>Pure water freezes at 0 °C. Water with salt dissolved in it has to get colder before it freezes: the saltier, the colder. The graph is the measured curve (Bodnar 1993; ASHRAE's brine table agrees to within about half a degree). It stops at <span data-n="wE">23.2</span>% salt and <span data-n="eut">−21.2</span> °C. That's the coldest salt water can get and still stay liquid next to ice; saltier than that and the extra salt just sits there undissolved.</p>
+    <p>So when salt lands on the wet top of a cube that's at 0 °C, it dissolves into the thin film of water, and now that water "wants" to be much colder than 0 °C before it freezes. The ice it touches is too warm to stay ice next to it, so the ice melts, and the new meltwater dissolves more salt. The model holds the film at the saltiest and coldest it can be, <span data-n="wE2">23.2</span>% salt at <span data-n="eut2">−21.2</span> °C, all the time there's salt left. That's the most it could be: really, between the grains, fresh meltwater waters the film down faster than salt can spread into it, so it's a bit warmer and melts less. So the melting, the stored cold and the new ice in the sim are the most they could be.</p>
+
+    <h3>Melting takes heat, and the heat comes from the ice</h3>
+    <ul>
+      <li>Melting 1 g of ice takes <span data-n="L0">333</span> joules (IAPWS, the international standard for water and ice). That heat has to come from somewhere, and in a minute the only places close enough are the ice itself and the bowl water around the cube.</li>
+      <li>The new salty water also has to be cooled down to <span data-n="eut3">−21.2</span> °C, and the salt takes a little heat to dissolve. Put together, each gram of ice that melts pulls about <span data-n="perG">262</span> J out of the ice underneath (333 to melt it, minus <span data-n="brineCold">92</span> J because the brine it makes is that cold, plus <span data-n="solJ">20</span> J to dissolve its salt).</li>
+      <li>Taking heat out of ice makes it colder, starting at the top. Ice passes heat along slowly (conductivity <span data-n="k">2.14</span> W per metre per degree, Slack 1980). Through the top face alone, a minute's worth of heat is the same as cooling a layer about <span data-n="coldDepth">9.2</span> mm thick by the full 21 degrees. Really the chill fades off gradually with depth: the drawing's lines show where the ice is colder than −1 °C and −10 °C, and after a minute of salt the −1 °C line is about <span data-n="iso1">16</span> mm down in the middle.</li>
+      <li>The cube floats in ice water at 0 °C, so its sides and bottom touch water at 0 °C. As the ice gets colder than that, the bowl water freezes onto the outside and gives its latent heat to the cube. In the model that's where most of the heat comes from after a while: about <span data-n="bathPct">66</span>% of the <span data-n="heatTop">340</span> J pulled out in the first minute. That share depends on the wait and on the strip of side above the water: it's about <span data-n="share30">51</span>% if you stop at 30 s and <span data-n="share120">76</span>% at 2 minutes, with that strip taken as dry. It gets there by a short path: the cold top is only about 2 mm from the water at the rim. The skin of bowl ice is drawn as a thin orange-edged layer on the sides, as if it were even (really it's thicker near the top).</li>
+    </ul>
+
+    <h3>So there's a limit, but only roughly</h3>
+    <p>With the salt never running out, the top of the cube melts about <span data-n="meltMin2">1.1</span> g of ice in the minute (the top face goes down evenly by about <span data-n="dipMax">2.5</span> mm). Salty water at its saltiest holds <span data-n="rE">0.30</span> g of salt per gram of water, so that meltwater can dissolve about <span data-n="w60b">0.34</span> g of salt, or about <span data-n="bandMid">0.36</span> g counting the salt's own weight (it lowers the cube a little, see below). That's the model's middle answer, and it's softer than it looks:</p>
+    <ul>
+      <li><strong>The rim.</strong> The model's middle case treats the strip of side sticking out of the water (<span data-n="fb">1.85</span> mm, or less with salt on top) as dry. But water climbs a wet wall by a few millimetres, so it may be wet right up to the top edge. Then heat gets to the cold top faster, and the minute dissolves about <span data-n="bandWet">0.58</span> g, and more when the model's blocks are made smaller (about <span data-n="bandHigh2">0.76</span> g with blocks about a quarter to a third of the size, and still creeping up).</li>
+      <li><strong>The film</strong> is the coldest it could be (see above), so the real melting is slower.</li>
+      <li><strong>Brine that doesn't drain.</strong> The model lets the salty water run off over the edge into the bowl at once. Really some stays in the string, in any pit in the ice and between the grains (a heap of poured salt is almost half air), and keeps the film salty for longer.</li>
+    </ul>
+    <p>The last two push the answer down by amounts the model can't size. For the bottom of the range the model uses a rim drier than it can really be, which gives about <span data-n="bandLow2">0.28</span> g; the real answer could be lower still. So the sim doesn't give a sharp line. It says:</p>
+    <ul>
+      <li><strong>Likely dissolves in time: new ice can form round the string.</strong> It all dissolves in time even at the bottom of the range. Whether that new ice then holds the cube, the sim can't say.</li>
+      <li><strong>Could go either way:</strong> the amount is inside the range, so it depends on things the model can't pin down.</li>
+      <li><strong>Likely too much, the film stays too salty:</strong> more than even the top of the range. With the salt spread over the top, the slider doesn't get there: a floating cube can't carry that much (see below). A heap on the string can.</li>
+      <li><strong>Dissolves, but only a thin hug:</strong> it dissolves so fast that the new ice is under half as thick as the most the model gives. That "half" line is our choice, not physics: the sim has to call a hug "thin" somewhere, and nothing in the model says where grip starts.</li>
+    </ul>
+    <p>The wait matters a lot: the amount the minute can dissolve grows almost in step with the wait, from about <span data-n="w30">0.19</span> g at 30 s to <span data-n="w60">0.34</span> g at a minute and <span data-n="w120">0.65</span> g at 2 minutes (middle case, no salt weight). Twice the wait, nearly twice the salt, because most of the heat comes in from the bowl across that short path at the rim, and that flow soon settles down to a steady rate.</p>
+
+    <h3>The salt's weight</h3>
+    <p>The cube floats with only about <span data-n="fb2">1.85</span> mm of it sticking out. Salt on top weighs it down: each gram pushes it about <span data-n="mmPerG">2.0</span> mm lower. It can carry only about <span data-n="reserve">0.91</span> g before its top goes under water (that's the difference between how heavy water and ice are, times the cube's size). That's why the slider stops at 1/8 tsp (<span data-n="maxG">0.75</span> g). A bigger pile wouldn't stay on a floating cube this size: the top would go under and the bowl water would wash the salt off. The model counts the weight: a lower cube has less dry side, so heat reaches the top a bit faster.</p>
+
+    <h3>Where the salt lands</h3>
+    <p>The slider is the salt that stays on this cube's top, near the string, and the model spreads it evenly over the whole 2.2 cm top. Salt that misses the cube, or slides off into the bowl, doesn't count: a whole bowl of water only gets a little salty. That's how the note "The kid can dump salt everywhere — that was fine" can fit: probably most of a dump ends up in the bowl, and what matters is how much sits right under the string. (We haven't asked yet whether those cubes still got caught.)</p>
+    <p>A heap right on the string is worse than the same salt spread out. The minute can only dissolve about <span data-n="perCm2Low">0.057</span> to <span data-n="perCm2High">0.15</span> g for each square centimetre of salted top, on average over the top (the model spreads the melting evenly, and much of the heat comes in near the rim, so it can't say how much reaches the middle, where the string lies), so a heap has much more salt over each bit of ice (a small patch does get a little extra heat from the ice around it). A big heap on the string means salt is still next to the string at the pull, and nothing freezes there. That's the page's "mountain of salt" and "too much salt = puddle". The model can't do heaps, so it can't say exactly how big a heap is too big.</p>
+
+    <h3>The hug</h3>
+    <p>Once the salt has all dissolved, fresh water wets the top again. The model assumes the salty water drains off over the edge into the bowl at once; really some stays in the string and in any pit, which delays this. That water is at 0 °C, but the ice under it is now much colder, so the water freezes onto the top, and round the bottom of the string. That new ice is what the string is caught in.</p>
+    <ul>
+      <li>The most on the slider (<span data-n="bestTsp">1/32 tsp</span>) gives up to <span data-n="bestG">0.11</span> g of new ice: a layer up to <span data-n="bestMm">0.25</span> mm thick, <span data-n="bestPct">13%</span> of the way up the 2 mm string. The rest of the stored cold warms back up from the bowl side.</li>
+      <li><strong>Too little salt</strong> (<span data-n="tinyTsp">1/512 tsp</span>) is all gone after <span data-n="tinyT">less than a second</span>. The ice only had that long to chill, so it stores about <span data-n="tinyCold">10</span> J of cold (a full minute stores about <span data-n="minuteCold">73</span> J) and freezes up to about <span data-n="tinyG">0.027</span> g of new ice, about <span data-n="tinyMm">0.059</span> mm thick.</li>
+      <li>Salt that dissolves just before the pull leaves little time for the new ice to form, so the hug is thinner there too.</li>
+    </ul>
+
+    <h3>What the sim can't tell you</h3>
+    <ul>
+      <li><strong>Whether the string holds.</strong> The model gives how much new ice forms, not how strongly it grips wet twine. When the string has frozen in and you pull, the sim shows the ice holding: the cube comes up with the string, and the pull it takes (nothing while it floats, rising to its whole weight, about 10 g, once it is out of the water) is weight minus buoyancy. Whether real ice holds, the model can't say. A 0.25 mm hug round a 2 mm string might hold a 10 g cube or snap; the notes say about 1 in 4 tries worked.</li>
+      <li><strong>Exact grams and timing.</strong> See the range above. The seconds are the model's, with the salt dissolving instantly, spread evenly over the whole top, and the salty water running off at once. Treat them as rough.</li>
+      <li><strong>Heaps.</strong> The model only does salt spread evenly over the top.</li>
+      <li><strong>Cubes straight from the freezer.</strong> The model's cube floats in ice water at 0 °C. A cube at −18 °C from the freezer would already hold a lot of cold, and would freeze the string on with no salt at all.</li>
+    </ul>
+    <p class="small">Assumptions: a 7/8 inch restaurant ice-machine cube floating in ice water at 0 °C. The real Manitowoc "Dice" cube is a slightly slanted block that weighs about 9.45 g (48 to the pound); the model uses a true cube <span data-n="cubeCm">2.22</span> cm on a side, <span data-n="cubeG">10.1</span> g. Level US teaspoons of table salt at 6.0 g each (USDA); the page's wait of about a minute; 2 mm cotton twine; air on top ignored (it would add about 1 to 12% more heat). Nothing is sent anywhere from this page.</p>
+  </details>
+</main>
+
+<script>
+/* BEGIN model.js */
+/* Salt ice fishing: how much salt catches the cube?
+ * Single source of truth for the numbers. Used by index.html (inlined copy, checked
+ * byte-for-byte by test.js) and by the Node tests. Every constant is cited in SPEC.md section 5.
+ * Plain JS, no dependencies, no network.
+ *
+ * The model, in one paragraph: salt dropped on the wet top of an ice cube (floating in ice water, so the ice
+ * starts at 0 C) dissolves into the thin film of water. Salty water freezes at a lower temperature (Bodnar 1993),
+ * so the ice it touches melts. Melting takes latent heat, and in the first minute it can only come from the ice
+ * itself, which gets colder, and through the ice from the bowl water (which freezes onto the cube's sides). We
+ * follow that heat flow through a grid of small blocks of ice (3-D conduction, Fourier's law). While salt is left,
+ * the film is as salty as water gets and sits at -21.2 C (stage 1, "salt bites"). Once the salt has all dissolved
+ * and run off, fresh water at 0 C wets the chilled top and freezes onto it, round the bottom of the string, until
+ * the pull at ~60 s (stage 2, "the hug"). Salt that hasn't dissolved by the pull keeps the film liquid: no hug.
+ * The film at -21.2 C is the coldest it can get, so melting, stored cold and the hug are upper limits. The salt is
+ * spread evenly over the top and its weight lowers the cube (a floating dice cube carries at most about 0.91 g).
+ * Because the answer depends on things the model can't pin down (how wet the rim is, the grid, the film, brine held
+ * in the string), the cut-off is a band and the verdicts are words, not a sharp line (SPEC sections 4, 6 and 7). */
+(function (root, factory) {
+  var M = factory();
+  if (typeof module === 'object' && module.exports) module.exports = M;
+  else root.SaltIceModel = M;
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  var C = {
+    // ---- kitchen units ----
+    ML_PER_TSP: 4.92892159375,        // US teaspoon = 1/6 US fl oz (NIST Handbook 44, Appendix C)
+    SALT_G_PER_TSP: 6.0,              // table salt, USDA SR 02047 "Salt, table": 1 tsp = 6.0 g (also 1 dash = 0.4 g)
+    // Slider steps, level teaspoons. Mini measuring-spoon sets label 1/8 tsp "dash", 1/16 "pinch", 1/32 "smidgen"
+    // (a shop convention, not a standard; USDA's "dash" of salt is 0.4 g, nearer 1/16 tsp).
+    // Capped at 1/8 tsp: a floating cube this size can carry only about 0.9 g on top before its top goes under
+    // ((water density - ice density) x volume), so more than that won't stay on it (SPEC section 3).
+    STEPS_TSP: [0, 1 / 512, 1 / 256, 1 / 128, 1 / 64, 1 / 32, 1 / 16, 1 / 8],
+    STEP_TEXT: ['no salt', '1/512 tsp', '1/256 tsp', '1/128 tsp', '1/64 tsp', '1/32 tsp', '1/16 tsp', '1/8 tsp'],
+    STEP_NAME: ['', '', '', '', '', 'a \u201csmidgen\u201d', 'a \u201cpinch\u201d', 'a \u201cdash\u201d'],
+    DEFAULT_STEP: 5,                  // 1/32 tsp: the page says "tiny pinch", i.e. less than the 1/16 tsp "pinch" spoon
+
+    // ---- salt ----
+    M_NACL: 58.443,                   // g/mol (IUPAC standard atomic weights)
+    DH_SOL_J_PER_MOL: 3880,           // NaCl dissolving, +3.88 kJ/mol (endothermic), infinite dilution, 25 C (NBS tables)
+
+    // ---- ice: IAPWS R10-06 (2009), Feistel & Wagner 2006 ----
+    L0_J_PER_G: 333.44,               // melting enthalpy at 0 C (Table 6: h_ice = -333.444 kJ/kg vs liquid at the triple point)
+    ICE_RHO_G_CM3: 0.91672,           // density at 0 C, 1 atm (916.72 kg/m3)
+    ICE_CP0: 2.0967,                  // J/(g K) at 0 C
+    ICE_CP_SLOPE: 0.007345,           // J/(g K^2): cp(T) = 2.0967 + 0.007345 T(C); fits IAPWS 2.0231 at -10 C, 1.9498 at -20 C
+    ICE_K: 2.14,                      // W/(m K), thermal conductivity at 273.2 K (Slack 1980, Phys. Rev. B 22, 3065)
+    WATER_RHO_G_CM3: 0.99984,         // liquid water at 0 C (IAPWS-95), only for how high the cube floats
+
+    // ---- salty water (brine) ----
+    // Freezing point: Bodnar (1993), GCA 57, 683: wt% NaCl = 1.78 th - 0.0442 th^2 + 0.000557 th^3,
+    // th = freezing-point depression in C, valid 0 to the eutectic (-21.2 C), +-0.05 wt%.
+    BODNAR: [1.78, -0.0442, 0.000557],
+    THETA_E: 21.2,                    // eutectic: the coldest salty water can get while it's still liquid with ice
+    // Specific heat (J/(g K), at 15 C) and density (g/cm3, at 16 C) by wt% NaCl: ASHRAE Handbook-Fundamentals (SI),
+    // "Physical Properties of Secondary Coolants (Brines)", Table 2 "Properties of pure sodium chloride brines".
+    // 1-4 % are not in the table: straight line from 0 to 5 %.
+    BRINE_TABLE: [ // [wt%, cp, rho]
+      [0, 4.184, 1.000], [5, 3.925, 1.035], [6, 3.879, 1.043], [7, 3.836, 1.049], [8, 3.795, 1.057], [9, 3.753, 1.065],
+      [10, 3.715, 1.072], [11, 3.678, 1.080], [12, 3.640, 1.086], [13, 3.607, 1.094], [14, 3.573, 1.102],
+      [15, 3.544, 1.110], [16, 3.515, 1.118], [17, 3.485, 1.126], [18, 3.456, 1.134], [19, 3.427, 1.142],
+      [20, 3.402, 1.150], [21, 3.376, 1.158], [22, 3.356, 1.166], [23, 3.330, 1.174], [24, 3.310, 1.182], [25, 3.289, 1.190]],
+    // ASHRAE's own "crystallization starts" column, used only as a cross-check of Bodnar in test.js
+    ASHRAE_FREEZE: [[5, -2.9], [10, -6.6], [15, -10.9], [20, -16.5], [23, -20.6]],
+    SALT_BULK_G_PER_ML: null,         // set below: 6 g per level tsp of 4.929 mL (poured salt, for the drawing)
+
+    // ---- the setup (assumptions; SPEC section 4) ----
+    CUBE_IN: 7 / 8,                   // Manitowoc "Dice" cube, 7/8 x 7/8 x 7/8 in (restaurant ice machine spec)
+    TRAY_CUBE_FL_OZ: 1,               // biggest home tray compartment (0.5-1 fl oz); context only (SPEC section 5), not in the band
+    WAIT_S: 60,                       // the page: "Wait ~60 seconds"
+    WAIT_RANGE_S: [30, 120],          // "~60": half to double, for cutoffVsWait (sensitivity only)
+    STRING_MM: 2.0,                   // 16-ply cotton butcher's twine, sold as 2 mm (2.3 mm from another maker)
+    START_C: 0,                       // cubes floating in ice water sit at 0 C (the sketch's claim 1)
+
+    // ---- numerics (3-D heat flow through a quarter of the cube) ----
+    DZ_MM: 0.5,                       // layer thickness
+    NXY: 8,                           // blocks across half the cube (quarter cube by symmetry)
+    DT_S: 0.02,                       // longest time step; shortened if needed for stability
+    FRAMES: 61,                       // one saved frame per second of the minute, for the animation
+    ISO_C: [-1, -10],                 // lines drawn in the ice where it is colder than -1 C and -10 C
+    // The wet-rim cut-off doesn't settle as the grid gets finer (a -21.2 C top meets 0 C water at a sharp corner):
+    // 0.577 g on the page's grid, 0.688 g with blocks half as big each way, 0.762 g at a quarter. The band's top
+    // uses the finest of those: 0.762 / 0.577 = 1.32 (test.js recomputes it). It may creep up further still.
+    WET_FINE_RATIO: 1.32,
+    // Drawing only: when the frozen-in string lifts the cube, it is shown lifted until its bottom is this far clear of
+    // the bowl water (2026-09-28).
+    LIFT_CLEAR_MM: 3
+  };
+  C.SALT_BULK_G_PER_ML = C.SALT_G_PER_TSP / C.ML_PER_TSP;
+  C.CUBE_CM = C.CUBE_IN * 2.54;
+
+  // ---------- salty water properties ----------
+  function wFromTheta(th) { var b = C.BODNAR; return (b[0] * th + b[1] * th * th + b[2] * th * th * th) / 100; }
+  var W_E = wFromTheta(C.THETA_E);    // eutectic mass fraction, 0.2318
+  function thetaFromW(w) {             // freezing-point depression (C) for mass fraction w: invert Bodnar (Newton)
+    if (w <= 0) return 0;
+    if (w >= W_E) return C.THETA_E;
+    var b = C.BODNAR, p = w * 100, th = p / b[0];
+    for (var i = 0; i < 30; i++) {
+      var f = b[0] * th + b[1] * th * th + b[2] * th * th * th - p, d = b[0] + 2 * b[1] * th + 3 * b[2] * th * th;
+      var step = f / d; th -= step;
+      if (Math.abs(step) < 1e-12) break;
+    }
+    return Math.min(C.THETA_E, Math.max(0, th));
+  }
+  function freezeC(w) { return -thetaFromW(w); }
+  function brineProp(w, col) {         // col 1 = cp J/(g K), 2 = density g/cm3; linear in wt%
+    var p = w * 100, T = C.BRINE_TABLE;
+    if (p <= 0) return T[0][col];
+    for (var i = 1; i < T.length; i++) if (p <= T[i][0]) {
+      var a = T[i - 1], b = T[i]; return a[col] + (b[col] - a[col]) * (p - a[0]) / (b[0] - a[0]);
+    }
+    return T[T.length - 1][col];
+  }
+  function brineCp(w) { return brineProp(w, 1); }
+  function brineRho(w) { return brineProp(w, 2); }
+
+  // ---------- ice enthalpy, J/g, relative to ice at 0 C (negative below 0 C) ----------
+  function iceH(T) { return C.ICE_CP0 * T + 0.5 * C.ICE_CP_SLOPE * T * T; }
+  function iceT(H) { var a = 0.5 * C.ICE_CP_SLOPE, b = C.ICE_CP0; return (-b + Math.sqrt(b * b + 4 * a * H)) / (2 * a); }
+
+  function cubeFaceCm2(cubeCm) { return cubeCm * cubeCm; }
+  function saltLayerMm(g) { return 10 * g / C.SALT_BULK_G_PER_ML / cubeFaceCm2(C.CUBE_CM); } // poured salt as an even layer
+  function wetAreaCm2(cubeCm) { return cubeCm * cubeCm + 4 * cubeCm * (cubeCm - freeboardMm(cubeCm) / 10); } // under water
+  function trayCubeCm() { return Math.cbrt(C.TRAY_CUBE_FL_OZ * 6 * C.ML_PER_TSP); } // 1 fl oz = 6 tsp -> 3.09 cm
+  function freeboardMm(cubeCm) { return 10 * cubeCm * (1 - C.ICE_RHO_G_CM3 / C.WATER_RHO_G_CM3); }
+  // equivalent depth of ice that gives up its heat in t seconds when its top is held colder (semi-infinite
+  // conduction, surface step): d = 2 sqrt(alpha t / pi). Used only for the plain-words explanation and a test.
+  function alpha() { return C.ICE_K / (C.ICE_RHO_G_CM3 * 1000 * C.ICE_CP0 * 1000); } // m2/s
+  function coldDepthMm(t) { return 1000 * 2 * Math.sqrt(alpha() * t / Math.PI); }
+
+  // ---------- heat flow through the cube ----------
+  // The cube is split into small blocks (a quarter of it, by symmetry: NXY x NXY columns, layers DZ_MM thick)
+  // and heat flows between neighbours (Fourier's law, explicit time steps, enthalpy form so energy is conserved).
+  // Boundaries:
+  //  - top face: the wet film. While undissolved salt is there, the film is saturated salty water at the
+  //    eutectic, -21.2 C (stage 1). Once the salt is gone, it is fresh water at 0 C that can freeze (stage 2);
+  //  - sides below the waterline and the bottom: bowl water at 0 C. Ice colder than that freezes bowl water
+  //    onto itself, which holds that face at 0 C and feeds heat in (the latent heat of that new skin);
+  //  - sides above the waterline: in air, taken as no heat flow. The cube floats, so 8.3 % of its current height
+  //    sticks out (1.85 mm at the start); as the top melts it rides up (the side skin and the film are ignored here).
+  function makeCube(cubeCm, dzMm, NX) {
+    var a = cubeCm / 100, dx = a / 2 / NX, dz = dzMm / 1000;
+    var NZ = Math.round(a / dz), NC = NX * NX, H = new Float64Array(NZ * NC), D = [];
+    for (var l = 0; l < NZ; l++) D.push(dz);
+    for (var q = 0; q < H.length; q++) H[q] = iceH(C.START_C);
+    var dt = Math.min(C.DT_S, 0.45 / (2 * alpha() * (2 / (dx * dx) + 1 / (dz * dz)))); // explicit stability
+    return { cubeCm: cubeCm, a: a, dx: dx, dz: dz, NX: NX, NC: NC, H: H, T: new Float64Array(NZ * NC), D: D, dt: dt,
+      rho: C.ICE_RHO_G_CM3 * 1e6, colA: dx * dx,
+      topMoved: 0,       // m the top has gone down (melt) minus up (new ice), from the original top
+      heatTopJ: 0,       // J that left the ice through the top (into the film); negative in stage 2
+      bathJ: 0,          // J that came in from the bowl water (it froze onto the sides and bottom)
+      loadG: 0,          // undissolved salt sitting on top, g (it presses the cube down)
+      strip: 'dry',      // how the side strip above the waterline is treated (see stripM)
+      t: 0 };
+  }
+  // How far the cube's side sticks out of the water, m: it floats on the ice plus the undissolved salt on top.
+  // Unloaded, 8.3 % of its height (ice density / water density); each gram of salt pushes it down 1 / (water
+  // density x top area) = 2 mm per g for the dice cube.
+  function freeboardM(c) {
+    var fb = (c.a - c.topMoved) * (1 - C.ICE_RHO_G_CM3 / C.WATER_RHO_G_CM3) - c.loadG / (C.WATER_RHO_G_CM3 * c.cubeCm * c.cubeCm) / 100;
+    return Math.max(0, fb);
+  }
+  // The strip treated as dry, insulated ice. 'dry': the whole freeboard (the model's central case). 'wet': none, as if
+  // water climbs the side to the top edge (a meniscus on a wetted wall can rise about 3.9 mm, more than the 1.85 mm
+  // freeboard). 'double': twice the freeboard, a drier rim than can really happen, used only as a stand-in for the
+  // things that make real melting slower than the model's (SPEC section 4).
+  function stripM(c) { var fb = freeboardM(c); return c.strip === 'wet' ? 0 : c.strip === 'double' ? 2 * fb : fb; }
+  function cloneCube(c) {
+    var o = {}; for (var key in c) o[key] = c[key];
+    o.H = new Float64Array(c.H); o.T = new Float64Array(c.T.length); o.D = c.D.slice(); return o;
+  }
+  function cellG(c, l) { return c.rho * c.colA * c.D[l]; }
+  // one time step with the top film at Ts; returns the heat (J, whole cube) that left the ice into the film
+  function stepCube(c, Ts, dt) {
+    var n = c.D.length, NC = c.NC, NX = c.NX, H = c.H, T = c.T, D = c.D, k = C.ICE_K, dx = c.dx, colA = c.colA;
+    var last = n - 1, q, Q = 0, qb = 0;
+    for (q = 0; q < n * NC; q++) T[q] = iceT(H[q]);
+    for (q = 0; q < NC; q++) { var f0 = k * colA * (T[q] - Ts) / (D[0] / 2) * dt; Q += f0; H[q] -= f0 / cellG(c, 0); }
+    // the side strip above the waterline, taken as dry (no heat flow); see stripM()
+    var fbNow = stripM(c), zTop = 0;
+    for (var l = 0; l < n; l++) {
+      var mc = cellG(c, l), base = l * NC, wet = zTop + D[l] / 2 > fbNow, side = dx * D[l];
+      var dUp = l > 0 ? (D[l] + D[l - 1]) / 2 : 0, dDn = l < last ? (D[l] + D[l + 1]) / 2 : 0;
+      for (var j = 0; j < NX; j++) for (var i = 0; i < NX; i++) {
+        var idx = base + j * NX + i, Tc = T[idx], inW = 0, b;
+        if (i < NX - 1) inW += k * side * (T[idx + 1] - Tc) / dx; else if (wet) { b = k * side * (C.START_C - Tc) / (dx / 2); inW += b; qb += b; }
+        if (i > 0) inW += k * side * (T[idx - 1] - Tc) / dx;
+        if (j < NX - 1) inW += k * side * (T[idx + NX] - Tc) / dx; else if (wet) { b = k * side * (C.START_C - Tc) / (dx / 2); inW += b; qb += b; }
+        if (j > 0) inW += k * side * (T[idx - NX] - Tc) / dx;
+        if (l < last) inW += k * colA * (T[idx + NC] - Tc) / dDn; else { b = k * colA * (C.START_C - Tc) / (D[l] / 2); inW += b; qb += b; }
+        if (l > 0) inW += k * colA * (T[idx - NC] - Tc) / dUp;
+        H[idx] += inW * dt / mc;
+      }
+      zTop += D[l];
+    }
+    Q *= 4; qb *= 4 * dt; c.heatTopJ += Q; c.bathJ += qb; c.t += dt;
+    return Q;
+  }
+  function topH(c) { var s = 0; for (var q = 0; q < c.NC; q++) s += c.H[q]; return s / c.NC; }
+  // remove (dm > 0) or add (dm < 0, at specific enthalpy hNew) ice evenly over the top face
+  function changeTop(c, dm, hNew) {
+    var dD = dm / (c.rho * 4 * c.NC * c.colA), q;
+    if (dm < 0) for (q = 0; q < c.NC; q++) c.H[q] = (c.D[0] * c.H[q] - dD * hNew) / (c.D[0] - dD);
+    c.D[0] -= dD; c.topMoved += dD;
+    if (c.D[0] < c.dz && c.D.length > 1) {                  // merge a thin top layer into the next one
+      for (q = 0; q < c.NC; q++) c.H[c.NC + q] = (c.D[0] * c.H[q] + c.D[1] * c.H[c.NC + q]) / (c.D[0] + c.D[1]);
+      c.D[1] += c.D[0]; c.D.shift(); c.H = c.H.subarray(c.NC); c.T = c.T.subarray(c.NC);
+    }
+    if (c.D[0] > 2 * c.dz) {                                // split a thick top layer (new ice piling up)
+      var extra = c.D[0] - c.dz, H2 = new Float64Array(c.H.length + c.NC), T2 = new Float64Array(H2.length);
+      for (q = 0; q < c.NC; q++) H2[q] = c.H[q];
+      H2.set(c.H, c.NC); c.H = H2; c.T = T2; c.D[0] = c.dz; c.D.unshift(extra);
+    }
+  }
+  function iceGrams(c) { var s = 0; for (var l = 0; l < c.D.length; l++) s += cellG(c, l); return 4 * s * c.NC; }
+  function iceEnthalpyJ(c) {                               // J, relative to liquid water at 0 C
+    var s = 0; for (var l = 0; l < c.D.length; l++) { var mc = cellG(c, l); for (var q = 0; q < c.NC; q++) s += mc * (-C.L0_J_PER_G + c.H[l * c.NC + q]); }
+    return 4 * s;
+  }
+  function coldJ(c) {                                      // heat the ice would take in to warm back to 0 C
+    var s = 0; for (var l = 0; l < c.D.length; l++) { var mc = cellG(c, l); for (var q = 0; q < c.NC; q++) s += -mc * c.H[l * c.NC + q]; }
+    return 4 * s;
+  }
+  // colder-than-thr region on the middle slice: for each column (centre outwards) the depth, from the current top,
+  // down to which the ice is colder than thr (0 if the top block isn't). mm.
+  function isoDepths(c, thr) {
+    var out = [];
+    for (var i = 0; i < c.NX; i++) {
+      var z = 0, d = 0;
+      for (var l = 0; l < c.D.length; l++) { if (iceT(c.H[l * c.NC + i]) < thr) d = z + c.D[l]; else break; z += c.D[l]; }
+      out.push(d * 1000);
+    }
+    return out;
+  }
+  function snapCube(c, extra) {
+    var o = { t: c.t, topMovedMm: c.topMoved * 1000, heatTopJ: c.heatTopJ, bathJ: c.bathJ, coldJ: coldJ(c),
+      topIceC: iceT(topH(c)), iso1: isoDepths(c, C.ISO_C[0]), iso2: isoDepths(c, C.ISO_C[1]) };
+    for (var key in extra) o[key] = extra[key];
+    return o;
+  }
+
+  // Stage 1, salt bites: while salt is left the film is held at the eutectic, -21.2 C. That is the COLDEST it can
+  // get (right under the grains, in equilibrium); really, between grains, fresh meltwater dilutes it faster than salt
+  // can diffuse in, so it is warmer. Holding it at -21.2 C gives the most melting, so melt, stored cold and the hug
+  // are upper limits. Each gram of ice that melts turns into eutectic brine (dissolving R_E g of salt) and is taken
+  // to drain off over the edge into the bowl at once (really some stays in the string, pits and the salt heap).
+  // Heat balance per step:  Q = dm * [ L0 - h_top + (1 + R_E) cp_brine * T_E + R_E * dH_sol / M ]
+  var R_E = W_E / (1 - W_E);                               // g of salt per g of water in eutectic brine (0.3017)
+  // heat (J) that has to come out of the ice for each gram of ice at enthalpy hTop that melts into eutectic brine:
+  // melt it, cool the new brine (water + the salt it takes up) to -21.2 C, and dissolve that salt
+  function perGramJ(hTop) {
+    return C.L0_J_PER_G - (hTop || 0) + (1 + R_E) * brineCp(W_E) * -C.THETA_E + R_E * C.DH_SOL_J_PER_MOL / C.M_NACL;
+  }
+  // opts: saltG (an amount: stops when it has all dissolved; its undissolved part presses the cube down),
+  // or loadG (endless salt, but pressing down with loadG - dissolved; used to find the cut-off), strip, tEnd,
+  // cubeCm, dzMm, nxy. With neither, endless salt and no weight.
+  function stage1(opts) {
+    opts = opts || {};
+    var c = makeCube(opts.cubeCm || C.CUBE_CM, opts.dzMm || C.DZ_MM, opts.nxy || C.NXY);
+    c.strip = opts.strip || 'dry';
+    var total = opts.saltG != null ? opts.saltG : opts.loadG != null ? opts.loadG : 0, finite = opts.saltG != null;
+    var tEnd = opts.tEnd || C.WAIT_S, steps = Math.round(tEnd / c.dt), dt = tEnd / steps;
+    var TE = -C.THETA_E, cpE = brineCp(W_E), melt = 0, brineHJ = 0, gone = null, frames = [];
+    var every = opts.frameEvery || 1, nextF = every, lastDm = 0;
+    var mark = function () { return snapCube(c, { meltG: melt, dissolvedG: melt * R_E, tempC: TE, brineOutJ: brineHJ, loadG: c.loadG, freeboardMm: 1000 * freeboardM(c) }); };
+    c.loadG = total;
+    frames.push(mark());
+    for (var s = 1; s <= steps && !gone; s++) {
+      // close to the amount, take 50 small steps instead of one, so the stop lands within 0.1% of it
+      var sub = finite && (melt + 2 * lastDm) * R_E >= total ? 50 : 1, Q = 0;
+      for (var u = 0; u < sub && !gone; u++) {
+        var q = stepCube(c, TE, dt / sub), dm = q / perGramJ(topH(c));
+        changeTop(c, dm, 0); melt += dm; Q += q;
+        brineHJ += dm * ((1 + R_E) * cpE * TE + R_E * C.DH_SOL_J_PER_MOL / C.M_NACL); // enthalpy carried off (rel. 0 C water + solid salt)
+        c.loadG = Math.max(0, total - melt * R_E);
+        if (finite && melt * R_E >= total) { c.loadG = 0; gone = mark(); }
+      }
+      lastDm = Q / perGramJ(topH(c));
+      if (!gone && c.t >= nextF - 1e-9) { frames.push(mark()); nextF += every; }
+    }
+    var end = gone || mark();
+    if (frames[frames.length - 1].t < end.t - 1e-6) frames.push(end);
+    return { cube: c, frames: frames, gone: gone, meltG: melt, dissolvedG: melt * R_E, brineOutJ: brineHJ, end: end };
+  }
+  // Stage 2, the hug: the salt is gone and fresh water wets the chilled top. The film is at 0 C; heat flows from it
+  // into the colder ice, so film water freezes onto the top (and round the string), Q / L0 grams. The bowl water
+  // keeps freezing onto the sides too; both slow down as the cube warms back to 0 C. Followed until the pull
+  // (WAIT_S after salting) unless opts.tRun says otherwise.
+  function stage2(cube, opts) {
+    opts = opts || {};
+    var c = cloneCube(cube), t0 = c.t, bath0 = c.bathJ, heat0 = c.heatTopJ, cold0 = coldJ(c);
+    var tRun = opts.tRun || Math.max(C.WAIT_S - t0, 0), steps = Math.max(1, Math.round(tRun / c.dt)), dt = tRun / steps;
+    var newIce = 0, frames = [], every = opts.frameEvery || 1, nextF = t0 + every;
+    frames.push(snapCube(c, { newIceG: 0, tempC: C.START_C }));
+    for (var s = 1; s <= steps; s++) {
+      var Q = stepCube(c, C.START_C, dt);                  // negative: heat flows into the ice from the film
+      var dm = Q / C.L0_J_PER_G;                           // negative: water freezes onto the top
+      if (tRun > 0) { changeTop(c, dm, iceH(C.START_C)); newIce -= dm; }
+      if (c.t >= nextF - 1e-9) { frames.push(snapCube(c, { newIceG: newIce, tempC: C.START_C })); nextF += every; }
+    }
+    if (frames[frames.length - 1].t < c.t - 1e-6) frames.push(snapCube(c, { newIceG: newIce, tempC: C.START_C }));
+    return { cube: c, frames: frames, newIceG: newIce, bathJ: c.bathJ - bath0, topInJ: heat0 - c.heatTopJ,
+      coldStartJ: cold0, coldEndJ: coldJ(c), t0: t0 };
+  }
+
+  // ---------- cached runs ----------
+  var runs = {};
+  function baseRun() {                                     // endless salt, no weight, dry strip: the minute's most
+    if (!runs.base) runs.base = stage1({});
+    return runs.base;
+  }
+  function frameAt(frames, t) {                            // the saved frame at or just before t
+    var f = frames[0]; for (var i = 0; i < frames.length; i++) if (frames[i].t <= t + 1e-9) f = frames[i]; return f;
+  }
+  // The cut-off: the salt one minute can dissolve, counting the salt's own weight (it lowers the cube, which moves
+  // the waterline). Found by repeating: guess G, run with G on top, G = what dissolved (3 rounds; it settles fast).
+  function cutoffFor(strip) {
+    var key = 'cut-' + strip;
+    if (!runs[key]) {
+      var G = stage1({ strip: strip }).dissolvedG, hist = [G];
+      for (var k = 0; k < 3; k++) { G = stage1({ strip: strip, loadG: G }).dissolvedG; hist.push(G); }
+      runs[key] = { g: G, rounds: hist };
+    }
+    return runs[key].g;
+  }
+  // The band: from the drier-than-real rim (a stand-in for the film being warmer than -21.2 C between grains and
+  // brine held in the string, both unsized) up to sides wet to the top edge. The wet case has a sharp -21.2 / 0 C
+  // corner, so it keeps rising on finer grids; WET_FINE_RATIO (measured on the finest grid run, layers 0.125 mm (a quarter of
+  // the page's) and 24 blocks across (a third of the width), checked by
+  // test.js) scales it up to that grid.
+  function cutoffBand() {
+    if (!runs.band) {
+      var wet = cutoffFor('wet');
+      runs.band = { low: cutoffFor('double'), mid: cutoffFor('dry'), wet: wet, high: wet * C.WET_FINE_RATIO };
+    }
+    return runs.band;
+  }
+  function cutoffG() { return cutoffFor('dry'); }
+  // how the cut-off grows with the wait (dry strip, no weight): { t: g } at 15, 30, 45, 60 s and 120 s. It grows
+  // almost in step with the wait (not its square root): most heat comes from the bowl over the short path at the rim,
+  // which settles into a nearly steady flow.
+  function cutoffVsWait() {
+    if (!runs.wait) {
+      var b = baseRun(), long = stage1({ tEnd: 120, frameEvery: 30 }), o = {};
+      o.share = {};                                        // the bowl's share of the heat, which grows with the wait
+      [15, 30, 45, 60].forEach(function (t) { var f = frameAt(b.frames, t); o[t] = f.dissolvedG; o.share[t] = f.bathJ / f.heatTopJ; });
+      o[120] = long.dissolvedG; o.share[120] = long.end.bathJ / long.end.heatTopJ; runs.wait = o;
+    }
+    return runs.wait;
+  }
+  // the central run for one slider amount: stage 1 (dry strip, salt's weight counted), then stage 2 if it dissolved
+  function central(i) {
+    var key = 'c' + i;
+    if (!runs[key]) {
+      var g = C.STEPS_TSP[i] * C.SALT_G_PER_TSP, r = { g: g };
+      if (g > 0) {
+        r.s1 = stage1({ saltG: g });
+        if (r.s1.gone) r.s2 = stage2(r.s1.cube);
+      }
+      runs[key] = r;
+    }
+    return runs[key];
+  }
+  function bestHugG() {                                    // the most new ice of any slider setting (central case)
+    var best = 0;
+    for (var i = 1; i < C.STEPS_TSP.length; i++) { var r = central(i); if (r.s2) best = Math.max(best, r.s2.newIceG); }
+    return best;
+  }
+
+  // ---------- one slider setting ----------
+  var cache = {};
+  function saltStep(i) {
+    if (cache[i]) return cache[i];
+    var tsp = C.STEPS_TSP[i], g = tsp * C.SALT_G_PER_TSP, A = cubeFaceCm2(C.CUBE_CM), rhoI = C.ICE_RHO_G_CM3;
+    var o = { step: i, tsp: tsp, saltG: g, text: C.STEP_TEXT[i], name: C.STEP_NAME[i], faceCm2: A, cubeCm: C.CUBE_CM,
+      cubeG: rhoI * Math.pow(C.CUBE_CM, 3), freeboardMm: freeboardMm(C.CUBE_CM), stringMm: C.STRING_MM,
+      loadedFreeboardMm: Math.max(0, freeboardMm(C.CUBE_CM) - 10 * g / (C.WATER_RHO_G_CM3 * A)), reserveG: reserveG() };
+    var band = cutoffBand(), r = central(i);
+    o.band = band; o.stage1 = []; o.stage2 = [];
+    if (g <= 0) {
+      Object.assign(o, { verdict: 'none', dissolves: false, meltG: 0, dissolvedG: 0, leftG: 0, tSaltGoneS: null, tempC: C.START_C,
+        heat1J: 0, bath1J: 0, cold1J: 0, brineOutJ: 0, newIceG: 0, bath2J: 0, top2J: 0, coldLeftJ: 0, hugS: 0 });
+    } else {
+      var e = r.s1.end;
+      o.stage1 = r.s1.frames;
+      Object.assign(o, { meltG: e.meltG, dissolvedG: e.dissolvedG, leftG: Math.max(0, g - e.dissolvedG), tempC: e.tempC,
+        heat1J: e.heatTopJ, bath1J: e.bathJ, cold1J: e.coldJ, brineOutJ: e.brineOutJ, end1: e });
+      if (r.s2) {
+        var st2 = r.s2;
+        o.stage2 = st2.frames;
+        Object.assign(o, { dissolves: true, leftG: 0, tSaltGoneS: e.t, tempC: C.START_C, newIceG: st2.newIceG, bath2J: st2.bathJ,
+          top2J: st2.topInJ, coldLeftJ: st2.coldEndJ, hugS: C.WAIT_S - e.t, end2: st2.frames[st2.frames.length - 1] });
+      } else Object.assign(o, { dissolves: false, tSaltGoneS: null, newIceG: 0, bath2J: 0, top2J: 0, coldLeftJ: e.coldJ, hugS: 0 });
+      // the verdict, in words the model can back: does it dissolve in time even with the drier rim? can it even with a wet rim?
+      var low = g <= band.low ? true : stage1({ saltG: g, strip: 'double' }).gone !== null;
+      o.dissolvesLow = low;
+      o.bestHugG = bestHugG();
+      if (low) o.verdict = o.newIceG < 0.5 * o.bestHugG ? 'too-little' : 'likely';
+      else if (g > band.high) o.verdict = 'too-much';
+      else o.verdict = 'either';
+    }
+    o.dipMm = 10 * o.meltG / rhoI / A;                       // ice melted off the top, the whole face going down evenly
+    o.newIceMm = 10 * o.newIceG / rhoI / A;                  // new ice on the top face (the hug)
+    o.stringShare = o.newIceMm / C.STRING_MM;               // how far up the string's thickness the new ice reaches
+    o.minuteColdJ = baseRun().end.coldJ;                     // cold stored after a full minute of salt, for comparison
+    o.carriedJ = o.heat1J - o.bath1J - o.cold1J;             // cold that left with the melted ice (it had cooled before melting)
+    o.brineOutG = o.meltG + o.dissolvedG;                    // salty water that drained into the bowl
+    o.skinG = (o.bath1J + o.bath2J) / C.L0_J_PER_G;          // bowl water frozen onto the sides and bottom
+    o.skinMm = 10 * o.skinG / rhoI / wetAreaCm2(C.CUBE_CM);  // ... as an even layer (really thicker near the top)
+    o.leftMm = saltLayerMm(o.leftG);                         // leftover salt as a layer over the face (for the drawing)
+    o.saltMm = saltLayerMm(g);
+    o.coldestC = g > 0 ? -C.THETA_E : C.START_C;
+    cache[i] = o;
+    return o;
+  }
+  function reserveG() {                                    // most weight the cube can carry before its top goes under
+    return (C.WATER_RHO_G_CM3 - C.ICE_RHO_G_CM3) * Math.pow(C.CUBE_CM, 3);
+  }
+
+  // ---------- the pull, once the string is frozen in (Nicolas, 2026-09-28) ----------
+  // A slow pull (quasi-static: no speed, no splash). The cube is ice of height h (the model's: the original height
+  // minus what melted plus the new ice, i.e. CUBE - topMoved) over the top face A. Floating, it sticks out by the
+  // model's freeboard, so it is under water to d0 = h - freeboard. Lifted by rise r, it is under water to
+  // max(0, d0 - r), and the string has to carry what buoyancy no longer does (Archimedes):
+  //   pull = rho_ice A h g - rho_water A max(0, d0 - r) g,
+  // which is 0 at r = 0 (it floats) and grows by rho_water A g per mm (4.9 g, or 48 mN, per cm for the dice cube)
+  // until the cube is clear of the water, when the string carries its whole weight. Returned in grams-force.
+  // What the model does NOT have is the grip of new ice on wet twine: the sim shows the ice holding, and says so.
+  function liftPull(topMovedMm, riseMm) {
+    var A = cubeFaceCm2(C.CUBE_CM), hMm = C.CUBE_CM * 10 - (topMovedMm || 0);
+    var fb = Math.max(0, hMm * (1 - C.ICE_RHO_G_CM3 / C.WATER_RHO_G_CM3)), d0 = hMm - fb;
+    var r = Math.max(0, riseMm || 0), d = Math.max(0, d0 - r);
+    var massG = C.ICE_RHO_G_CM3 * A * hMm / 10, pullG = massG - C.WATER_RHO_G_CM3 * A * d / 10;
+    return { massG: massG, pullG: Math.max(0, pullG), heightMm: hMm, freeboardMm: fb, underMm: d, clearMm: d0 };
+  }
+  // how far the pull lifts it in the sim: until its bottom is LIFT_CLEAR_MM above the water (drawing choice)
+  function liftRiseMm(topMovedMm) { return liftPull(topMovedMm, 0).clearMm + C.LIFT_CLEAR_MM; }
+  function liftText(o, pull) {
+    return 'In the sim the new ice holds, so the string lifts the cube: as it comes out of the water, the string has to carry more and more of it, and once it is clear the string carries all of it, about ' +
+      gNum(pull.massG) + ' g. The model has no number for how strongly new ice grips wet twine, so it can\u2019t say whether real ice holds this; the notes say about 1 in 4 tries worked.';
+  }
+
+  // ---------- words ----------
+  function gNum(g) {                                       // two significant figures below 1 g, one decimal above
+    if (g <= 0) return '0';
+    if (g >= 0.995) return (Math.round(g * 10) / 10).toFixed(1);
+    var d = Math.max(0, 1 - Math.floor(Math.log10(g))), f = Math.pow(10, d);
+    return (Math.round(g * f) / f).toFixed(d);
+  }
+  function gText(g) { return g <= 0 ? '0 g' : 'about ' + gNum(g) + ' g'; }
+  function mmText(mm) {
+    if (mm <= 0) return '0 mm';
+    return 'about ' + gNum(mm) + ' mm';
+  }
+  function degText(T) {
+    if (Math.abs(T) < 0.05) return '0 \u00b0C';
+    var v = Math.round(T * 10) / 10, str = Math.abs(v) % 1 === 0 ? Math.abs(v).toFixed(0) : Math.abs(v).toFixed(1);
+    return (v < 0 ? '\u2212' : '') + str + ' \u00b0C';
+  }
+  // Nearest slider spoon in words. Within 3% it's just the spoon; within 10%, "just under/over"; further off, the two
+  // spoons it sits between (0.28 g is 3/4 of a 1/16 tsp, which is not "just under" it; review 3, NIT 6).
+  function tspText(tsp) {
+    var steps = C.STEPS_TSP.filter(function (f) { return f > 0; }), best = null, lo = null, hi = null;
+    var name = function (f) { return f === 1 ? '1 tsp' : '1/' + Math.round(1 / f) + ' tsp'; };
+    steps.forEach(function (f) {
+      if (!best || Math.abs(Math.log(tsp / f)) < Math.abs(Math.log(tsp / best))) best = f;
+      if (f <= tsp) lo = f; if (f >= tsp && hi === null) hi = f;
+    });
+    var r = tsp / best;
+    if (r >= 0.97 && r <= 1.03) return name(best);
+    if (r >= 0.9 && r < 0.97) return 'just under ' + name(best);
+    if (r > 1.03 && r <= 1.1) return 'just over ' + name(best);
+    if (hi === null) return 'more than ' + name(lo);
+    if (lo === null) return 'less than ' + name(hi);
+    return 'between ' + name(lo).replace(' tsp', '') + ' and ' + name(hi);
+  }
+  function saltLabel(o) { return o.text + (o.name ? ' (' + o.name + ')' : ''); }
+  function describeReady(o) {
+    if (o.saltG <= 0) return { head: 'No salt yet.', detail: 'Move the slider to put some salt on the top of the cube, where the string lies, then press \u201cSalt it\u201d.' };
+    return { head: 'How much salt catches the cube?', detail: saltLabel(o) + ' of table salt is ' + gText(o.saltG) + ', spread over the top of the cube. Press \u201cSalt it\u201d (or tap the cube) to watch.' };
+  }
+  function pct(x) { return x >= 0.095 ? Math.round(x * 100) + '%' : (Math.round(x * 1000) / 10) + '%'; }
+  function secText(t) { return t < 1 ? 'less than a second' : 'about ' + Math.round(t) + ' s'; }   // model times are rough: whole seconds
+  function bandText(b) {                                   // the cut-off band in words
+    return 'somewhere between about ' + gNum(b.low) + ' g and ' + gNum(b.high) + ' g (' + tspText(b.low / C.SALT_G_PER_TSP) + ', up to ' + tspText(b.high / C.SALT_G_PER_TSP) + ')';
+  }
+  function hugWords(o) {
+    return 'Fresh water then froze onto the chilled top: up to ' + gText(o.newIceG) + ' of new ice, ' + mmText(o.newIceMm) + ' thick, ' + pct(o.stringShare) +
+      ' of the way up the ' + C.STRING_MM + ' mm string. \u201cUp to\u201d because the model holds the salty film at the coldest it can get, which gives the most melting and the most stored cold.';
+  }
+  function describe(o) {
+    var b = o.band, H, D, N = '', E = '';
+    if (o.verdict === 'none') {
+      H = 'No salt: nothing happens.';
+      D = 'The cube sits in ice water at 0 \u00b0C. Nothing melts and nothing freezes, so the string just lies on the wet ice and lifts off when you pull.';
+    } else if (o.verdict === 'too-little' || o.verdict === 'likely') {
+      // the headline says only what the model backs: the salt dissolves in time, and new ice can form (review 3, MUST 1)
+      H = o.verdict === 'likely' ? 'Likely dissolves in time: new ice can form round the string.' : 'Dissolves, but only a thin hug.';
+      D = 'This much salt dissolves before the pull even with a drier rim than the real one. In the model it melted ' + gText(o.meltG) +
+        ' of ice (the top face went down evenly by ' + mmText(o.dipMm) + ') and was gone after ' + secText(o.tSaltGoneS) + ', leaving ' + Math.round(o.cold1J) +
+        ' J of cold stored in the ice (a whole minute of salt stores about ' + Math.round(o.minuteColdJ) + ' J). ' + hugWords(o) +
+        (o.verdict === 'too-little' ? ' That\u2019s under half the thickest hug this model gives (' + mmText(10 * o.bestHugG / C.ICE_RHO_G_CM3 / o.faceCm2) + '): the salt was gone before much cold could soak in. (The sim calls a hug \u201cthin\u201d when it\u2019s under half the thickest one the model gives. That line is our choice, not physics.)' : '') +
+        ' Whether the new ice holds the cube, the sim can\u2019t say.';
+    } else if (o.verdict === 'either') {
+      H = 'Could go either way.';
+      D = (o.dissolves ? 'In the model\u2019s middle case (the strip above the water taken as dry) this all dissolves after ' + secText(o.tSaltGoneS) + ', ' :
+        'In the model\u2019s middle case (the strip above the water taken as dry) ' + (o.leftG < 0.05 ? 'a little salt (under 0.05 g)' : gText(o.leftG) + ' of salt') + ' is still on the top at the pull, so the film there is still as salty as it gets and nothing can freeze: the string lifts out of a salty puddle. ') +
+        (o.dissolves ? '' : 'But if bowl water creeps up the side to the top edge, heat gets in faster and the minute can dissolve up to about ' + gText(b.high).replace('about ', '') + ', and then this could all go. With a drier rim, or salt heaped on the string, it would not. The model can\u2019t tell which.') +
+        (o.loadedFreeboardMm < 1 ? ' When it lands, its weight also presses the cube down, leaving only ' + mmText(o.loadedFreeboardMm) + ' of side out of the water (it rises again as the salt dissolves). With so little side out of the water, the wet-rim case is the likelier one here.' : '');
+    } else {
+      H = 'Likely too much: the film stays too salty.';
+      D = 'Even with the rim wet to the top edge, the minute can dissolve only about ' + gText(b.high).replace('about ', '') + '. About ' + gText(o.leftG).replace('about ', '') +
+        ' is still on the top at the pull, so the film stays as salty as it gets, and water that salty can\u2019t freeze. The string lifts out of a salty puddle.';
+    }
+    // the 'likely' setting nearest the bottom of the band gets a plain warning, in the model's own time for it
+    // (1/32 tsp is gone at about 28 s with its weight counted, so a 30 s wait only just dissolves it; review 3, SHOULD 3)
+    if (o.verdict === 'likely' && o.saltG > 0.5 * b.low) E = 'Closest to the line of the \u201clikely\u201d amounts: ' +
+      (o.tSaltGoneS <= 30 ? 'with a 30 s wait it would only just dissolve (' + secText(o.tSaltGoneS) + '), leaving almost no time for new ice' : 'with a 30 s wait some would still be there at the pull') +
+      '; with a film warmer than the model\u2019s, some could still be there at the pull.';
+    if (o.saltG > 0) N = 'Salt the top of this cube can dissolve in a minute: ' + bandText(b) + '. The model can\u2019t pin it down closer than that.';
+    return { head: H, detail: D, edge: E, cutoff: N };
+  }
+
+  return {
+    C: C, W_E: W_E, R_E: R_E,
+    wFromTheta: wFromTheta, thetaFromW: thetaFromW, freezeC: freezeC, brineCp: brineCp, brineRho: brineRho,
+    perGramJ: perGramJ, cubeFaceCm2: cubeFaceCm2, saltLayerMm: saltLayerMm, wetAreaCm2: wetAreaCm2,
+    iceH: iceH, iceT: iceT, alpha: alpha, coldDepthMm: coldDepthMm, freeboardMm: freeboardMm, trayCubeCm: trayCubeCm,
+    makeCube: makeCube, stage1: stage1, stage2: stage2, iceGrams: iceGrams, iceEnthalpyJ: iceEnthalpyJ, coldJ: coldJ,
+    baseRun: baseRun, cutoffG: cutoffG, cutoffFor: cutoffFor, cutoffBand: cutoffBand, cutoffVsWait: cutoffVsWait,
+    central: central, bestHugG: bestHugG, reserveG: reserveG, saltStep: saltStep, frameAt: frameAt,
+    gNum: gNum, gText: gText, mmText: mmText, degText: degText, tspText: tspText, saltLabel: saltLabel, pct: pct, secText: secText,
+    describe: describe, describeReady: describeReady, bandText: bandText, freeboardM: freeboardM,
+    liftPull: liftPull, liftRiseMm: liftRiseMm, liftText: liftText
+  };
+});
+/* END model.js */
+</script>
+<script>
+(function(){
+'use strict';
+var M = window.SaltIceModel, C = M.C;
+var NS = 'http://www.w3.org/2000/svg', svg = document.getElementById('scene'), fpSvg = document.getElementById('fp');
+function el(tag, attrs, parent){ var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); (parent||svg).appendChild(e); return e; }
+function set(e, attrs){ for (var k in attrs) e.setAttribute(k, attrs[k]); return e; }
+function clamp(x, a, b){ return x < a ? a : x > b ? b : x; }
+var ACC = '#E0562B', INK = '#2B2A33', ICE = '#F7FBFF', ICE_LINE = '#5E8FB3', HATCH = '#AFCBE0', WATER = '#8EC5E8', BRINE = '#5FBFB3', TWINE = '#B89B6A';
+// Text in the scene is at least 13.5 viewBox units, so at least about 12 CSS px on a 390 px phone (the scene is drawn at about 0.87x there).
+var FS = 14.5, FS_S = 14;
+
+// ---------- scales (everything in the big view is 6 px per model mm) ----------
+var S = 6, CX = 118, WY = 132;                       // cube centre x, bowl water surface y
+var HALF = C.CUBE_CM * 10 / 2;                       // mm
+var Z = 28, ZX = 254, ZY = 8, ZW = 140, ZH = 196, ZTOP = 140; // zoom window; the ice top sits at ZTOP in it
+var TX = 290, TPX = 3.2, TY0 = 284 + 4 * TPX;        // thermometer: x, y of 0 C, px per degree
+function tY(T){ return TY0 - T * TPX; }
+var SIMMS = 100, SALT_MS = 600, PULL_MS = 1600;      // 100 ms per model second (10x); salt drop; pull
+var SAFETY = 'No tasting salty ice.';               // the page's one safety line, shown once at the end
+var LIFT_MS = 3200;                                  // your slow pull once the string is frozen in: take up the slack, then lift
+var TOPMIN = 84;                                     // while lifting, the view follows so the cube's top stays below this y
+var SETTLE_MS = 180;                                 // the last part of the drop: the salt has landed and the cube sinks to its loaded waterline
+
+// ---------- defs ----------
+var defs = el('defs', {});
+var mk = el('marker', {id:'ah', viewBox:'0 0 10 10', refX:'6', refY:'5', markerWidth:'4', markerHeight:'4', orient:'auto-start-reverse'}, defs);
+el('path', {d:'M0,0 L10,5 L0,10 z', fill:ACC}, mk);
+var hp = el('pattern', {id:'hatch', width:'8', height:'8', patternUnits:'userSpaceOnUse', patternTransform:'rotate(45)'}, defs);
+el('rect', {width:8, height:8, fill:ICE}, hp); el('line', {x1:0, y1:0, x2:0, y2:8, stroke:HATCH, 'stroke-width':1.4}, hp);
+var sp = el('pattern', {id:'grains', width:'6', height:'6', patternUnits:'userSpaceOnUse'}, defs);
+el('rect', {width:6, height:6, fill:'#fff'}, sp); el('circle', {cx:1.5, cy:1.5, r:0.7, fill:'#b9b3a6'}, sp); el('circle', {cx:4.5, cy:4.2, r:0.7, fill:'#b9b3a6'}, sp);
+var cpZ = el('clipPath', {id:'zclip'}, defs); el('rect', {x:ZX, y:ZY, width:ZW, height:ZH, rx:12}, cpZ);
+
+// ---------- big view ----------
+// cam: the big view's world (bowl water, cube, string, arrows, labels). It only moves (down) while a lifted cube
+// would leave the top of the picture, so the lift stays in view; the zoom and the thermometer don't move.
+var cam = el('g', {transform:'translate(0,0)'});
+el('rect', {x:0, y:WY, width:246, height:400 - WY + 200, fill:WATER, opacity:0.55}, cam);
+var big = el('g', {transform:'translate(0,0)'}, cam);         // the cube and what's on it (never drawn lifting: the model has no grip strength)
+var skin = el('path', {d:'', fill:'#fff', stroke:ACC, 'stroke-width':1}, big);
+var cube = el('rect', {x:CX - HALF*S, width:2*HALF*S, fill:'url(#hatch)', stroke:ICE_LINE, 'stroke-width':2}, big);
+var isoG = el('g', {}, big);
+var iso1 = el('polyline', {fill:'none', stroke:ICE_LINE, 'stroke-width':1.6}, isoG);
+var iso2 = el('polyline', {fill:'none', stroke:'#2f5f82', 'stroke-width':2}, isoG);
+var iso1T = el('text', {'font-size':FS, 'font-weight':700, fill:'#2f5f82', 'text-anchor':'middle'}, isoG); iso1T.textContent = '\u22121 \u00b0C';
+var iso2T = el('text', {'font-size':FS, 'font-weight':700, fill:'#2f5f82', 'text-anchor':'middle'}, isoG); iso2T.textContent = '\u221210 \u00b0C';
+var newIce = el('rect', {x:CX - HALF*S, width:2*HALF*S, fill:'#fff', stroke:ACC, 'stroke-width':1}, big);
+var film = el('rect', {x:CX - HALF*S, width:2*HALF*S, height:2}, big);
+var runL = el('rect', {width:3, fill:BRINE}, big), runR = el('rect', {width:3, fill:BRINE}, big);
+var salt = el('rect', {x:CX - HALF*S, width:2*HALF*S, fill:'url(#grains)', stroke:INK, 'stroke-width':1}, big);
+var oldTop = el('line', {stroke:INK, 'stroke-width':1.4, 'stroke-dasharray':'4 3', opacity:0.8}, big); // drawn over the salt
+var zoomBox = el('rect', {width:ZW/Z*S, height:ZH/Z*S, fill:'none', stroke:INK, 'stroke-width':1, 'stroke-dasharray':'2 2'}, big);
+var twine = el('path', {fill:'none', stroke:INK, 'stroke-width':2*S + 2, 'stroke-linejoin':'round', 'stroke-linecap':'round'}, cam);
+var twine2 = el('path', {fill:'none', stroke:TWINE, 'stroke-width':2*S - 1, 'stroke-linejoin':'round', 'stroke-linecap':'round'}, cam);
+var drop = el('g', {}, cam);                             // salt falling (only while you drop it)
+var heatG = el('g', {}, cam);
+function hArrow(parent){ return el('line', {stroke:ACC, 'stroke-width':3, 'stroke-dasharray':'1.5 4', 'stroke-linecap':'round', 'marker-end':'url(#ah)'}, parent); }
+var hTop = [hArrow(heatG), hArrow(heatG)], hSide = [hArrow(heatG), hArrow(heatG)];
+var runArrow = el('path', {fill:'none', stroke:ACC, 'stroke-width':3, 'stroke-dasharray':'7 5', 'marker-end':'url(#ah)'}, cam);
+var pullArrows = [el('line', {stroke:ACC, 'stroke-width':3, 'stroke-dasharray':'7 5', 'marker-end':'url(#ah)'}, cam), el('line', {stroke:ACC, 'stroke-width':3, 'stroke-dasharray':'7 5', 'marker-end':'url(#ah)'}, cam)];
+var labels = el('g', {}, cam);
+var clock = el('text', {x:CX, y:20, 'font-size':15, fill:INK, 'font-weight':700, 'text-anchor':'middle'});
+
+// ---------- zoom ----------
+el('rect', {x:ZX, y:ZY, width:ZW, height:ZH, rx:12, fill:'#fff'});
+var zg = el('g', {'clip-path':'url(#zclip)'});
+var zIce = el('rect', {x:ZX, width:ZW, fill:'url(#hatch)'}, zg);
+var zSalt = el('rect', {x:ZX, width:ZW, fill:'url(#grains)', stroke:INK, 'stroke-width':1}, zg);
+var zFilm = el('rect', {x:ZX, width:ZW, height:3}, zg);
+var zOld = el('line', {x1:ZX, x2:ZX+ZW, stroke:INK, 'stroke-width':1.4, 'stroke-dasharray':'4 3', opacity:0.8}, zg); // over the salt
+var zString = el('circle', {cx:ZX + ZW/2, r:Z * C.STRING_MM / 2, fill:TWINE, stroke:INK, 'stroke-width':2}, zg);
+var zNew = el('rect', {x:ZX, width:ZW, fill:'#fff', 'fill-opacity':0.88, stroke:ACC, 'stroke-width':1.5}, zg); // new ice, over the string's foot
+var zLab = el('text', {x:ZX + 8, 'font-size':FS_S, fill:INK}, zg);
+var zLab1 = el('tspan', {x:ZX + 8, dy:0}, zLab), zLab2 = el('tspan', {x:ZX + 8, dy:16}, zLab);
+el('rect', {x:ZX, y:ZY, width:ZW, height:ZH, rx:12, fill:'none', stroke:INK, 'stroke-width':1.5});
+var zt = el('text', {x:ZX + 8, y:ZY + 18, 'font-size':FS, fill:INK, 'font-weight':700}); zt.textContent = 'Zoom on string';
+var zt2 = el('text', {x:ZX + 8, y:ZY + 34, 'font-size':FS_S, fill:INK}); zt2.textContent = 'looking along it';
+el('line', {x1:ZX + ZW - 8 - Z, y1:ZY + ZH - 8, x2:ZX + ZW - 8, y2:ZY + ZH - 8, stroke:INK, 'stroke-width':2});
+var zs = el('text', {x:ZX + ZW - 8 - Z/2, y:ZY + ZH - 13, 'font-size':FS_S, fill:INK, 'text-anchor':'middle'}); zs.textContent = '1 mm';
+
+// ---------- thermometer ----------
+var tRead = el('text', {x:ZX + 2, y:ZY + ZH + 18, 'font-size':FS, fill:INK, 'font-weight':700});
+var tReadB = el('text', {x:ZX + 2, y:ZY + ZH + 34, 'font-size':FS_S, fill:INK});
+var tRead2 = el('text', {x:ZX + 2, y:ZY + ZH + 52, 'font-size':FS_S, fill:INK});
+var tRead2B = el('text', {x:ZX + 2, y:ZY + ZH + 68, 'font-size':FS_S, fill:INK, 'font-weight':700});
+el('rect', {x:TX - 7, y:tY(4), width:14, height:tY(-24) - tY(4), rx:7, fill:'#fff', stroke:INK, 'stroke-width':2});
+el('circle', {cx:TX, cy:tY(-24) + 8, r:11, fill:INK});
+var tFill = el('rect', {x:TX - 3.5, width:7, fill:INK});
+[0, -10, -20].forEach(function(T){ el('line', {x1:TX + 7, x2:TX + 13, y1:tY(T), y2:tY(T), stroke:INK, 'stroke-width':1.5});
+  var t = el('text', {x:TX + 16, y:tY(T) + 5, 'font-size':FS_S, fill:INK}); t.textContent = (T < 0 ? '\u2212' : '') + Math.abs(T) + ' \u00b0C'; });
+var tTopMark = el('path', {fill:ICE_LINE});
+
+// ---------- freezing-point graph (its own box, drawn at about 1:1 on a phone) ----------
+var FX0 = 44, FX1 = 318, FY0 = 14, FY1 = 144, FWMAX = 25, FTMIN = -24;
+function fx(p){ return FX0 + (FX1 - FX0) * p / FWMAX; }
+function fy(T){ return FY0 + (FY1 - FY0) * T / FTMIN; }
+(function(){
+  var e = function(t, a){ return el(t, a, fpSvg); };
+  var pts = [];
+  for (var p = 0; p <= M.W_E * 100 + 1e-9; p += 0.25) pts.push(fx(p).toFixed(1) + ',' + fy(M.freezeC(p / 100)).toFixed(1));
+  pts.push(fx(M.W_E * 100).toFixed(1) + ',' + fy(-C.THETA_E).toFixed(1));
+  e('path', {d:'M' + fx(0) + ',' + fy(0) + ' L' + pts.join(' L') + ' L' + fx(M.W_E*100) + ',' + fy(0) + ' Z', fill:BRINE, opacity:0.25});
+  e('polyline', {points:pts.join(' '), fill:'none', stroke:INK, 'stroke-width':2.5});
+  e('line', {x1:FX0, y1:FY0, x2:FX0, y2:FY1, stroke:INK, 'stroke-width':1.5}); e('line', {x1:FX0, y1:FY0, x2:FX1, y2:FY0, stroke:INK, 'stroke-width':1.5});
+  [0, -10, -20].forEach(function(T){ var t = e('text', {x:FX0 - 9, y:fy(T) + 4, 'font-size':12.5, 'text-anchor':'end', fill:INK}); t.textContent = (T < 0 ? '\u2212' : '') + Math.abs(T) + '\u00b0'; });
+  [0, 5, 10, 15, 20, 25].forEach(function(p){ var t = e('text', {x:fx(p), y:FY1 + 15, 'font-size':12.5, 'text-anchor':'middle', fill:INK}); t.textContent = p + '%'; });
+  var t1 = e('text', {x:(FX0 + FX1)/2, y:FY1 + 30, 'font-size':12.5, 'text-anchor':'middle', fill:INK}); t1.textContent = 'salt in the water (% by weight)';
+  var t2 = e('text', {x:fx(9), y:fy(-3.2), 'font-size':12.5, fill:INK}); t2.textContent = 'above the line: stays liquid';
+  var t4 = e('text', {x:fx(1.2), y:fy(-15.5), 'font-size':12.5, fill:INK}); t4.textContent = 'below the line:';
+  var t5 = e('text', {x:fx(1.2), y:fy(-15.5) + 15, 'font-size':12.5, fill:INK}); t5.textContent = 'ice forms';
+  var t6 = e('text', {x:fx(M.W_E * 100) - 12, y:fy(-C.THETA_E) + 4, 'font-size':12.5, fill:INK, 'text-anchor':'end'}); t6.textContent = 'saltiest: 23.2%, \u221221.2 \u00b0C';
+})();
+var fpDot = el('circle', {r:7, fill:ACC, stroke:INK, 'stroke-width':1.5}, fpSvg);
+
+// ---------- state ----------
+var saltIn = document.getElementById('salt'), MAXI = C.STEPS_TSP.length - 1;
+var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var state = 'ready', anim = null, cur = null, idx = +saltIn.value, whyMismatch = [], whyDone = false;
+function stepObj(i){ return M.saltStep(i); }
+
+// ---------- drawing one moment ----------
+// v: {saltLeftMm, topMovedMm, dipMm, newMm, skinMm, fbMm (how far the side sticks out, with the salt's weight), film:'none'|'brine'|'water',
+//     filmC, topIceC, iso1, iso2, heatTop (J/s, + = out of the ice), heatBath (J/s), run (bool), stringUp (px), slide (0..1), t (s or null)}
+function fbMm(topMovedMm, loadG){                      // same formula as the model's freeboardM
+  return Math.max(0, (C.CUBE_CM * 10 - topMovedMm) * (1 - C.ICE_RHO_G_CM3 / C.WATER_RHO_G_CM3) - 10 * (loadG || 0) / (C.WATER_RHO_G_CM3 * C.CUBE_CM * C.CUBE_CM));
+}
+var drawn = {};
+function draw(v){
+  var hMm = C.CUBE_CM * 10 - v.dipMm, fb = v.fbMm;
+  // lifted by the frozen-in string (only then): the cube, what's on it and the string's middle rise together, by the
+  // lift the pull has reached; the view follows so the cube stays in the picture
+  var liftPx = (v.liftMm || 0) * S, camY = Math.max(0, TOPMIN - (WY - fb * S - liftPx));
+  set(big, {transform:'translate(0,' + (+(-liftPx).toFixed(2) || 0) + ')'}); set(cam, {transform:'translate(0,' + (+camY.toFixed(2) || 0) + ')'});
+  var iceTop = WY - fb * S;                              // top of the old ice (under any new ice)
+  var newTop = iceTop - v.newMm * S;
+  var L = CX - HALF * S, R = CX + HALF * S, bot = iceTop + hMm * S;
+  set(cube, {y:iceTop, height:hMm * S});
+  var saltTop = newTop - 2 - v.saltLeftMm * S;
+  set(oldTop, {x1:L - 6, x2:R + 6, y1:iceTop - v.dipMm * S, y2:iceTop - v.dipMm * S, display:v.dipMm > 0.02 ? 'inline' : 'none'});
+  set(newIce, {y:newTop, height:Math.max(0, v.newMm * S), display:v.newMm > 0 ? 'inline' : 'none'});
+  var sk = v.skinMm * S, wetTop = WY;                   // skin: bowl water frozen on, drawn under the waterline
+  set(skin, {d: sk > 0 ? ('M' + (L - sk) + ',' + wetTop + ' V' + (bot + sk) + ' H' + (R + sk) + ' V' + wetTop + ' H' + R + ' V' + bot + ' H' + L + ' V' + wetTop + ' Z') : ''});
+  set(film, {y:newTop - 2, fill:v.film === 'brine' ? BRINE : WATER, display:v.film === 'none' ? 'none' : 'inline'});
+  set(runL, {x:L - 3, y:newTop, height:Math.max(0, WY - newTop), display:v.run ? 'inline' : 'none'});
+  set(runR, {x:R, y:newTop, height:Math.max(0, WY - newTop), display:v.run ? 'inline' : 'none'});
+  set(salt, {y:saltTop, height:v.saltLeftMm * S, display:v.saltLeftMm * S > 0.3 ? 'inline' : 'none'}); // on the film
+  // cold lines (model isotherms on the middle slice), mirrored
+  var dxp = HALF * S / C.NXY;
+  function isoPts(a){
+    if (!a || !(a[0] > 0)) return '';
+    var right = [], n = a.length;
+    for (var i = 0; i < n; i++) if (a[i] > 0) right.push([CX + (i + 0.5) * dxp, newTop + a[i] * S]);
+    if (right.length === n) right.push([R, newTop + a[n - 1] * S]);
+    else right.push([CX + right.length * dxp, newTop]);
+    var left = right.slice().reverse().map(function(p){ return [2 * CX - p[0], p[1]]; });
+    return left.concat(right).map(function(p){ return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ');
+  }
+  var p1 = isoPts(v.iso1), p2 = isoPts(v.iso2);
+  set(iso1, {points:p1, display:p1 ? 'inline' : 'none'}); set(iso2, {points:p2, display:p2 ? 'inline' : 'none'});
+  var y1 = v.iso1 ? newTop + v.iso1[0] * S + 15 : 0, y2 = v.iso2 ? newTop + v.iso2[0] * S + 15 : 0;
+  set(iso1T, {x:CX, y:y1, display:p1 && v.iso1[0] > 1.5 && (!p2 || y1 - y2 > 15) ? 'inline' : 'none'});
+  set(iso2T, {x:CX, y:y2, display:p2 && v.iso2[0] > 1.5 ? 'inline' : 'none'});
+  // the string: along the top (on the old ice top: new ice grows round its foot), over the edges, ends lying on the water. Pulled (only when nothing froze it in),
+  // it lifts clear of any salt still there.
+  var restY = iceTop - S * C.STRING_MM / 2, clearY = Math.min(restY, saltTop - 4 - S * C.STRING_MM / 2);
+  var sy = restY + (clearY - 40 - restY) * (v.slide || 0) - liftPx, up = v.stringUp;
+  var endY = WY + 2 - up - liftPx, lx = 4, rx = 242;
+  var d = 'M' + lx + ',' + endY + ' C' + (L - 30) + ',' + endY + ' ' + (L - 14) + ',' + sy + ' ' + (L + 4) + ',' + sy + ' L' + (R - 4) + ',' + sy + ' C' + (R + 14) + ',' + sy + ' ' + (R + 30) + ',' + endY + ' ' + rx + ',' + endY;
+  set(twine, {d:d}); set(twine2, {d:d});
+  set(zoomBox, {x:CX - ZW/Z*S/2, y:iceTop - (ZTOP - ZY) / Z * S});
+  // heat arrows (dotted): strength follows the model's heat flow
+  var ht = v.heatTop, hb = v.heatBath, ref = drawn.refRate || 1;
+  hTop.forEach(function(a, k){
+    var x = CX + (k ? 34 : -34), on = Math.abs(ht) > 0.03 * ref;
+    if (ht >= 0) set(a, {x1:x, y1:newTop + 44, x2:x, y2:newTop + 12, display:on ? 'inline' : 'none', opacity:clamp(Math.abs(ht) / ref, 0.35, 1)});
+    else set(a, {x1:x, y1:newTop - 14, x2:x, y2:newTop + 18, display:on ? 'inline' : 'none', opacity:clamp(Math.abs(ht) / ref, 0.35, 1)});
+  });
+  hSide.forEach(function(a, k){
+    var y = WY + 78, on = hb > 0.03 * ref;
+    if (k) set(a, {x1:R + 30, y1:y, x2:R + 6, y2:y, display:on ? 'inline' : 'none', opacity:clamp(hb / ref, 0.35, 1)});
+    else set(a, {x1:L - 30, y1:y, x2:L - 6, y2:y, display:on ? 'inline' : 'none', opacity:clamp(hb / ref, 0.35, 1)});
+  });
+  set(runArrow, {d:'M' + (R + 8) + ',' + (newTop - 2) + ' q10,6 10,' + (WY - newTop + 16), display:v.run ? 'inline' : 'none'});
+  pullArrows.forEach(function(a, k){ var x = k ? 232 : 14; set(a, {x1:x, y1:endY - 6, x2:x, y2:Math.max(endY - 36, 6 - camY), display:v.pulling ? 'inline' : 'none'}); });
+  clock.textContent = v.t == null ? '' : 't = ' + Math.round(v.t) + ' s';
+  // zoom (follows the top of the ice)
+  var zTopY = ZTOP, zNewTop = zTopY - v.newMm * Z, zSaltTop = zNewTop - 3 - v.saltLeftMm * Z;
+  set(zIce, {y:zTopY, height:ZY + ZH - zTopY});
+  set(zOld, {y1:zTopY - v.dipMm * Z, y2:zTopY - v.dipMm * Z, display:v.dipMm > 0.02 ? 'inline' : 'none'});
+  var zr = Z * C.STRING_MM / 2, zRest = zTopY - zr, zClear = Math.min(zRest, zSaltTop - 6 - zr) - 10;
+  var zStrY = Math.max(ZY + 44 + zr, zRest + (zClear - zRest) * (v.slide || 0)); // lifted clear of the salt, still in the window
+  set(zString, {cy:zStrY});
+  set(zNew, {y:zNewTop, height:v.newMm * Z, display:v.newMm > 0 ? 'inline' : 'none'});
+  set(zFilm, {y:zNewTop - 3, fill:v.film === 'brine' ? BRINE : WATER, display:v.film === 'none' ? 'none' : 'inline'});
+  set(zSalt, {y:zSaltTop, height:v.saltLeftMm * Z, display:v.saltLeftMm * Z > 0.3 ? 'inline' : 'none'}); // on the film
+  set(zLab, {y:zTopY + 22});
+  zLab1.textContent = v.newMm > 0 ? 'new ice,' : v.dipMm > 0.02 ? 'dashed: old top' : 'ice';
+  zLab2.textContent = v.newMm > 0 ? 'up to ' + fmtMm(v.newMm) : '';   // an upper limit, like everywhere else
+  // thermometer: the film's temperature from the model, and the top half-mm of ice
+  set(tFill, {y:tY(Math.max(v.filmC, -24)), height:tY(-24) + 4 - tY(Math.max(v.filmC, -24))});
+  tRead.textContent = 'film ' + M.degText(v.filmC);
+  tReadB.textContent = v.film === 'brine' ? '(coldest possible)' : '(fresh water)';
+  var ti = v.topIceC;
+  set(tTopMark, {d:'M' + (TX - 9) + ',' + tY(ti) + ' l-9,-5 v10 z'});
+  tRead2.textContent = 'top \u00bd mm of ice:'; tRead2B.textContent = M.degText(ti);
+  // graph dot
+  var w = v.film === 'brine' ? M.W_E * 100 : 0;
+  set(fpDot, {cx:fx(w), cy:fy(v.filmC)});
+  drawn.v = v; drawn.iceTop = iceTop; drawn.zStrY = zStrY; drawn.sy = sy; drawn.L = L; drawn.R = R; drawn.liftPx = liftPx; drawn.camY = camY; drawn.endY = endY;
+}
+function fmtMm(mm){ return M.mmText(mm).replace('about ', ''); }
+// labels in the big view
+var labBowl = el('text', {x:8, y:392, 'font-size':FS, fill:INK}); labBowl.textContent = 'bowl of ice water, 0 \u00b0C';
+var labCube = el('text', {x:CX, 'font-size':FS, fill:INK, 'text-anchor':'middle'}, big); labCube.textContent = 'ice cube, 2.2 cm across';
+var labZoom = el('text', {'font-size':FS_S, fill:INK, 'text-anchor':'end', stroke:'#FBF6EC', 'stroke-width':4, 'paint-order':'stroke', 'stroke-linejoin':'round'}, labels); labZoom.textContent = 'zoom'; // over the string, with a halo
+var labSalt = el('text', {'font-size':FS, fill:INK, 'text-anchor':'end'}, big); labSalt.textContent = 'salt';
+var labRun = el('text', {'font-size':FS_S, fill:INK}, labels);
+['salty', 'water', 'runs off'].forEach(function(t, k){ var ts = el('tspan', {x:0, dy:k ? 15 : 0}, labRun); ts.textContent = t; });
+var labHeat = el('text', {'font-size':FS_S, fill:INK, 'text-anchor':'middle'}, labels); labHeat.textContent = 'heat';
+var ghost = el('rect', {x:CX - HALF*S, width:2*HALF*S, fill:'url(#grains)', 'fill-opacity':0.6, stroke:INK, 'stroke-width':1, 'stroke-dasharray':'4 3'}, drop);
+var ghostT = el('text', {x:CX, 'font-size':FS, fill:INK, 'text-anchor':'middle'}, drop);
+function labelsFor(v){
+  // labCube and labSalt ride in the cube's group (lifted with it); labZoom is outside it, so it adds the lift itself
+  var iceTop = WY - v.fbMm * S, newTop = iceTop - v.newMm * S, hMm = C.CUBE_CM * 10 - v.dipMm;
+  set(labCube, {y:iceTop + hMm * S + 20});
+  var zTop = iceTop - (ZTOP - ZY) / Z * S - (v.liftMm || 0) * S;
+  set(labZoom, {x:CX - ZW/Z*S/2 - 4, y:zTop + 2});     // beside its box's top: under a lifted string, above the dashed old-top line
+  var sh = v.saltLeftMm * S;
+  set(labSalt, {x:CX - HALF * S - 6, y:newTop - Math.min(sh, 40) / 2 + 3, display:sh > 1.5 ? 'inline' : 'none'});
+  set(labRun, {y:WY + 34, display:v.run ? 'inline' : 'none'});
+  Array.prototype.forEach.call(labRun.childNodes, function(ts){ ts.setAttribute('x', CX + HALF * S + 10); });
+  set(labHeat, {x:CX - HALF * S - 18, y:WY + 66, display:hSide[0].getAttribute('display') === 'inline' ? 'inline' : 'none'});
+}
+function showGhost(g, dropY){
+  var mm = M.saltLayerMm(g), h = mm * S, top = WY - fbMm(0) * S;
+  if (!(g > 0)) { set(drop, {display:'none'}); return; }
+  var y = dropY == null ? top - 50 - h : dropY - h;
+  set(drop, {display:'inline'}); set(ghost, {y:y, height:Math.max(h, 1)});
+  set(ghostT, {y:y - 7}); ghostT.textContent = dropY == null ? 'salt to drop' : '';
+}
+
+// ---------- model -> picture, at model time t ----------
+function lerp(a, b, f){ return a + (b - a) * f; }
+function lerpArr(a, b, f){ if (!a) return b; if (!b) return a; return a.map(function(x, i){ return lerp(x, b[i], f); }); }
+function around(frames, t){                              // frames bracketing t, and the fraction between them
+  var i = 0; while (i < frames.length - 1 && frames[i + 1].t <= t) i++;
+  var a = frames[i], b = frames[Math.min(i + 1, frames.length - 1)], f = b.t > a.t ? clamp((t - a.t) / (b.t - a.t), 0, 1) : 0;
+  return {a:a, b:b, f:f};
+}
+function rate(fr, key){ return fr.b.t > fr.a.t ? (fr.b[key] - fr.a[key]) / (fr.b.t - fr.a.t) : 0; }
+var A_CM2 = M.cubeFaceCm2(C.CUBE_CM), WET_CM2 = M.wetAreaCm2(C.CUBE_CM);
+function skinMmFromJ(J){ return 10 * (J / C.L0_J_PER_G) / C.ICE_RHO_G_CM3 / WET_CM2; }
+function newMmFromG(g){ return 10 * g / C.ICE_RHO_G_CM3 / A_CM2; }
+function restView(){                                     // before salting
+  return {saltLeftMm:0, topMovedMm:0, dipMm:0, newMm:0, skinMm:0, fbMm:fbMm(0), film:'water', filmC:C.START_C, topIceC:C.START_C, iso1:null, iso2:null,
+    heatTop:0, heatBath:0, run:false, stringUp:0, slide:0, pulling:false, t:null};
+}
+function viewAt(o, t){                                   // t = model seconds after salting
+  if (o.verdict === 'none') { var r = restView(); r.t = t; return r; }
+  var inS2 = o.dissolves && t >= o.tSaltGoneS, fr, a, b, f;
+  if (!inS2) {
+    fr = around(o.stage1, Math.min(t, o.dissolves ? o.tSaltGoneS : C.WAIT_S)); a = fr.a; b = fr.b; f = fr.f;
+    var dis = lerp(a.dissolvedG, b.dissolvedG, f), tm = lerp(a.topMovedMm, b.topMovedMm, f);
+    return {meltG:lerp(a.meltG, b.meltG, f), disG:dis, saltLeftMm:M.saltLayerMm(Math.max(0, o.saltG - dis)), topMovedMm:tm, dipMm:tm, newMm:0,
+      fbMm:lerp(a.freeboardMm, b.freeboardMm, f), skinMm:skinMmFromJ(lerp(a.bathJ, b.bathJ, f)),
+      film:'brine', filmC:-C.THETA_E, topIceC:lerp(a.topIceC, b.topIceC, f), iso1:lerpArr(a.iso1, b.iso1, f), iso2:lerpArr(a.iso2, b.iso2, f),
+      heatTop:rate(fr, 'heatTopJ'), heatBath:rate(fr, 'bathJ'), run:true, stringUp:0, slide:0, pulling:false, t:t,
+      heatJ:lerp(a.heatTopJ, b.heatTopJ, f), bathJ:lerp(a.bathJ, b.bathJ, f), coldJ:lerp(a.coldJ, b.coldJ, f), stage:1};
+  }
+  fr = around(o.stage2, t); a = fr.a; b = fr.b; f = fr.f;
+  var ng = lerp(a.newIceG, b.newIceG, f), tm2 = lerp(a.topMovedMm, b.topMovedMm, f);
+  return {saltLeftMm:0, topMovedMm:tm2, dipMm:o.end1.topMovedMm, newMm:newMmFromG(ng), newG:ng, fbMm:fbMm(tm2, 0),
+    skinMm:skinMmFromJ(lerp(a.bathJ, b.bathJ, f)), film:'water', filmC:C.START_C, topIceC:lerp(a.topIceC, b.topIceC, f),
+    iso1:lerpArr(a.iso1, b.iso1, f), iso2:lerpArr(a.iso2, b.iso2, f), heatTop:rate(fr, 'heatTopJ'), heatBath:rate(fr, 'bathJ'),
+    run:false, stringUp:0, slide:0, pulling:false, t:t, heatJ:o.end1.heatTopJ, bathJ:o.end1.bathJ, coldJ:o.end1.coldJ, stage:2,
+    bath2J:lerp(a.bathJ, b.bathJ, f) - o.end1.bathJ, coldNowJ:lerp(a.coldJ, b.coldJ, f)};
+}
+// The pull is only drawn when nothing froze the string in (no salt, or salt still there): the string lifts off and
+// the cube stays put. When new ice did form, the sim stops at the moment before the pull: whether the ice holds the
+// cube is grip strength, which the model doesn't have (a floating cube also rises about 1 mm for every 4.8 mN of pull,
+// so a taut string over an unmoving cube would be wrong too).
+function pulls(o){ return !o.dissolves; }
+function withPull(v, o, p){                              // p = 0..1 through the pull
+  v.pulling = p > 0 && p < 1; v.heatTop = 0; v.heatBath = 0; v.run = false;
+  var p1 = clamp(p / 0.45, 0, 1), p2 = clamp((p - 0.45) / 0.55, 0, 1);
+  v.stringUp = 70 * p1 + 40 * p2; v.slide = p2;
+  return v;
+}
+
+// Your slow pull once the string is frozen in (Nicolas, 2026-09-28). First the hands take up the slack (the string
+// lies loose on the water, so nothing pulls on the cube yet); then, the string being frozen to the top, the cube rises
+// exactly as far as the hands do. The pull it takes comes from the model (M.liftPull: weight minus buoyancy).
+function withLift(v, o, p){                              // p = 0..1 through the pull
+  v.pulling = p > 0 && p < 1; v.heatTop = 0; v.heatBath = 0; v.run = false;
+  var p1 = clamp(p / 0.3, 0, 1), p2 = clamp((p - 0.3) / 0.7, 0, 1);
+  v.stringUp = 70 * p1;
+  v.liftMm = p2 * M.liftRiseMm(v.topMovedMm);
+  v.lift = M.liftPull(v.topMovedMm, v.liftMm);
+  return v;
+}
+function liftStage(v){
+  if (!v.liftMm) return 'You pull both ends slowly: taking up the slack\u2026';
+  if (v.lift.underMm > 0) return 'Lifting: the string now carries about ' + M.gNum(v.lift.pullG) + ' g of the cube\u2019s ' + M.gNum(v.lift.massG) + ' g';
+  return 'Caught: the string carries the whole cube, about ' + M.gNum(v.lift.massG) + ' g';
+}
+
+// ---------- text ----------
+function T(id, s){ document.getElementById(id).textContent = s || ''; }
+function light(i){ return {step:i, tsp:C.STEPS_TSP[i], saltG:C.STEPS_TSP[i] * C.SALT_G_PER_TSP, text:C.STEP_TEXT[i], name:C.STEP_NAME[i]}; }
+function setOut(){
+  var o = light(idx);
+  T('saltOut', o.text);
+  T('saltHint', (o.name ? o.name + ', ' : '') + (o.saltG > 0 ? M.gText(o.saltG) + '. ' : '') + 'Salt that stays on this cube\u2019s top, round the string. Level teaspoons, none to 1/8 tsp (a floating cube this size can\u2019t carry more); each step doubles it.');
+}
+function showText(d){ T('head', d.head); T('detail', d.detail); T('edge', d.edge); T('cutoff', d.cutoff); T('stageHead', d.stage || d.head); }
+// The card splits the heat that left through the top three ways, the same numbers as the readout: cold still stored in
+// the ice, cold that went off with ice that chilled and then melted, and heat from bowl water freezing on.
+var heatMaxJ = 0;
+function heatMax(){                                      // the most any slider setting pulls out in the minute (the heaviest salt: its weight lowers the cube)
+  if (!heatMaxJ) heatMaxJ = Math.max(M.baseRun().end.heatTopJ, M.central(MAXI).s1.end.heatTopJ);
+  return heatMaxJ;
+}
+function heatCard(v){
+  var max = heatMax(), h = v ? (v.heatJ || 0) : 0, b = v ? (v.bathJ || 0) : 0, st = v ? Math.max(0, v.coldJ || 0) : 0, ca = Math.max(0, h - b - st);
+  T('heatMax', Math.round(max) + ' J');
+  var segs = [['segIce', 0, st], ['segCarry', st, ca], ['segBowl', st + ca, b]];
+  segs.forEach(function(s){ var e = document.getElementById(s[0]); e.style.left = (100 * s[1] / max) + '%'; e.style.width = (100 * s[2] / max) + '%'; e.style.display = s[2] > 0.5 ? 'block' : 'none'; });
+  T('heatTot', Math.round(h) + ' J');
+  var s2 = v && v.stage === 2;
+  var s = h > 0 ? ('Pale blue: ' + Math.round(st) + ' J of cold ' + (s2 ? 'stored in the ice when the salt ran out' : 'still stored in the ice (it got colder and is still ice)') + '. Striped: ' + Math.round(ca) +
+    ' J of cold that went off with the ice that melted (that ice had chilled first). Blue: ' + Math.round(b) + ' J from bowl water freezing onto the cube\u2019s sides and bottom.') : 'No melting, so no heat moved.';
+  // after the salt has gone, the stored cold is spent: on new ice on top, on bowl ice on the sides, and what's left
+  // (the three add up to the stored cold exactly; review 3, SHOULD 2)
+  if (s2) s += ' Since then: ' + Math.round(v.newG * C.L0_J_PER_G) + ' J froze up to ' + M.gText(v.newG) + ' of new ice on top, ' + Math.round(v.bath2J) +
+    ' J froze bowl water onto the sides, and about ' + Math.round(v.coldNowJ) + ' J of cold is left in the ice.';
+  T('heatNow', s);
+}
+function fpText(v){
+  if (!v || v.film === 'water') {
+    if (v && v.stage === 2) {
+      if (v.topIceC > -0.05) return 'The film now: fresh water (0% salt), which freezes at 0 \u00b0C. By the pull the top has warmed back to about 0 \u00b0C, so the freezing has all but stopped.';
+      return 'The film now: fresh water (0% salt), which freezes at 0 \u00b0C, on ice that is colder than that (the top \u00bd mm is at ' + M.degText(v.topIceC) + '). So it freezes onto the ice.';
+    }
+    return 'The film now: fresh water (0% salt), freezing point 0 \u00b0C, on ice at 0 \u00b0C. Nothing melts and nothing freezes.';
+  }
+  return 'The film now: ' + (Math.round(M.W_E * 1000) / 10) + '% salt, as salty as water gets next to ice. It freezes only at ' + M.degText(-C.THETA_E) + '. The model holds it right at that temperature, the coldest it could be (really a bit warmer), so the 0 \u00b0C ice it touches keeps melting while salt is left.';
+}
+
+// ---------- ready / run / finish ----------
+function drawReady(){
+  state = 'ready'; if (anim) cancelAnimationFrame(anim); anim = null;
+  setOut();
+  var v = restView(); draw(v); labelsFor(v); showGhost(light(idx).saltG);
+  var d = M.describeReady(light(idx)); d.stage = idx ? 'Ready: ' + C.STEP_TEXT[idx] + ' of salt' : 'Ready: no salt'; showText(d);
+  T('safety', ''); T('fpNow', fpText(v)); heatCard(null);
+  var b = document.getElementById('go'); b.textContent = 'Salt it'; b.disabled = false;
+  pullBtn.hidden = true;
+}
+var pullBtn = document.getElementById('pull');
+function busyText(o, v){
+  if (!v || v.t == null) return 'Dropping the salt\u2026';
+  if (o.verdict === 'none') return 'No salt: waiting\u2026';
+  if (v.stage === 2) return 'Salt all gone: new ice freezing on';
+  return 'Salt bites: the top is melting';
+}
+function endView(o){                                    // the last picture: after the pull, or the moment before it
+  var v = viewAt(o, C.WAIT_S); if (pulls(o)) return withPull(v, o, 1);
+  v.heatTop = 0; v.heatBath = 0; return v;               // (the flows have nearly died away by then; the arrows go so the string reads clearly)
+}
+function finish(o){
+  if (anim) cancelAnimationFrame(anim); anim = null;
+  state = 'done';
+  var v = endView(o); draw(v); labelsFor(v); set(drop, {display:'none'});
+  var d = M.describe(o);
+  d.stage = o.dissolves ? 'The string is frozen in. Now pull both ends slowly: press \u201cPull the string\u201d (or tap the picture).' :
+    o.verdict === 'none' ? 'Pulled: the string just lifts off' :
+    o.leftMm * S > 0.3 ? 'Pulled: salt is still there, so the string lifts off (middle case)' :
+    'Pulled: a trace of salt, too thin to see, is still there, so the string lifts off (middle case)';
+  showText(d); T('safety', SAFETY);
+  var vv = viewAt(o, C.WAIT_S); T('fpNow', fpText(vv)); heatCard(vv);
+  var b = document.getElementById('go'); b.textContent = 'Salt it again'; b.disabled = false;
+  // frozen in: wait for your pull (the old version had no pull here, and tapping the cube started a new salting)
+  if (o.dissolves) { state = 'frozen'; pullBtn.hidden = false; pullBtn.disabled = false; pullBtn.textContent = 'Pull the string'; }
+}
+function liftFrame(o, ms){                               // real ms since you started pulling
+  var v = withLift(viewAt(o, C.WAIT_S), o, clamp(ms / LIFT_MS, 0, 1)); draw(v); labelsFor(v);
+  T('stageHead', liftStage(v)); T('head', ms < LIFT_MS ? 'Pulling\u2026' : 'Caught: the cube came up with the string.');
+  return v;
+}
+function finishLift(o){
+  if (anim) cancelAnimationFrame(anim); anim = null;
+  state = 'done';
+  var v = liftFrame(o, LIFT_MS); v.pulling = false; draw(v); labelsFor(v);
+  var d = M.describe(o);
+  T('head', 'Caught: the cube came up with the string.'); T('detail', M.liftText(o, v.lift)); T('edge', d.detail); T('cutoff', d.cutoff);
+  T('safety', SAFETY);
+  pullBtn.disabled = true; pullBtn.textContent = 'Pulled';
+}
+function pull(){
+  if (state !== 'frozen' || !cur) return;
+  state = 'lifting'; pullBtn.disabled = true; pullBtn.textContent = 'Pulling\u2026';
+  var o = cur;
+  if (reduce) { finishLift(o); return; }
+  var t0 = null;
+  function step(now){
+    if (state !== 'lifting') return;
+    if (t0 === null) t0 = now;
+    liftFrame(o, now - t0);
+    if (now - t0 < LIFT_MS) anim = requestAnimationFrame(step); else finishLift(o);
+  }
+  anim = requestAnimationFrame(step);
+}
+var DUR_SIM = C.WAIT_S * SIMMS;
+function liveText(o, v, pulling){
+  if (pulling) return 'A minute is up. You pull both ends of the string slowly\u2026';
+  if (v.t == null) return C.STEP_TEXT[o.step] + ' of salt lands on the wet top of the cube, over the string.';
+  if (o.verdict === 'none') return 'No salt, so the film stays fresh water at 0 \u00b0C, the same as the ice. Nothing happens.';
+  if (v.stage === 1) return 't = ' + Math.round(v.t) + ' s. Ice melted so far: up to ' + M.gText(v.meltG) + '. Salt dissolved: ' + M.gText(v.disG) + ' of ' + M.gText(o.saltG).replace('about ', '') +
+    '. The film is as salty as it gets, at ' + M.degText(-C.THETA_E) + ' at the coldest, and the top of the ice has cooled to ' + M.degText(v.topIceC) + '.';
+  return 't = ' + Math.round(v.t) + ' s. The salt was all gone after ' + M.secText(o.tSaltGoneS) + '. Fresh water is freezing onto the chilled top: up to ' + M.gText(v.newG) + ' of new ice so far.';
+}
+function totalMs(o){ return (o.saltG > 0 ? SALT_MS : 0) + DUR_SIM + (pulls(o) ? PULL_MS : 0); }
+function frame(o, ms){                                   // real ms since pressing Salt it
+  var v, s0 = o.saltG > 0 ? SALT_MS : 0, pulling = ms >= s0 + DUR_SIM && pulls(o);
+  if (ms < s0 - SETTLE_MS) {                            // the salt falls; the cube still floats bare
+    v = restView(); draw(v); labelsFor(v);
+    var top = WY - fbMm(0) * S, f = ms / (SALT_MS - SETTLE_MS);
+    showGhost(o.saltG, lerp(top - 60, top, f * f));
+  } else if (ms < s0) {                                 // landed: the cube eases down to the model's loaded waterline (its first frame)
+    set(drop, {display:'none'});
+    var p = (ms - (s0 - SETTLE_MS)) / SETTLE_MS, e = 1 - (1 - p) * (1 - p);
+    v = restView(); v.fbMm = lerp(fbMm(0), o.stage1[0].freeboardMm, e); v.saltLeftMm = M.saltLayerMm(o.saltG);
+    draw(v); labelsFor(v);
+  } else if (!pulling) {
+    set(drop, {display:'none'});
+    v = viewAt(o, clamp((ms - s0) / SIMMS, 0, C.WAIT_S)); draw(v); labelsFor(v);
+  } else {
+    set(drop, {display:'none'});
+    var p = clamp((ms - s0 - DUR_SIM) / PULL_MS, 0, 1);
+    v = withPull(viewAt(o, C.WAIT_S), o, p); draw(v); labelsFor(v);
+  }
+  T('head', busyText(o, v)); T('stageHead', pulling ? 'You pull both ends slowly\u2026' : busyText(o, v));
+  T('detail', liveText(o, v, pulling)); T('edge', ''); T('cutoff', ''); T('safety', '');
+  T('fpNow', fpText(v)); heatCard(v);
+  return v;
+}
+function run(){
+  if (state === 'running' || state === 'lifting') return;
+  drawReady();
+  state = 'running';
+  var b = document.getElementById('go'); b.textContent = 'Working it out\u2026'; b.disabled = true;
+  T('head', 'Working it out\u2026'); T('detail', ''); T('edge', ''); T('cutoff', ''); T('safety', '');
+  setTimeout(function(){
+    cur = stepObj(idx); drawn.refRate = M.baseRun().end.heatTopJ / C.WAIT_S;
+    b.textContent = 'Watching\u2026';
+    if (reduce) { finish(cur); return; }
+    var t0 = null, o = cur, total = totalMs(o), skip = 0;
+    if (o.verdict === 'none') { skip = DUR_SIM; total = PULL_MS; }  // no salt: nothing happens in the minute; go straight to the pull
+    function step(now){
+      if (state !== 'running') return;
+      if (t0 === null) t0 = now;
+      frame(o, now - t0 + skip);
+      if (now - t0 < total) anim = requestAnimationFrame(step); else finish(o);
+    }
+    anim = requestAnimationFrame(step);
+  }, 30);
+}
+function changed(){ if (anim) cancelAnimationFrame(anim); anim = null; idx = +saltIn.value; drawReady(); }
+saltIn.addEventListener('input', changed);
+Array.prototype.forEach.call(document.querySelectorAll('.step'), function(b){
+  b.addEventListener('click', function(){ saltIn.value = clamp(+saltIn.value + (+b.getAttribute('data-d')), 0, MAXI); changed(); });
+});
+document.getElementById('go').addEventListener('click', run);
+pullBtn.addEventListener('click', pull);
+svg.addEventListener('click', function(){ if (state === 'frozen') pull(); else run(); });   // once frozen in, a tap pulls
+
+// ---------- "Why?" numbers come from the model too; the static text is only a fallback and is checked against it ----------
+function fillWhy(){
+  var b = M.baseRun(), band = M.cutoffBand(), wait = M.cutoffVsWait(), best = null, i;
+  for (i = 1; i <= MAXI; i++) { var o = stepObj(i); if (o.dissolves && (!best || o.newIceG > best.newIceG)) best = o; }
+  var tiny = stepObj(1), g = M.gNum, A = M.cubeFaceCm2(C.CUBE_CM);
+  var r1 = function(x){ return (Math.round(x * 10) / 10).toFixed(1); }, r2 = function(x){ return (Math.round(x * 100) / 100).toFixed(2); }, r0 = function(x){ return String(Math.round(x)); };
+  var eut = M.degText(-C.THETA_E).replace(' \u00b0C', '');
+  var cpE = M.brineCp(M.W_E), brineCold = (1 + M.R_E) * cpE * C.THETA_E, solJ = M.R_E * C.DH_SOL_J_PER_MOL / C.M_NACL;
+  var tsp = function(x){ return M.tspText(x / C.SALT_G_PER_TSP); };
+  var vals = {
+    meltMin:r1(b.meltG), meltMin2:r1(b.meltG), bandLow:g(band.low), bandLow2:g(band.low), bandHigh:g(band.high), bandHigh2:g(band.high),
+    bandLowTsp:tsp(band.low), bandHighTsp:tsp(band.high), bandMid:g(band.mid), bandWet:g(band.wet),
+    wE:r1(M.W_E * 100), wE2:r1(M.W_E * 100), eut:eut, eut2:eut, eut3:eut,
+    L0:r0(C.L0_J_PER_G), perG:r0(M.perGramJ(0)), brineCold:r0(brineCold), solJ:r0(solJ), k:r2(C.ICE_K), coldDepth:r1(M.coldDepthMm(C.WAIT_S)),
+    bathPct:r0(100 * b.end.bathJ / b.end.heatTopJ), heatTop:String(Math.round(b.end.heatTopJ / 10) * 10),
+    share30:r0(100 * wait.share[30]), share120:r0(100 * wait.share[120]),
+    dipMax:r1(b.end.topMovedMm), rE:r2(M.R_E),
+    fb:r2(M.freeboardMm(C.CUBE_CM)), fb2:r2(M.freeboardMm(C.CUBE_CM)),
+    w30:g(wait[30]), w60:g(wait[60]), w60b:g(wait[60]), w120:g(wait[120]),
+    mmPerG:r1(10 / (C.WATER_RHO_G_CM3 * A)), reserve:r2(M.reserveG()), maxG:r2(C.STEPS_TSP[MAXI] * C.SALT_G_PER_TSP),
+    perCm2Low:g(band.low / A), perCm2High:g(band.high / A),
+    bestTsp:best.text, bestG:g(best.newIceG), bestMm:g(best.newIceMm), bestPct:M.pct(best.stringShare),
+    tinyTsp:tiny.text, tinyT:M.secText(tiny.tSaltGoneS), tinyCold:r0(tiny.cold1J), minuteCold:r0(b.end.coldJ), tinyG:g(tiny.newIceG), tinyMm:g(tiny.newIceMm),
+    cubeCm:r2(C.CUBE_CM), cubeG:r1(C.ICE_RHO_G_CM3 * Math.pow(C.CUBE_CM, 3)), iso1:r0(b.end.iso1[0])
+  };
+  whyMismatch = [];
+  Array.prototype.forEach.call(document.querySelectorAll('[data-n]'), function(e){
+    var k = e.getAttribute('data-n'), v = vals[k];
+    if (v === undefined) { whyMismatch.push(k + ': no value'); return; }
+    if (e.textContent !== v) whyMismatch.push(k + ': text ' + e.textContent + ' vs model ' + v);
+    e.textContent = v;
+  });
+  whyDone = true;
+}
+
+// ---------- test hooks (used by the screenshot script; harmless on the page) ----------
+window.__sim = {
+  set: function(i){ saltIn.value = i; changed(); },
+  finishNow: function(){ if (anim) cancelAnimationFrame(anim); anim = null; cur = stepObj(idx); drawn.refRate = M.baseRun().end.heatTopJ / C.WAIT_S; finish(cur); },
+  at: function(ms){ if (anim) cancelAnimationFrame(anim); anim = null; drawReady(); cur = stepObj(idx); drawn.refRate = M.baseRun().end.heatTopJ / C.WAIT_S; state = 'running'; return frame(cur, ms); },
+  times: {salt: SALT_MS, settle: SETTLE_MS, sim: DUR_SIM, pull: PULL_MS, msPerSimS: SIMMS, lift: LIFT_MS},
+  liftAt: function(ms){ if (anim) cancelAnimationFrame(anim); anim = null; if (state !== 'frozen' && state !== 'lifting') return null; state = 'lifting'; pullBtn.disabled = true; return liftFrame(cur, ms); },
+  finishLift: function(){ if (state === 'frozen' || state === 'lifting') finishLift(cur); },
+  state: function(){ return state; }, model: function(){ return cur; }, whyMismatch: function(){ return whyMismatch; }, ready: function(){ return whyDone; },
+  scale: {S: S, Z: Z, TPX: TPX, TY0: TY0, WY: WY, ZX: ZX, ZY: ZY, ZW: ZW, ZH: ZH},
+  shapes: function(){
+    var n = function(e, a){ return +e.getAttribute(a); }, on = function(e){ return e.getAttribute('display') !== 'none'; };
+    return {cubeH: n(cube, 'height'), newIceH: on(newIce) ? n(newIce, 'height') : 0, saltH: on(salt) ? n(salt, 'height') : 0, saltY: on(salt) ? n(salt, 'y') : null,
+      zNewH: on(zNew) ? n(zNew, 'height') : 0, zSaltH: on(zSalt) ? n(zSalt, 'height') : 0, zSaltY: on(zSalt) ? n(zSalt, 'y') : null, zStrR: n(zString, 'r'), zStrY: n(zString, 'cy'),
+      oldTopY: on(oldTop) ? n(oldTop, 'y1') : null, cubeY: n(cube, 'y'), zoomLabel: labZoom.getBBox(), stringY: drawn.sy, stringL: drawn.L, stringR: drawn.R, zLab: zLab.textContent,
+      stage: document.getElementById('stageHead').textContent, heatNow: document.getElementById('heatNow').textContent, bigTransform: big.getAttribute('transform'), twine: twine.getAttribute('d'),
+      tFillY: n(tFill, 'y'), dotCx: n(fpDot, 'cx'), dotCy: n(fpDot, 'cy'), tRead: tRead.textContent + ' ' + tReadB.textContent,
+      heatTop: hTop.map(on), heatSide: hSide.map(on), run: on(runL), pulling: pullArrows.map(on), v: drawn.v,
+      liftPx: drawn.liftPx, camY: drawn.camY, endY: drawn.endY, camTransform: cam.getAttribute('transform'), pullBtn: {hidden: pullBtn.hidden, disabled: pullBtn.disabled, text: pullBtn.textContent}};
+  }
+};
+drawReady();
+// Warm the model's cached runs in small pieces after the page shows, so the page stays responsive (on a slow phone the
+// whole set takes several seconds), then fill in the Why? numbers.
+(function(){
+  var jobs = [function(){ M.cutoffFor('double'); }, function(){ M.cutoffFor('dry'); }, function(){ M.cutoffFor('wet'); }, function(){ M.cutoffVsWait(); }];
+  for (var i = 1; i <= MAXI; i++) (function(i){ jobs.push(function(){ M.central(i); }); })(i);
+  for (var j = 1; j <= MAXI; j++) (function(j){ jobs.push(function(){ stepObj(j); }); })(j);
+  jobs.push(fillWhy);
+  (function next(){ var f = jobs.shift(); if (!f) return; f(); setTimeout(next, 0); })();
+})();
+})();
+</script>
+<!-- little-lab-web: embed height (added by scripts/sync-sims.mjs; tells the embedding page how tall the sim is) -->
+<script>
+(function () {
+  if (window.parent === window) return;
+  var last = 0;
+  function send() {
+    var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+    if (h > 0 && h !== last) {
+      last = h;
+      window.parent.postMessage({ type: "little-lab-sim-height", height: h }, "*");
+    }
+  }
+  if (window.ResizeObserver) new ResizeObserver(send).observe(document.documentElement);
+  window.addEventListener("load", send);
+  window.addEventListener("resize", send);
+  send();
+})();
+</script>
+</body>
+</html>

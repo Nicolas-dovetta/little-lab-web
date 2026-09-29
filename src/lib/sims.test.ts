@@ -6,10 +6,22 @@ import { SIM_HEIGHT_MESSAGE, sanitizeSimHeight, simForExperiment, simSlugs } fro
 
 const publicDir = join(process.cwd(), "public");
 
-test("only the volcano has a sim", () => {
-  assert.deepEqual(simSlugs(), ["baking-soda-volcano"]);
+test("volcano, rocket, salt ice and density have sims; the others don't", () => {
+  assert.deepEqual(simSlugs(), ["baking-soda-volcano", "water-bottle-rocket", "salt-ice-fishing", "density-layers"]);
   assert.equal(simForExperiment("cornstarch-thickening-fluid"), null);
-  assert.equal(simForExperiment("baking-soda-volcano")?.src, "/sims/baking-soda-volcano/index.html");
+  assert.equal(simForExperiment("cinnamon-soap-rush"), null);
+  for (const slug of simSlugs()) assert.equal(simForExperiment(slug)?.src, `/sims/${slug}/index.html`);
+});
+
+test("each sim hides its own heading inside the embed and has no retired sections", () => {
+  for (const slug of simSlugs()) {
+    const html = readFileSync(join(publicDir, simForExperiment(slug)!.src), "utf8");
+    assert.match(html, /window\.self !== window\.top/, `${slug}: no embedded check`);
+    assert.match(html, /\.embedded h1\{display:none\}/, `${slug}: heading not hidden when embedded`);
+    assert.doesNotMatch(html, /<title>[^<]*prototype/i, `${slug}: title says prototype`);
+    assert.doesNotMatch(html, /does not prove|stretch it/i, `${slug}: retired section wording`);
+    assert.doesNotMatch(html, /SAY THIS|\bTRAP\b|\bTrap\b/, `${slug}: retired section wording`);
+  }
 });
 
 test("each sim file exists, is noindex, self-contained and posts its height", () => {
