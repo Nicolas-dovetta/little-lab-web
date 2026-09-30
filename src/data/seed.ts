@@ -53,6 +53,8 @@ export type KnowThis = {
 };
 
 export type ExperimentProduct = {
+  /** Kitchen material this listing stands in for. Shown beside the Amazon link. */
+  material?: string;
   name: string;
   asin?: string;
   amazonUrl?: string;
@@ -126,11 +128,13 @@ export const experimentSeeds: ExperimentSeed[] = [
     ],
     products: [
       {
+        material: "2–4 clear glasses or jars",
         name: "Libbey City Tumbler glasses (14.3 oz, set of 8)",
         asin: "B07BMFJ4KB",
         note: "Tall clear vessel. You only need a few — same glasses as the volcano.",
       },
       {
+        material: "A tray",
         name: "Nordic Ware Baker's Half Sheet",
         asin: "B00SRSP9VM",
         note: "Rimmed sheet under the glasses. Any tray with sides works.",
@@ -250,16 +254,19 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     ],
     products: [
       {
+        material: "Maïzena (cornstarch)",
         name: "Fleischmann's Canada Corn Starch, 1kg/2.2 lbs",
         asin: "B0746DFXN8",
         note: "Pure cornstarch, ~1 kg. Spoon until firm poke / slow drip. (Argo 35 oz B0045DMLXM had no offers.)",
       },
       {
+        material: "Wide bowl or tray (stainless works)",
         name: "Nordic Ware Baker's Half Sheet",
         asin: "B00SRSP9VM",
         note: "Rimmed sheet under the bowl. Any tray with sides works.",
       },
       {
+        material: "Optional: food coloring",
         name: "365 Plant-Based Food Coloring (4 bottles)",
         asin: "B07G2Z6CLG",
         note: "Optional color. Same pack as the volcano.",
@@ -460,6 +467,7 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     ],
     products: [
       {
+        material: "Bare copper craft wire",
         name: "Bare copper craft wire",
         asin: "B000H5OL30",
         note: "Thin bare copper for the pressure-melt track.",
@@ -578,31 +586,37 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     ],
     products: [
       {
+        material: "Baking soda",
         name: "Arm & Hammer Baking Soda, 1 lb",
         asin: "B000PYF8VM",
         note: "~3 Tbsp per round (eyeball).",
       },
       {
+        material: "White vinegar",
         name: "Heinz Distilled White Vinegar, 1 gallon",
         asin: "B000RO08L0",
         note: "Plain white is easiest to clean (no sugar/dye). Any white vinegar works.",
       },
       {
+        material: "Food coloring",
         name: "365 Plant-Based Food Coloring (4 bottles)",
         asin: "B07G2Z6CLG",
         note: "Optional color for the foam.",
       },
       {
+        material: "Funnel",
         name: "Stainless steel kitchen funnel set",
         asin: "B0DDKL857F",
         note: "To pour into a bottle opening — not as the volcano itself.",
       },
       {
+        material: "Tall clear glass",
         name: "Libbey City Tumbler glasses (14.3 oz, set of 8)",
         asin: "B07BMFJ4KB",
         note: "Tall clear vessel. You only need one.",
       },
       {
+        material: "Tray",
         name: "Nordic Ware Baker's Half Sheet",
         asin: "B00SRSP9VM",
         note: "Rimmed sheet under the volcano. Any tray with sides works.",
@@ -723,16 +737,19 @@ Then he added more and more balsamic until I decided: if I wanted dressing for m
     ],
     products: [
       {
+        material: "Bike pump with a pressure gauge (or dedicated bottle-rocket pump)",
         name: "Schwinn Air Center Plus Floor Bike Pump with gauge",
         asin: "B072J8D6GR",
         note: "Floor pump with a gauge. Garage first if you already have one.",
       },
       {
+        material: "Cork / launcher that seals the bottle neck under pressure",
         name: "Natural Soft Wood Corks 25-pack",
         asin: "B0FH5JSJ8X",
         note: "Must seal the neck under pressure (~40–60 psi).",
       },
       {
+        material: "Eye protection for the person pumping",
         name: "Eye protection for the person pumping",
         note: "Adult pumps.",
       },

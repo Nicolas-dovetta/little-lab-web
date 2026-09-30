@@ -5,6 +5,7 @@ import { ExperimentViewTracker } from "@/components/ExperimentViewTracker";
 import { JsonLd } from "@/components/JsonLd";
 import { MechanismWalkthrough } from "@/components/MechanismWalkthrough";
 import { SimTryIt } from "@/components/SimTryIt";
+import { GrabBagProducts } from "@/components/GrabBagProducts";
 import { VolcanoExperimentView } from "@/components/VolcanoExperimentView";
 import type {
   Experiment,
@@ -12,7 +13,8 @@ import type {
   KnowThis,
   RunThis,
 } from "@/db/schema";
-import { amazonPackCartHref, amazonProductHref } from "@/lib/amazon";
+import { amazonPackCartHref } from "@/lib/amazon";
+import { materialsWithoutBuyLink } from "@/lib/grab-bag";
 import {
   ageLabel,
   difficultyLabel,
@@ -136,8 +138,8 @@ function ExperimentTitleBand({
 }
 
 function LegacyExperimentBody({ experiment: e }: { experiment: Experiment }) {
-  const materials = (e.materials as string[]) || [];
   const products = (e.products as ExperimentProduct[]) || [];
+  const materials = materialsWithoutBuyLink((e.materials as string[]) || [], products);
   const kidCanDo = (e.kidCanDo as string[]) || [];
   const adultRole = (e.adultRole as string[]) || [];
   const steps = (e.steps as { title: string; detail: string }[]) || [];
@@ -412,28 +414,7 @@ function GrabBag({ products }: { products: ExperimentProduct[] }) {
           </p>
         </div>
       )}
-      <ul className="mt-3 space-y-3">
-        {products.map((product) => {
-          const href = amazonProductHref(product);
-          return (
-            <li key={`${product.name}-${product.asin ?? product.amazonUrl ?? ""}`}>
-              {href ? (
-                <a
-                  href={href}
-                  target="_blank"
-                  rel="nofollow sponsored noopener noreferrer"
-                  className="font-semibold text-sage-800 underline-offset-2 hover:underline"
-                >
-                  {product.name}
-                </a>
-              ) : (
-                <span className="font-semibold text-ink">{product.name}</span>
-              )}
-              {product.note && <p className="mt-0.5 text-sm text-ink-muted">{product.note}</p>}
-            </li>
-          );
-        })}
-      </ul>
+      <GrabBagProducts products={products} className="mt-3" />
     </Section>
   );
 }

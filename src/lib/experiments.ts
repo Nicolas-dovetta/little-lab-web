@@ -2,10 +2,18 @@ import { asc, eq } from "drizzle-orm";
 import { getDb } from "@/db";
 import { experiments, faqEntries, type Experiment, type FaqEntry, type RunThis } from "@/db/schema";
 import { experimentSeeds, faqSeeds, type ExperimentSeed, type FaqSeed } from "@/data/seed";
+import { attachSeedMaterials } from "@/lib/grab-bag";
+
+function withGrabBagMaterials(e: Experiment): Experiment {
+  return {
+    ...e,
+    products: attachSeedMaterials(e.id, e.products ?? []),
+  };
+}
 
 function seedToExperiment(e: ExperimentSeed): Experiment {
   const now = new Date();
-  return withoutDuplicateGalleryPhotos({
+  return withGrabBagMaterials(withoutDuplicateGalleryPhotos({
     id: e.id,
     title: e.title,
     status: e.status,
@@ -37,7 +45,7 @@ function seedToExperiment(e: ExperimentSeed): Experiment {
     plannedFor: e.plannedFor ?? null,
     createdAt: now,
     updatedAt: now,
-  });
+  }));
 }
 
 function seedToFaq(f: FaqSeed, idx: number): FaqEntry {
@@ -269,7 +277,10 @@ export async function listExperiments(options?: { sort?: string | null }): Promi
     const db = getDb();
     const rows = await db.select().from(experiments).orderBy(asc(experiments.title));
     if (rows.length > 0) {
-      return sortExperiments(rows.map(withoutDuplicateGalleryPhotos), sort);
+      return sortExperiments(
+        rows.map((row) => withGrabBagMaterials(withoutDuplicateGalleryPhotos(row))),
+        sort,
+      );
     }
   } catch {
     // fall through to in-code seed
@@ -281,7 +292,7 @@ export async function getExperiment(id: string): Promise<Experiment | null> {
   try {
     const db = getDb();
     const rows = await db.select().from(experiments).where(eq(experiments.id, id)).limit(1);
-    if (rows[0]) return withoutDuplicateGalleryPhotos(rows[0]);
+    if (rows[0]) return withGrabBagMaterials(withoutDuplicateGalleryPhotos(rows[0]));
   } catch {
     // fall through
   }

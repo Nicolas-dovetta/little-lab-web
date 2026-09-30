@@ -219,7 +219,18 @@ test("water-bottle-rocket is planned for 2026-10-03 with little-lab materials", 
   assert.ok(rocket.materials.some((m) => /Bike pump/i.test(m)));
   assert.match(rocket.notesFromHome, /I will fill this after Saturday/);
   assert.equal(rocket.products?.length, 3);
-  assert.ok(rocket.products?.every((p) => !p.asin));
+  assert.equal(
+    rocket.products?.find((p) => p.name.startsWith("Schwinn"))?.asin,
+    "B072J8D6GR",
+  );
+  assert.equal(
+    rocket.products?.find((p) => p.name.startsWith("Natural Soft"))?.asin,
+    "B0FH5JSJ8X",
+  );
+  assert.equal(
+    rocket.products?.find((p) => /eye protection/i.test(p.name))?.asin,
+    undefined,
+  );
 });
 
 test("main-shaped volcano gallery (same three paths as tracks) sanitizes to empty", () => {
