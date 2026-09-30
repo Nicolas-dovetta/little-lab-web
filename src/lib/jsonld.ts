@@ -9,7 +9,7 @@ export type HowToSource = {
   learningGoal: string;
   heroImageUrl?: string | null;
   materials?: readonly string[] | null;
-  products?: readonly Pick<ExperimentProduct, "name">[] | null;
+  products?: readonly Pick<ExperimentProduct, "name" | "material">[] | null;
   steps?: readonly { title: string; detail: string }[] | null;
   runThis?: RunThis | null;
 };
@@ -69,7 +69,10 @@ function supplyNames(experiment: HowToSource): string[] {
   };
 
   for (const material of experiment.materials ?? []) push(material);
-  for (const product of experiment.products ?? []) push(product.name);
+  for (const product of experiment.products ?? []) {
+    push(product.material);
+    push(product.name);
+  }
   return names;
 }
 

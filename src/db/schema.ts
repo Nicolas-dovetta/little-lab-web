@@ -68,6 +68,8 @@ export type KnowThis = {
 };
 
 export type ExperimentProduct = {
+  /** Kitchen material this listing stands in for. Shown beside the Amazon link. */
+  material?: string;
   name: string;
   asin?: string;
   amazonUrl?: string;

@@ -1,14 +1,16 @@
 import Image from "next/image";
 import type { Experiment, ExperimentProduct, KnowThis, RunThis } from "@/db/schema";
-import { amazonPackCartHref, amazonProductHref } from "@/lib/amazon";
+import { amazonPackCartHref } from "@/lib/amazon";
 import { kidVerdictProse, uniqueMoveSteps } from "@/lib/experiments";
+import { materialsWithoutBuyLink } from "@/lib/grab-bag";
 import { simForExperiment } from "@/lib/sims";
+import { GrabBagProducts } from "./GrabBagProducts";
 import { MechanismWalkthrough } from "./MechanismWalkthrough";
 import { SimTryIt } from "./SimTryIt";
 
 export function VolcanoExperimentView({ experiment: e }: { experiment: Experiment }) {
-  const materials = (e.materials as string[]) || [];
   const products = (e.products as ExperimentProduct[]) || [];
+  const materials = materialsWithoutBuyLink((e.materials as string[]) || [], products);
   const steps = (e.steps as { title: string; detail: string }[]) || [];
   const runThis = (e.runThis as RunThis) || {};
   const knowThis = (e.knowThis as KnowThis) || { mechanism: "" };
@@ -47,30 +49,7 @@ export function VolcanoExperimentView({ experiment: e }: { experiment: Experimen
             </p>
           </div>
         )}
-        {products.length > 0 && (
-          <ul className="mt-4 space-y-3">
-            {products.map((product) => {
-              const href = amazonProductHref(product);
-              return (
-                <li key={`${product.name}-${product.asin ?? product.amazonUrl ?? ""}`}>
-                  {href ? (
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="nofollow sponsored noopener noreferrer"
-                      className="font-semibold text-sage-800 underline-offset-2 hover:underline"
-                    >
-                      {product.name}
-                    </a>
-                  ) : (
-                    <span className="font-semibold text-ink">{product.name}</span>
-                  )}
-                  {product.note && <p className="mt-0.5 text-sm text-ink-muted">{product.note}</p>}
-                </li>
-              );
-            })}
-          </ul>
-        )}
+        <GrabBagProducts products={products} />
       </section>
 
       {moves.length > 0 && (
