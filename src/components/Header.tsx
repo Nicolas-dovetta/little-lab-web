@@ -5,6 +5,7 @@ const links = [
   { href: "/experiments", label: "Experiments" },
   { href: "/plan", label: "Plan" },
   { href: "/simulators", label: "Simulators" },
+  { href: "/vote", label: "Vote" },
   { href: "/about", label: "About" },
 ];
 
@@ -22,12 +23,12 @@ export function Header() {
             priority
           />
         </Link>
-        <nav className="flex items-center justify-center gap-1">
+        <nav className="flex max-w-full flex-wrap items-center justify-center gap-x-0.5 gap-y-1 sm:gap-1">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className="rounded-full px-3 py-1.5 text-sm font-medium text-ink-muted transition hover:bg-sage-100 hover:text-ink"
+              className="rounded-full px-2.5 py-1.5 text-sm font-medium text-ink-muted transition hover:bg-sage-100 hover:text-ink sm:px-3"
             >
               {l.label}
             </Link>

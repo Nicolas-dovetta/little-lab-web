@@ -14,6 +14,7 @@ Important notes:
 - [Experiments index](https://www.weekend-experiments.app/experiments): All public experiments
 - [About](https://www.weekend-experiments.app/about): Who runs this and why
 - [Plan](https://www.weekend-experiments.app/plan): Learning-path / curriculum sketch
+- [Vote](https://www.weekend-experiments.app/vote): Parents pick the experiment we build next weekend
 
 ## Experiments
 
