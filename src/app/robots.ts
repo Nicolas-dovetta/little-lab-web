@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE_ORIGIN } from "@/lib/site";
 
-const allowAll = { allow: "/", disallow: ["/api/"] as string[] };
+const allowAll = { allow: "/", disallow: ["/api/", "/lab/"] as string[] };
 
 export default function robots(): MetadataRoute.Robots {
   return {
