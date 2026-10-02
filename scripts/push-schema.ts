@@ -56,6 +56,33 @@ async function main() {
   await sql`ALTER TABLE experiments ADD COLUMN IF NOT EXISTS ran_on date`;
   await sql`ALTER TABLE experiments ADD COLUMN IF NOT EXISTS planned_for date`;
 
+  await sql`CREATE TABLE IF NOT EXISTS poll_weeks (
+    id text PRIMARY KEY,
+    title text NOT NULL,
+    closes_at timestamptz NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now()
+  )`;
+
+  await sql`CREATE TABLE IF NOT EXISTS poll_options (
+    id text PRIMARY KEY,
+    week_id text NOT NULL REFERENCES poll_weeks (id),
+    title text NOT NULL,
+    challenge text NOT NULL,
+    blurb text NOT NULL,
+    sort_order integer NOT NULL DEFAULT 0,
+    vote_count integer NOT NULL DEFAULT 0,
+    CONSTRAINT poll_options_vote_count_nonneg CHECK (vote_count >= 0)
+  )`;
+
+  await sql`CREATE TABLE IF NOT EXISTS poll_ballots (
+    id serial PRIMARY KEY,
+    week_id text NOT NULL REFERENCES poll_weeks (id),
+    option_id text NOT NULL REFERENCES poll_options (id),
+    voter_token text NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    CONSTRAINT poll_ballots_week_voter UNIQUE (week_id, voter_token)
+  )`;
+
   console.log("Schema push OK (CREATE TABLE IF NOT EXISTS).");
 }
 
