@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export const metadata = canonicalMetadata("/vote", {
   title: "Vote",
   description:
-    "Pick the kitchen experiment we build next weekend. Five challenges, one vote, closes Saturday night.",
+    "Pick the kitchen experiment we build next weekend. Six challenges, one vote, closes Saturday night.",
 });
 
 export default async function VotePage() {

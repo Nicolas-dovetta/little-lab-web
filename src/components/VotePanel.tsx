@@ -48,12 +48,6 @@ function subscribeToStorage(onChange: () => void) {
   return () => window.removeEventListener("storage", onChange);
 }
 
-function cardPlacement(index: number, count: number): string {
-  if (count === 5 && index === 3) return "lg:col-span-2 lg:col-start-2";
-  if (count === 5 && index === 4) return "lg:col-span-2 lg:col-start-4";
-  return "lg:col-span-2";
-}
-
 export function VotePanel({ initial }: { initial: VoteSnapshot }) {
   const [poll, setPoll] = useState(initial);
   const [pendingId, setPendingId] = useState<string | null>(null);
@@ -123,7 +117,7 @@ export function VotePanel({ initial }: { initial: VoteSnapshot }) {
             Pick what we build next
           </h1>
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-ink-muted">
-            Five kitchen challenges for a toddler or preschooler and a parent. The winner is what we
+            Six kitchen challenges for a toddler or preschooler and a parent. The winner is what we
             build next weekend.
           </p>
           <p id="vote-deadline" className="mt-4 text-sm font-semibold text-sage-800">
@@ -187,7 +181,7 @@ export function VotePanel({ initial }: { initial: VoteSnapshot }) {
         )}
 
         <ul
-          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6"
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
           aria-describedby="vote-deadline"
           aria-label="This week's challenges"
         >
@@ -200,7 +194,7 @@ export function VotePanel({ initial }: { initial: VoteSnapshot }) {
             const busy = pendingId === option.id;
 
             return (
-              <li key={option.id} className={cardPlacement(index, poll.options.length)}>
+              <li key={option.id}>
                 <article
                   className={`flex h-full flex-col rounded-3xl border bg-white p-5 shadow-sm transition ${
                     winner

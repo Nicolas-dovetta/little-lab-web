@@ -3,12 +3,14 @@
 -- Open while now() <= closes_at. Idempotent: safe to re-run.
 --
 -- Starter votes use mulberry32 seed 20261003 (each option starts at 2,
--- then 20 more are scattered). Totals sum to 30:
---   cartesian-diver      6
+-- then the rest are scattered across six options). Totals sum to 30:
+--   cartesian-diver      4
 --   instant-ice          4
---   milk-fireworks       8
---   balloon-hovercraft   7
+--   milk-fireworks       4
+--   balloon-hovercraft   9
 --   walking-water        5
+--   candle               4
+-- Re-running replaces seed-* ballots only. Real voter tokens stay.
 
 CREATE TABLE IF NOT EXISTS poll_weeks (
   id text PRIMARY KEY,
@@ -88,6 +90,14 @@ VALUES
     'Make water climb between cups',
     'Paper towels bridge colored cups; water walks and mixes into a rainbow. Capillary action.',
     5
+  ),
+  (
+    'candle',
+    '2026-10-10',
+    'Candle in a glass',
+    'Make a candle pull water up',
+    'Light a candle under a jar over a dish of water; when the flame goes out, water climbs. Air, pressure, and cooling — the classic kids demo.',
+    6
   )
 ON CONFLICT (id) DO UPDATE
 SET week_id = EXCLUDED.week_id,
@@ -96,38 +106,42 @@ SET week_id = EXCLUDED.week_id,
     blurb = EXCLUDED.blurb,
     sort_order = EXCLUDED.sort_order;
 
+DELETE FROM poll_ballots
+WHERE week_id = '2026-10-10'
+  AND voter_token LIKE 'seed-2026-10-10-%';
+
 INSERT INTO poll_ballots (week_id, option_id, voter_token)
 VALUES
   ('2026-10-10', 'cartesian-diver', 'seed-2026-10-10-01'),
   ('2026-10-10', 'cartesian-diver', 'seed-2026-10-10-02'),
   ('2026-10-10', 'cartesian-diver', 'seed-2026-10-10-03'),
   ('2026-10-10', 'cartesian-diver', 'seed-2026-10-10-04'),
-  ('2026-10-10', 'cartesian-diver', 'seed-2026-10-10-05'),
-  ('2026-10-10', 'cartesian-diver', 'seed-2026-10-10-06'),
+  ('2026-10-10', 'instant-ice', 'seed-2026-10-10-05'),
+  ('2026-10-10', 'instant-ice', 'seed-2026-10-10-06'),
   ('2026-10-10', 'instant-ice', 'seed-2026-10-10-07'),
   ('2026-10-10', 'instant-ice', 'seed-2026-10-10-08'),
-  ('2026-10-10', 'instant-ice', 'seed-2026-10-10-09'),
-  ('2026-10-10', 'instant-ice', 'seed-2026-10-10-10'),
+  ('2026-10-10', 'milk-fireworks', 'seed-2026-10-10-09'),
+  ('2026-10-10', 'milk-fireworks', 'seed-2026-10-10-10'),
   ('2026-10-10', 'milk-fireworks', 'seed-2026-10-10-11'),
   ('2026-10-10', 'milk-fireworks', 'seed-2026-10-10-12'),
-  ('2026-10-10', 'milk-fireworks', 'seed-2026-10-10-13'),
-  ('2026-10-10', 'milk-fireworks', 'seed-2026-10-10-14'),
-  ('2026-10-10', 'milk-fireworks', 'seed-2026-10-10-15'),
-  ('2026-10-10', 'milk-fireworks', 'seed-2026-10-10-16'),
-  ('2026-10-10', 'milk-fireworks', 'seed-2026-10-10-17'),
-  ('2026-10-10', 'milk-fireworks', 'seed-2026-10-10-18'),
+  ('2026-10-10', 'balloon-hovercraft', 'seed-2026-10-10-13'),
+  ('2026-10-10', 'balloon-hovercraft', 'seed-2026-10-10-14'),
+  ('2026-10-10', 'balloon-hovercraft', 'seed-2026-10-10-15'),
+  ('2026-10-10', 'balloon-hovercraft', 'seed-2026-10-10-16'),
+  ('2026-10-10', 'balloon-hovercraft', 'seed-2026-10-10-17'),
+  ('2026-10-10', 'balloon-hovercraft', 'seed-2026-10-10-18'),
   ('2026-10-10', 'balloon-hovercraft', 'seed-2026-10-10-19'),
   ('2026-10-10', 'balloon-hovercraft', 'seed-2026-10-10-20'),
   ('2026-10-10', 'balloon-hovercraft', 'seed-2026-10-10-21'),
-  ('2026-10-10', 'balloon-hovercraft', 'seed-2026-10-10-22'),
-  ('2026-10-10', 'balloon-hovercraft', 'seed-2026-10-10-23'),
-  ('2026-10-10', 'balloon-hovercraft', 'seed-2026-10-10-24'),
-  ('2026-10-10', 'balloon-hovercraft', 'seed-2026-10-10-25'),
+  ('2026-10-10', 'walking-water', 'seed-2026-10-10-22'),
+  ('2026-10-10', 'walking-water', 'seed-2026-10-10-23'),
+  ('2026-10-10', 'walking-water', 'seed-2026-10-10-24'),
+  ('2026-10-10', 'walking-water', 'seed-2026-10-10-25'),
   ('2026-10-10', 'walking-water', 'seed-2026-10-10-26'),
-  ('2026-10-10', 'walking-water', 'seed-2026-10-10-27'),
-  ('2026-10-10', 'walking-water', 'seed-2026-10-10-28'),
-  ('2026-10-10', 'walking-water', 'seed-2026-10-10-29'),
-  ('2026-10-10', 'walking-water', 'seed-2026-10-10-30')
+  ('2026-10-10', 'candle', 'seed-2026-10-10-27'),
+  ('2026-10-10', 'candle', 'seed-2026-10-10-28'),
+  ('2026-10-10', 'candle', 'seed-2026-10-10-29'),
+  ('2026-10-10', 'candle', 'seed-2026-10-10-30')
 ON CONFLICT (week_id, voter_token) DO NOTHING;
 
 UPDATE poll_options AS option

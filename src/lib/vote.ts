@@ -60,6 +60,13 @@ export const POLL_OPTIONS: readonly PollOptionSeed[] = [
     challenge: "Make water climb between cups",
     blurb: "Paper towels bridge colored cups; water walks and mixes into a rainbow. Capillary action.",
   },
+  {
+    id: "candle",
+    title: "Candle in a glass",
+    challenge: "Make a candle pull water up",
+    blurb:
+      "Light a candle under a jar over a dish of water; when the flame goes out, water climbs. Air, pressure, and cooling — the classic kids demo.",
+  },
 ];
 
 export type VoteOptionPublic = PollOptionSeed & {
