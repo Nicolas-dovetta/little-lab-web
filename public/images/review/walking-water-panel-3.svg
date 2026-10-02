@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <rect width="1200" height="800" fill="#FBF6EC"/>
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 Z" fill="#E0562B"/>
+    </marker>
+  </defs>
+  
+  <text x="48" y="64" fill="#2B2A33" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-weight="600" text-anchor="start">Panel 3  ·  Once the towel is wet across, the higher cup drains</text>
+  <g>
+    <path d="M120 660 L120 300 L300 300 L300 660" fill="none" stroke="#2B2A33" stroke-width="5"/>
+    <path d="M520 660 L520 300 L700 300 L700 660" fill="none" stroke="#2B2A33" stroke-width="5"/>
+    <rect x="128" y="380" width="164" height="280" fill="#E25B63"/>
+    <rect x="528" y="500" width="164" height="160" fill="#8E5BD0"/>
+    <path d="M210 380 Q 410 200 610 500" fill="none" stroke="#C45B8A" stroke-width="18" stroke-linecap="round"/>
+    <line x1="250" y1="360" x2="560" y2="470" stroke="#E0562B" stroke-width="4" stroke-dasharray="10 8" marker-end="url(#ah)"/>
+    <line x1="180" y1="360" x2="180" y2="430" stroke="#E0562B" stroke-width="4" marker-end="url(#ah)"/>
+    <line x1="600" y1="470" x2="600" y2="530" stroke="#E0562B" stroke-width="4" marker-end="url(#ah)"/>
+    <circle cx="300" cy="340" r="8" fill="#E25B63" stroke="#2B2A33" stroke-width="2"/>
+    <circle cx="380" cy="300" r="8" fill="#E25B63" stroke="#2B2A33" stroke-width="2"/>
+    <circle cx="470" cy="330" r="8" fill="#3A5CB0" stroke="#2B2A33" stroke-width="2"/>
+    <circle cx="540" cy="400" r="8" fill="#3A5CB0" stroke="#2B2A33" stroke-width="2"/>
+    <text x="210" y="720" fill="#2B2A33" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" text-anchor="middle">higher</text>
+    <text x="610" y="720" fill="#2B2A33" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" text-anchor="middle">lower, and mixing</text>
+  </g>
+  <text x="600" y="250" fill="#2B2A33" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" text-anchor="middle">dye rides in the water</text>
+  <text x="600" y="780" fill="#2B2A33" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-weight="600" text-anchor="middle">Flow stops when the two surfaces are about level.</text>
+
+</svg>

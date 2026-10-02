@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <rect width="1200" height="800" fill="#FBF6EC"/>
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 1.2 L 9 5 L 0 8.8 Z" fill="#E0562B"/>
+    </marker>
+  </defs>
+  
+  <text x="48" y="64" fill="#2B2A33" font-family="Georgia, 'Times New Roman', serif" font-size="38" font-weight="600" text-anchor="start">Panel 1  ·  A paper towel is a bundle of tiny gaps</text>
+  <g>
+    <path d="M160 620 L160 340 L300 340 L300 620" fill="none" stroke="#2B2A33" stroke-width="5"/>
+    <rect x="168" y="460" width="124" height="160" fill="#E25B63"/>
+    <rect x="214" y="300" width="22" height="200" fill="#F3E6C8" stroke="#C4A574" stroke-width="3"/>
+    <rect x="214" y="430" width="22" height="190" fill="#E25B63"/>
+    <line x1="225" y1="500" x2="225" y2="390" stroke="#E0562B" stroke-width="4" stroke-dasharray="10 8" marker-end="url(#ah)"/>
+    <text x="120" y="680" fill="#2B2A33" font-family="ui-sans-serif, system-ui, sans-serif" font-size="26" text-anchor="start">colored water</text>
+    <text x="160" y="300" fill="#2B2A33" font-family="ui-sans-serif, system-ui, sans-serif" font-size="26" text-anchor="start">towel</text>
+  </g>
+  <rect x="470" y="130" width="680" height="580" rx="28" fill="#fff" stroke="#2B2A33" stroke-width="3"/>
+  <text x="810" y="185" fill="#2B2A33" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-weight="600" text-anchor="middle">inside the towel</text>
+  <path d="M560 260 C620 420 700 500 760 640" fill="none" stroke="#C4A574" stroke-width="18" stroke-linecap="round"/>
+  <path d="M700 240 C760 400 820 520 900 660" fill="none" stroke="#C4A574" stroke-width="18" stroke-linecap="round"/>
+  <path d="M860 250 C930 420 980 520 1040 650" fill="none" stroke="#C4A574" stroke-width="18" stroke-linecap="round"/>
+  <path d="M640 520 C700 500 760 560 820 540 C880 520 930 470 990 500" fill="none" stroke="#E25B63" stroke-width="16" stroke-linecap="round"/>
+  <line x1="760" y1="560" x2="760" y2="430" stroke="#E0562B" stroke-width="4" stroke-dasharray="10 8" marker-end="url(#ah)"/>
+  <line x1="620" y1="360" x2="690" y2="430" stroke="#E0562B" stroke-width="4" marker-end="url(#ah)"/>
+  <line x1="980" y1="360" x2="910" y2="450" stroke="#E0562B" stroke-width="4" marker-end="url(#ah)"/>
+  <text x="560" y="230" fill="#2B2A33" font-family="ui-sans-serif, system-ui, sans-serif" font-size="26" text-anchor="start">fiber pulls (adhesion)</text>
+  <text x="860" y="720" fill="#2B2A33" font-family="ui-sans-serif, system-ui, sans-serif" font-size="26" text-anchor="start">water holds on (cohesion)</text>
+  <text x="620" y="430" fill="#2B2A33" font-family="ui-sans-serif, system-ui, sans-serif" font-size="26" text-anchor="start">still dry up here</text>
+
+</svg>
