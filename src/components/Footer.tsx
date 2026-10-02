@@ -23,6 +23,9 @@ export function Footer() {
           <Link href="/experiments" className="text-ink-muted hover:text-ink">
             Experiments
           </Link>
+          <Link href="/vote" className="text-ink-muted hover:text-ink">
+            Vote
+          </Link>
           <Link href="/about" className="text-ink-muted hover:text-ink">
             About
           </Link>

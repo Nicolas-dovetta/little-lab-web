@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "tsx --test src/lib/amazon.test.ts src/lib/site.test.ts src/lib/experiments.test.ts src/lib/jsonld.test.ts src/lib/mechanism.test.ts src/lib/sims.test.ts src/lib/grab-bag.test.ts src/lib/review/physics.test.ts src/lib/review/page-guard.test.ts",
+    "test": "tsx --test src/lib/amazon.test.ts src/lib/site.test.ts src/lib/experiments.test.ts src/lib/jsonld.test.ts src/lib/mechanism.test.ts src/lib/sims.test.ts src/lib/grab-bag.test.ts src/lib/vote.test.ts src/lib/review/physics.test.ts src/lib/review/page-guard.test.ts",
+    "db:vote": "tsx scripts/migrate-vote.ts",
     "db:push": "tsx scripts/push-schema.ts",
     "db:seed": "tsx scripts/seed.ts",
     "db:push:kit": "drizzle-kit push"

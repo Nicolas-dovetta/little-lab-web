@@ -7,6 +7,7 @@ import {
   serial,
   text,
   timestamp,
+  unique,
 } from "drizzle-orm/pg-core";
 
 export type SayThis = {
@@ -138,6 +139,45 @@ export const contactMessages = pgTable("contact_messages", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+/** One voting week. `closesAt` is the instant voting stops (stored in UTC). */
+export const pollWeeks = pgTable("poll_weeks", {
+  id: text("id").primaryKey(),
+  title: text("title").notNull(),
+  closesAt: timestamp("closes_at", { withTimezone: true }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const pollOptions = pgTable("poll_options", {
+  id: text("id").primaryKey(),
+  weekId: text("week_id")
+    .notNull()
+    .references(() => pollWeeks.id),
+  title: text("title").notNull(),
+  challenge: text("challenge").notNull(),
+  blurb: text("blurb").notNull(),
+  sortOrder: integer("sort_order").notNull().default(0),
+  voteCount: integer("vote_count").notNull().default(0),
+});
+
+/** One row per browser. The unique pair is what stops a second vote. */
+export const pollBallots = pgTable(
+  "poll_ballots",
+  {
+    id: serial("id").primaryKey(),
+    weekId: text("week_id")
+      .notNull()
+      .references(() => pollWeeks.id),
+    optionId: text("option_id")
+      .notNull()
+      .references(() => pollOptions.id),
+    voterToken: text("voter_token").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [unique("poll_ballots_week_voter").on(table.weekId, table.voterToken)],
+);
+
 export type Experiment = typeof experiments.$inferSelect;
 export type FaqEntry = typeof faqEntries.$inferSelect;
 export type ContactMessage = typeof contactMessages.$inferSelect;
+export type PollWeek = typeof pollWeeks.$inferSelect;
+export type PollOption = typeof pollOptions.$inferSelect;

@@ -48,7 +48,10 @@ test("/simulators: each sim has its short name and links to the sim anchor on it
   assert.match(tryIt, /id=\{SIM_ANCHOR_ID\}/);
   assert.match(tryIt, /scroll-mt-/);
   const header = readFileSync(join(process.cwd(), "src/components/Header.tsx"), "utf8");
-  assert.match(header, /"\/simulators", label: "Simulators" \},\n\s*\{ href: "\/about", label: "About" \}/);
+  assert.match(
+    header,
+    /"\/simulators", label: "Simulators" \},\n\s*\{ href: "\/vote", label: "Vote" \},\n\s*\{ href: "\/about", label: "About" \}/,
+  );
   const sitemap = readFileSync(join(process.cwd(), "src/app/sitemap.ts"), "utf8");
   assert.match(sitemap, /\/simulators/);
 });

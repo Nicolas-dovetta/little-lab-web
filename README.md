@@ -11,6 +11,23 @@ Domain: weekend-experiments.app
 - `CONTACT_TO_EMAIL` — optional; defaults to `nicolas.dovetta@gmail.com`
 - `CONTACT_FROM_EMAIL` — optional; defaults to `onboarding@resend.dev`
 
+## Vote (`/vote`)
+
+Parents pick the next experiment. Nav order is Experiments, Plan, Simulators, Vote, About.
+
+One vote per browser: httpOnly cookie `we_vote_token`, plus `localStorage` key `we_vote` so a second click does not count again. Tallies are `poll_options.vote_count` in Neon, backed by one `poll_ballots` row per voter. Unknown option ids are rejected. A light in-memory rate limit (20 POSTs / 10 minutes / IP) sits in front.
+
+Closed is computed from `poll_weeks.closes_at`, not a date baked only into the page. This week closes Saturday Oct 3, 2026, 11:59:59 PM America/Los_Angeles (`TIMESTAMPTZ '2026-10-03 23:59:59 America/Los_Angeles'`). After that, POSTs are rejected and the page shows the winner.
+
+Apply on Neon (idempotent — safe to re-run):
+
+- `scripts/migrate-vote.sql`, or
+- `npm run db:vote` with `DATABASE_URL` in `.env.local`
+
+`npm run db:push` creates the empty tables. The SQL file also seeds them. If this week's ballot is missing, the first `/vote` or `/api/vote` request runs that same SQL file (create + seed) and then serves the tallies. Re-running it does not reset votes that are already stored.
+
+Starter votes use mulberry32 seed `20261003` (each option starts at 2, then the rest are scattered). They sum to 30: Cartesian diver 4, Instant ice 4, Milk fireworks 4, Balloon hovercraft 9, Walking-water rainbow 5, Candle in a glass 4. None of these six are live experiment pages. Candle in a glass is the unpublished `candle-in-glass` idea; the ballot id is `candle`.
+
 ## Experiment dates (`ranOn` and `plannedFor`)
 
 Both are America/Los_Angeles calendar dates, **not** `created_at`.

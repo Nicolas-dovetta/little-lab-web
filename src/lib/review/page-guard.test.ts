@@ -17,9 +17,13 @@ test("review items stay off the public nav, sitemap, sim list, and seed", () => 
   const llms = readFileSync(join(root, "public/llms.txt"), "utf8");
   const page = readFileSync(join(root, "src/app/lab/review/page.tsx"), "utf8");
 
+  assert.match(header, /href: "\/vote", label: "Vote"/);
   assert.doesNotMatch(header, /\/lab\/review/);
+  assert.match(footer, /href="\/vote"/);
   assert.doesNotMatch(footer, /\/lab\/review/);
+  assert.match(sitemap, /\/vote/);
   assert.doesNotMatch(sitemap, /\/lab\/review/);
+  assert.match(llms, /\/vote/);
   assert.doesNotMatch(llms, /\/lab\/review/);
   assert.match(robots, /\/lab\//);
   assert.doesNotMatch(sims, /candle-in-glass|walking-water/);
